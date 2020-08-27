@@ -70,9 +70,10 @@ Fleet.prototype.fleetAntiAir = function(alreadyCombined) {
 		if (this.side == 0) this._baseFAA /= 1.3; //player side fleetAA is lower?
 	}
 	var FAA = this._baseFAA*2*this.formation.AAmod;
+	if (alreadyCombined) return FAA;
 	if (this.combinedWith) {
-		FAA *= ((this.isescort)? .48 : .72);
-		if (!alreadyCombined) FAA += this.combinedWith.fleetAntiAir(true);
+		FAA += this.combinedWith.fleetAntiAir(true);
+		FAA *= ((this.isescort)? .48 : (this.side == 0)? .72 : .8);
 	}
 	// console.log('FLEET ANTI-AIR: '+FAA);
 	return FAA;
@@ -635,7 +636,7 @@ Ship.prototype.AStype = function() {
 		if (numZuiun >= 2) this._astype.push(200);
 	}
 	
-	if (MECHANICS.CVCI && this.CVshelltype) {
+	if (MECHANICS.CVCI && this.CVshelltype && (this.mid < 1500 || this.canCVCI)) {
 		if (this.equiptypes[DIVEBOMBER] && this.equiptypes[TORPBOMBER] && this.equiptypes[FIGHTER]) this._astype.push(71);
 		if (this.equiptypes[DIVEBOMBER] >= 2 && this.equiptypes[TORPBOMBER]) this._astype.push(72);
 		if (this.equiptypes[DIVEBOMBER] && this.equiptypes[TORPBOMBER]) this._astype.push(73);
@@ -846,7 +847,7 @@ Ship.prototype.getAACItype = function(atypes) {
 	if (this.mid == 488 && atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(21); //Yura Kai Ni
 	if ([77,82,87,88,553].indexOf(this.mid) != -1 && hasID[274] && atypes[A_AIRRADAR] && atypes[A_TYPE3SHELL]) types.push(25); //Ise-class
 
-	if((this.mid == 562 || this.mid == 689) && hasID[308] || hasID[313]) { //Johnston
+	if((this.sclass == 91) && hasID[308] || hasID[313]) { //Fletcher class
 		if (hasID[308] >= 2) types.push(34);
 		if (hasID[313] >= 1 && hasID[308] >= 1) types.push(35);
 		if (hasID[313] >= 2) types.push(37);
@@ -952,6 +953,28 @@ Ship.prototype.numBombers = function () {
 	return planes;
 }
 Ship.prototype.rocketBarrageChance = function() { return 0; }
+
+Ship.prototype.removeProficiencyBonus = function(i) {
+	if (i >= this.equips.length) return
+	var eq = this.equips[i];
+
+	if (eq.APbonus && this.APbonus) {
+		this.APbonus -= eq.APbonus;
+	}
+
+	if ((eq.isdivebomber||eq.istorpbomber) && this.critratebonus && this.critdmgbonus && eq.exp > 0) {
+		var mod = 0;
+		if (eq.rank == 7) mod = 10;
+		else if (eq.rank == 6) mod = 7;
+		else if (eq.rank == 5) mod = 5;
+		else if (eq.rank == 4) mod = 4;
+		else if (eq.rank == 3) mod = 3;
+		else if (eq.rank == 2) mod = 2;
+		else if (eq.rank == 1) mod = 1;
+		this.critratebonus -= mod*.6; //x.75????
+		this.critdmgbonus -= Math.floor(Math.sqrt(eq.exp) + mod)/((i==0)? 100:200);
+	}
+}
 
 //------------------
 

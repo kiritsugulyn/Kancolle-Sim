@@ -1,7 +1,7 @@
 var LINEAHEAD = {shellmod:1,torpmod:1,ASWmod:.6,AAmod:1, shellacc:1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:1};
 var DOUBLELINE = {shellmod:.8,torpmod:.8,ASWmod:.8,AAmod:1.2, shellacc:1.2,torpacc:.8,NBacc:.9, shellev:1,torpev:1,NBev:1,ASWev:1, id:2};
 var DIAMOND = {shellmod:.7,torpmod:.7,ASWmod:1.2,AAmod:1.6, shellacc:1,torpacc:.4,NBacc:.7, shellev:1.1,torpev:1.1,NBev:1,ASWev:1, id:3};
-var ECHELON = {shellmod:.75,torpmod:.6,ASWmod:1.1,AAmod:1, shellacc:1.2,torpacc:.6,NBacc:.8, shellev:1.3,torpev:1.3,NBev:1.1,ASWev:1.3, id:4};
+var ECHELON = {shellmod:.75,torpmod:.6,ASWmod:1.1,AAmod:1, shellacc:1.2,torpacc:.6,NBacc:.9, shellev:1.45,torpev:1.3,NBev:1.3,ASWev:1.3, id:4};
 var LINEABREAST = {shellmod:.6,torpmod:.6,ASWmod:1.3,AAmod:1, shellacc:1.2,torpacc:.3,NBacc:.8, shellev:1.3,torpev:1.4,NBev:1.2,ASWev:1.1, id:5};
 var VANGUARD1 = {shellmod:0.5,torpmod:1,ASWmod:1,AAmod:1.1, shellacc:.8,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:6};
 var VANGUARD2 = {shellmod:1,torpmod:1,ASWmod:.6,AAmod:1.1, shellacc:1.2,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:6};
@@ -135,6 +135,7 @@ var SIMCONSTS = {
 	nagatoSpecialRate: 60,
 	mutsuSpecialRate: 60,
 	coloradoSpecialRate: 60,
+	kongouSpecialRate: 60,
 	airRaidCostW6: false,
 	enableEnemyAACI: true,
 	enableEnemyAACILBAS: false,
@@ -240,13 +241,16 @@ function shell(ship,target,APIhou,attackSpecial) {
 		}
 		if (cutin == 7) { //special CVCI crit bonus
 			overrideCritDmgBonus = 1;
-			overrideCritDmgBonus += .1*(ship.ACCplane||0)/12.46; //base scaling on average proficiency
-			if (ship.equips[0] && ship.equips[0].rank == 7) overrideCritDmgBonus += .15; //base scaling on 8 - 5.6 mods of standard crit dmg bonus
-			else if (ship.equips[0] && ship.equips[0].rank == 6) overrideCritDmgBonus += .1;
-			
-			if (AStypes[i] == 71) critRateBonus = .1;
-			else if (AStypes[i] == 72) critRateBonus = .07;
-			else critRateBonus = .05;
+			critRateBonus = 0;
+			overrideCritDmgBonus += .1  *(ship.ACCplane||0)/12.46; //base scaling on average proficiency
+			critRateBonus += .09 * (ship.ACCplane||0)/12.46;
+			if (ship.equips[0] && ship.equips[0].rank == 7) {
+				overrideCritDmgBonus += .15; //base scaling on 8 - 5.6 mods of standard crit dmg bonus
+				critRateBonus += .07 * (ship.equiptypes[FIGHTER] + ship.equiptypes[TORPBOMBER] + ship.equiptypes[DIVEBOMBER] >= 3 ? 2:1);
+			}else if (ship.equips[0] && ship.equips[0].rank == 6) {
+				overrideCritDmgBonus += .1;
+				critRateBonus += .06 * (ship.equiptypes[FIGHTER] + ship.equiptypes[TORPBOMBER] + ship.equiptypes[DIVEBOMBER] >= 3 ? 2:1);
+			}
 		}
 	}
 	
@@ -337,7 +341,7 @@ function shell(ship,target,APIhou,attackSpecial) {
 			}
 		}
 	} else {
-		var res = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,1.3,ship.CVshelltype,critRateBonus),(overrideCritDmgBonus || ship.critdmgbonus));
+		var res = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,1.3,ship.CVshelltype,critRateBonus,cutin == 7),(overrideCritDmgBonus || ship.critdmgbonus));
 		var dmg = (cutin)? getScratchDamage(target.HP) : 0, realdmg = 0;
 		if (res) {
 			dmg = damage(ship,target,ship.shellPower(target,ship.fleet.basepowshell)+FPfit,preMod,res*postMod,SHELLDMGBASE);
@@ -816,11 +820,11 @@ function canSpecialAttack(ship,isNB) {
 		if (ship.fleet.formation.id != 1 && ship.fleet.formation.id != 14) return false;
 		for (let i=0; i<=1; i++) {
 			let s = ship.fleet.ships[i];
-			if (s.HP/s.maxHP <= .25) return false;
+			if (s.HP/s.maxHP <= .5) return false;
 		}
 		if (ship.mid == 591 && [592,151,439,364].indexOf(ship.fleet.ships[1].mid) == -1) return false;
 		if (ship.mid == 592 && [591,152].indexOf(ship.fleet.ships[1].mid) == -1) return false;
-		let rate = .6;
+		let rate = SIMCONSTS.kongouSpecialRate/100;
 		if (ship.equiptypes[RADARL]) rate += (ship.mid == 591)? .3 : .1;
 		if (ship.equiptypes[SEARCHLIGHTL]) rate += (ship.mid == 592)? .3 : .1;
 		return Math.random() < rate;
@@ -1235,7 +1239,7 @@ function hitRate(ship,accBase,accFlat,accMod) {
 	return (accBase + 2*Math.sqrt(ship.LVL) + Math.sqrt(ship.LUK*1.5) + accFlat)*accMod*.01;
 }
 
-function accuracyAndCrit(ship,target,hit,evMod,evFlat,critMod,isPlanes,critBonusFlat) {
+function accuracyAndCrit(ship,target,hit,evMod,evFlat,critMod,isPlanes,critBonusFlat,cvCI) {
 	if (evMod===undefined) evMod = 1;
 	
 	var evade = (target.EV+Math.sqrt(target.LUK*2)) * evMod; //formation
@@ -1243,7 +1247,15 @@ function accuracyAndCrit(ship,target,hit,evMod,evFlat,critMod,isPlanes,critBonus
 	dodge*=.01;
 	if (target.fuelleft < 7.5) dodge -= (7.5-target.fuelleft)/10;
 	if (evFlat) dodge += evFlat*.01;
-	
+
+	if (ship.bonusSpecial) { //e.g. event historical bonus
+		for (var i=0; i<ship.bonusSpecial.length; i++) {
+			if (!ship.bonusSpecial[i].on || ship.bonusSpecial[i].on.indexOf(target.mid) != -1) {
+				hit *= ship.bonusSpecial[i].mod;
+			}
+		}
+	}
+
 	if (C) console.log('	hit: '+hit+' dodge: '+dodge);
 	acc = Math.max(hit-dodge,.1);
 	acc *= target.moraleModEv();
@@ -1252,7 +1264,7 @@ function accuracyAndCrit(ship,target,hit,evMod,evFlat,critMod,isPlanes,critBonus
 	var crit = Math.sqrt(100*acc)*critMod*.01;
 	if (isPlanes) {
 		if (ship.ACCplane) acc += ship.ACCplane*.01;
-		if (ship.critratebonus) crit += ship.critratebonus*.01; //x.75 earlier, find real value?
+		if (!cvCI && ship.critratebonus) crit += ship.critratebonus*.01; //x.75 earlier, find real value?
 	}
 	crit += critBonusFlat || 0;
 	if (C) console.log('	accfinal: '+acc+', crit: '+crit);
@@ -1578,9 +1590,10 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 		let chance = target.rocketBarrageChance();
 		if (chance && Math.random() < chance) target._rocketTriggered = true;
 	}
-	
+
 	for (var i=0; i<bombers.length; i++) {
 		var ship = carriers[i];
+		// S2
 		for (var j=0; j<bombers[i].length; j++) {
 			var slot = bombers[i][j];
 			var defender = defenders[Math.floor(Math.random()*defenders.length)];
@@ -1596,13 +1609,17 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 				ship.equips[slot].lostnums.push(shotProp+shotFlat+shotFix);
 			}
 			ship.planecount[slot] = Math.max(0,ship.planecount[slot]-shotProp-shotFlat-shotFix);
-			if (C) console.log('	anti air: '+defender.name+' '+defender.AA+' '+shotProp+' '+shotFlat+' '+shotFix+' '+ship.planecount[slot]);
+			if (C) console.log(ship.name + ' ' + slot + '	anti air: '+defender.name+' '+defender.AA+' '+shotProp+' '+shotFlat+' '+shotFix+' '+ship.planecount[slot]);
 		
 			if (ship.planecount[slot]<=0) {
 				ship.planecount[slot] = 0;
-				continue;
+				ship.removeProficiencyBonus(slot);
 			}
-			
+		}
+		// S3
+		for (var j=0; j<bombers[i].length; j++) {
+			var slot = bombers[i][j];
+			if (ship.planecount[slot]<=0) continue
 			if (targets.length) {  //even if subs only, bombers still get shot down
 				var targetsR = targets;
 				if (combinedAll) {
