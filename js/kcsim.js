@@ -433,7 +433,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 	
 	var evMod = target.getFormation().NBev;
 	var evFlat = (target.type == 'CA' || target.type == 'CAV')? 5 : 0;
-	if (target.type == 'DD' && target.equiptypesB[B_RADAR] && target.hasLookout) evFlat += 5; //guess
+	if (target.type == 'DD' && target.hasLOSRadar && target.hasLookout) evFlat += 5; //guess
 	if (target.hasSearchlight) { evMod *= .2; evFlat *= .2; }
 	
 	if (!attackSpecial) {
@@ -825,7 +825,7 @@ function canSpecialAttack(ship,isNB) {
 		if (ship.mid == 591 && [592,151,439,364].indexOf(ship.fleet.ships[1].mid) == -1) return false;
 		if (ship.mid == 592 && [591,152].indexOf(ship.fleet.ships[1].mid) == -1) return false;
 		let rate = SIMCONSTS.kongouSpecialRate/100;
-		if (ship.equiptypes[RADARL]) rate += (ship.mid == 591)? .3 : .1;
+		if (ship.hasLOSRadar2) rate += (ship.mid == 591)? .3 : .1;
 		if (ship.equiptypes[SEARCHLIGHTL]) rate += (ship.mid == 592)? .3 : .1;
 		return Math.random() < rate;
 	}
@@ -860,7 +860,7 @@ function getSpecialAttackMod(ship,attackSpecial) {
 			mod *= ((ship.isflagship)? 1.1 : 1.25);
 		}
 		if (ship.equiptypesB[B_APSHELL]) mod *= 1.35;
-		if (ship.equiptypesB[B_RADAR]) mod *= 1.15;
+		if (ship.hasLOSRadar) mod *= 1.15;
 	} else if (attackSpecial == 102) {
 		mod = (ship.isflagship)? 1.4 : 1.2;
 		if (ship.fleet.ships[1].mid == 80 || ship.fleet.ships[1].mid == 275) {
@@ -869,7 +869,7 @@ function getSpecialAttackMod(ship,attackSpecial) {
 			mod *= ((ship.isflagship)? 1.2 : 1.4);
 		}
 		if (ship.equiptypesB[B_APSHELL]) mod *= 1.35;
-		if (ship.equiptypesB[B_RADAR]) mod *= 1.15;
+		if (ship.hasLOSRadar) mod *= 1.15;
 	} else if (attackSpecial == 103) {
 		let mod2 = 1;
 		if (ship.isflagship) {
@@ -880,11 +880,11 @@ function getSpecialAttackMod(ship,attackSpecial) {
 			let ship2 = ship.fleet.ships[1];
 			if ([19,88,93].indexOf(ship2.sclass) != -1) mod2 *= 1.1;
 			if (ship2.equiptypesB[B_APSHELL]) mod2 *= 1.35;
-			if (ship2.equiptypesB[B_RADAR]) mod2 *= 1.15;
+			if (ship2.hasLOSRadar) mod2 *= 1.15;
 		}
 		if (mod2 == 1) {
 			if (ship.equiptypesB[B_APSHELL]) mod2 *= 1.35;
-			if (ship.equiptypesB[B_RADAR]) mod2 *= 1.15;
+			if (ship.hasLOSRadar) mod2 *= 1.15;
 		}
 		mod *= mod2;
 	} else if (attackSpecial == 104) {

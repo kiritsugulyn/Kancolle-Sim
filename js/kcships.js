@@ -236,6 +236,8 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 			else this.repairs = [equips[i]];
 		}
 		if (eq.isjet) this.hasjet = true;
+		if (eq.btype == B_RADAR && eq.LOS >= 5) this.hasLOSRadar = true;
+		if (eq.btype == B_RADAR && eq.LOS >= 8) this.hasLOSRadar2 = true;
 		
 		if (eq.CANBbonus && this.type=='CA'||this.type=='CAV') {
 			if (!this.ACCnbca || this.ACCnbca > eq.CANBbonus) this.ACCnbca = eq.CANBbonus; //10 overrides 15
@@ -599,8 +601,8 @@ Ship.prototype.NBtypes = function() {
 		}
 	}
 	if (MECHANICS.destroyerNBCI && this.type == 'DD') {
-		if (mguns && torps && this.equiptypesB[B_RADAR]) this._nbtypes.push(7);
-		if (this.hasLookout && torps && this.equiptypesB[B_RADAR]) this._nbtypes.push(8);
+		if (mguns && torps && this.hasLOSRadar) this._nbtypes.push(7);
+		if (this.hasLookout && torps && this.hasLOSRadar) this._nbtypes.push(8);
 	}
 	if (this.hasSubRadar && this.numSpecialTorp) torps++;
 	
