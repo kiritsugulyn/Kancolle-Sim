@@ -1400,10 +1400,20 @@ Equip.prototype.setImprovement = function(level) {
 	this.level = level;
 	switch (this.type) {
 		case FIGHTER:
+		case SEAPLANEFIGHTER:
+		case INTERCEPTOR:
 			this.AAImprove = .2*level;
 			break;
 		case DIVEBOMBER:
-			this.AAImprove = .25*level;
+			if (this.AA && this.AA >=4) this.AAImprove = .25*level;
+			break;
+		case LANDBOMBER:
+			this.AAImprove = .5*Math.sqrt(level);
+			this.ASImprove = .7*Math.sqrt(level);
+			break;
+		case TORPBOMBER:
+		case SEAPLANEBOMBER:
+			this.ASImprove = .2*level;
 			break;
 	}
 	

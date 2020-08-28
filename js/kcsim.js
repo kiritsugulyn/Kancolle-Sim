@@ -1196,8 +1196,8 @@ function airstrike(ship,target,slot,contactMod,issupport) {
 	var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().AAmod,0,.2,!issupport),!issupport && ship.critdmgbonus);
 	var equip = ship.equips[slot];
 	var dmg = 0, realdmg = 0;
-	var planebase = (equip.isdivebomber)? equip.DIVEBOMB : (target.isInstall)? 0 : equip.TP + .2*(equip.level || 0);
-	planebase = planebase || 0;
+	var planebase = (equip.isdivebomber)? equip.DIVEBOMB : (target.isInstall)? 0 : equip.TP;
+	planebase = (planebase || 0) + (!issupport && equip.ASImprove? equip.ASImprove: 0);
 	if (C) console.log('		'+slot+' '+planebase);
 	if (res) {
 		var base = (issupport)? 3 : 25;
@@ -2072,7 +2072,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 	if (equip.type == LANDBOMBER) planebase = (target.isInstall)? equip.DIVEBOMB : equip.TP;
 	else planebase = (equip.isdivebomber)? equip.DIVEBOMB : (target.isInstall)? 0 : equip.TP;
 	if (target.isSub) planebase = equip.ASW;
-	planebase = planebase || 0;
+	planebase = (planebase || 0) + (equip.ASImprove || 0);
 	if (res) {
 		var dmgbase = 25+planebase*Math.sqrt(1.8*lbas.planecount[slot]);
 		var preMod = (equip.type == LANDBOMBER)? .8 : 1;
