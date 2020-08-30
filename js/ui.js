@@ -172,6 +172,11 @@ function showAdditionalStats(fleet) {
 	table.append(tr); tr = $('<tr></tr>');
 	for (var i=0; i<ships.length; i++) {
 		var td = $('<td></td>'); tr.append(td);
+		if (ships[i].FPfit) td.append('<span>Fit FP: '+ships[i].FPfit.toFixed(2)+'</span><br>');
+	}
+	table.append(tr); tr = $('<tr></tr>');
+	for (var i=0; i<ships.length; i++) {
+		var td = $('<td></td>'); tr.append(td);
 		if (ships[i].AStype().length && ships[i].canAS()) {
 			td.append('<span>Artillery Spot Rate:</span><br>');
 			var AStypes = ships[i].AStype();
@@ -253,6 +258,7 @@ function showAdditionalStats(fleet) {
 		if (ships[i].improves.EVtorp) html += 'Torpedo Evade: '+Math.floor(ships[i].improves.EVtorp*100)/100+'<br>';
 		if (ships[i].improves.Pasw) html += 'ASW Power: '+Math.floor(ships[i].improves.Pasw*100)/100+'<br>';
 		if (ships[i].improves.ACCasw) html += 'ASW Acc: '+Math.floor(ships[i].improves.ACCasw*100)/100+'<br>';
+		if (ships[i].evimprove) html += 'All Evade: '+Math.floor(ships[i].evimprove*100)/100+'<br>';
 		if (html.length > 30) {
 			td.append('Improvement:<br>');
 			td.append(html+'</div>');

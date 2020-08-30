@@ -90,8 +90,8 @@ var ARTILLERYSPOTDATA = {
 	71: { dmgMod: 1.25, accMod: 1.2, chanceMod: 1.25, id: 7, name: 'CVCI (FBA)' },
 	72: { dmgMod: 1.2, accMod: 1.2, chanceMod: 1.4, id: 7, name: 'CVCI (BBA)' },
 	73: { dmgMod: 1.15, accMod: 1.2, chanceMod: 1.55, id: 7, name: 'CVCI (BA)' },
-	200: { dmgMod: 1.35, accMod: 1.2, chanceMod: 1.4, name: 'Zuiun CI' },
-	201: { dmgMod: 1.3, accMod: 1.2, chanceMod: 1.4, name: 'DB CI' },
+	200: { dmgMod: 1.35, accMod: 1.2, chanceMod: 1.2, name: 'Zuiun CI' },
+	201: { dmgMod: 1.3, accMod: 1.2, chanceMod: 1.3, name: 'DB CI' },
 }
 
 var NBATTACKDATA = {
@@ -100,9 +100,9 @@ var NBATTACKDATA = {
 	3: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.22, numHits: 2, torpedo: true, name: 'Torpedo CI' },
 	4: { dmgMod: 1.75, accMod: 1.5, chanceMod: 1.3, name: 'Sec. Gun CI' },
 	5: { dmgMod: 2, accMod: 2, chanceMod: 1.4, name: 'Main Gun CI' },
-	61: { dmgMod: 1.25, accMod: 1.25, chanceMod: 1.25, id: 6, name: 'CVCI (1.25)' },
-	62: { dmgMod: 1.2, accMod: 1.2, chanceMod: 1.3, id: 6, name: 'CVCI (1.2)' },
-	63: { dmgMod: 1.18, accMod: 1.2, chanceMod: 1.4, id: 6, name: 'CVCI (1.18)' },
+	61: { dmgMod: 1.25, accMod: 1.25, chanceMod: 1.05, id: 6, name: 'CVCI (1.25)' },
+	62: { dmgMod: 1.2, accMod: 1.2, chanceMod: 1.15, id: 6, name: 'CVCI (1.2)' },
+	63: { dmgMod: 1.18, accMod: 1.2, chanceMod: 1.25, id: 6, name: 'CVCI (1.18)' },
 	7: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.3, name: 'DDCI (GTR)' },
 	8: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.5, name: 'DDCI (LTR)' },
 }
@@ -280,8 +280,6 @@ function shell(ship,target,APIhou,attackSpecial) {
 	if (MECHANICS.fitGun && ship.ACCfit) acc += ship.ACCfit*.01;
 	acc *= accMod2;
 	
-	var FPfit = (ship.FPfit||0);
-	
 	var evFlat = 0;
 	if (target.fleet.formation.id == 6) {
 		if (target.num/target.fleet.ships.length <= .8) {
@@ -307,13 +305,13 @@ function shell(ship,target,APIhou,attackSpecial) {
 		var res1 = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,1.3,ship.CVshelltype));
 		var dmg1 = getScratchDamage(target.HP), realdmg1 = 0;
 		if (res1) {
-			dmg1 = damage(ship,target,ship.shellPower(target,ship.fleet.basepowshell)+FPfit,preMod,res1*postMod,SHELLDMGBASE);
+			dmg1 = damage(ship,target,ship.shellPower(target,ship.fleet.basepowshell),preMod,res1*postMod,SHELLDMGBASE);
 			realdmg1 = takeDamage(target,dmg1);
 		} else { realdmg1 = takeDamage(target,dmg1) };
 		var res2 = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,1.3,ship.CVshelltype));
 		var dmg2 = getScratchDamage(target.HP), realdmg2 = 0;
 		if (res2) {
-			dmg2 = damage(ship,target,ship.shellPower(target,ship.fleet.basepowshell)+FPfit,preMod,res2*postMod,SHELLDMGBASE);
+			dmg2 = damage(ship,target,ship.shellPower(target,ship.fleet.basepowshell),preMod,res2*postMod,SHELLDMGBASE);
 			realdmg2 = takeDamage(target,dmg2);
 		} else { realdmg2 = takeDamage(target,dmg2); }
 		ship.fleet.giveCredit(ship,realdmg1+realdmg2);
@@ -344,7 +342,7 @@ function shell(ship,target,APIhou,attackSpecial) {
 		var res = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,1.3,ship.CVshelltype,critRateBonus,cutin == 7),(overrideCritDmgBonus || ship.critdmgbonus));
 		var dmg = (cutin)? getScratchDamage(target.HP) : 0, realdmg = 0;
 		if (res) {
-			dmg = damage(ship,target,ship.shellPower(target,ship.fleet.basepowshell)+FPfit,preMod,res*postMod,SHELLDMGBASE);
+			dmg = damage(ship,target,ship.shellPower(target,ship.fleet.basepowshell),preMod,res*postMod,SHELLDMGBASE);
 			realdmg = takeDamage(target,dmg);
 		} else { realdmg = takeDamage(target,dmg); }
 		ship.fleet.giveCredit(ship,realdmg);
@@ -1247,6 +1245,7 @@ function accuracyAndCrit(ship,target,hit,evMod,evFlat,critMod,isPlanes,critBonus
 	dodge*=.01;
 	if (target.fuelleft < 7.5) dodge -= (7.5-target.fuelleft)/10;
 	if (evFlat) dodge += evFlat*.01;
+	if (target.evimprove) dodge += target.evimprove*.01;
 
 	if (ship.bonusSpecial) { //e.g. event historical bonus
 		for (var i=0; i<ship.bonusSpecial.length; i++) {
@@ -1286,6 +1285,7 @@ function damage(ship,target,base,preMod,postMod,cap,isAirstrike) {
 	
 	var dmg = base;
 	dmg *= preMod;  //NB attack, torpedo bomber, formation mod
+	dmg += (ship.FPfit || 0);    // pre-cap FP fit
 	
 	if (dmg > cap) dmg = cap + Math.sqrt(dmg-cap);
 	
@@ -1820,7 +1820,7 @@ function supportASW(carriers,targets,defenders,APIkouku,combinedAll) {
 		bombers.push([]);
 		for (var j=0; j<ship.equips.length; j++) {
 			var e = ship.equips[j];
-			if (EQTDATA[e.type].isPlane && e.type != FIGHTER && ship.planecount[j]>0) {
+			if (EQTDATA[e.type].isPlane && e.type != FIGHTER && ship.planecount[j]>0 && e.ASW && e.ASW >= 1) {
 				bombers[i].push(j);
 				hasbomber = true;
 				var side = (ship.side == 2 || ship.side == 3)? 0 : ship.side;
@@ -1892,20 +1892,21 @@ function supportASW(carriers,targets,defenders,APIkouku,combinedAll) {
 
 function airstrikeSupportASW(ship,target,slot,contactMod) {
 	if (!contactMod) contactMod = 1;
-	var acc = .85;
-	if (target.isPT && !NERFPTIMPS) acc *= .5;
-	var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().AAmod,0,.2));
+	var acc = .45;
+	var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().ASWev,0,1));
 	var equip = ship.equips[slot];
 	var dmg = 0, realdmg = 0;
 	var planebase = equip.ASW;
-	planebase = planebase || 0;
+	planebase = Math.floor(planebase*.6) || 0;
 	if (C) console.log('		'+slot+' '+planebase);
 	if (res) {
 		var base = 3;
-		var preMod = .9 + Math.random()*.75;
-		if (equip.isjet) preMod *= 1/Math.sqrt(2);
-		var postMod = 1.35;
-		if (target.isPT && !NERFPTIMPS) postMod *= .6;
+		var preMod = 1;
+		var postMod = 1.75;
+		var r = Math.random();
+		if (r < .4) postMod *= 1.2;
+		else if (r < .5) postMod *= 1.5;
+		else postMod *= 2;
 		dmg = damage(ship,target,base+Math.sqrt(ship.planecount[slot])*planebase,preMod,res*contactMod*postMod,150);
 		realdmg = takeDamage(target,dmg);
 	}

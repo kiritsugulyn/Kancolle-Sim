@@ -199,7 +199,8 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	var atypes = {};
 	var planeexp = 0, planecount = 0;
 	var installeqs = {DH1:0,DH2:0,DH3:0,TDH:0,TDH11:0,WG:0,AP:0,T3:0,SB:0,DB:0,DH1stars:0,DH3stars:0};
-	var fitcounts = {};
+	var fitcounts = {}; 
+	var FPfitcounts = {};
 	var tpEquip = 0;
 	var aswPenetrate = 0;
 	for (var i=0; i<equips.length; i++){
@@ -248,6 +249,11 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 			else fitcounts[eq.fitclass]++;
 		}
 		
+		if (this.fitclass == 100 && eq.FPfitclass) {
+			if (!FPfitcounts[eq.FPfitclass]) FPfitcounts[eq.FPfitclass] = 1;
+			else FPfitcounts[eq.FPfitclass]++;
+		}
+
 		//add improvement stats
 		for (var key in eq.improves) {
 			if (this.improves[key]) this.improves[key] += eq.improves[key];
@@ -302,6 +308,11 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (eq.btype == B_DEPTHCHARGE2 && eq.ASW) {
 			aswPenetrate += Math.max(0, Math.sqrt(eq.ASW - 2) + +(this.type == 'DE'));
 		}
+
+		if (eq.type == ENGINE) {
+			if (!this.evimprove) this.evimprove = eq.level || 0;
+			else this.evimprove += eq.level || 0;
+		}
 		
 		this.equips.push(eq);
 	}
@@ -344,10 +355,41 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (!this.ACCfitN) this.ACCfitN = 0;
 		this.ACCfitN += FITDATAN[this.fitclass][eqfitclass]*Math.sqrt(fitcounts[eqfitclass]);
 	}
+
 	if (this.fitclass==100) { //CL fit
-		this.ACCfit = -2; this.FPfit = 0;
-		if (fitcounts[101]) { this.ACCfit += 4*Math.sqrt(fitcounts[101]); this.FPfit += Math.sqrt(fitcounts[101]); }
-		if (fitcounts[102]) { this.ACCfit += 3*Math.sqrt(fitcounts[102]); this.FPfit += 2*Math.sqrt(fitcounts[102]); }
+		this.FPfit = 0;
+		if (FPfitcounts[101]) this.FPfit += Math.sqrt(FPfitcounts[101]);   // single gun fit
+		if (FPfitcounts[102]) this.FPfit += 2*Math.sqrt(FPfitcounts[102]);	// dual gun fit
+
+		this.ACCfit = 0; 
+		if (fitcounts[101] && [4,16,20].indexOf(this.sclass) != 1) this.ACCfit += 1;  // 14cm fit
+		if (fitcounts[102] && this.sclass == 41) this.ACCfit += 5;  // 15.2cm fit
+		if (fitcounts[103]) this.ACCfit -= 3*fitcounts[103];   // 20.3cm dual gun fit
+		if (fitcounts[104]) this.ACCfit -= 10*fitcounts[104];   // 8inch triple gun fit
+		this.ACCfitN = this.ACCfit;
+	}
+
+	if (this.fitclass==200 && this.equiptypes[MAINGUNM]) { //AV fit
+		this.ACCfit = 0;
+		if (fitcounts[101] || fitcounts[102]){
+			let lightgun = (fitcounts[101] || 0) + (fitcounts[102] || 0);
+			if (this.equiptypes[MAINGUNM] <= lightgun) this.ACCfit = -6*lightgun;  // only 14/15.2cm
+			else this.ACCfit = -6*lightgun - 10*(this.equiptypes[MAINGUNM] - lightgun);  // both 14/15.2cm and other median gun
+		}else{
+			this.ACCfit = -8 - 10*this.equiptypes[MAINGUNM];   // no 14/15.2cm
+		}
+		this.ACCfitN = this.ACCfit;
+	}
+
+	if (this.sclass==64){
+		let italygun = this.equips.filter(eq => eq.mid == 162).length;
+		this.FPfit = (Math.sqrt(italygun) || 0);
+	}
+
+	if (this.sclass==81){
+		let tashgun = this.equips.filter(eq => eq.mid == 282).length;
+		this.ACCfit = (5*Math.sqrt(tashgun) || 0);
+		this.ACCfitN = this.ACCfit;
 	}
 	
 	var installbonus1 = 1 + (installeqs.DH1stars / (installeqs.DH1+installeqs.DH2))/50;
@@ -554,6 +596,8 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	this.hasTorpStat = this.TP - tpEquip > 0 && SHIPDATA[this.mid].TP > 0;
 	
 	if (aswPenetrate > 0) this.aswPenetrate = aswPenetrate;
+
+	if (this.evimprove) this.evimprove = 1.5 * Math.sqrt(this.evimprove);
 }
 Ship.prototype.getFormation = function() {
 	if (!this.fleet || !this.fleet.formation) return null;
@@ -1132,7 +1176,8 @@ CV.prototype.NBPower = function(target) {
 			power -= (equip.FP || 0);
 			if (equip.btype != B_NIGHTFIGHTER && equip.btype != B_NIGHTBOMBER && equip.btype != B_NIGHTBOMBER2) continue;
 			let mod = .3*((equip.FP || 0) + (equip.TP || 0) + (equip.ASW || 0) + (equip.DIVEBOMB || 0));
-			power += (equip.FP || 0) + (equip.TP || 0) + Math.sqrt(equip.level || 0);
+			power += (equip.FP || 0) + Math.sqrt(equip.level || 0);
+			if (!(target && target.isInstall)) power +=  (equip.TP || 0);
 			if (equip.btype != B_NIGHTBOMBER2) {
 				power += this.planecount[i]*3;
 				mod *= 1.5;
@@ -1201,6 +1246,7 @@ SSV.prototype = Object.create(SS.prototype);
 
 function AV(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
+	this.fitclass = 200;
 };
 AV.prototype = Object.create(Ship.prototype);
 AV.prototype.canASW = CAV.prototype.canASW;
