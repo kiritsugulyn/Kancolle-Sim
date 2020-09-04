@@ -151,6 +151,18 @@ function showAdditionalStats(fleet) {
 	table.append(tr); tr = $('<tr></tr>');
 	for (var i=0; i<ships.length; i++) {
 		var td = $('<td></td>'); tr.append(td);
+		if (ships[i].equipmentBonusStats('houg') > 0){
+			td.append('<span>FP: '+Math.floor(ships[i].FP)+'</span><br>');
+		}
+		if (ships[i].equipmentBonusStats('raig') > 0){
+			td.append('<span>TP: '+Math.floor(ships[i].TP)+'</span><br>');
+		}
+		if (ships[i].equipmentBonusStats('souk') > 0){
+			td.append('<span>AR: '+Math.floor(ships[i].AR)+'</span><br>');
+		}
+		if (ships[i].equipmentBonusStats('houk') > 0){
+			td.append('<span>EV: '+Math.floor(ships[i].EV)+'</span><br>');
+		}
 		td.append('<span>Shell Power: '+Math.floor(ships[i].shellPower())+'</span><br>');
 		if (ships[i].canNB()) {
 			td.append('<span>NB Power: '+Math.floor(ships[i].NBPower())+'</span><br>');
