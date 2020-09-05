@@ -624,7 +624,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 
 	if (this.evimprove) this.evimprove = 1.5 * Math.sqrt(this.evimprove);
 
-	if (this.mid <= 1500){
+	if (MECHANICS.equipBonus && this.mid <= 1500){
 		this.FP += this.equipmentBonusStats('houg');
 		this.TP += this.equipmentBonusStats('raig');
 		this.AR += this.equipmentBonusStats('souk');

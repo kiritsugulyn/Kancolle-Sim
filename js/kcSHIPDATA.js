@@ -20005,6 +20005,16 @@ var SHIPDATA = {
 		nameJP: '戦艦夏姫',
 		image: 'SBBHn.jpg',
 		type: 'BB',
+		equipWeak: [
+			{
+				mod: 1.2,
+				eqtypes: [APSHELL],
+			},
+			{
+				mod: 1.1,
+				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
+			}
+		],
 		HP: 400,
 		FP: 180,
 		TP: 0,
@@ -20025,6 +20035,16 @@ var SHIPDATA = {
 		nameJP: '戦艦夏姫',
 		image: 'SBBHn.jpg',
 		type: 'BB',
+		equipWeak: [
+			{
+				mod: 1.2,
+				eqtypes: [APSHELL],
+			},
+			{
+				mod: 1.1,
+				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
+			}
+		],
 		HP: 450,
 		FP: 185,
 		TP: 0,
@@ -20045,6 +20065,16 @@ var SHIPDATA = {
 		nameJP: '戦艦夏姫',
 		image: 'SBBHn.jpg',
 		type: 'BB',
+		equipWeak: [
+			{
+				mod: 1.2,
+				eqtypes: [APSHELL],
+			},
+			{
+				mod: 1.1,
+				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
+			}
+		],
 		HP: 530,
 		FP: 195,
 		TP: 0,
@@ -20185,6 +20215,16 @@ var SHIPDATA = {
 		nameJP: '重巡夏姫',
 		image: 'SCAHn.jpg',
 		type: 'CA',
+		equipWeak: [
+			{
+				mod: 1.1,
+				eqtypes: [APSHELL],
+			},
+			{
+				mod: 1.15,
+				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
+			}
+		],
 		HP: 400,
 		FP: 110,
 		TP: 74,
@@ -20205,6 +20245,16 @@ var SHIPDATA = {
 		nameJP: '重巡夏姫',
 		image: 'SCAHn.jpg',
 		type: 'CA',
+		equipWeak: [
+			{
+				mod: 1.1,
+				eqtypes: [APSHELL],
+			},
+			{
+				mod: 1.15,
+				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
+			}
+		],
 		HP: 450,
 		FP: 140,
 		TP: 82,
@@ -20225,6 +20275,16 @@ var SHIPDATA = {
 		nameJP: '重巡夏姫',
 		image: 'SCAHn.jpg',
 		type: 'CA',
+		equipWeak: [
+			{
+				mod: 1.1,
+				eqtypes: [APSHELL],
+			},
+			{
+				mod: 1.15,
+				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
+			}
+		],
 		HP: 550,
 		FP: 170,
 		TP: 90,

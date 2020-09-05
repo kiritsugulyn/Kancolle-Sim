@@ -172,6 +172,7 @@ var MECHANICS = {
 	zuiunCI: false,
 	aaResist: true,
 	divebomberInstall: true,
+	equipBonus: true
 };
 var NERFPTIMPS = false;
 var BREAKPTIMPS = false;
@@ -339,7 +340,7 @@ function shell(ship,target,APIhou,attackSpecial) {
 			}
 		}
 	} else {
-		var res = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,1.3,ship.CVshelltype,critRateBonus,cutin == 7),(overrideCritDmgBonus || ship.critdmgbonus));
+		var res = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,1.3,ship.CVshelltype,critRateBonus,cutin == 7), ship.CVshelltype?(overrideCritDmgBonus || ship.critdmgbonus): 1);
 		var dmg = (cutin)? getScratchDamage(target.HP) : 0, realdmg = 0;
 		if (res) {
 			dmg = damage(ship,target,ship.shellPower(target,ship.fleet.basepowshell),preMod,res*postMod,SHELLDMGBASE);
@@ -1281,13 +1282,15 @@ function damage(ship,target,base,preMod,postMod,cap,isAirstrike) {
 	if (!cap) cap = 150;
 	if (typeof preMod === 'undefined') preMod = 1;
 	if (typeof postMod === 'undefined') postMod = 1;
-	if (C) console.log('	'+ship.id+' '+target.id+' '+base+' '+preMod+' '+postMod+' '+cap);
+	if (C) console.log('	ship:'+ship.id+' target:'+target.id+' base:'+base+' premod:'+preMod+' postmod:'+postMod+' cap:'+cap);
 	
 	var dmg = base;
 	dmg *= preMod;  //NB attack, torpedo bomber, formation mod
 	dmg += (ship.FPfit || 0);    // pre-cap FP fit
-	
+	if (C) console.log('	pre-cap dmg: '+dmg);
+
 	if (dmg > cap) dmg = cap + Math.sqrt(dmg-cap);
+	if (C) console.log('	post-cap dmg: '+dmg);
 	
 	if (target.installtype == 3) { //supply depot type installations
 		if (isAirstrike) {
@@ -1297,18 +1300,29 @@ function damage(ship,target,base,preMod,postMod,cap,isAirstrike) {
 		}
 	}
 	dmg *= postMod;  //artillery spotting, contact, AP shell, critical
-	if (ship.bonusSpecial) { //e.g. event historical bonus
+	if (C) console.log('	dmg after postmod: '+dmg);
+
+	var specialMod = 1; //e.g. equipment and historical bonus
+	if (target.equipWeak){
+		let bonuses = target.equipWeak;
+		bonuses.forEach((bonus) => {
+			if (bonus.eqtypes.some((eqtype) => Object.keys(ship.equiptypes).includes(String(eqtype)))) specialMod *= (bonus.mod || 1);
+		})
+	}
+	if (ship.bonusSpecial) { 
 		for (var i=0; i<ship.bonusSpecial.length; i++) {
 			if (!ship.bonusSpecial[i].on || ship.bonusSpecial[i].on.indexOf(target.mid) != -1) {
-				dmg *= ship.bonusSpecial[i].mod;
+				specialMod *= ship.bonusSpecial[i].mod;
 			}
 		}
 	}
-	if (C) console.log('	before def: '+dmg);
+	dmg *= specialMod;
+	if (C) console.log('	dmg after specialmod: '+dmg);
+
 	var ar = target.AR + (target.improves.AR || 0);
 	dmg -= .7*ar+.6*Math.floor(Math.random()*ar) - (target.debuff||0);
 	if (target.isSub && ship.aswPenetrate) dmg += ship.aswPenetrate;
-	if (C) console.log('	after def: '+dmg);
+	if (C) console.log('	dmg after def: '+dmg);
 	
 	if (ship.ammoleft < 5) dmg *= .2*ship.ammoleft;
 	
