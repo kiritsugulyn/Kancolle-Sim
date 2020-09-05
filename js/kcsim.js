@@ -1303,7 +1303,7 @@ function damage(ship,target,base,preMod,postMod,cap,isAirstrike) {
 	if (C) console.log('	dmg after postmod: '+dmg);
 
 	var specialMod = 1; //e.g. equipment and historical bonus
-	if (target.equipWeak){
+	if (target.equipWeak && ship.equiptypes){
 		let bonuses = target.equipWeak;
 		bonuses.forEach((bonus) => {
 			if (bonus.eqtypes.some((eqtype) => Object.keys(ship.equiptypes).includes(String(eqtype)))) specialMod *= (bonus.mod || 1);
@@ -1403,7 +1403,7 @@ function AADefenceFighters(carriers,showplanes,APIkouku,isjetphase) {
 						case -2: rmin = .25; rplus = .3333; break;
 					}
 					var randplus = Math.floor((Math.floor(1000*rplus)+1)*Math.random())/1000;
-					lostcount = Math.floor(ship.planecount[j]*(rmin+randplus));
+					lostcount = Math.floor(ship.planecount[j]*(rmin+randplus)*(ship.equips[j].isjet? 0.6: 1));
 				} else {
 					var rmax;
 					switch(ship.fleet.AS) {
