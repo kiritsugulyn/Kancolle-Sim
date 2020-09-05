@@ -37,6 +37,10 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	else ENGAGEMENT = .6;
 	
 	F1.AS = F2.AS = F1C.AS = 0;
+
+	// combined airstrike mod
+	F1.airstrikeMod = -10; F1C.airstrikeMod = -20;
+	F1.airstrikeaccMod = 10; F1C.airstrikeaccMod = -20;
 	
 	// if (aironly && ships2.length <= 2 && [652,651,650].indexOf(ships2[0].mid) != -1) bombing = true;
 	if (bombing) aironly = true;
@@ -704,6 +708,10 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	else ENGAGEMENT = .6;
 	
 	F1.AS = F2.AS = F2C.AS = 0;
+
+	// combined airstrike mod
+	F2.airstrikeMod = -10; F2C.airstrikeMod = -20;
+	F2.airstrikeaccMod = 10; F2C.airstrikeaccMod = -20;
 	
 	if (bombing) aironly = true;
 	
@@ -840,7 +848,6 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		if (C) BAPI.data.api_kouku = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null,api_stage3_combined:null};
 		compareAP(F1,F2,false,true);
 		F2C.AS = F2.AS;
-		F2.airstrikeMod = -10; F2C.airstrikeMod = -20;
 		airPhase(alive1,subsalive1,alive2.concat(alive2C),subsalive2.concat(subsalive2C),(C)? BAPI.data.api_kouku:undefined,false,bombing,true);
 		if (C) {
 			if (BAPI.data.api_kouku.api_stage1) BAPI.data.api_kouku.api_stage1.api_disp_seiku = {4:1,3:2,2:0,1:3,0:4}[F1.AS+2];
@@ -1121,6 +1128,12 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	else ENGAGEMENT = .6;
 	
 	F1.AS = F2.AS = F1C.AS = F2C.AS = 0;
+
+	// combined airstrike mod
+	F1.airstrikeMod = -10; F1C.airstrikeMod = -20;
+	F2.airstrikeMod = -10; F2C.airstrikeMod = -20;
+	F1.airstrikeaccMod = 10; F1C.airstrikeaccMod = -20;
+	F2.airstrikeaccMod = 10; F2C.airstrikeaccMod = -20;
 	
 	if (bombing) aironly = true;
 	
@@ -1279,7 +1292,6 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		compareAP(F1,F2,false,true);
 		F1C.AS = F1.AS;
 		F2C.AS = F2.AS;
-		F2.airstrikeMod = -10; F2C.airstrikeMod = -20;
 		airPhase(alive1.concat(alive1C),subsalive1.concat(subsalive1C),alive2.concat(alive2C),subsalive2.concat(alive2C),(C)? BAPI.data.api_kouku:undefined,false,bombing,true);
 		if (C) {
 			if (BAPI.data.api_kouku.api_stage1) BAPI.data.api_kouku.api_stage1.api_disp_seiku = {4:1,3:2,2:0,1:3,0:4}[F1.AS+2];

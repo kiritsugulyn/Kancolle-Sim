@@ -1191,6 +1191,7 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 function airstrike(ship,target,slot,contactMod,issupport) {
 	if (!contactMod) contactMod = 1;
 	var acc = (issupport)? .85 : .95;
+	if (target.fleet.airstrikeaccMod) acc += target.fleet.airstrikeaccMod/100;  // main +10, escort -20
 	if (target.isPT && !NERFPTIMPS) acc *= .5;
 	var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().AAmod,0,.2,!issupport),!issupport && ship.critdmgbonus);
 	var equip = ship.equips[slot];
@@ -1200,7 +1201,7 @@ function airstrike(ship,target,slot,contactMod,issupport) {
 	if (C) console.log('		'+slot+' '+planebase);
 	if (res) {
 		var base = (issupport)? 3 : 25;
-		if (target.fleet.airstrikeMod) base += target.fleet.airstrikeMod; //in enemy combined, main gets -10, escort -20
+		if (target.fleet.airstrikeMod) base += target.fleet.airstrikeMod;     // main -10, escort -20
 		var preMod = (equip.isdivebomber)? 1 : ((Math.random() < .5)? .8 : 1.5);
 		if (equip.isjet) preMod *= 1/Math.sqrt(2);
 		var postMod = (issupport && MECHANICS.LBASBuff)? 1.35 : 1;

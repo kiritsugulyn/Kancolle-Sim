@@ -712,12 +712,15 @@ Ship.prototype.AStype = function() {
 		}
 		if (num634 >= 2) this._astype.push(201);
 		if (numZuiun >= 2) this._astype.push(200);
-	}
+    }
 	
 	if (MECHANICS.CVCI && this.CVshelltype && (this.mid < 1500 || this.canCVCI)) {
-		if (this.equiptypes[DIVEBOMBER] && this.equiptypes[TORPBOMBER] && this.equiptypes[FIGHTER]) this._astype.push(71);
-		if (this.equiptypes[DIVEBOMBER] >= 2 && this.equiptypes[TORPBOMBER]) this._astype.push(72);
-		if (this.equiptypes[DIVEBOMBER] && this.equiptypes[TORPBOMBER]) this._astype.push(73);
+        let d = this.equips.filter((eq, i) => eq.type == DIVEBOMBER && this.planecount[i] > 0).length || 0;
+        let t = this.equips.filter((eq, i) => eq.type == TORPBOMBER && this.planecount[i] > 0).length || 0;
+        let f = this.equips.filter((eq, i) => eq.type == FIGHTER && this.planecount[i] > 0).length || 0;
+		if (d >= 1 && t >= 1 && f >= 1) this._astype.push(71);
+		if (d >= 2 && t >= 1) this._astype.push(72);
+		if (d >= 1 && t >= 1) this._astype.push(73);
 	}
 	
 	var mguns = this.equiptypesB[B_MAINGUN] || 0, sguns = this.equiptypesB[B_SECGUN] || 0, radars = this.equiptypesB[B_RADAR] || 0, apshells = this.equiptypesB[B_APSHELL] || 0;
