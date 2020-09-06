@@ -889,7 +889,8 @@ Ship.prototype.weightedAntiAir = function() {
 		this._wAA += (this.improves.AAself)? 2*this.improves.AAself : 0;
 		if (this.fleet.combinedWith) {
 			if (this.isescort) this._wAA*=.48;
-			else this._wAA*=.72;
+            else if (this.side==0) this._wAA*=.72;
+            else this._wAA*=.8;
 		}
 	}
 	return this._wAA;

@@ -535,6 +535,7 @@ function simStatsCombined(numsims,type,foptions) {
 				friendFleet = FLEETS1S[2];
 				underwaySupply(FLEETS1[0]);
 			}
+			if (options.emergencyrepair) emergencyRepair(FLEETS1[0]);
 			var LBASwaves = [];
 			for (var k=0; k<options.lbas.length; k++) LBASwaves.push(LBAS[options.lbas[k]-1]);
 			var res;
@@ -1610,4 +1611,41 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	}
 	
 	return results;
+}
+
+function emergencyRepair(fleet){
+    if (!fleet.combinedWith) return;
+    if (fleet.isescort) fleet = fleet.combinedWith;
+    let ships0 = fleet.ships; 
+    let ships1 = fleet.combinedWith.ships;
+    let ships = ships0.concat(ships1);
+    
+    let akashi = ships.find((ship, i) => i > 0 && ship.mid == 187 && ship.HP/ship.maxHP > .5);
+    let akitsushima = ships.find((ship, i) => i > 0 && ship.mid == 450 && ship.HP/ship.maxHP > .5);
+    if (akashi === undefined && akitsushima === undefined) return;
+
+    let srfs = [false, false, false, false];
+    if (akashi !== undefined && akashi.equips){
+        akashi.equips.forEach((eq, i) => srfs[i] = eq.type == SRF);
+        ships0.forEach((ship, i) => {
+            if (ship.HP/ship.maxHP > .25 && srfs[Math.floor(i / 3)]) {
+                ship.HP = Math.min(Math.ceil(ship.HP + 0.3 * ship.maxHP), ship.maxHP);
+                ship.morale = Math.min(ship.morale + 7, 100);
+            } 
+        });
+        ships1.forEach((ship, i) => {
+            if (ship.HP/ship.maxHP > .25 && srfs[Math.floor(i / 3) + 2]) {
+                ship.HP = Math.min(Math.ceil(ship.HP + 0.3 * ship.maxHP), ship.maxHP);
+                ship.morale = Math.min(ship.morale + 7, 100);
+            }
+        });
+    }else if (akitsushima.equips){
+        akitsushima.equips.forEach((eq, i) => srfs[i] = eq.type == SRF);
+        ships1.forEach((ship, i) => {
+            if (ship.HP/ship.maxHP > .25 && srfs[Math.floor(i / 3)]) {
+                ship.HP = Math.min(Math.ceil(ship.HP + 0.25 * ship.maxHP), ship.maxHP);
+                ship.morale = Math.min(ship.morale + 7, 100);
+            } 
+        });
+    }
 }

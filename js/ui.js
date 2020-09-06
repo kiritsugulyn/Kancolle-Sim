@@ -973,6 +973,7 @@ function genOptions(fleetnum) {
 	div.append('<span class="option2"><label>2</label><input type="checkbox" id="lbas2A'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><input type="checkbox" id="lbas2B'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/></span>');
 	div.append('<span class="option2"><label>3</label><input type="checkbox" id="lbas3A'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><input type="checkbox" id="lbas3B'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/></span>');
 	div.append('<span class="option2 line"><input type="checkbox" id="bonus'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="bonus'+fleetnum+'">Historical Bonus</label></span>');
+	div.append('<span class="option2 line"><input type="checkbox" id="emergencyrepair'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="emergencyrepair'+fleetnum+'">Emergency Repair Before Node</label></span>');
 	// div.append('<span class="option2 line"><label>Historical Bonus Amount: </label></span>');
 	// div.append('<span class="option2"><label>x</label><input id="bonus'+fleetnum+'" type="number" min="0" max="3" step=".1" value="0" style="width:50px" title="(e.g. 0=none, 1=full)" onchange="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/></span>');
 	td.append(div);
@@ -1003,6 +1004,7 @@ function extractOptions(num) {
 		}
 	}
 	options.bonus = $('#bonus'+num).prop('checked');
+	options.emergencyrepair = $('#emergencyrepair'+num).prop('checked');
 	return options;
 }
 
@@ -1026,6 +1028,7 @@ function loadOptions(num,options) {
 	}
 	
 	if (options.bonus != null) $('#bonus'+num).prop('checked',options.bonus);
+	if (options.emergencyrepair != null) $('#emergencyrepair'+num).prop('checked',options.emergencyrepair);
 }
 
 var DRAGINFO = [];
@@ -2165,12 +2168,13 @@ function clickedWatchBattle() {
 			FLEETS1[0].formation = formdef;
 			if (ADDEDCOMBINED) FLEETS1[1].formation = formdefc;
 		}
-		
+
 		var supportF = (j==FLEETS2.length-1)? supportB : supportN;
 		var friendFleetF = (j==FLEETS2.length-1)? friendFleet : null;
 		if (j==FLEETS2.length-1) {
 			underwaySupply(FLEETS1[0]);
 		}
+		if (options.emergencyrepair) emergencyRepair(FLEETS1[0]);
 		
 		var LBASwaves = [];
 		for (var k=0; k<options.lbas.length; k++) {
