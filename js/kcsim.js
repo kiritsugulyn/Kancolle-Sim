@@ -1193,7 +1193,7 @@ function airstrike(ship,target,slot,contactMod,issupport) {
 	var acc = (issupport)? .85 : .95;
 	if (target.fleet.airstrikeaccMod) acc += target.fleet.airstrikeaccMod/100;  // main +10, escort -20
 	if (target.isPT && !NERFPTIMPS) acc *= .5;
-	var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().AAmod,0,.2,!issupport),!issupport && ship.critdmgbonus);
+	var res = rollHit(accuracyAndCrit(ship,target,acc,1.0,0,.2,!issupport),!issupport && ship.critdmgbonus);  // No evMod for airstrike
 	var equip = ship.equips[slot];
 	var dmg = 0, realdmg = 0;
 	var planebase = (equip.isdivebomber)? equip.DIVEBOMB : (target.isInstall)? 0 : equip.TP;
@@ -1758,23 +1758,21 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 			}
 			var target = choiceWProtect(targets);
 			var accCrit, torpDmg;
-			if (suptype==3) {
+			if (suptype == 3) {
 				if (!ship.canTorp()) continue;
 				torpDmg = (FIXTORPEDOSUPPORT)? ship.TP : 0;  //is this the bug in the browser version?
 				for (var j=0; j<ship.equips.length; j++) if (ship.equips[j].TP) torpDmg -= ship.equips[j].TP; //is this correct?
 				torpDmg += 8;
-				accCrit = accuracyAndCrit(ship,target,hitRate(ship,54,ship.ACC+torpDmg*.35,ship.moraleMod(true)),target.getFormation().torpev,0,1.2);
-			} else if (suptype == 2) {
-				var baseacc;
-				if (isboss) baseacc = (SIMCONSTS.supportShellB != null)? SIMCONSTS.supportShellB : 64;
-				else baseacc = (SIMCONSTS.supportShellN != null)? SIMCONSTS.supportShellN : 64;
-				accCrit = accuracyAndCrit(ship,target,hitRate(ship,baseacc,ship.ACC,ship.moraleMod()),target.getFormation().shellev,0,1);
+				let accMod = ship.moraleMod(true);
+				if (FLEETS1[0] && FLEETS1[0].formation && !FLEETS1[0].combinedWith) accMod *= FLEETS1[0].formation.torpacc;
+				accCrit = accuracyAndCrit(ship,target,hitRate(ship,54,ship.ACC+torpDmg*.35,accMod),target.getFormation().torpev,0,1.2);
 			} else {
-				if (!ship.CVshelltype || !ship.canASW()) continue;
 				var baseacc;
 				if (isboss) baseacc = (SIMCONSTS.supportShellB != null)? SIMCONSTS.supportShellB : 64;
 				else baseacc = (SIMCONSTS.supportShellN != null)? SIMCONSTS.supportShellN : 64;
-				accCrit = accuracyAndCrit(ship,target,hitRate(ship,baseacc,ship.ACC,ship.moraleMod()),target.getFormation().ASWev,0,1.3,true);
+				let accMod = ship.moraleMod();
+				if (FLEETS1[0] && FLEETS1[0].formation && !FLEETS1[0].combinedWith) accMod *= FLEETS1[0].formation.shellacc;
+				accCrit = accuracyAndCrit(ship,target,hitRate(ship,baseacc,ship.ACC,accMod),target.getFormation().shellev,0,1);
 			}
 			var res = rollHit(accCrit);
 			var dmg = 0, realdmg = 0;
@@ -1783,7 +1781,7 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 				if (FLEETS1[0] && FLEETS1[0].formation && !FLEETS1[0].combinedWith) preMod *= FLEETS1[0].formation.shellmod;
 				var dmg;
 				if (suptype==3) dmg = damage(ship,target,torpDmg*.55,preMod,res,150);
-				else if (suptype == 2) dmg = damage(ship,target,ship.shellPower(target)-1,preMod,res,150);
+				else if (suptype == 2) dmg = damage(ship,target,ship.shellPower(target, -1, true),preMod,res,150);
 				else dmg = damage(ship,target,ship.ASWPower(),1,res,150);
 				realdmg = takeDamage(target,dmg);
 			} else { realdmg = 0; }
@@ -1907,8 +1905,8 @@ function supportASW(carriers,targets,defenders,APIkouku,combinedAll) {
 
 function airstrikeSupportASW(ship,target,slot,contactMod) {
 	if (!contactMod) contactMod = 1;
-	var acc = .45;
-	var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().ASWev,0,1));
+	var acc = .42;
+	var res = rollHit(accuracyAndCrit(ship,target,acc,1.0,0,1));
 	var equip = ship.equips[slot];
 	var dmg = 0, realdmg = 0;
 	var planebase = equip.ASW;
@@ -2059,7 +2057,7 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 function airstrikeLBAS(lbas,target,slot,contactMod) {
 	if (!contactMod) contactMod = 1;
 	var equip = lbas.equips[slot];
-	var acc = .95;
+	var acc = target.isSub? .88: .95;
 	if (target.isPT && !NERFPTIMPS) acc *= .5;
 	var critdmgbonus = 1, critratebonus = 0, ACCplane = 0;
 	if (equip.type != LANDBOMBER || MECHANICS.LBASBuff) {
@@ -2078,10 +2076,10 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 		critratebonus = critval*.6;
 	}
 	if (MECHANICS.LBASBuff) {
-		ACCplane += 12*Math.sqrt(equip.ACC || 0);
+		ACCplane += 8*Math.sqrt(equip.ACC || 0);
 	}
 	lbas.critratebonus = critratebonus; lbas.ACCplane = ACCplane;
-	var res = rollHit(accuracyAndCrit(lbas,target,acc,target.getFormation().AAmod,0,.2,true),critdmgbonus);
+	var res = rollHit(accuracyAndCrit(lbas,target,acc,1.0,0,.2,true),critdmgbonus);  // No evMod for airstrike
 	lbas.critratebonus = 0; lbas.ACCplane = 0;
 	var dmg = 0, realdmg = 0;
 	var planebase;

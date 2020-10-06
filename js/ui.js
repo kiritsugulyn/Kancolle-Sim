@@ -1928,7 +1928,7 @@ function loadFleetFromCode(fleet,fcode) {
 		var equips = [0,0,0,0], improvs = [0,0,0,0], profs = [0,0,0,0], planes = [0,0,0,0];
 		for (var item in ship.items) {
 			var islot = item.substr(1);
-			if (islot=='x') islot = 5;
+			if (islot=='x') islot = 6;
 			equips[islot-1] = ship.items[item].id;
 			improvs[islot-1] = (ship.items[item].rf||0);
 			profs[islot-1] = (ship.items[item].mas||0);

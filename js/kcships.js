@@ -258,31 +258,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		for (var key in eq.improves) {
 			if (this.improves[key]) this.improves[key] += eq.improves[key];
 			else this.improves[key] = eq.improves[key];
-		}
-		
-		//add plane proficiency
-		if (eq.APbonus) {
-			if (!this.APbonus) this.APbonus = 0;
-			this.APbonus += eq.APbonus;
-		}
-		if (eq.isdivebomber||eq.istorpbomber) {
-			if (eq.exp > 0) {
-				if (!this.critratebonus) this.critratebonus = 0;
-				if (!this.critdmgbonus) this.critdmgbonus = 1;
-				var mod = 0;
-				if (eq.rank == 7) mod = 10;
-				else if (eq.rank == 6) mod = 7;
-				else if (eq.rank == 5) mod = 5;
-				else if (eq.rank == 4) mod = 4;
-				else if (eq.rank == 3) mod = 3;
-				else if (eq.rank == 2) mod = 2;
-				else if (eq.rank == 1) mod = 1;
-				this.critratebonus += mod*.6; //x.75????
-				this.critdmgbonus += Math.floor(Math.sqrt(eq.exp) + mod)/((i==0)? 100:200);
-				planeexp += eq.exp;
-			}
-			planecount++;
-		}
+        }
 		
 		//installation equips
 		if (eq.btype == B_LC1) { installeqs.DH1++; installeqs.DH1stars+=(eq.level||0); }
@@ -315,17 +291,10 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		}
 		
 		this.equips.push(eq);
-	}
-	if (planecount) {
-		var avgexp = planeexp/planecount;
-		if (avgexp >= 10) this.ACCplane = Math.sqrt(avgexp*.1);
-		if (avgexp >= 100) this.ACCplane += 9;
-		else if (avgexp >= 80) this.ACCplane += 6;
-		else if (avgexp >= 70) this.ACCplane += 4;
-		else if (avgexp >= 55) this.ACCplane += 3;
-		else if (avgexp >= 40) this.ACCplane += 2;
-		else if (avgexp >= 25) this.ACCplane += 1;
-	}
+    }
+    
+    this.setProficiencyBonus();
+
 	this.AACItype = this.getAACItype(atypes);
 	if (addstats) {
 		for (var i=0; i<equips.length; i++){
@@ -779,10 +748,10 @@ function WGpower(num) {
 	}
 }
 
-Ship.prototype.shellPower = function(target,base) {
-	var bonus = (this.improves.Pshell)? Math.floor(this.improves.Pshell) : 0;
+Ship.prototype.shellPower = function(target,base,isSupport) {
+	var bonus = (this.improves.Pshell) && (!isSupport)? Math.floor(this.improves.Pshell) : 0;
 	//var shellbonus = (this.fleet && this.fleet.formation.shellbonus!==undefined)? this.fleet.formation.shellbonus : 5;
-	var shellbonus = (base != null)? base+5 : 5;
+    var shellbonus = (base != null)? base+5 : 5;
 	if (target && target.isInstall) {
 		bonus += this.installFlat;
 		let fp = (this.isSub)? this.FP + 30 : this.FP;
@@ -1001,7 +970,7 @@ Ship.prototype.moraleModEv = function() {
 
 Ship.prototype.reset = function(notHP,notMorale) {
 	if (!notHP) this.HP = (this.HPDefault != null)? this.HPDefault : this.maxHP;
-	this.planecount = this.PLANESLOTS.slice();
+    this.planecount = this.PLANESLOTS.slice();
 	this.fuelleft = this.fuelDefault;
 	this.ammoleft = this.ammoDefault;
 	if (!notMorale) this.morale = this.moraleDefault;
@@ -1009,7 +978,8 @@ Ship.prototype.reset = function(notHP,notMorale) {
 	if (this.side==0 && isPlayable(this.mid)) this.protection = true;
 	if (this.retreated) this.retreated = false;
 	delete this._fuelUnderway;
-	delete this._ammoUnderway;
+    delete this._ammoUnderway;
+    this.setProficiencyBonus(true);
 	// this._wAA = undefined;
 }
 
@@ -1035,6 +1005,53 @@ Ship.prototype.numBombers = function () {
 	return planes;
 }
 Ship.prototype.rocketBarrageChance = function() { return 0; }
+
+Ship.prototype.setProficiencyBonus = function(resetFlag) {
+    var planecount = 0; 
+    var planeexp = 0;
+
+    if (resetFlag){
+        if (this.critratebonus) this.critratebonus = 0;
+        if (this.critdmgbonus) this.critdmgbonus = 1;
+        if (this.ACCplane) this.ACCplane = 0;
+    }
+
+    this.equips.forEach((eq, i) => {
+		if (eq.APbonus) {
+			if (!this.APbonus) this.APbonus = 0;
+			this.APbonus += eq.APbonus;
+		}
+		if (eq.isdivebomber||eq.istorpbomber) {
+			if (eq.exp > 0) {
+				if (!this.critratebonus) this.critratebonus = 0;
+				if (!this.critdmgbonus) this.critdmgbonus = 1;
+				var mod = 0;
+				if (eq.rank == 7) mod = 10;
+				else if (eq.rank == 6) mod = 7;
+				else if (eq.rank == 5) mod = 5;
+				else if (eq.rank == 4) mod = 4;
+				else if (eq.rank == 3) mod = 3;
+				else if (eq.rank == 2) mod = 2;
+				else if (eq.rank == 1) mod = 1;
+				this.critratebonus += mod*.6; //x.75????
+                this.critdmgbonus += Math.floor(Math.sqrt(eq.exp) + mod)/((i==0)? 100:200);
+                planeexp += eq.exp;
+            }
+            planecount++;
+		}
+    })
+
+    if (planecount > 0) {
+		var avgexp = planeexp/planecount;
+		if (avgexp >= 10) this.ACCplane = Math.sqrt(avgexp*.1);
+		if (avgexp >= 100) this.ACCplane += 9;
+		else if (avgexp >= 80) this.ACCplane += 6;
+		else if (avgexp >= 70) this.ACCplane += 4;
+		else if (avgexp >= 55) this.ACCplane += 3;
+		else if (avgexp >= 40) this.ACCplane += 2;
+		else if (avgexp >= 25) this.ACCplane += 1;
+	}
+}
 
 Ship.prototype.removeProficiencyBonus = function(i) {
 	if (i >= this.equips.length) return
@@ -1195,7 +1212,7 @@ CV.prototype.canStillShell = function () {
 	return (this.HP > this.maxHP*.5 && this.canShell());
 }
 CV.prototype.CVshelltype = true;
-CV.prototype.shellPower = function(target,base) {
+CV.prototype.shellPower = function(target,base,isSupport) {
 	var dp = 0, tp = 0;
 	let installOnly = MECHANICS.divebomberInstall && target && target.isInstall;
 	for (var i=0; i<this.equips.length; i++) {
@@ -1204,7 +1221,7 @@ CV.prototype.shellPower = function(target,base) {
 	}
 	var bonus = (base||0) + 5;
 	if (target && target.isInstall) tp = 0;
-	var improvebonus = (this.improves.Pshell)? Math.floor(this.improves.Pshell) : 0;
+	var improvebonus = (this.improves.Pshell && !isSupport)? Math.floor(this.improves.Pshell) : 0;
 	let fp = this.FP + bonus + improvebonus;
 	if (installOnly) {
 		switch (target.installtype) {
@@ -1432,7 +1449,7 @@ LandBase.prototype.airPowerDefend = function() {
 LandBase.prototype.reset = function() {
 	this.planecount = this.PLANESLOTS.slice();
 	for (let eq of this.equips) {
-		if (eq.rank != eq.rankInit) eq.setProficiency(eq.rankInit);
+		if (eq.rank != eq.rankInit) eq.setProficiency(eq.rankInit, true);
 	}
 }
 LandBase.prototype.getCost = function() {
@@ -1518,6 +1535,9 @@ Equip.prototype.setImprovement = function(level) {
 			this.ASImprove = .7*Math.sqrt(level);
 			break;
 		case TORPBOMBER:
+            this.ASImprove = .2*level;
+            this.improves.Pshell = .2*level;
+            break;
 		case SEAPLANEBOMBER:
 			this.ASImprove = .2*level;
 			break;
@@ -3008,7 +3028,7 @@ Equip.explicitStatsBonusGears = function(){
                 {
                     // Hyuuga Kai Ni, Kaga Kai Ni Go
                     ids: [554, 646],
-                    multiple: { "houg": 1, "tais": 1 },
+                    multiple: { "houg": 2, "tais": 3, "houk": 1 },
                 },
             ],
         },
@@ -3026,7 +3046,7 @@ Equip.explicitStatsBonusGears = function(){
                 {
                     // Hyuuga Kai Ni, Kaga Kai Ni Go
                     ids: [554, 646],
-                    multiple: { "houg": 1, "tais": 1 },
+                    multiple: { "houg": 2, "tais": 3, "houk": 1 },
                 },
             ],
         },
@@ -3044,12 +3064,12 @@ Equip.explicitStatsBonusGears = function(){
                 {
                     // Hyuuga Kai Ni
                     ids: [554],
-                    multiple: { "houg": 2, "tais": 1, "houk": 1 },
+                    multiple: { "houg": 3, "tais": 4, "houk": 2 },
                 },
                 {
                     // Kaga Kai Ni Go
                     ids: [646],
-                    multiple: { "houg": 2, "tais": 2, "houk": 2 },
+                    multiple: { "houg": 3, "tais": 5, "houk": 3 },
                 },
             ],
         },
@@ -3067,12 +3087,12 @@ Equip.explicitStatsBonusGears = function(){
                 {
                     // Hyuuga Kai Ni
                     ids: [554],
-                    multiple: { "houg": 2, "tais": 1, "houk": 1 },
+                    multiple: { "houg": 4, "tais": 5, "houk": 2 },
                 },
                 {
                     // Kaga Kai Ni Go
                     ids: [646],
-                    multiple: { "houg": 3, "tais": 2, "houk": 3 },
+                    multiple: { "houg": 5, "tais": 6, "houk": 4 },
                 },
             ],
         },
@@ -3498,6 +3518,73 @@ Equip.explicitStatsBonusGears = function(){
                     {
                         minStars: 6,
                         multiple: { "houg": 1 },
+                    },
+                    {
+                        minStars: 10,
+                        multiple: { "souk": 1 },
+                    },
+                ],
+            },
+            byShip: {
+                // Any FBB
+                stypes: [8],
+                multiple: { "houg": 1 },
+            },
+        },
+        // 16inch Triple Gun Mount Mk.6 + GFCS
+        "390": {
+            count: 0,
+            starsDist: [],
+            byClass: {
+                // Following American can equip Large Main Gun:
+                // Iowa
+                "65": [
+                    {
+                        multiple: { "houg": 1 },
+                    },
+                    {
+                        minStars: 3,
+                        multiple: { "houg": 1 },
+                    },
+                    {
+                        minStars: 6,
+                        multiple: { "houk": 1 },
+                    },
+                    {
+                        minStars: 10,
+                        multiple: { "souk": 1 },
+                    },
+                ],
+                // Colorado
+                "93": [
+                    {
+                        multiple: { "houg": 2 },
+                    },
+                    {
+                        minStars: 3,
+                        multiple: { "houg": 1 },
+                    },
+                    {
+                        minStars: 6,
+                        multiple: { "houk": 1 },
+                    },
+                    {
+                        minStars: 10,
+                        multiple: { "souk": 1 },
+                    },
+                ],
+                // South Dakota
+                "102": [
+                    {
+                        multiple: { "houg": 2, "souk": 1 },
+                    },
+                    {
+                        minStars: 3,
+                        multiple: { "houg": 1 },
+                    },
+                    {
+                        minStars: 6,
+                        multiple: { "houk": 1 },
                     },
                     {
                         minStars: 10,
