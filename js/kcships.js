@@ -1009,7 +1009,6 @@ Ship.prototype.rocketBarrageChance = function() { return 0; }
 Ship.prototype.setProficiencyBonus = function(resetFlag) {
     var planecount = 0; 
     var planeexp = 0;
-
     if (resetFlag){
         if (this.critratebonus) this.critratebonus = 0;
         if (this.critdmgbonus) this.critdmgbonus = 1;
