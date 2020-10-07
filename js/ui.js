@@ -163,12 +163,18 @@ function showAdditionalStats(fleet) {
 		if (MECHANICS.equipBonus && ships[i].equipmentBonusStats('houk') > 0){
 			td.append('<span>EV: '+Math.floor(ships[i].EV)+'</span><br>');
 		}
+		if (MECHANICS.equipBonus && ships[i].equipmentBonusStats('tais') > 0){
+			td.append('<span>ASW: '+Math.floor(ships[i].ASW) + '+'+ Math.floor(ships[i].ASWBonus) +'</span><br>');
+		}
 		td.append('<span>Shell Power: '+Math.floor(ships[i].shellPower())+'</span><br>');
 		if (ships[i].canNB()) {
 			td.append('<span>NB Power: '+Math.floor(ships[i].NBPower())+'</span><br>');
 		}
 		if (ships[i].canASW()) {
 			td.append('<span>ASW Power: '+Math.floor(ships[i].ASWPower())+'</span><br>');
+		}
+		if (ships[i].canOASW()) {
+			td.append('<span>Can OASW</span><br>');
 		}
 	}
 	table.append(tr); tr = $('<tr></tr>');

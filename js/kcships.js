@@ -111,12 +111,12 @@ Fleet.prototype.supportChance = function(isboss) {
 Fleet.prototype.reset = function(notShips) {
 	if (!notShips) {
 		for (var i=0; i<this.ships.length; i++) this.ships[i].reset();
-		delete this.didSpecial;
 	}
 	this.AS = 0;
 	this.DMGTOTALS = [0,0,0,0,0,0];
 	this._baseFAA = undefined;
-	this._fLoS = undefined;
+    this._fLoS = undefined;
+    delete this.didSpecial;
 }
 Fleet.prototype.giveCredit = function(ship,damage) {
 	this.DMGTOTALS[this.ships.indexOf(ship)] += damage;
@@ -597,7 +597,8 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		this.FP += this.equipmentBonusStats('houg');
 		this.TP += this.equipmentBonusStats('raig');
 		this.AR += this.equipmentBonusStats('souk');
-		this.EV += this.equipmentBonusStats('houk');
+        this.EV += this.equipmentBonusStats('houk');
+        this.ASWBonus = this.equipmentBonusStats('tais');
 	}
 }
 Ship.prototype.getFormation = function() {
@@ -614,7 +615,7 @@ Ship.prototype.canTorp = function() { return this.hasTorpStat && (this.HP/this.m
 Ship.prototype.canOpTorp = function() { return this.hasMidgetSub; }
 Ship.prototype.canASW = function() { return false; }
 Ship.prototype.OASWstat = 100;
-Ship.prototype.canOASW = function() { return this.canASW() && (this.alwaysOASW || (this.ASW >= this.OASWstat && this.equiptypesB[B_SONAR] && isPlayable(this.mid))); }
+Ship.prototype.canOASW = function() { return this.canASW() && (this.alwaysOASW || (this.ASW + (this.ASWBonus || 0) >= this.OASWstat && this.equiptypesB[B_SONAR] && isPlayable(this.mid))); }
 Ship.prototype.canAS = function() { 
 	if (this.HP/this.maxHP <= .25) return false;
 	for (var i=0; i<this.equips.length; i++) {
@@ -1268,33 +1269,34 @@ CV.prototype.canNBAirAttack = function() {
 	return (this.equiptypesB[B_NIGHTCREW] || this.hasBuiltInNightCrew) && this.HP/this.maxHP > .5;
 }
 CV.prototype.rocketBarrageChance = CAV.prototype.rocketBarrageChance;
+CV.prototype.canASW = function() {
+    if (this.mid !== 646) return false;
+	if (this.HP/this.maxHP <= .5) return false;
+	for (var i=0; i<this.equips.length; i++) { if (this.equips[i].isdivebomber || this.equips[i].istorpbomber) return true; }
+	return false;
+}
+CV.prototype.canOASW = function() {
+    if (this.mid !== 646) return false;
+    return this.equips.some((eq) => eq.ASW >= 1 && [DIVEBOMBER, TORPBOMBER, AUTOGYRO, ASWPLANE].indexOf(eq.type) !== -1);
+}
 
 function CVL(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	CV.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
 	this.planeasw = true;
 }
 CVL.prototype = Object.create(CV.prototype);
-CVL.prototype.OASWstat = 65;
 CVL.prototype.canASW = function() {
 	if (this.HP/this.maxHP <= .5) return false;
 	for (var i=0; i<this.equips.length; i++) { if (this.equips[i].isdivebomber || this.equips[i].istorpbomber) return true; }
 	return false;
 }
 CVL.prototype.canOASW = function() {
-	if (this.alwaysOASW) return true;
-	
-	if (this.CVEtype != 2) { //non-Taiyou Kai needs high ASW bomber
-		let found = false;
-		for (let equip of this.equips) {
-			if (equip.ASW >= 7 && EQTDATA[equip.type].isPlane) {
-				found = true;
-				break;
-			}
-		}
-		if (!found) return false;
-	}
-	let threshold = (this.equiptypes[SONARL])? 50 : 65;
-	return this.ASW >= threshold;
+    if ([380, 381, 529, 536].indexOf(this.mid) !== -1) return this.equips.some((eq) => eq.ASW >= 1 && [DIVEBOMBER, TORPBOMBER, AUTOGYRO, ASWPLANE].indexOf(eq.type) !== -1);
+    
+    let found = this.equips.some((eq) => eq.ASW >= 7 && [TORPBOMBER, AUTOGYRO, ASWPLANE].indexOf(eq.type) !== -1);
+    if (!found) return this.ASW + (this.ASWBonus || 0) >= this.OASWstat && this.equiptypesB[B_SONAR] && isPlayable(this.mid);
+    let threshold = (this.equiptypesB[B_SONAR])? 50 : 65;
+    return this.ASW + (this.ASWBonus || 0) >= threshold;
 }
 CVL.prototype.APweak = false;
 
@@ -1388,7 +1390,11 @@ function DE(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 };
 DE.prototype = Object.create(Ship.prototype);
 DE.prototype.canASW = function() { return true; }
-DE.prototype.OASWstat = 60;
+DE.prototype.canOASW = function() {
+    if (this.ASW + (this.ASWBonus || 0) >= 60 && this.equiptypesB[B_SONAR]) return true;
+    if (this.equips.reduce((acc, eq) => acc + (eq.ASW || 0), 0) >= 4) return this.ASW + (this.ASWBonus || 0) >= 75;
+}
+
 
 
 function LandBase(equips,levels,profs) {
