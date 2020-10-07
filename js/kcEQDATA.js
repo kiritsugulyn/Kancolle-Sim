@@ -297,7 +297,7 @@ EQTDATA[AUTOGYRO] = {
 	name: 'Anti-Sub Plane',
 	image: 21,
 	canequip: ['CAV','BBV','CVL','AS','AO','AR','LHA'],
-	canequipS: [372, 477, 478, 491, 546, 547, 573, 574, 586, 630, 690],
+	canequipS: [372, 477, 478, 491, 546, 547, 573, 574, 586, 630, 646, 690],
 	cannotequipS: [380, 381, 521, 526, 534, 621],
 	isPlane: true,
 };
@@ -305,7 +305,7 @@ EQTDATA[ASWPLANE] = {
 	name: 'Anti-Sub Plane',
 	image: 22,
 	canequip: ['CVL','LHA'],
-	canequipS: [553, 554],
+	canequipS: [553, 554, 646],
 	cannotequipS: [521, 526, 534, 621, 626],
 	isPlane: true,
 };
@@ -503,7 +503,7 @@ EQTDATA[JETBOMBER] = {
 	name: 'Jet Fighter-Bomber',
 	image: 39,
 	canequip: ['LandBase'],
-	canequipS: [466, 467],
+	canequipS: [466, 467, 646],
 	isPlane: true,
 	isfighter: true,
 	isdivebomber: true,

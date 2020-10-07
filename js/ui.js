@@ -164,7 +164,7 @@ function showAdditionalStats(fleet) {
 			td.append('<span>EV: '+Math.floor(ships[i].EV)+'</span><br>');
 		}
 		if (MECHANICS.equipBonus && ships[i].equipmentBonusStats('tais') > 0){
-			td.append('<span>ASW: '+Math.floor(ships[i].ASW) + '+'+ Math.floor(ships[i].ASWBonus) +'</span><br>');
+			td.append('<span>ASW: '+(Math.floor(ships[i].ASW)+Math.floor(ships[i].ASWBonus))+'</span><br>');
 		}
 		td.append('<span>Shell Power: '+Math.floor(ships[i].shellPower())+'</span><br>');
 		if (ships[i].canNB()) {
