@@ -395,8 +395,10 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		this.installFlat += 25;
 		this.installFlat *= 1.4;
 	}
-	if (this.numWG) this.installFlat += WGpower(this.numWG);
-	if (installeqs.mortarC >= 2) this.installFlat += 110;
+    if (this.numWG) this.installFlat += WGpower(this.numWG);
+    if (installeqs.mortarC >= 4) this.installFlat += 180;
+    else if (installeqs.mortarC >= 3) this.installFlat += 150;
+	else if (installeqs.mortarC >= 2) this.installFlat += 110;
 	else if (installeqs.mortarC) this.installFlat += 60;
 	if (installeqs.mortar >= 4) this.installFlat += 90;
 	else if (installeqs.mortar == 3) this.installFlat += 75;
@@ -406,7 +408,8 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	else if (installeqs.rocket4 == 3) this.installFlat += 160;
 	else if (installeqs.rocket4 == 2) this.installFlat += 115;
 	else if (installeqs.rocket4) this.installFlat += 55;
-	if (installeqs.rocket4C) this.installFlat += 80;
+    if (installeqs.rocket4C >= 2) this.installFlat += 170;
+    else if (installeqs.rocket4C) this.installFlat += 80;
 	let numMortar = (installeqs.mortar || 0) + (installeqs.mortarC || 0);
 	let numRocket4 = (installeqs.rocket4 || 0) + (installeqs.rocket4C || 0);
 	
@@ -1250,10 +1253,11 @@ CV.prototype.NBPower = function(target) {
 		let power = this.FP - this.equipmentBonusStats('houg');
 		for (let i=0; i<this.equips.length; i++) {
 			let equip = this.equips[i];
-			power -= (equip.FP || 0);
+            power -= (equip.FP || 0);
+            if (this.planecount[i] <= 0) continue;
 			if (equip.btype != B_NIGHTFIGHTER && equip.btype != B_NIGHTBOMBER && equip.btype != B_NIGHTBOMBER2) continue;
 			let mod = .3*((equip.FP || 0) + (equip.TP || 0) + (equip.ASW || 0) + (equip.DIVEBOMB || 0));
-			power += (equip.FP || 0) + Math.sqrt(equip.level || 0);
+			power += (equip.FP || 0) + (equip.DIVEBOMB || 0) + Math.sqrt(equip.level || 0);
 			if (!(target && target.isInstall)) power +=  (equip.TP || 0);
 			if (equip.btype != B_NIGHTBOMBER2) {
 				power += this.planecount[i]*3;

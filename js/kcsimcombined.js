@@ -1002,17 +1002,17 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	var didNB = false;
 	if ((doNB||NBonly) && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
 		didNB = !NBonly;
-		var count = 0, allsunk = true;
+		var count = 0, allsunk = true; count2 = 0;
 		for (var i=0; i<ships2.length; i++) if (ships2[i].HP > 0) { allsunk = false; break; }
 		for (var i=0; i<ships2C.length; i++) {
 			let point = 0;
 			if (ships2C[i].HP/ships2C[i].maxHP > .5) point = 1;
-			else if (ships2C[i].HP/ships2C[i].maxHP > .25) point = .5;
-			else if (ships2C[i].HP/ships2C[i].maxHP > 0) point = .25;
+			else if (ships2C[i].HP/ships2C[i].maxHP > .25) point = ships2C[i].isPT? .5: .7;
 			count += point;
+			if (ships2C[i].HP > 0) count2 += 1;
 		}
 		if (ships2C[0].HP > 0) count += 1;
-		var fightescort = (allsunk || count >= 3);
+		var fightescort = (allsunk || count >= 3 || count2 >= 5);
 		
 		var order1 = [], order2 = [];
 		for (var i=0; i<ships1.length; i++) {
@@ -1521,17 +1521,17 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	var didNB = false;
 	if ((doNB||NBonly) && alive1C.length+subsalive1C.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
 		didNB = !NBonly;
-		var count = 0, allsunk = true;
+		var count = 0, allsunk = true; count2 = 0;
 		for (var i=0; i<ships2.length; i++) if (ships2[i].HP > 0) { allsunk = false; break; }
 		for (var i=0; i<ships2C.length; i++) {
 			let point = 0;
 			if (ships2C[i].HP/ships2C[i].maxHP > .5) point = 1;
-			else if (ships2C[i].HP/ships2C[i].maxHP > .25) point = .5;
-			else if (ships2C[i].HP/ships2C[i].maxHP > 0) point = .25;
+			else if (ships2C[i].HP/ships2C[i].maxHP > .25) point = ships2C[i].isPT? .5: .7;
 			count += point;
+			if (ships2C[i].HP > 0) count2 += 1;
 		}
 		if (ships2C[0].HP > 0) count += 1;
-		var fightescort = (allsunk || count >= 3);
+		var fightescort = (allsunk || count >= 3 || count2 >= 5);
 		
 		var order1 = [], order2 = [];
 		for (var i=0; i<ships1C.length; i++) {
