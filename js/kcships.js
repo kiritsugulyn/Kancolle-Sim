@@ -121,8 +121,9 @@ Fleet.prototype.reset = function(notShips) {
     delete this.didSpecial;
 }
 Fleet.prototype.giveCredit = function(ship,target,damage) {
-    this.DMGTOTALS[this.ships.indexOf(ship)] += damage;
-    if (target.isflagship && !target.isescort && target.HP <= 0) this.SINKFLAGSHIP[this.ships.indexOf(ship)] = true;
+    var i = this.ships.indexOf(ship);
+    this.DMGTOTALS[i] += damage;
+    if (target.HP <= 0 && target.isflagship && !target.isescort && this.SINKFLAGSHIP.findIndex(f => f) == -1) this.SINKFLAGSHIP[i] = true;
 }
 Fleet.prototype.getMVP = function() {
 	var m = this.DMGTOTALS[0], ship = this.ships[0];
