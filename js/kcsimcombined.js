@@ -447,6 +447,8 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	}
 	results.MVP = F1.getMVP();
 	results.MVPC = F1C.getMVP();
+	results.sinkFlagship = F1.getSinkFlagship();
+	results.sinkFlagshipC = F1C.getSinkFlagship();
 	if (didNB) results.didNB = true;
 	
 	//update morale
@@ -483,6 +485,8 @@ function simStatsCombined(numsims,type,foptions) {
 			undamaged: 0,
 			MVPs: [0,0,0,0,0,0],
 			MVPsC: [0,0,0,0,0,0],
+			sinkFlagships: [0,0,0,0,0,0],
+			sinkFlagshipsC: [0,0,0,0,0,0],
 			ranks: {S:0,A:0,B:0,C:0,D:0,E:0},
 			flagsunk: 0,
 			airStates: [0,0,0,0,0],
@@ -528,6 +532,7 @@ function simStatsCombined(numsims,type,foptions) {
 				FLEETS1[1].formation = formdefc;
 			}
 			FLEETS1[0].DMGTOTALS = [0,0,0,0,0,0]; FLEETS1[1].DMGTOTALS = [0,0,0,0,0,0];
+			FLEETS1[0].SINKFLAGSHIP = [false, false, false, false, false, false]; FLEETS1[1].SINKFLAGSHIP = [false, false, false, false, false, false]; 
 			var supportNum = 0;
 			let friendFleet = null;
 			if (j == FLEETS2.length - 1) {
@@ -550,6 +555,8 @@ function simStatsCombined(numsims,type,foptions) {
 			totalResult.nodes[j].ranks[res.rank]++;
 			totalResult.nodes[j].MVPs[res.MVP]++;
 			totalResult.nodes[j].MVPsC[res.MVPC]++;
+			if (res.sinkFlagship > -1) totalResult.nodes[j].sinkFlagships[res.sinkFlagship]++;
+			if (res.sinkFlagshipC > -1) totalResult.nodes[j].sinkFlagshipsC[res.sinkFlagshipC]++;
 			totalResult.nodes[j].airStates[FLEETS1[0].AS+2]++;
 			if (res.lbasKills) {
 				for (let k=0; k<6; k++) {
@@ -1069,6 +1076,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		if (ships1[i].HP/ships1[i].maxHP <= BUCKETPERCENT || getRepairTime(ships1[i]) > BUCKETTIME) results.buckets++;
 	}
 	results.MVP = F1.getMVP();
+	results.sinkFlagship = F1.getSinkFlagship();
 	if (didNB) results.didNB = true;
 	
 	//update morale
@@ -1602,6 +1610,8 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	}
 	results.MVP = F1.getMVP();
 	results.MVPC = F1C.getMVP();
+	results.sinkFlagship = F1.getSinkFlagship();
+	results.sinkFlagshipC = F1C.getSinkFlagship();
 	if (didNB) results.didNB = true;
 	
 	//update morale

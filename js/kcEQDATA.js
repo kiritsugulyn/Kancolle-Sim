@@ -1092,6 +1092,7 @@ var EQDATA = {
 		added: '2013-05-17',
 		type: TORPBOMBER,
 		improveType: 2,
+		AA: 1,
 		TP: 13,
 		ASW: 3,
 		LOS: 2

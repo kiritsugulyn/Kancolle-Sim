@@ -1551,6 +1551,9 @@ function updateResults(results) {
 		for(var i=1; i<=node.MVPs.length; i++) resultAddWeight('mvp'+i,node.MVPs[i-1],addnum);
 		if (node.MVPsC) for(var i=1; i<=node.MVPsC.length; i++) resultAddWeight('mvpc'+i,node.MVPsC[i-1],addnum);
 		
+		for(var i=1; i<=node.sinkFlagships.length; i++) resultAddWeight('sinkfs'+i,node.sinkFlagships[i-1],node.flagsunk);
+		if (node.sinkFlagshipsC) for(var i=1; i<=node.sinkFlagshipsC.length; i++) resultAddWeight('sinkfsc'+i,node.sinkFlagshipsC[i-1],node.flagsunk);
+
 		resultAddWeight('rredany',node.redded,addnum);
 		for(var i=0; i<node.redIndiv.length; i++) resultAddWeight('red'+(i+1),node.redIndiv[i],addnum);
 		if (node.redIndivC) for(var i=0; i<node.redIndivC.length; i++) resultAddWeight('redc'+(i+1),node.redIndivC[i],addnum);
@@ -1591,6 +1594,9 @@ function updateResults(results) {
 		for(var letter in node.ranks) resultAddWeight('rank'+letter,node.ranks[letter],addnum);
 		resultAddWeight('rsunkfs',node.flagsunk,addnum);
 		resultAddWeight('rankNone',addnum-node.num,addnum);
+
+		for(var i=1; i<=node.sinkFlagships.length; i++) resultAddWeight('sinkfs'+i,node.sinkFlagships[i-1],node.flagsunk);
+		if (node.sinkFlagshipsC) for(var i=1; i<=node.sinkFlagshipsC.length; i++) resultAddWeight('sinkfsc'+i,node.sinkFlagshipsC[i-1],node.flagsunk);
 		
 		for (var i=results.nodes.length; i<NUMNODESDEFAULT; i++) $('.res'+(i+1)).each(function() { $(this).hide(); } );
 		

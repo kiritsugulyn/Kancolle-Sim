@@ -13,7 +13,8 @@ function Fleet(id,isescortfor) {
 	this.formation = false;
 	this.AP = 0;  //air (fighter) power
 	this.AS = 0;  //air superiority
-	this.DMGTOTALS = [0,0,0,0,0,0];
+    this.DMGTOTALS = [0,0,0,0,0,0];
+    this.SINKFLAGSHIP = [false, false, false, false, false, false];
 }
 Fleet.prototype.loadShips = function(ships) {
 	this.AP = 0; this.noRedT = false;
@@ -113,13 +114,15 @@ Fleet.prototype.reset = function(notShips) {
 		for (var i=0; i<this.ships.length; i++) this.ships[i].reset();
 	}
 	this.AS = 0;
-	this.DMGTOTALS = [0,0,0,0,0,0];
+    this.DMGTOTALS = [0,0,0,0,0,0];
+    this.SINKFLAGSHIP = [false, false, false, false, false, false];
 	this._baseFAA = undefined;
     this._fLoS = undefined;
     delete this.didSpecial;
 }
-Fleet.prototype.giveCredit = function(ship,damage) {
-	this.DMGTOTALS[this.ships.indexOf(ship)] += damage;
+Fleet.prototype.giveCredit = function(ship,target,damage) {
+    this.DMGTOTALS[this.ships.indexOf(ship)] += damage;
+    if (target.isflagship && !target.isescort && target.HP <= 0) this.SINKFLAGSHIP[this.ships.indexOf(ship)] = true;
 }
 Fleet.prototype.getMVP = function() {
 	var m = this.DMGTOTALS[0], ship = this.ships[0];
@@ -127,6 +130,9 @@ Fleet.prototype.getMVP = function() {
 		if(this.DMGTOTALS[i] > m) { m = this.DMGTOTALS[i]; ship = this.ships[i]; }
 	}
 	return ship.id;
+}
+Fleet.prototype.getSinkFlagship = function () {
+    return this.SINKFLAGSHIP.findIndex(f => f);
 }
 Fleet.prototype.setFormation = function(formNum,combineType) {
 	if (formNum > 10 && this.combinedWith) {
