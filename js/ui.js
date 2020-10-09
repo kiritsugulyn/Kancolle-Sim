@@ -971,17 +971,23 @@ function genOptions(fleetnum) {
 	// div.append('<span class="option2"><input value="4" id="o4engage'+fleetnum+'" type="radio" name="radengage'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="o4engage'+fleetnum+'" style="color:red">T-Cross Disadv</label></span>');
 	// td.append(div);
 	div = $('<div></div>');
-	div.append('<span class="option2"><label>Support: </label></span>');
+	// div.append('<span class="option2"><label>Support: </label></span>');
 	// div.append('<span class="option2"><input type="radio" id="osupN'+fleetnum+'" name="osup'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="osupN'+fleetnum+'">Normal</label></span>');
 	// div.append('<span class="option2"><input type="radio" id="osupB'+fleetnum+'" name="osup'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="osupB'+fleetnum+'">Boss</label></span>');
-	div.append('<span class="option2 line"><label>LBAS: </label></span>');
+	div.append('<span class="option2"><label>LBAS: </label></span>');
 	div.append('<span class="option2"><label>1</label><input type="checkbox" id="lbas1A'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><input type="checkbox" id="lbas1B'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/></span>');
 	div.append('<span class="option2"><label>2</label><input type="checkbox" id="lbas2A'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><input type="checkbox" id="lbas2B'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/></span>');
 	div.append('<span class="option2"><label>3</label><input type="checkbox" id="lbas3A'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><input type="checkbox" id="lbas3B'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/></span>');
 	div.append('<span class="option2 line"><input type="checkbox" id="bonus'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="bonus'+fleetnum+'">Historical Bonus</label></span>');
-	div.append('<span class="option2 line"><input type="checkbox" id="emergencyrepair'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="emergencyrepair'+fleetnum+'">Emergency Repair Before Node</label></span>');
 	// div.append('<span class="option2 line"><label>Historical Bonus Amount: </label></span>');
 	// div.append('<span class="option2"><label>x</label><input id="bonus'+fleetnum+'" type="number" min="0" max="3" step=".1" value="0" style="width:50px" title="(e.g. 0=none, 1=full)" onchange="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/></span>');
+	td.append(div);
+	div = $('<div></div>');
+	div.append('<span class="option2"><label>Before Node: </label></span>');
+	div.append('<span class="option2"><input type="checkbox" id="emergencyrepair'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="emergencyrepair'+fleetnum+'">Emergency Repair</label></span>');
+	div.append('<span class="option2 line"><input type="checkbox" id="maelstrom'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="maelstrom'+fleetnum+'">Maelstrom</label></span>');
+	div.append('<span class="option2"> <img src="assets/stats/fuel.png" /> <input type="number" id="fuelloss'+fleetnum+'" min="0" max="100" value="0" style="width:50px"/>%</span>');
+	div.append('<span class="option2"> <img src="assets/stats/ammo.png" /> <input type="number" id="ammoloss'+fleetnum+'" min="0" max="100" value="0" style="width:50px"/>%</span>');
 	td.append(div);
 	html.append(td);
 	
@@ -1011,6 +1017,11 @@ function extractOptions(num) {
 	}
 	options.bonus = $('#bonus'+num).prop('checked');
 	options.emergencyrepair = $('#emergencyrepair'+num).prop('checked');
+	if ($('#maelstrom'+num).prop('checked')){
+		options.maelstrom = [0, 0];
+		options.maelstrom[0] = Number($('#fuelloss'+num).prop('value'));
+		options.maelstrom[1] = Number($('#ammoloss'+num).prop('value'));
+	}
 	return options;
 }
 
@@ -2183,6 +2194,7 @@ function clickedWatchBattle() {
 
 		var supportF = (j==FLEETS2.length-1)? supportB : supportN;
 		var friendFleetF = (j==FLEETS2.length-1)? friendFleet : null;
+		if (options.maelstrom) maelstromLoss(FLEETS1[0], options.maelstrom);
 		if (j==FLEETS2.length-1) {
 			underwaySupply(FLEETS1[0]);
 		}

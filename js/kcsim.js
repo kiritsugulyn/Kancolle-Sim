@@ -2631,6 +2631,36 @@ function updateMorale(ships1,rank,mvp,NBonly,didNB) {
 	}
 }
 
+function maelstromLoss(fleet, losses){
+	if (losses === undefined || typeof losses !== 'object' || losses.length < 2) return;
+
+	var ships = fleet.ships;
+	if (fleet.combinedWith) ships = ships.concat(fleet.combinedWith.ships);
+
+	var num = 0;
+	num = ships.reduce((acc, ship) => {
+		if (Object.keys(ship.equiptypesB).indexOf(B_RADAR.toString()) !== -1) return acc + 1;
+		return acc;
+	}, num);
+	num = num > 6? 6: Math.floor(num);
+	
+	var mod = 1;
+	switch(num){
+		case 0: mod = 1; break;
+		case 1: mod = 0.75; break;
+		case 2: mod = 0.6; break;
+		case 3: mod = 0.5; break;
+		case 4: mod = 0.45; break;
+		case 5: mod = 0.42; break;
+		case 6: mod = 0.40; break;
+	}
+
+	ships.forEach((ship) => {
+		ship.fuelleft -= mod * losses[0] / 10;
+		ship.ammoleft -= mod * losses[1] / 10;
+	});
+}
+
 // function loadFleet(side,ships,formation,isescort) {
 	// var link = (isescort)? FLEETS1[0] : null; //better way to do this...?
 	// var f = new Fleet(side,link);
@@ -2768,6 +2798,7 @@ function simStats(numsims,foptions) {
 			else FLEETS1[0].formation = formdef;
 			var supportNum = 0;
 			let friendFleet = null;
+			if (options.maelstrom) maelstromLoss(FLEETS1[0], options.maelstrom);
 			if (j == FLEETS2.length - 1) {
 				supportNum = 1;
 				friendFleet = FLEETS1S[2];

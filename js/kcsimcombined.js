@@ -535,6 +535,7 @@ function simStatsCombined(numsims,type,foptions) {
 			FLEETS1[0].SINKFLAGSHIP = [false, false, false, false, false, false]; FLEETS1[1].SINKFLAGSHIP = [false, false, false, false, false, false]; 
 			var supportNum = 0;
 			let friendFleet = null;
+			if (options.maelstrom) maelstromLoss(FLEETS1[0], options.maelstrom);
 			if (j == FLEETS2.length - 1) {
 				supportNum = 1;
 				friendFleet = FLEETS1S[2];
