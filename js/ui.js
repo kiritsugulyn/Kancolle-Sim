@@ -489,16 +489,11 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
     d.setAttribute('id',tid+'full');
 	
 	var dl = document.createElement('div');
-	dl.appendChild(document.createElement('br'));
-	dl.appendChild(document.createTextNode('Load options:'));
-	dl.setAttribute('style','float:left;width:200px');
-	d.appendChild(dl);
-	dl = document.createElement('div');
-	dl.setAttribute('style','float:left;width:250px');
+	dl.setAttribute('style','float:left;width:200px;margin:10px');
 	dl.innerHTML = '<b>From code:</b><br><textarea id="{tid}tcode" cols="20" rows="2" autocomplete="off" ></textarea><br><input type="button" id="{tid}codeb" value="Load" onClick="clickedLoadFromCode({nt})"/><br><br>'.replace(/{tid}/g,tid).replace(/{nt}/g,fleetnum);
 	d.appendChild(dl);
 	dl = document.createElement('div');
-	dl.setAttribute('style','float:left;width:250px');
+	dl.setAttribute('style','float:left;width:200px; margin:10px');
 	if (TUTORIAL && fleetnum==1) {
 		$(dl).attr('id','flashingdiv');
 		$(dl).css('border','3px solid red');
@@ -510,7 +505,7 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
 	// $(dl).append('<div style="display:none;position:absolute" id="qdinfo'+fleetnum+'"><div style="background-color:white;border:1px solid black;position:relative;top:-200px;left:140px;width:400px;height:250px"><p style="margin:10px 10px;font-size:12px">You can import your in-game fleet using KC3Kai\'s Quick Data file.<br><br>Go to Profile</p></div><div>');
 	d.appendChild(dl);
 	dl = document.createElement('div');
-	// dl.setAttribute('style','float:left;width:250px');
+	dl.setAttribute('style','float:left;width:150px;margin:10px');
 	dl.innerHTML = '<b>From preset:</b><br>'; //<select id="{tid}pre1"></select> <select id="{tid}pre2"></select> <select id="{tid}pre3"></select>'.replace(/{tid}/g,tid);
 	var sel1 = document.createElement('select');  //world+level
 	sel1.setAttribute('id',tid+'pre1');
@@ -560,14 +555,24 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
 		}
 		sel1.appendChild(g);
 	}
+	
+	dl = document.createElement('div');
+	dl.setAttribute('style','float:left;width:150px;margin:10px');
+	$(dl).append('<b>Options:</b><br>');
+	$(dl).append('<input type="button" value="All High Morale" onclick="setMoraleAll('+fleetnum+', 85)"/><br>');
+	$(dl).append('<input type="button" value="All Normal Morale" onclick="setMoraleAll('+fleetnum+', 49)"/>');
+	d.appendChild(dl);
+
+	dl = document.createElement('div');
+	dl.setAttribute('style','float:left;width:150;margin:10px');
+	$(dl).append('<br>');
 	var btnall = document.createElement('input');
 	btnall.setAttribute('value','Clear All');
 	btnall.setAttribute('type','button');
-	btnall.setAttribute('style','float:right');
 	btnall.setAttribute('onclick','clickedClear({f},1);clickedClear({f},2);clickedClear({f},3);clickedClear({f},4);clickedClear({f},5);clickedClear({f},0);'.replace(/{f}/g,fleetnum.toString()));
-	d.appendChild(btnall);
-	
-	$(d).append('<br><br><input type="button" style="float:right" value="Export DeckBuilder" onclick="exportDeckbuilder('+fleetnum+')"/>');
+	dl.appendChild(btnall);
+	$(dl).append('<br><input type="button" value="Export DeckBuilder" onclick="exportDeckbuilder('+fleetnum+')"/>');
+	d.appendChild(dl);
 	
     var t = document.createElement('table');
     t.setAttribute('class','t1');
@@ -1151,6 +1156,13 @@ function setImprove(fleet,ship,eqslot,type,level) {
 		$('#T'+fleet+'imprv'+ship+eqslot).css('color','');
 	}
 	if (level) $('#T'+fleet+'imprv'+ship+eqslot).val(level);
+}
+
+function setMoraleAll(fleet,num){
+	for (var i = 0; i < 6; i++){
+		if ($('#T'+fleet+'morale'+i)) $('#T'+fleet+'morale'+i).val(num);
+	}
+	raiseFleetChange();
 }
 
 function changedShipForm(fleet,slot) {
