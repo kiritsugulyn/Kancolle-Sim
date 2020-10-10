@@ -1278,11 +1278,22 @@ function changedEquip(fleet,slot,equipslot,nochangeimprov) {
 			} else {
 				$('#T'+fleet+'prof'+slot+equipslot).hide();
 			}
-			if (equipid>0 && equipid<500) {
+			if (equipid>0 && equipid<500 && fleet !== 14) {
 				$('#T'+fleet+'prof'+slot+equipslot).val(7);
 				changedProficiency('#T'+fleet+'prof'+slot+equipslot);
 			} else {
 				$('#T'+fleet+'prof'+slot+equipslot).val(0);
+				changedProficiency('#T'+fleet+'prof'+slot+equipslot);
+			}
+		}
+		if (fleet == 'LB'){
+			if ([SEAPLANE, CARRIERSCOUT, FLYINGBOAT, LANDSCOUT].indexOf(equip.type) !== -1) $('#T'+fleet+'plane'+slot+equipslot).val(4);
+			else $('#T'+fleet+'plane'+slot+equipslot).val(18);
+			if (equipid == 311) {
+				$('#T'+fleet+'prof'+slot+equipslot).val(0);
+				changedProficiency('#T'+fleet+'prof'+slot+equipslot);
+			}else if (equipid == 312) {
+				$('#T'+fleet+'prof'+slot+equipslot).val(2);
 				changedProficiency('#T'+fleet+'prof'+slot+equipslot);
 			}
 		}
