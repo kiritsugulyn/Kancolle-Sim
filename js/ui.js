@@ -1851,7 +1851,11 @@ function changedPreset3(fleet) {
 		if (ENEMYCOMPS[world][level][node][version].bomb) $('#landbomb'+fleet).prop('checked',true);
 		else $('#landbomb'+fleet).prop('checked',false);
 	}
-	
+
+	if (fleet.toString()[0] == '3') {
+		if (document.getElementById('T'+fleet+'r'+form)) document.getElementById('T'+fleet+'r'+form).checked = true;
+	}
+
 	updateFleetCode(fleet);
 	if (fleet.toString()[0] == '2') updateOptionsCookies(fleet);
 }

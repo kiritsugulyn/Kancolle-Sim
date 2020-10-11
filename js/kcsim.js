@@ -1983,10 +1983,7 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 			console.log(lbas.planecount[i] + ' ' + defender.name + ' ' + shotProp + ' ' + shotFlat);
 		}
 		lbas.planecount[i] = Math.max(0,lbas.planecount[i]-shotProp-shotFlat-shotFix);
-		if (lbas.planecount[i] <= 0) {
-			lbas.equips[i].setProficiency(0);
-			continue;
-		}
+		if (lbas.planecount[i] <= 0) continue;
 		
 		var contactMod = 1;
 		if (lbas.airState() != -2 && lbas.airState() != 0) {
@@ -2066,10 +2063,11 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 		switch(equip.rank) {
 			case 7: ACCplane += 9; critval = 10; break;
 			case 6: ACCplane += 6; critval = 7; break;
-			case 5: ACCplane += 4; break;
-			case 4: ACCplane += 3; break;
-			case 3: ACCplane += 2; break;
-			case 2: ACCplane += 1; break;
+			case 5: ACCplane += 4; critval = 5; break;
+			case 4: ACCplane += 3; critval = 4; break;
+			case 3: ACCplane += 2; critval = 3; break;
+			case 2: ACCplane += 1; critival = 2; break;
+			case 1: critival = 1; break;
 			case 0: ACCplane = 0; break;
 		}
 		critdmgbonus += Math.floor(Math.sqrt(equip.exp)+critval)/100;
@@ -2865,9 +2863,7 @@ function simStats(numsims,foptions) {
 			totalResult.totalFuelS += cost[0];
 			totalResult.totalAmmoS += cost[1];
 			totalResult.totalBauxS += cost[2];
-			for (let eq of LBAS[alllbas[j]-1].equips) {
-				if (eq.rank <= 0 && eq.rank != eq.rankInit) totalResult.totalEmptiedLBAS++; //doesn't count rankInit = 0
-			}
+			totalResult.totalEmptiedLBAS += cost[3];
 			LBAS[alllbas[j]-1].reset();
 		}
 		

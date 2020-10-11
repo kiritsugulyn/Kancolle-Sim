@@ -1464,12 +1464,9 @@ LandBase.prototype.airPowerDefend = function() {
 }
 LandBase.prototype.reset = function() {
 	this.planecount = this.PLANESLOTS.slice();
-	for (let eq of this.equips) {
-		if (eq.rank != eq.rankInit) eq.setProficiency(eq.rankInit, true);
-	}
 }
 LandBase.prototype.getCost = function() {
-	var cost = [0,0,0]; //fuel,ammo,baux
+	var cost = [0,0,0,0]; //fuel, ammo, baux, emptied slots
 	for (var i=0; i<this.equips.length; i++) {
 		var eq = this.equips[i];
 		//sortie cost
@@ -1492,7 +1489,8 @@ LandBase.prototype.getCost = function() {
 		}
 		//resupply cost
 		cost[0] += (this.PLANESLOTS[i] - this.planecount[i])*3;
-		cost[2] += (this.PLANESLOTS[i] - this.planecount[i])*5;
+        cost[2] += (this.PLANESLOTS[i] - this.planecount[i])*5;
+        cost[3] += this.planecount[i] <= 0; 
 	}
 	return cost;
 }
