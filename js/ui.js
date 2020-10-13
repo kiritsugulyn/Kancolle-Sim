@@ -993,6 +993,25 @@ function genOptions(fleetnum) {
 	div.append('<span class="option2"><label>2</label><input type="checkbox" id="lbas2A'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><input type="checkbox" id="lbas2B'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/></span>');
 	div.append('<span class="option2"><label>3</label><input type="checkbox" id="lbas3A'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><input type="checkbox" id="lbas3B'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/></span>');
 	div.append('<span class="option2 line"><input type="checkbox" id="bonus'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="bonus'+fleetnum+'">Historical Bonus</label></span>');
+	div.append('<span class="option2 line"><input type="checkbox" id="eqbonus'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="eqbonus'+fleetnum+'">Special Equip Bonus: </label></span>');
+	var sel1 = document.createElement('select');  //world+level
+	sel1.setAttribute('id','eq1sel'+fleetnum);
+	sel1.setAttribute('onChange','changedEquipBonus1('+fleetnum+');raiseFleetChange()');
+	div.append(sel1);
+	var o = document.createElement('option');
+	sel1.appendChild(o);
+	for (let world in EQUIPBONUS) {
+		let o = document.createElement('option');
+		o.setAttribute('value',world);
+		o.appendChild(document.createTextNode(world));
+		sel1.appendChild(o);
+	}
+	var sel2 = document.createElement('select');  //world+level
+	sel2.setAttribute('id','eq2sel'+fleetnum);
+	sel2.setAttribute('onChange','raiseFleetChange()');
+	div.append(sel2);
+	var o = document.createElement('option');
+	sel2.appendChild(o);
 	// div.append('<span class="option2 line"><label>Historical Bonus Amount: </label></span>');
 	// div.append('<span class="option2"><label>x</label><input id="bonus'+fleetnum+'" type="number" min="0" max="3" step=".1" value="0" style="width:50px" title="(e.g. 0=none, 1=full)" onchange="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/></span>');
 	td.append(div);
@@ -1028,6 +1047,11 @@ function extractOptions(num) {
 		options.maelstrom = [0, 0];
 		options.maelstrom[0] = Number($('#fuelloss'+num).prop('value'));
 		options.maelstrom[1] = Number($('#ammoloss'+num).prop('value'));
+	}
+	if ($('#eqbonus'+num).prop('checked')){
+		options.eqbonus = [];
+		options.eqbonus.push($('#eq1sel'+num).prop('value'));
+		options.eqbonus.push($('#eq2sel'+num).prop('value'));
 	}
 	return options;
 }
@@ -1860,6 +1884,20 @@ function changedPreset3(fleet) {
 	if (fleet.toString()[0] == '2') updateOptionsCookies(fleet);
 }
 
+function changedEquipBonus1(fleet){
+	var world = document.getElementById('eq1sel'+fleet).value;
+	var sel2 = document.getElementById('eq2sel'+fleet);
+	sel2.innerHTML = '';
+	var o = document.createElement('option');
+	sel2.appendChild(o);
+	for (let node in EQUIPBONUS[world]) {
+		var o = document.createElement('option');
+		o.setAttribute('value',node);
+		o.appendChild(document.createTextNode(node));
+		sel2.appendChild(o);
+	}
+}
+
 function updateFleetCode(fleet) {
 	var data = {};
 	var fdata = data.f1 = {};
@@ -2011,6 +2049,7 @@ function clickedLoadFromCode(fleet) {
 
 
 function clickedSimGo() {
+	var startTime = new Date();
 	var numsims = parseInt(document.getElementById('simnum').value);
 	
 	var foptions = extractForSim();
@@ -2026,6 +2065,8 @@ function clickedSimGo() {
 	for (var num in ADDEDECOMBINED) {
 		if (ADDEDECOMBINED[num]) { $('#warnecombined').show(); break; }
 	}
+	var endTime = new Date();
+	console.log((endTime.getTime() - startTime.getTime()) / 1000);
 }
 
 function changedSimNumber() {
@@ -2207,6 +2248,20 @@ function clickedWatchBattle() {
 				ship.bonusSpecial.push({mod:ship.bonusDTemp,on:[FLEETS2[FLEETS2.length-1].ships[0].mid]});
 			}
 		}
+	}
+
+	for (var j=0; j<FLEETS2.length; j++) {
+		let options = foptions[j];
+		if (!options.eqbonus || options.eqbonus.length < 2) continue;
+		let world = options.eqbonus[0];
+		let node = options.eqbonus[1];
+		if (world === '' || node === '') continue; 
+		let ships = FLEETS2[j].ships;
+		if (FLEETS2[j].combinedWith) ships = ships.concat(FLEETS2[j].combinedWith.ships);
+		ships.forEach((ship) => {
+			if (!ship.equipWeak) ship.equipWeak = [];
+			ship.equipWeak = ship.equipWeak.concat(EQUIPBONUS[world][node]);
+		})
 	}
 	
 	var formdef = FLEETS1[0].formation;

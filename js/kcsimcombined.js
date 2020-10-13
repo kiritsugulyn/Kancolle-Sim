@@ -506,7 +506,21 @@ function simStatsCombined(numsims,type,foptions) {
 			}
 		}
 	}
-	
+
+	for (var j=0; j<FLEETS2.length; j++) {
+		let options = foptions[j];
+		if (!options.eqbonus || options.eqbonus.length < 2) continue;
+		let world = options.eqbonus[0];
+		let node = options.eqbonus[1];
+		if (world === '' || node === '') continue; 
+		let ships = FLEETS2[j].ships;
+		if (FLEETS2[j].combinedWith) ships = ships.concat(FLEETS2[j].combinedWith.ships);
+		ships.forEach((ship) => {
+			if (!ship.equipWeak) ship.equipWeak = [];
+			ship.equipWeak = ship.equipWeak.concat(EQUIPBONUS[world][node]);
+		})
+	}
+
 	//var BAPI = {data:{},yasen:{},mvp:[],rating:''};
 	C = false;
 	var formdef = FLEETS1[0].formation, formdefc = FLEETS1[1].formation;
@@ -598,12 +612,14 @@ function simStatsCombined(numsims,type,foptions) {
 		//support
 		for (var s=0; s<=FLEETS1S.length; s++) {
 			if (FLEETS1S[s]) {
-				for (var j=0; j<FLEETS1S[s].ships.length; j++) {
-					var shipS = FLEETS1S[s].ships[j];
-					totalResult.totalFuelS += Math.floor(shipS.fuel * .5);
-					if (FLEETS1S[s].supportType == 1) totalResult.totalAmmoS += Math.floor(shipS.ammo * .4);
-					else totalResult.totalAmmoS += Math.floor(shipS.ammo * .8);
-					for (var k=0; k<shipS.PLANESLOTS.length; k++) totalResult.totalBauxS += 5*(shipS.PLANESLOTS[k]-shipS.planecount[k]);
+				if (s !== 2) {
+					for (var j=0; j<FLEETS1S[s].ships.length; j++) {
+						var shipS = FLEETS1S[s].ships[j];
+						totalResult.totalFuelS += Math.floor(shipS.fuel * .5);
+						if (FLEETS1S[s].supportType == 1) totalResult.totalAmmoS += Math.floor(shipS.ammo * .4);
+						else totalResult.totalAmmoS += Math.floor(shipS.ammo * .8);
+						for (var k=0; k<shipS.PLANESLOTS.length; k++) totalResult.totalBauxS += 5*(shipS.PLANESLOTS[k]-shipS.planecount[k]);
+					}
 				}
 				FLEETS1S[s].reset();
 			}
