@@ -1451,7 +1451,7 @@ LandBase.prototype.airPowerDefend = function() {
 			if (this.equips[i].LOS >= 9) newmod = 1.16;
 			else if (this.equips[i].LOS == 8) newmod = 1.13;
 			else newmod = 1.1;
-		} else if (this.equips[i].type == CARRIERSCOUT) {
+		} else if (this.equips[i].type == CARRIERSCOUT || this.equips[i].type == CARRIERSCOUT2) {
 			if (this.equips[i].LOS >= 9) newmod = 1.3;
 			else newmod = 1.2;
 		} else if (this.equips[i].type == LANDSCOUT) {
@@ -1478,6 +1478,7 @@ LandBase.prototype.getCost = function() {
 				break;
 			case SEAPLANE:
 			case CARRIERSCOUT:
+            case CARRIERSCOUT2:
 			case FLYINGBOAT:
 			case LANDSCOUT:
 				cost[0] += Math.floor(this.PLANESLOTS[i]);

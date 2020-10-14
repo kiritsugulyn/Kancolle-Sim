@@ -1249,9 +1249,9 @@ function accuracyAndCrit(ship,target,hit,evMod,evFlat,critMod,isPlanes,critBonus
 	if (evFlat) dodge += evFlat*.01;
 	if (target.evimprove) dodge += target.evimprove*.01;
 
-	if ((ship instanceof LandBase) || !ship.fleet.supportType){
+	if (!(ship instanceof LandBase) && !ship.fleet.supportType){
 		var specialMod = 1; //e.g. equipment and historical bonus
-		if (target.equipWeak && ship.equips) specialMod *= getEquipBonus(ship,target);
+		if (target.equipWeak && ship.equips) specialMod *= getSpecialEquipBonus(ship,target);
 		if (ship.bonusSpecial) specialMod *= getShipHistoricalBonus(ship,target);
 		hit *= specialMod;
 	}
@@ -1306,9 +1306,9 @@ function damage(ship,target,base,preMod,postMod,cap,isAirstrike) {
 	dmg *= postMod;  //artillery spotting, contact, AP shell, critical
 	if (C) console.log('	dmg after postmod: '+dmg);
 
-	if ((ship instanceof LandBase) || !ship.fleet.supportType){
+	if (!(ship instanceof LandBase) && !ship.fleet.supportType){
 		var specialMod = 1; //e.g. equipment and historical bonus
-		if (target.equipWeak && ship.equips) specialMod *= getEquipBonus(ship,target);
+		if (target.equipWeak && ship.equips) specialMod *= getSpecialEquipBonus(ship,target);
 		if (ship.bonusSpecial) specialMod *= getShipHistoricalBonus(ship,target);
 		dmg *= specialMod;
 		if (specialMod !== 1 && C) console.log('	speicalMod: '+specialMod.toFixed(2)+'	dmg after specialmod: '+dmg);
@@ -1528,13 +1528,13 @@ function getContact(carriers) {
 		var ship = carriers[i];
 		for (var j=0; j<ship.equips.length; j++) {
 			var e = ship.equips[j];
-			if (e.LOS && EQTDATA[e.type].isPlane) losPower += Math.floor(Math.sqrt(ship.planecount[j])*e.LOS);
+			if (e.LOS && [SEAPLANE, CARRIERSCOUT, CARRIERSCOUT2, FLYINGBOAT, LANDSCOUT].indexOf(e.type) !== -1) losPower += Math.floor(Math.sqrt(ship.planecount[j])*e.LOS);
 		}
 	}
 	var chance, cmod;
-	if (carriers[0].airState() == 2) { chance = losPower/25; cmod = 14; }
-	else if (carriers[0].airState() == 1) { chance = losPower/40; cmod = 16; }
-	else { chance = losPower/55; cmod = 18; }
+	if (carriers[0].airState() == 2) { chance = (losPower+1)/25; cmod = 14; }
+	else if (carriers[0].airState() == 1) { chance = (losPower+1)/40; cmod = 16; }
+	else { chance = (losPower+1)/55; cmod = 18; }
 	if (C) console.log('CONTACT CHANCE 1: '+chance);
 	//phase 2
 	if (Math.random() < chance) {
@@ -3407,7 +3407,7 @@ function getDetection(shipsF,shipsE) {
 		for (let i=0; i<ship.equips.length; i++) {
 			if (ship.planecount[i] <= 0) continue;
 			let eq = ship.equips[i];
-			if ([CARRIERSCOUT,SEAPLANE,SEAPLANEBOMBER,FLYINGBOAT].indexOf(eq.type) != -1) {
+			if ([CARRIERSCOUT,CARRIERSCOUT2,SEAPLANE,SEAPLANEBOMBER,FLYINGBOAT].indexOf(eq.type) != -1) {
 				numReconSlots += ship.planecount[i];
 				if (eq.rank >= 7) numReconSlots += 30;
 				else if (eq.rank >= 4) numReconSlots += 15;
@@ -3455,11 +3455,10 @@ function getDetection(shipsF,shipsE) {
 	return (shotdownVal <= 0)? DetectionResult.Failure : DetectionResult.FailureLost;
 }
 
-function getEquipBonus(ship,target){
+function getSpecialEquipBonus(ship,target){
 	var specialMod = 1;
 	var bonuses = target.equipWeak;
 	bonuses.forEach((bonus) => {
-		if (bonus.excludeLBAS && ship instanceof LandBase) return;
 		let count = 0;
 		if (bonus.eqtypes) {
 			if (bonus.distinct){

@@ -1313,7 +1313,7 @@ function changedEquip(fleet,slot,equipslot,nochangeimprov) {
 			}
 		}
 		if (fleet == 'LB'){
-			if ([SEAPLANE, CARRIERSCOUT, FLYINGBOAT, LANDSCOUT].indexOf(equip.type) !== -1) $('#T'+fleet+'plane'+slot+equipslot).val(4);
+			if ([SEAPLANE, CARRIERSCOUT, CARRIERSCOUT2, FLYINGBOAT, LANDSCOUT].indexOf(equip.type) !== -1) $('#T'+fleet+'plane'+slot+equipslot).val(4);
 			else $('#T'+fleet+'plane'+slot+equipslot).val(18);
 			if (equipid == 311) {
 				$('#T'+fleet+'prof'+slot+equipslot).val(0);
