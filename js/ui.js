@@ -948,17 +948,18 @@ function genOptions(fleetnum) {
 	var td = $('<td style="border:1px solid black"></td>');
 	var div = $('<div></div>');
 	div.append('<span class="option2"><label>Before Node: </label></span>');
-	div.append('<span class="option2"><input type="checkbox" id="emergencyrepair'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="emergencyrepair'+fleetnum+'">Emergency Repair</label></span>');
+	div.append('<span class="option2"><input type="checkbox" id="lbloss'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="lbloss'+fleetnum+'">LB plane loss</label></span>');
 	div.append('<span class="option2 line"><input type="checkbox" id="maelstrom'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="maelstrom'+fleetnum+'">Maelstrom</label></span>');
 	div.append('<span class="option2"> <img src="assets/stats/fuel.png" /> <input type="number" id="fuelloss'+fleetnum+'" min="0" max="100" value="0" style="width:50px"/>%</span>');
 	div.append('<span class="option2"> <img src="assets/stats/ammo.png" /> <input type="number" id="ammoloss'+fleetnum+'" min="0" max="100" value="0" style="width:50px"/>%</span>');
+	div.append('<span class="option2 line"><input type="checkbox" id="emergencyrepair'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="emergencyrepair'+fleetnum+'">Emergency repair</label></span>');
 	td.append(div);
 	div = $('<div></div>');
 	div.append('<span class="option2"><label>Special Node: </label></span>');
-	div.append('<span class="option2"><input id="noammo'+fleetnum+'" type="checkbox" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="noammo'+fleetnum+'">Sub-Only (8% <img src="assets/stats/fuel.png" /> 0% <img src="assets/stats/ammo.png" />)</label></span>');
-	div.append('<span class="option2"><input id="landbomb'+fleetnum+'" type="checkbox" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="landbomb'+fleetnum+'">Air Raid (6% <img src="assets/stats/fuel.png" /> 4% <img src="assets/stats/ammo.png" />)</label></span>');
-	div.append('<span class="option2"><input id="NBonly'+fleetnum+'" type="checkbox" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="NBonly'+fleetnum+'">Night-Only (10% <img src="assets/stats/fuel.png" /> 10% <img src="assets/stats/ammo.png" />)</label></span>');
-	div.append('<span class="option2"><input id="aironly'+fleetnum+'" type="checkbox" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="aironly'+fleetnum+'">Air-Only (20% <img src="assets/stats/fuel.png" /> 20% <img src="assets/stats/ammo.png" />)</label></span>');
+	div.append('<span class="option2"><input id="noammo'+fleetnum+'" type="checkbox" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="noammo'+fleetnum+'">Sub-only (8% <img src="assets/stats/fuel.png" /> 0% <img src="assets/stats/ammo.png" />)</label></span>');
+	div.append('<span class="option2"><input id="landbomb'+fleetnum+'" type="checkbox" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="landbomb'+fleetnum+'">Air raid (6% <img src="assets/stats/fuel.png" /> 4% <img src="assets/stats/ammo.png" />)</label></span>');
+	div.append('<span class="option2"><input id="NBonly'+fleetnum+'" type="checkbox" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="NBonly'+fleetnum+'">Night-only (10% <img src="assets/stats/fuel.png" /> 10% <img src="assets/stats/ammo.png" />)</label></span>');
+	div.append('<span class="option2"><input id="aironly'+fleetnum+'" type="checkbox" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="aironly'+fleetnum+'">Air-only (20% <img src="assets/stats/fuel.png" /> 20% <img src="assets/stats/ammo.png" />)</label></span>');
 	td.append(div);
 	div = $('<div></div>');
 	div.append('<span class="option2"><label>Formation: </label></span>');
@@ -992,8 +993,15 @@ function genOptions(fleetnum) {
 	div.append('<span class="option2"><label>1</label><input type="checkbox" id="lbas1A'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><input type="checkbox" id="lbas1B'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/></span>');
 	div.append('<span class="option2"><label>2</label><input type="checkbox" id="lbas2A'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><input type="checkbox" id="lbas2B'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/></span>');
 	div.append('<span class="option2"><label>3</label><input type="checkbox" id="lbas3A'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><input type="checkbox" id="lbas3B'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/></span>');
-	div.append('<span class="option2 line"><input type="checkbox" id="bonus'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="bonus'+fleetnum+'">Historical Bonus</label></span>');
-	div.append('<span class="option2 line"><input type="checkbox" id="eqbonus'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="eqbonus'+fleetnum+'">Special Equip Bonus: </label></span>');
+	div.append('<span class="option2 line"><input type="checkbox" id="fixengage'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="fixengage'+fleetnum+'">Fix engagement modifier:</label></span>');
+	div.append('<span class="option2"><input type="number" id="engagemod'+fleetnum+'" min="0.6" max="1.2" value="1" style="width:50px"/></span>');
+	// div.append('<span class="option2 line"><label>Historical Bonus Amount: </label></span>');
+	// div.append('<span class="option2"><label>x</label><input id="bonus'+fleetnum+'" type="number" min="0" max="3" step=".1" value="0" style="width:50px" title="(e.g. 0=none, 1=full)" onchange="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/></span>');
+	td.append(div);
+	div = $('<div></div>');
+	div.append('<span class="option2"><label>Node Bonuses: </label></span>');
+	div.append('<span class="option2"><input type="checkbox" id="bonus'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="bonus'+fleetnum+'">Ship historical bonus</label></span>');
+	div.append('<span class="option2 line"><input type="checkbox" id="eqbonus'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="eqbonus'+fleetnum+'">Special equip bonus: </label></span>');
 	var sel1 = document.createElement('select');  //world+level
 	sel1.setAttribute('id','eq1sel'+fleetnum);
 	sel1.setAttribute('onChange','changedEquipBonus1('+fleetnum+');raiseFleetChange()');
@@ -1012,8 +1020,6 @@ function genOptions(fleetnum) {
 	div.append(sel2);
 	var o = document.createElement('option');
 	sel2.appendChild(o);
-	// div.append('<span class="option2 line"><label>Historical Bonus Amount: </label></span>');
-	// div.append('<span class="option2"><label>x</label><input id="bonus'+fleetnum+'" type="number" min="0" max="3" step=".1" value="0" style="width:50px" title="(e.g. 0=none, 1=full)" onchange="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/></span>');
 	td.append(div);
 	html.append(td);
 	
@@ -1040,6 +1046,7 @@ function extractOptions(num) {
 			if ($('#lbas'+i+'A'+num).prop('checked')) options.lbas.push(i);
 			if ($('#lbas'+i+'B'+num).prop('checked')) options.lbas.push(i);
 		}
+		options.lbloss = $('#lbloss'+num).prop('checked');
 	}
 	options.bonus = $('#bonus'+num).prop('checked');
 	options.emergencyrepair = $('#emergencyrepair'+num).prop('checked');
@@ -1052,6 +1059,9 @@ function extractOptions(num) {
 		options.eqbonus = [];
 		options.eqbonus.push($('#eq1sel'+num).prop('value'));
 		options.eqbonus.push($('#eq2sel'+num).prop('value'));
+	}
+	if ($('#fixengage'+num).prop('checked')){
+		options.engagemod = Number($('#engagemod'+num).prop('value'));
 	}
 	return options;
 }
@@ -2279,6 +2289,7 @@ function clickedWatchBattle() {
 		var supportF = (j==FLEETS2.length-1)? supportB : supportN;
 		var friendFleetF = (j==FLEETS2.length-1)? friendFleet : null;
 		if (options.maelstrom) maelstromLoss(FLEETS1[0], options.maelstrom);
+		if (options.lbloss) landBaseLoss();
 		if (j==FLEETS2.length-1) {
 			underwaySupply(FLEETS1[0]);
 		}
@@ -2303,6 +2314,12 @@ function clickedWatchBattle() {
 		}
 		
 		var ennum = (j>0)? 21+j : 2;
+
+		if (options.engagemod) {
+			ENGAGEMENT = options.engagemod;
+			FIXENAGEMENT = true;
+		}else FIXENAGEMENT = false;
+
 		var res;
 		if (ADDEDCOMBINED) {
 			if (ADDEDECOMBINED[ennum])

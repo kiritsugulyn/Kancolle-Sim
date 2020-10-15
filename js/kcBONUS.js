@@ -4,21 +4,24 @@ var EQUIPBONUS = {
             {
                 mod: [1.2, 1.3, 1.4],
                 eqids: [82, 83, 302],
-                distinct: true
+                distinct: true,
+                excludeLBAS: true
             },
         ],
         'E-4 Submarine': [
             {
                 mod: [1.44, 1.69, 1.96],
                 eqids: [82, 83, 302],
-                distinct: true
+                distinct: true,
+                excludeLBAS: true
             }
         ],
         'E-4 Boss': [
             {
                 mod: [1.2, 1.3, 1.4],
                 eqids: [82, 83, 302],
-                distinct: true
+                distinct: true,
+                excludeLBAS: true
             },
             {
                 mod: 1.3,

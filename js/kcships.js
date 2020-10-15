@@ -572,19 +572,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	if (installeqs.DB) this.anchoragePostMult *= 1.4;
 	if (installeqs.DB >= 2) this.anchoragePostMult *= 1.5;
 	
-	this.ptDmgMod = 1;
-	this.ptAccMod = 1;
-	let numGuns = (this.equiptypes[MAINGUNS] || 0) + (this.equiptypes[MAINGUNSAA] || 0) + (this.equiptypes[SECGUN] || 0) + (this.equiptypes[AAGUN] || 0);
-	if (numGuns >= 2) this.ptDmgMod *= 2;
-	if (this.type == 'DD' && this.equiptypesB[B_MAINGUN]) this.ptAccMod *= 1.5;
-	if (this.equiptypesB[SECGUN] && ['CL','CLT','CT','CA','CAV','FBB'].indexOf(this.type) != -1) this.ptAccMod *= 1.4;
-	let numSGuns = (this.equiptypes[MAINGUNS] || 0) + (this.equiptypes[MAINGUNSAA] || 0);
-	if (numSGuns >= 2) this.ptAccMod *= 1.2;
-	else if (numSGuns == 1) this.ptAccMod *= 1.1;
-	if (this.equiptypes[PICKET]) this.ptAccMod *= 2;
-	if (this.equiptypes[AAGUN] >= 2) this.ptAccMod *= 2;
-	else if (this.equiptypes[AAGUN] == 1) this.ptAccMod *= 1.5;
-	if (this.equiptypes[SEAPLANEBOMBER]) this.ptAccMod *= 2;
+    [this.ptDmgMod, this.ptAccMod] = this.ptMod();
 	
 	if (this.repairs) this.repairsOrig = this.repairs.slice();
 	
@@ -1108,6 +1096,41 @@ Ship.prototype.findRemodelLvl = function(){
     }
     return i;
 };
+
+Ship.prototype.ptMod = function() {
+    var dmgMod = 1; 
+    var accMod = 1;
+    
+    let num1 = (this.equiptypes[MAINGUNS] || 0) + (this.equiptypes[MAINGUNSAA] || 0);
+    let num2 = (this.equiptypes[SECGUN] || 0) + (this.equiptypes[SECGUNAA] || 0);
+    let num3 = this.equiptypes[AAGUN] || 0;
+    let num4 = this.equiptypes[PICKET] || 0;
+    let num5 = (this.equiptypes[SEAPLANEBOMBER] || 0) + (this.equiptypes[SEAPLANEFIGHTER] || 0);
+    let num6 = this.equiptypes[DIVEBOMBER] || 0;
+
+    if (num1 >= 1) dmgMod *= 1.5;
+    if (num1 >= 2) dmgMod *= 1.4;
+    if (num2 >= 1) dmgMod *= 1.3;
+    if (num3 >= 1) dmgMod *= 1.2;
+    if (num3 >= 2) dmgMod *= 1.2;
+    if (num4 >= 1) dmgMod *= 1.1;
+    if (num5 >= 1) dmgMod *= 1.2;
+    if (num6 >= 1) dmgMod *= 1.4;
+    if (num6 >= 2) dmgMod *= 1.3;
+
+    if ((num1 > 0) + (num2 > 0) + (num3 > 0) + (num4 > 0) + (num5 > 0) >= 2 && (num1 > 0) + (num4 > 0) + (num5 > 0) >= 1) {
+        if (this.type == 'DD' || this.type == 'DE') accMod *= 1.6
+        if (this.type == 'CL' || this.type == 'CLT' || this.type == 'CT') accMod *= 1.2;
+        if (num1 >= 1) accMod *= 1.3;
+        if (num1 >= 2) accMod *= 1.2;
+        if (num2 >= 1) accMod *= 1.6;
+        if (num3 >= 1) accMod *= 1.4;
+        if (num3 >= 2) accMod *= 1.4;
+        if (num4 >= 1) accMod *= 1.8;
+        if (num5 >= 1) accMod *= 1.5;
+    }
+    return [dmgMod, accMod];
+}
 
 //------------------
 

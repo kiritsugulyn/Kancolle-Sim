@@ -30,11 +30,13 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		if (ships2[i].isInstall) hasInstall2 = true;
 	}
 	
-	var r = Math.random();
-	if (r < .45) ENGAGEMENT = 1;
-	else if (r < .6) ENGAGEMENT = 1.2;
-	else if (r < .9 || F1.noRedT || F2.noRedT || F1C.noRedT) ENGAGEMENT = .8;
-	else ENGAGEMENT = .6;
+	if (!FIXENAGEMENT){
+		let r = Math.random();
+		if (r < .45) ENGAGEMENT = 1;
+		else if (r < .6) ENGAGEMENT = 1.2;
+		else if (r < .9 || F1.noRedT || F2.noRedT || F1C.noRedT) ENGAGEMENT = .8;
+		else ENGAGEMENT = .6;
+	}
 	
 	F1.AS = F2.AS = F1C.AS = 0;
 
@@ -550,6 +552,7 @@ function simStatsCombined(numsims,type,foptions) {
 			var supportNum = 0;
 			let friendFleet = null;
 			if (options.maelstrom) maelstromLoss(FLEETS1[0], options.maelstrom);
+			if (options.lbloss) landBaseLoss();
 			if (j == FLEETS2.length - 1) {
 				supportNum = 1;
 				friendFleet = FLEETS1S[2];
@@ -558,6 +561,10 @@ function simStatsCombined(numsims,type,foptions) {
 			if (options.emergencyrepair) emergencyRepair(FLEETS1[0]);
 			var LBASwaves = [];
 			for (var k=0; k<options.lbas.length; k++) LBASwaves.push(LBAS[options.lbas[k]-1]);
+			if (options.engagemod) {
+				ENGAGEMENT = options.engagemod;
+				FIXENAGEMENT = true;
+			}else FIXENAGEMENT = false;
 			var res;
 			if (FLEETS2[j].combinedWith) res = sim12vs12(type,FLEETS1[0],FLEETS1[1],FLEETS2[j],FLEETS1S[supportNum],LBASwaves,options.NB,options.NBonly,options.aironly,options.landbomb,options.noammo,null,false,friendFleet);
 			else res = simCombined(type,FLEETS1[0],FLEETS1[1],FLEETS2[j],FLEETS1S[supportNum],LBASwaves,options.NB,options.NBonly,options.aironly,options.landbomb,options.noammo,null,false,friendFleet);
@@ -724,11 +731,13 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		if (ships2C[i].isInstall) hasInstall2C = true;
 	}
 	
-	var r = Math.random();
-	if (r < .45) ENGAGEMENT = 1;
-	else if (r < .6) ENGAGEMENT = 1.2;
-	else if (r < .9 || F1.noRedT || F2.noRedT || F2C.noRedT) ENGAGEMENT = .8;
-	else ENGAGEMENT = .6;
+	if (!FIXENAGEMENT){
+		let r = Math.random();
+		if (r < .45) ENGAGEMENT = 1;
+		else if (r < .6) ENGAGEMENT = 1.2;
+		else if (r < .9 || F1.noRedT || F2.noRedT || F2C.noRedT) ENGAGEMENT = .8;
+		else ENGAGEMENT = .6;
+	}
 	
 	F1.AS = F2.AS = F2C.AS = 0;
 
@@ -1145,11 +1154,13 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		if (ships2C[i].isInstall) hasInstall2C = true;
 	}
 	
-	var r = Math.random();
-	if (r < .45) ENGAGEMENT = 1;
-	else if (r < .6) ENGAGEMENT = 1.2;
-	else if (r < .9 || F1.noRedT || F2.noRedT || F1C.noRedT || F2C.noRedT) ENGAGEMENT = .8;
-	else ENGAGEMENT = .6;
+	if (!FIXENAGEMENT){
+		let r = Math.random();
+		if (r < .45) ENGAGEMENT = 1;
+		else if (r < .6) ENGAGEMENT = 1.2;
+		else if (r < .9 || F1.noRedT || F2.noRedT || F1C.noRedT || F2C.noRedT) ENGAGEMENT = .8;
+		else ENGAGEMENT = .6;
+	}
 	
 	F1.AS = F2.AS = F1C.AS = F2C.AS = 0;
 

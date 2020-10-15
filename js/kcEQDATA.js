@@ -3286,7 +3286,7 @@ var EQDATA = {
 		nameJP: '15.2cm三連装砲',
 		added: '2017-08-10',
 		type: SECGUN,
-		type: B_SECGUN,
+		btype: B_SECGUN,
 		FP: 6,
 		AA: 1,
 		ACC: 3,
