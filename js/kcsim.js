@@ -213,7 +213,7 @@ function formationCountered(form1,form2) {
 function shell(ship,target,APIhou,attackSpecial) {
 	var da = false, cutin = false, cutinR = 0;
 	var preMod = ship.getFormation().shellmod*ENGAGEMENT*ship.damageMod();
-	var postMod = (MECHANICS.APmod && !attackSpecial)? ship.APmod(target) : 1;
+	var postMod = (MECHANICS.APmod)? ship.APmod(target) : 1;
 	var overrideCritDmgBonus = null, critRateBonus = null;
 	
 	var accMod = ship.moraleMod();

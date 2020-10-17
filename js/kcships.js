@@ -1584,6 +1584,7 @@ Equip.prototype.setImprovement = function(level) {
 		case TORPBOMBER:
             this.ASImprove = .2*level;
             this.improves.Pshell = .2*level;
+            this.improves.Pasw = .2*level;
             break;
 		case SEAPLANEBOMBER:
 			this.ASImprove = .2*level;
