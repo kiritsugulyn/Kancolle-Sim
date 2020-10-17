@@ -229,7 +229,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 			}
 		}
 		if (eq.type == TYPE3SHELL) this.hasT3Shell = true;
-		if (eq.type == MIDGETSUB) this.hasMidgetSub = true;
+		if (eq.type == MIDGETSUB && (eq.mid < 500 || eq.mid == 541)) this.hasMidgetSub = true;
 		if (eq.type == STARSHELL) this.hasStarShell = true;
 		if (eq.type == SEARCHLIGHTS) this.hasSearchlight = 1;
 		if (eq.type == SEARCHLIGHTL) this.hasSearchlight = 2;
@@ -1118,17 +1118,25 @@ Ship.prototype.ptMod = function() {
     if (num6 >= 1) dmgMod *= 1.4;
     if (num6 >= 2) dmgMod *= 1.3;
 
-    if ((num1 > 0) + (num2 > 0) + (num3 > 0) + (num4 > 0) + (num5 > 0) >= 2 && (num1 > 0) + (num4 > 0) + (num5 > 0) >= 1) {
+    let cond1 = ((num1 >= 1) + (num2 + num3 >= 1) + (num4 >= 1)) >= 2;
+    let cond2 = (num5 + num6) >= 1;
+
+    if (cond1 || cond2){
         if (this.type == 'DD' || this.type == 'DE') accMod *= 1.6
         if (this.type == 'CL' || this.type == 'CLT' || this.type == 'CT') accMod *= 1.2;
         if (num1 >= 1) accMod *= 1.3;
         if (num1 >= 2) accMod *= 1.2;
-        if (num2 >= 1) accMod *= 1.6;
-        if (num3 >= 1) accMod *= 1.4;
-        if (num3 >= 2) accMod *= 1.4;
-        if (num4 >= 1) accMod *= 1.8;
-        if (num5 >= 1) accMod *= 1.5;
+        if ((num2 >= 1 && num3 >= 1) || num3 >= 2) accMod *= 1.96;
+        else if (num2 >= 1 || num3 >= 1) accMod *= 1.4;
+        if (num4 >= 1) {
+            if (num1 >= 1 || num3 >= 1) accMod *= 1.8;
+            else if (num2 >= 1) accMod *= 2.1;
+            else accMod *= 1.5;
+        }
+        if (num5 >= 1) accMod *= 1.8;
+        else if (num6 >= 1) accMod *= 1.5;
     }
+
     return [dmgMod, accMod];
 }
 
@@ -1566,7 +1574,8 @@ Equip.prototype.setImprovement = function(level) {
 			this.AAImprove = .2*level;
 			break;
 		case DIVEBOMBER:
-			if (this.AA && this.AA >=4) this.AAImprove = .25*level;
+            if (this.AA && this.AA >=4) this.AAImprove = .25*level;
+            else this.ASImprove = .2*level;
 			break;
 		case LANDBOMBER:
 			this.AAImprove = .5*Math.sqrt(level);

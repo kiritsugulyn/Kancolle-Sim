@@ -5460,7 +5460,7 @@ var EQDATA = {
 	570: {
 		name: 'High-speed Abyssal Torpedo mod. 2',
 		nameJP: '高速深海魚雷 mod.2',
-		type: TORPEDO, //is actually midget sub, but doesn't allow opening torp
+		type: MIDGETSUB,
 		btype: 0,
 		TP: 13,
 		ACC: 3,
@@ -5597,7 +5597,7 @@ var EQDATA = {
 		name: 'Abyssal Ambush Torpedo',
 		nameJP: '深海待伏魚雷',
 		added: '2017-11-19',
-		type: TORPEDO, //is actually midget sub, but doesn't allow opening torp
+		type: MIDGETSUB, 
 		btype: 0,
 		TP: 19,
 		ACC: 9,
@@ -5727,7 +5727,7 @@ var EQDATA = {
 		name: 'Abyssal Target',
 		nameJP: '深海標的',
 		added: '2018-12-27',
-		type: TORPEDO, //is actually midget sub, but doesn't allow opening torp
+		type: MIDGETSUB, 
 		btype: 0,
 		FP: 4,
 		TP: 18,

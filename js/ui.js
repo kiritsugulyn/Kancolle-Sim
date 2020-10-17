@@ -19,11 +19,11 @@ if (!HASURLDATA || HASURLDATA_CONFIG) {
 // o.appendChild(document.createTextNode(options[i][0]));
 // document.getElementById('Sh'+s+'F'+f).appendChild(o);
 var edata = [['Main Gun (S)',[MAINGUNS,MAINGUNSAA],[MAINGUNS]],['Main Gun (M)',[MAINGUNM],[MAINGUNM]],['Main Gun (L)',[MAINGUNL,MAINGUNXL],[MAINGUNL]],['Secondary Gun',[SECGUN,SECGUNAA],[SECGUN]],
-				['Anti-Air Gun',[AAGUN],[AAGUN]],['AA Fire Director',[AAFD],[AAFD]],['Torpedo',[TORPEDO,TORPEDOSS],[TORPEDO]],['Midget Sub',[MIDGETSUB],[MIDGETSUB]],
-				['Fighter',[FIGHTER],[FIGHTER]],['Torpedo Bomber',[TORPBOMBER],[TORPBOMBER]],['Dive Bomber',[DIVEBOMBER],[DIVEBOMBER]],['Other Aircraft',[CARRIERSCOUT,AUTOGYRO,ASWPLANE],[CARRIERSCOUT,AUTOGYRO,ASWPLANE]],
-				['Seaplane',[SEAPLANE,FLYINGBOAT],[SEAPLANE]],['Seaplane Bomber',[SEAPLANEBOMBER],[SEAPLANEBOMBER]],['Seaplane Fighter',[SEAPLANEFIGHTER],[SEAPLANEFIGHTER]],['RADAR',[RADARS,RADARL,RADARXL],[RADARS]],
-				['SONAR',[SONARS,SONARL],[SONARS]],['Depth Charge',[DEPTHCHARGE],[DEPTHCHARGE]],['Engine',[ENGINE],[ENGINE]],['Shells',[APSHELL,TYPE3SHELL],[APSHELL,TYPE3SHELL]],
-				['Bulge',[BULGEM,BULGEL],[BULGEM]],['Night Battle',[SEARCHLIGHTS,STARSHELL,PICKET,SEARCHLIGHTL],[SEARCHLIGHTS,STARSHELL,PICKET]],['Jet',[JETBOMBER],[JETBOMBER]],['Misc',[LANDINGCRAFT,WG42,SRF,FCF,DRUM,SCAMP,REPAIR,RATION,LANDINGTANK,OILDRUM,TRANSPORTITEM,SUBRADAR,LANDBOMBER,INTERCEPTOR,OTHER],[]]];
+				['Anti-Air Weapon',[AAGUN,AAFD],[AAGUN,AAFD]],['Torpedo/Midgetsub',[TORPEDO,TORPEDOSS,MIDGETSUB],[TORPEDO]],
+				['Fighter/Interceptor',[FIGHTER,INTERCEPTOR],[FIGHTER,INTERCEPTOR]],['Torpedo Bomber',[TORPBOMBER],[TORPBOMBER]],['Dive Bomber/Jet',[DIVEBOMBER,JETBOMBER],[DIVEBOMBER,JETBOMBER]],['Land Bomber',[LANDBOMBER],[LANDBOMBER]],['Scout Plane',[SEAPLANE,CARRIERSCOUT,CARRIERSCOUT2,FLYINGBOAT,LANDSCOUT],[SEAPLANE,CARRIERSCOUT]],['ASW plane',[AUTOGYRO,ASWPLANE],[AUTOGYRO,ASWPLANE]],
+				['Seaplane Bomber',[SEAPLANEBOMBER],[SEAPLANEBOMBER]],['Seaplane Fighter',[SEAPLANEFIGHTER],[SEAPLANEFIGHTER]],['RADAR',[RADARS,RADARL,RADARXL,SUBRADAR],[RADARS,SUBRADAR]],
+				['ASW Weapon',[SONARS,SONARL,DEPTHCHARGE],[SONARS,DEPTHCHARGE]],['Engine/Bulge',[ENGINE,BULGEM,BULGEL],[ENGINE,BULGEM]],['Shells',[APSHELL,TYPE3SHELL],[APSHELL,TYPE3SHELL]],
+				['Night Battle',[SEARCHLIGHTS,STARSHELL,PICKET,SEARCHLIGHTL],[SEARCHLIGHTS,STARSHELL,PICKET]],['Landingcraft',[LANDINGCRAFT,LANDINGTANK],[LANDINGCRAFT,LANDINGTANK]],['Rocket Artillery',[WG42],[WG42]],['Ration',[RATION],[RATION]],['Skilled Crew',[SCAMP,PICKET],[SCAMP,PICKET]],['Misc',[SRF,FCF,DRUM,REPAIR,OILDRUM,TRANSPORTITEM,OTHER],[]]];
 if (!HASURLDATA || HASURLDATA_CONFIG) {
 	var table = $('<table class="dialog4"></table>'), c = 0;
 	while (c < edata.length) {
@@ -349,10 +349,14 @@ function dialogShip(types,side) {
 		var shipbase = SHIPDATA[baseships[i][0]];
 		if (--c<=0) { c=4; table.append(tr); tr = $('<tr></tr>'); }
 		var html = '<td><img src="assets/icons/'+shiplast.image+'" onclick="dSetShip('+baseships[i][baseships[i].length-1]+')"/><br>';
-		if (side==1) html = html.replace('<td>','<td onclick="dSetShip('+baseships[i][baseships[i].length-1]+')" style="cursor:pointer">');
-		var namechange = (shiplast.name.indexOf(shipbase.name)!=-1);
-		if (namechange) html+='<span>'+shipbase.name+'</span><br>';
-		else html+='<span>'+shiplast.name+'</span><br>';
+		if (side==1) {
+			html = html.replace('<td>','<td onclick="dSetShip('+baseships[i][baseships[i].length-1]+')" style="cursor:pointer">');
+			html += '<span>'+shiplast.name+' ('+baseships[i]+')</span><br>';
+		}else{
+			var namechange = (shiplast.name.indexOf(shipbase.name)!=-1);
+			if (namechange) html+='<span>'+shipbase.name+'</span><br>';
+			else html+='<span>'+shiplast.name+'</span><br>';
+		}
 		if (side==0) {
 			if (namechange) html+='<span onclick="dSetShip('+baseships[i][0]+')" class="dialogkai">Base</span>';
 			else html+='<span onclick="dSetShip('+baseships[i][0]+')" class="dialogkai">'+shipbase.name+'</span>';
@@ -416,20 +420,22 @@ function dialogEquip(types) {
 		else $('#dialogselequip').append('<span>Abyssal:</span><br>');
 		var table = $('<table class="dialog3"></table>');
 		var STATS = ['DIVEBOMB','FP','TP','AA','AR','ACC','EV','ASW','LOS'];
-		for (var eqid in EQDATA) {
-			if ((k==0&&eqid>=500)||(k==1&&eqid<500)) continue;
-			var equip = EQDATA[eqid];
-			if (types.indexOf(equip.type)==-1) continue;
-			var tr = $('<tr></tr>');
-			tr.append('<td class="left" onclick="dSetEquip('+eqid+')"><img src="assets/items/'+EQTDATA[equip.type].image+'.png"/></td>');
-			var td = $('<td onclick="dSetEquip('+eqid+')"></td>');
-			td.append('<span>'+equip.name+'</span><br>');
-			for (var j=0; j<STATS.length; j++) {
-				if (equip[STATS[j]]) td.append('<span><img class="imgstat" src="assets/stats/'+STATS[j].toLowerCase()+'.png"/>'+equip[STATS[j]]+'</span>');
+		types.forEach((type) => {
+			for (var eqid in EQDATA) {
+				if ((k==0&&eqid>=500)||(k==1&&eqid<500)) continue;
+				var equip = EQDATA[eqid];
+				if (equip.type !== type) continue;
+				var tr = $('<tr></tr>');
+				tr.append('<td class="left" onclick="dSetEquip('+eqid+')"><img src="assets/items/'+EQTDATA[equip.type].image+'.png"/></td>');
+				var td = $('<td onclick="dSetEquip('+eqid+')"></td>');
+				td.append('<span>'+equip.name+'</span><br>');
+				for (var j=0; j<STATS.length; j++) {
+					if (equip[STATS[j]]) td.append('<span><img class="imgstat" src="assets/stats/'+STATS[j].toLowerCase()+'.png"/>'+equip[STATS[j]]+'</span>');
+				}
+				tr.append(td);
+				table.append(tr);
 			}
-			tr.append(td);
-			table.append(tr);
-		}
+		})
 		$('#dialogselequip').append(table);
 		if (k==0) $('#dialogselequip').append('<br>');
 	}
