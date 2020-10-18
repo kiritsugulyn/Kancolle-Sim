@@ -174,6 +174,7 @@ EQTDATA[TORPEDO] = {
 EQTDATA[TORPEDOSS] = {
 	name: 'Torpedo',
 	image: 5,
+	improve: {Pnb:1,ACCnb:1.3},
 	btype: B_TORPEDO,
 	canequip: ['SS','SSV'],
 };
