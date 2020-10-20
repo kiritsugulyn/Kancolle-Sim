@@ -221,7 +221,9 @@ function showAdditionalStats(fleet) {
 			for (let NBtype of ships[i].NBtypes()) {
 				var name = '', chance = NBchance;
 				var typedata = NBATTACKDATA[NBtype];
-				if (typedata.chanceMod > 0) chance /= typedata.chanceMod;
+				let chanceMod = typedata.chanceMod;
+				if (ships[i].isSub && NBtype == 3 && ((ships[i].numSpecialTorp && ships[i].hasSubRadar) || ships[i].numSpecialTorp >= 2)) chanceMod = 1.1;
+				if (chanceMod > 0) chance /= chanceMod;
 				else chance = .99;
 				name = typedata.name;
 				td.append('<div style="margin-left:16px">'+name+': '+Math.floor(100*chance*chanceleft)+'%</div>');

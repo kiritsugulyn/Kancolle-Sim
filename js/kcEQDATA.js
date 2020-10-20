@@ -358,7 +358,7 @@ EQTDATA[BULGEL] = {
 	canequip: ['FBB','BB','BBV','CV','CVB'],
 };
 EQTDATA[LANDINGCRAFT] = {
-	name: 'Misc',
+	name: 'Landing Equip',
 	image: 20,
 	btype: B_LC1,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
@@ -393,8 +393,9 @@ EQTDATA[PICKET] = {
 	canequipS: [381, 500, 529, 536, 621, 626],
 };
 EQTDATA[WG42] = {
-	name: 'Misc',
+	name: 'Landing Equip',
 	image: 31,
+	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['DD','CL','CAV','BBV','SS','SSV','AS','AV','LHA'],
 	canequipS: [500, 573, 591, 592],
 	cannotequipS: [445, 553, 554],
@@ -452,7 +453,7 @@ EQTDATA[SEAPLANEFIGHTER] = {
 	isfighter: true,
 };
 EQTDATA[LANDINGTANK] = {
-	name: 'Misc',
+	name: 'Landing Equip',
 	image: 36,
 	btype: B_LC3,
 	improve: {Pshell:1,Pnb:1},
@@ -466,7 +467,7 @@ EQTDATA[OILDRUM] = {
 	canequip: ['AO'],
 };
 EQTDATA[LANDBOMBER] = {
-	name: 'Misc',
+	name: 'Land Bomber',
 	image: 37,
 	canequip: ['LandBase'],
 	isPlane: true,
@@ -475,14 +476,14 @@ EQTDATA[LANDBOMBER] = {
 	istorpbomber: true,
 };
 EQTDATA[INTERCEPTOR] = {
-	name: 'Misc',
+	name: 'Interceptor',
 	image: 38,
 	canequip: ['LandBase'],
 	isPlane: true,
 	isfighter: true,
 };
 EQTDATA[LANDSCOUT] = {
-	name: 'Misc',
+	name: 'Scout Plane',
 	image: 9,
 	canequip: ['LandBase'],
 	isPlane: true,
@@ -2905,7 +2906,6 @@ var EQDATA = {
 		added: '2017-02-25',
 		type: TORPEDOSS,
 		btype: B_TORPEDO,
-		specialCutIn: true,
 		TP: 15,
 		ACC: 3,
 		EV: 1,
@@ -2917,7 +2917,6 @@ var EQDATA = {
 		added: '2017-02-25',
 		type: TORPEDOSS,
 		btype: B_TORPEDO,
-		specialCutIn: true,
 		TP: 15,
 		ACC: 5,
 		EV: 4,
@@ -3048,6 +3047,7 @@ var EQDATA = {
 		name: 'Type 95 Depth Charge',
 		nameJP: '九五式爆雷',
 		added: '2017-05-02',
+		improve: {Pasw:1,ACCasw:1.3},
 		type: DEPTHCHARGE,
 		btype: B_DEPTHCHARGE2,
 		ASW: 4,
@@ -3056,6 +3056,7 @@ var EQDATA = {
 		name: 'Type 2 Depth Charge',
 		nameJP: '二式爆雷',
 		added: '2017-05-02',
+		improve: {Pasw:1,ACCasw:1.3},
 		type: DEPTHCHARGE,
 		btype: B_DEPTHCHARGE2,
 		ASW: 7,

@@ -22967,6 +22967,16 @@ var SHIPDATA = {
 		nameJP: '戦艦仏棲姫 バカンスmode',
 		image: 'S1834.jpg',
 		type: 'BBV',
+		equipWeak: [
+			{
+				mod: 1.2,
+				eqtypes: [APSHELL],
+			},
+			{
+				mod: 1.3,
+				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
+			}
+		],
 		HP: 770,
 		FP: 212,
 		TP: 0,
@@ -22987,6 +22997,16 @@ var SHIPDATA = {
 		nameJP: '戦艦仏棲姫 バカンスmode',
 		image: 'S1834.jpg',
 		type: 'BBV',
+		equipWeak: [
+			{
+				mod: 1.2,
+				eqtypes: [APSHELL],
+			},
+			{
+				mod: 1.3,
+				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
+			}
+		],
 		HP: 770,
 		FP: 252,
 		TP: 0,
@@ -23007,6 +23027,16 @@ var SHIPDATA = {
 		nameJP: '戦艦仏棲姫 バカンスmode',
 		image: 'S1834.jpg',
 		type: 'BBV',
+		equipWeak: [
+			{
+				mod: 1.2,
+				eqtypes: [APSHELL],
+			},
+			{
+				mod: 1.3,
+				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
+			}
+		],
 		HP: 770,
 		FP: 272,
 		TP: 0,
@@ -23027,6 +23057,16 @@ var SHIPDATA = {
 		nameJP: '戦艦仏棲姫-壊 バカンスmode',
 		image: 'S1837.jpg',
 		type: 'BBV',
+		equipWeak: [
+			{
+				mod: 1.2,
+				eqtypes: [APSHELL],
+			},
+			{
+				mod: 1.3,
+				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
+			}
+		],
 		HP: 770,
 		FP: 232,
 		TP: 0,
@@ -23047,6 +23087,16 @@ var SHIPDATA = {
 		nameJP: '戦艦仏棲姫-壊 バカンスmode',
 		image: 'S1837.jpg',
 		type: 'BBV',
+		equipWeak: [
+			{
+				mod: 1.2,
+				eqtypes: [APSHELL],
+			},
+			{
+				mod: 1.3,
+				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
+			}
+		],
 		HP: 770,
 		FP: 272,
 		TP: 0,
@@ -23067,6 +23117,16 @@ var SHIPDATA = {
 		nameJP: '戦艦仏棲姫-壊 バカンスmode',
 		image: 'S1837.jpg',
 		type: 'BBV',
+		equipWeak: [
+			{
+				mod: 1.2,
+				eqtypes: [APSHELL],
+			},
+			{
+				mod: 1.3,
+				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
+			}
+		],
 		HP: 770,
 		FP: 292,
 		TP: 0,

@@ -238,7 +238,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (eq.type == DIVEBOMBER || eq.type == JETBOMBER) this.hasDivebomber = true;
 		if (eq.type == FCF) this.hasFCF = equips[i];
 		if (eq.type == SUBRADAR) this.hasSubRadar = true;
-		if (eq.specialCutIn) this.numSpecialTorp = this.numSpecialTorp+1 || 1;
+		if ([213,214,383].indexOf(eq.mid) !== -1) this.numSpecialTorp = this.numSpecialTorp+1 || 1;
 		if (eq.type == REPAIR) {
 			if (this.repairs) this.repairs.push(equips[i]);
 			else this.repairs = [equips[i]];
@@ -288,7 +288,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (eq.LOS) this.LOSeq += eq.LOS;
 		if (eq.TP) tpEquip += eq.TP;
 		
-		if (eq.btype == B_DEPTHCHARGE2 && eq.ASW) {
+		if (eq.mid == 226 || eq.mid == 227) {
 			aswPenetrate += Math.max(0, Math.sqrt(eq.ASW - 2) + +(this.type == 'DE'));
 		}
 
@@ -647,10 +647,10 @@ Ship.prototype.NBtypes = function() {
 	if (MECHANICS.destroyerNBCI && this.type == 'DD') {
 		if (mguns && torps && this.hasLOSRadar) this._nbtypes.push(7);
 		if (this.hasLookout && torps && this.hasLOSRadar) this._nbtypes.push(8);
-	}
-	if (this.hasSubRadar && this.numSpecialTorp) torps++;
-	
-	if (torps >= 2) this._nbtypes.push(3);  //torp cut-in
+    }
+    
+	if (this.isSub && this.hasSubRadar && this.numSpecialTorp) this._nbtypes.push(3);
+	else if (torps >= 2) this._nbtypes.push(3);  //torp cut-in
 	else if (mguns >= 3) this._nbtypes.push(5); //triple gun cut-in
 	else if (mguns >= 2 && sguns) this._nbtypes.push(4);  //gun cut-in
 	else if (torps && mguns) this._nbtypes.push(2);  //mix cut-in
@@ -804,22 +804,27 @@ Ship.prototype.NBPower = function(target) {
 }
 
 Ship.prototype.ASWPower = function() {
+    var eqtypes = [SONARS,SONARL,DEPTHCHARGE,AUTOGYRO,ASWPLANE,DIVEBOMBER,TORPBOMBER,SEAPLANEBOMBER];
 	if (this._aswpower) return this._aswpower;
-	var equipASW = 0, hassonar = false, hasdc = false, hasdc2 = false;
-	for (var i=0; i<this.equips.length; i++) {
-		if (this.equips[i].ASW) equipASW += this.equips[i].ASW;
-		if (this.equips[i].btype == B_SONAR) hassonar = true;
-		if (this.equips[i].btype == B_DEPTHCHARGE) hasdc = true;
-		if (this.equips[i].btype == B_DEPTHCHARGE2) hasdc2 = true;
-	}
-	var bonus = (this.improves.Pasw)? Math.floor(this.improves.Pasw) : 0;
-	var mod2 = 1, synergyMod = 1;
+    var equipASW = 0, effEquipASW = 0, hassonar = false, hassonars = false, hasdc = false, hasdc1 = false, hasdc2 = false;
+    if (this.equips) this.equips.forEach((eq) => {
+        equipASW = (eq.ASW || 0);
+        if (eqtypes.indexOf(eq.type) !== -1) effEquipASW += (eq.ASW || 0);
+        if (eq.btype == B_SONAR) hassonar = true;
+        if (eq.type == SONARS) hassonars = true;
+        if (eq.type == DEPTHCHARGE) hasdc = true;
+        if (eq.mid == 44 || eq.mid == 45) hasdc1 = true;
+        if (eq.mid == 226 || eq.mid == 227) hasdc2 = true;
+    });
+	var synergyMod = 1, synergyMod2 = 1;
 	if (MECHANICS.aswSynergy) {
-		if (hassonar && hasdc2) mod2 += .15;
-		if (hasdc && hasdc2) mod2 += .1;
-		synergyMod = (hassonar && hasdc)? 1.15 : 1;
+        synergyMod = (hassonar && hasdc)? 1.15 : 1;
+        if (hasdc2){
+            if (hassonars && hasdc1) synergyMod2 = 1.25;
+            else if (hasdc1) synergyMod2 = 1.1;
+        }
 	}
-	this._aswpower = (2*Math.sqrt(this.ASW-equipASW)+1.5*equipASW+((this.planeasw)? 8 : 13)+bonus) * synergyMod * mod2;
+	this._aswpower = (2*Math.sqrt(this.ASW-equipASW)+1.5*effEquipASW+((this.planeasw)? 8 : 13)+(this.improves.Pasw||0)) * synergyMod * synergyMod2;
 	return this._aswpower;
 }
 
@@ -1575,7 +1580,11 @@ Equip.prototype.setImprovement = function(level) {
 			break;
 		case DIVEBOMBER:
             if (this.AA && this.AA >=4) this.AAImprove = .25*level;
-            else this.ASImprove = .2*level;
+            else {
+                this.ASImprove = .2*level;
+                this.improves.Pshell = .2*level;
+                this.improves.Pasw = .2*level;
+            }
 			break;
 		case LANDBOMBER:
 			this.AAImprove = .5*Math.sqrt(level);
@@ -1588,7 +1597,10 @@ Equip.prototype.setImprovement = function(level) {
             break;
 		case SEAPLANEBOMBER:
 			this.ASImprove = .2*level;
-			break;
+            break;
+        case AUTOGYRO:
+            this.improves.Pasw = .2*level;
+            break;
 	}
 	
 	var improve = (this.improve)? this.improve : EQTDATA[this.type].improve;

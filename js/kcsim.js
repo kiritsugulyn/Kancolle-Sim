@@ -197,7 +197,7 @@ function getRepairTime(ship) {
 	switch (SHIPDATA[ship.mid].type) {
 		case 'BB': case 'BBV': case 'CV': case 'AR': mod = 2; break;
 		case 'CA': case 'CAV': case 'FBB': case 'CVL': case 'AS': mod = 1.5; break;
-		case 'SS': mod = .5; break;
+		case 'SS': case 'DE': mod = .5; break;
 		default: mod = 1; break;
 	}
 	return (ship.maxHP - ship.HP)*base*mod+30;
@@ -432,15 +432,17 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 			if (da || cutin) break;
 			let attackData = NBATTACKDATA[NBtype];
 			if (target.isInstall && attackData.torpedo) continue;
-			let chance = (attackData.chanceMod == 0)? .99 : NBchance/attackData.chanceMod;
+			let chanceMod = attackData.chanceMod;
+			if (ship.isSub &&  NBtype == 3 && ((ship.numSpecialTorp && ship.hasSubRadar) || ship.numSpecialTorp >= 2)) chanceMod = 1.1;
+			let chance = (chanceMod == 0)? .99 : NBchance/chanceMod;
 			if (Math.random() < chance) {
 				if (attackData.numHits) da = attackData.numHits;
 				cutin = attackData.id || NBtype;
 				cutinR = NBtype;
 				let dmgMod = attackData.dmgMod;
-				if (NBtype == 3) { //special sub TCI
-					if (ship.numSpecialTorp >= 2) dmgMod = 1.6;
+				if (ship.isSub && NBtype == 3) { //special sub TCI
 					if (ship.numSpecialTorp && ship.hasSubRadar) dmgMod = 1.75;
+					else if (ship.numSpecialTorp >= 2) dmgMod = 1.6;
 				} else if (NBtype == 7 || NBtype == 8) { //D-gun bonus
 					let count = 0, count2 = 0;
 					for (let equip of ship.equips) {
@@ -621,8 +623,8 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 
 function ASW(ship,target,isnight,APIhou) {
 	var sonarAcc = 0;
-	for (var i=0; i<ship.equips.length; i++) if (ship.equips[i].btype == B_SONAR) sonarAcc += 2*ship.equips[i].ASW;
-	if (ship.improves.ACCasw) sonarAcc += ship.improves.ACCasw;
+	for (var i=0; i<ship.equips.length; i++) if (ship.equips[i].type == SONARS) sonarAcc += 2*ship.equips[i].ASW;
+	sonarAcc += (ship.improves.ACCasw || 0);
 	var accMod = ship.moraleMod();
 	if (!formationCountered(ship.fleet.formation.id,target.fleet.formation.id)) accMod *= ship.getFormation().shellacc;
 	var evFlat = 0;
@@ -633,7 +635,7 @@ function ASW(ship,target,isnight,APIhou) {
 			evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD2 : SIMCONSTS.vanguardEvOther2;
 		}
 	}
-	var acc = hitRate(ship,80,sonarAcc+(ship.ACC||0),accMod);
+	var acc = hitRate(ship,80,sonarAcc,accMod);
 	var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().ASWev,evFlat,1.3,ship.planeasw),ship.critdmgbonus);
 	var dmg = 0, realdmg = 0;
 	var preMod = (isnight)? 0 : ship.getFormation().ASWmod*ENGAGEMENT*ship.damageMod();
@@ -1230,14 +1232,14 @@ function takeDamage(ship,damage) {
 
 function hitRate(ship,accBase,accFlat,accMod) {
 	if (C) console.log('    accbase:'+accBase+' accflat:'+accFlat.toFixed(1)+' accmod:'+accMod.toFixed(2));
-	return (accBase + 2*Math.sqrt(ship.LVL) + Math.sqrt(ship.LUK*1.5) + accFlat)*accMod*.01;
+	return (accBase + 2*Math.sqrt(ship.LVL) + 1.5*Math.sqrt(ship.LUK) + accFlat)*accMod*.01;
 }
 
 function accuracyAndCrit(ship,target,hit,evMod,evFlat,critrateMod,isPlanes,critBonusFlat,cvCI) {
 	if (evMod===undefined) evMod = 1;
 	
-	var evade = (target.EV+Math.sqrt(target.LUK*2)) * evMod; //formation
-	var dodge = (evade>65)? 55+2*Math.sqrt(evade-65) : ((evade>40)? 40+3*Math.sqrt(evade-40) : evade);
+	var evade = Math.floor((target.EV+Math.sqrt(target.LUK*2)) * evMod); //formation
+	var dodge = (evade>65)? Math.floor(55+2*Math.sqrt(evade-65)) : ((evade>40)? Math.floor(40+3*Math.sqrt(evade-40)) : evade);
 	dodge*=.01;
 	if (target.fuelleft < 7.5) dodge -= (7.5-target.fuelleft)/10;
 	if (evFlat) dodge += evFlat*.01;
@@ -1249,19 +1251,19 @@ function accuracyAndCrit(ship,target,hit,evMod,evFlat,critrateMod,isPlanes,critB
 		if (ship.bonusSpecial) specialMod *= getShipHistoricalBonus(ship,target);
 		hit *= specialMod;
 	}
+	hit = Math.floor(hit*100)*.01;
 
-	if (C) console.log('	hit:'+hit.toFixed(3)+' dodge:'+dodge.toFixed(3));
+	if (C) console.log('	hit:'+hit.toFixed(2)+' dodge:'+dodge.toFixed(2));
 	acc = Math.max(hit-dodge,.1);
 	acc *= target.moraleModEv();
 	acc = Math.min(.96,acc);
-	
-	var crit = Math.sqrt(100*acc)*critrateMod*.01;
-	if (isPlanes) {
-		if (ship.ACCplane) acc += ship.ACCplane*.01;
-		if (!cvCI && ship.critratebonus) crit += ship.critratebonus*.01; //x.75 earlier, find real value?
-	}
+	if (isPlanes) acc += (ship.ACCplane||0)*.01;
+
+	var crit = Math.floor(Math.sqrt(100*acc)*critrateMod)*.01;
+	if (isPlanes && !cvCI) crit += (ship.critratebonus||0)*.01;
 	crit += critBonusFlat || 0;
-	if (C) console.log('	accfinal:'+acc.toFixed(3)+', crit:'+crit.toFixed(3));
+
+	if (C) console.log('	accfinal:'+acc.toFixed(2)+', crit:'+crit.toFixed(2));
 	return [acc,crit];
 }
 
@@ -1318,7 +1320,7 @@ function damage(ship,target,base,preMod,postMod,cap,plane) {
 
 	var ar = target.AR + (target.improves.AR || 0);
 	dmg -= .7*ar+.6*Math.floor(Math.random()*ar) - (target.debuff||0);
-	if (target.isSub && ship.aswPenetrate) dmg += ship.aswPenetrate;
+	if (target.isSub) dmg += (ship.aswPenetrate || 0);
 	if (C) console.log('	dmg after def:'+dmg.toFixed(1));
 	
 	if (ship.ammoleft < 5) dmg *= .2*ship.ammoleft;
@@ -1359,7 +1361,7 @@ function damageSupport(ship,target,base,preMod,postMod,cap){
 
 	var ar = target.AR + (target.improves.AR || 0);
 	dmg -= .7*ar+.6*Math.floor(Math.random()*ar) - (target.debuff||0);
-	if (target.isSub && ship.aswPenetrate) dmg += ship.aswPenetrate;
+	if (target.isSub) dmg += (ship.aswPenetrate || 0);
 	if (C) console.log('	dmg after def:'+dmg.toFixed(1));
 	
 	if (ship.ammoleft < 5) dmg *= .2*ship.ammoleft;
