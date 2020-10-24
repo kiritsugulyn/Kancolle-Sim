@@ -576,15 +576,6 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	
 	if (this.repairs) this.repairsOrig = this.repairs.slice();
 	
-	if (MECHANICS.divebomberInstall && this.hasDivebomber) {
-		for (let eq of this.equips) {
-			if (eq.canShellInstall) {
-				this.hasDivebomber = false;
-				break;
-			}
-		}
-	}
-	
 	this.hasTorpStat = this.TP - tpEquip > 0 && SHIPDATA[this.mid].TP > 0;
 	
 	if (aswPenetrate > 0) this.aswPenetrate = aswPenetrate;
@@ -878,76 +869,66 @@ Ship.prototype.getAACItype = function(atypes) {
 		hasID[this.equips[i].mid] = hasID[this.equips[i].mid] + 1 || 1;
 	}
 	
-	if (this.hasBuiltInFD) {  //Akizuki-class
+    if (this.sclass == 54 && atypes[A_HAGUN]) {  //Akizuki-class
 		if (atypes[A_HAGUN] >= 2 && atypes[A_AIRRADAR]) types.push(1);
 		if (atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(2);
-		if (atypes[A_HAGUN] >= 2) types.push(3);
-	}
-	if (this.mid == 428 && concentrated && (atypes[A_HAGUN]||atypes[A_HAFD])) {   //428 = Maya Kai Ni
-		if (atypes[A_AIRRADAR]) types.push(10);
-		types.push(11);
-	}
-	if (this.mid == 141 && atypes[A_HAGUN] && atypes[A_AAGUN]) { //Isuzu Kai Ni
-		if (atypes[A_AIRRADAR]) types.push(14);
-		types.push(15);
-	}
-	if (this.mid == 470 && atypes[A_HAGUN] && atypes[A_AAGUN]) { //Kasumi Kai 2 B
-		if (atypes[A_AIRRADAR]) types.push(16);
-		types.push(17);
-	}
-	if (this.mid == 622 && atypes[A_HAGUN] && atypes[A_AAGUN] && atypes[A_AIRRADAR]) { //Yuubari Kai Ni
-		types.push(16);
-	}
-	if (this.mid == 487 && concentrated && atypes[A_HAGUN] > (atypes[A_HAFD] || 0)) types.push(19); //Kinu Kai Ni (1)
-	if (this.mid == 488 && atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(21); //Yura Kai Ni
-	if ([77,82,87,88,553].indexOf(this.mid) != -1 && hasID[274] && atypes[A_AIRRADAR] && atypes[A_TYPE3SHELL]) types.push(25); //Ise-class
-
-	if((this.sclass == 91) && hasID[308] || hasID[313]) { //Fletcher class
-		if (hasID[308] >= 2) types.push(34);
-		if (hasID[313] >= 1 && hasID[308] >= 1) types.push(35);
-		if (hasID[313] >= 2) types.push(37);
-		if (hasID[313] >= 2 && hasID[307]) types.push(36);
-	}
-	
-	if (this.mid == 597 || this.mid == 696) { //Atlanta
-		if (hasID[363] && (hasID[363] || 0) + (hasID[362] || 0) >= 2) types.push(39);
-		if (hasID[307] && (hasID[363] || 0) + (hasID[362] || 0) >= 2) types.push(40);
-		if ((hasID[363] || 0) + (hasID[362] || 0) >= 2) types.push(41);
-	}
-	
-	var add6 = false;
-	if (this.type=='BB'||this.type=='BBV'||this.type=='FBB') {  //is BB
-		if (atypes[A_GUN] && atypes[A_TYPE3SHELL] && atypes[A_AAFD]) {
-			if (atypes[A_AIRRADAR]) types.push(4);
-			add6 = true;
-		}
-	}
-	if (atypes[A_HAFD] >= 2 && atypes[A_AIRRADAR]) types.push(5);
-	if (add6) types.push(6);
-	if (atypes[A_HAFD] && atypes[A_AIRRADAR]) types.push(8); //changed 8 > 7 some time between 2018-04-21 - 2019-04-24, too minor for mechanic toggle
-	if (atypes[A_HAGUN] && atypes[A_AAFD] && atypes[A_AIRRADAR]) types.push(7);
-	
-	if (this.mid == 546 && hasID[275] && atypes[A_AIRRADAR]) types.push(26); //Musashi Kai Ni
-	if ([82,88,553,148,546].indexOf(this.mid) != -1 && hasID[274] && atypes[A_AIRRADAR]) types.push(28); //Ise-class + Musashi Kai
-	if ((this.mid == 557 || this.mid == 558) && atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(29); //Isokaze+Hamakaze B Kai
-	
-	if (atypes[A_HAGUN] && atypes[A_AAFD]) types.push(9);
-	
-	if(this.mid == 579 && atypes[A_HAGUN] && atypes[A_AAGUN]) types.push(33); //Gotland Kai
-	
-	if (concentrated && atypes[A_AAGUN] >= 2 && atypes[A_AIRRADAR]) types.push(12);
-	// if (concentrated && atypes[A_HAFD] && atypes[A_AIRRADAR]) return 13;
-	
-	if (this.mid == 418 && concentrated) types.push(18); //Satsuki Kai Ni
-	if (this.mid == 487 && concentrated) types.push(20); //Kinu Kai Ni (2)
-	if (this.mid == 548 && concentrated) types.push(22); //Fumizuki Kai Ni
-	if ((this.mid == 539 || this.mid == 530) && atypes[A_AAGUN] > concentrated) types.push(23); //UIT-25, I-504
-	if (this.mid == 477) { //Tenryuu Kai Ni
-		if (atypes[A_HAGUN] >= 3) types.push(30);
-		if (atypes[A_HAGUN] >= 2) types.push(31);
-	}
-	if (this.mid == 478 && atypes[A_HAGUN] && atypes[A_AAGUN] > concentrated) types.push(24); //Tatsuta Kai Ni
-	if ([149,150,151,152,439,364,515,393,519,394].indexOf(this.mid) != -1 && ((hasID[191] && hasID[300]) || (hasID[301] && hasID[191]) || (hasID[301] >= 2))) types.push(32); //royal navy + Kongou-class
+        if (atypes[A_HAGUN] >= 2) types.push(3);
+	}else{
+        if(this.sclass == 91) { //Fletcher class
+            if (hasID[308] >= 2) types.push(34);
+            if (hasID[308] && (hasID[284] || hasID[313])) types.push(35);
+            if ((hasID[284] || 0) + (hasID[313] || 0) >= 2 && hasID[307]) types.push(36);
+            if ((hasID[284] || 0) + (hasID[313] || 0) >= 2) types.push(37);
+        }
+        if (this.sclass == 99) { //Atlanta class
+            if (hasID[363] && (hasID[363] || 0) + (hasID[362] || 0) >= 2) types.push(39);
+            if (hasID[307] && (hasID[363] || 0) + (hasID[362] || 0) >= 2) types.push(40);
+            if ((hasID[363] || 0) + (hasID[362] || 0) >= 2) types.push(41);
+        }
+        if (this.mid == 428 && concentrated && (atypes[A_HAGUN]||atypes[A_HAFD])) {   //428 = Maya Kai Ni
+            if (atypes[A_AIRRADAR]) types.push(10);
+            types.push(11);
+        }
+        if (this.mid == 141 && atypes[A_HAGUN] && atypes[A_AAGUN]) { //Isuzu Kai Ni
+            if (atypes[A_AIRRADAR]) types.push(14);
+            types.push(15);
+        }
+        if ((this.mid == 470 || this.mid == 622) && atypes[A_HAGUN] && atypes[A_AAGUN]) { //Kasumi Kai 2 B + Yuubari Kai Ni
+            if (atypes[A_AIRRADAR]) types.push(16);
+            types.push(17);
+        }
+        if (this.mid == 487 && concentrated && atypes[A_HAGUN] > (atypes[A_HAFD] || 0)) types.push(19); //Kinu Kai Ni (1)
+        if (this.mid == 488 && atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(21); //Yura Kai Ni
+        if ([82,88,553,554].indexOf(this.mid) != -1 && hasID[274] && atypes[A_AIRRADAR] && atypes[A_TYPE3SHELL]) types.push(25); //Ise-class Kai (Ni)
+        
+        if ((this.equiptypes[MAINGUNL] || this.equiptypes[MAINGUNXL]) && atypes[A_TYPE3SHELL] && atypes[A_AAFD] && atypes[A_AIRRADAR]) types.push(4);
+        if (atypes[A_HAFD] >= 2 && atypes[A_AIRRADAR]) types.push(5);
+        if ((this.equiptypes[MAINGUNL] || this.equiptypes[MAINGUNXL]) && atypes[A_TYPE3SHELL] && atypes[A_AAFD]) types.push(6);
+        if (atypes[A_HAFD] && atypes[A_AIRRADAR]) types.push(8); //changed 8 > 7 some time between 2018-04-21 - 2019-04-24, too minor for mechanic toggle
+        if (atypes[A_HAGUN] && atypes[A_AAFD] && atypes[A_AIRRADAR]) types.push(7);
+        
+        if (this.mid == 546 && hasID[275] && atypes[A_AIRRADAR]) types.push(26); //Musashi Kai Ni
+        if ([82,88,553,554,148,546].indexOf(this.mid) != -1 && hasID[274] && atypes[A_AIRRADAR]) types.push(28); //Ise-class Kai (Ni) + Musashi Kai (Ni)
+        if ((this.mid == 557 || this.mid == 558) && atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(29); //Isokaze+Hamakaze B Kai
+        
+        if (atypes[A_HAGUN] && atypes[A_AAFD]) types.push(9);
+        
+        if(this.mid == 579 && atypes[A_HAGUN] && atypes[A_AAGUN]) types.push(33); //Gotland Kai
+        
+        if (concentrated && atypes[A_AAGUN] >= 2 && atypes[A_AIRRADAR]) types.push(12);
+        // if (concentrated && atypes[A_HAFD] && atypes[A_AIRRADAR]) return 13;
+        
+        if (this.mid == 418 && concentrated) types.push(18); //Satsuki Kai Ni
+        if (this.mid == 487 && concentrated) types.push(20); //Kinu Kai Ni (2)
+        if (this.mid == 548 && concentrated) types.push(22); //Fumizuki Kai Ni
+        if ((this.mid == 539 || this.mid == 530) && atypes[A_AAGUN] > concentrated) types.push(23); //UIT-25, I-504
+        if (this.mid == 478 && atypes[A_HAGUN] && atypes[A_AAGUN] > concentrated) types.push(24); //Tatsuta Kai Ni
+        if (this.mid == 477) { //Tenryuu Kai Ni
+            if (atypes[A_HAGUN] >= 3) types.push(30);
+            if (atypes[A_HAGUN] >= 2) types.push(31);
+        }
+        if (([67,78,82,88].indexOf(this.sclass) !== -1 || (this.sclass == 6 && this.findRemodelLvl() >= 2)) && ((hasID[191] && hasID[300]) || (hasID[301] && hasID[191]) || (hasID[301] >= 2))) types.push(32); //royal navy + Kongou-class
+    }
 	
 	return types;
 }
@@ -1326,6 +1307,14 @@ CV.prototype.canOASW = function() {
     if (this.mid !== 646) return false;
     return this.equips.some((eq) => eq.ASW >= 1 && [DIVEBOMBER, TORPBOMBER, AUTOGYRO, ASWPLANE].indexOf(eq.type) !== -1);
 }
+CV.prototype.canShellInstall = function () {
+    if (MECHANICS.divebomberInstall) {
+        let count = this.equips.filter((eq,i) => eq.canShellInstall && this.planecount[i] > 0).length || 0;
+        if (count > 0) return true;
+    }
+    if (this.hasDivebomber) return false;
+    return true;
+}
 
 function CVL(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	CV.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
@@ -1393,7 +1382,8 @@ AO.prototype.loadEquips = function(equips,levels,profs,addstats) {
 				this.shellPower = CV.prototype.shellPower;
 				this.canShell = CV.prototype.canShell;
 				this.canStillShell = CV.prototype.canStillShell;
-				this.numBombers = CV.prototype.numBombers;
+                this.numBombers = CV.prototype.numBombers;
+                this.canShellInstall = CV.prototype.canShellInstall;
 				break;
 			}
 		}
@@ -1684,6 +1674,13 @@ Equip.explicitStatsBonusGears = function(){
             rotorcraftIds: [69, 324, 325, 326, 327],
             helicopter: 0,
             helicopterIds: [326, 327],
+            twin127SmallGunMountModelDK2: 0,
+            twin127SmallGunMountModelDK2Nonexist: 1,
+            twin127SmallGunMountModelDK2Ids: [267],
+            skilledLookouts: 0,
+            skilledLookoutsIds: [129],
+            searchlightSmall: 0,
+            searchlightSmallIds: [74],
         },
         // Ryuusei
         "18": {
@@ -2432,6 +2429,58 @@ Equip.explicitStatsBonusGears = function(){
                     // Suzuya/Kumano CVL, Hyuuga Kai Ni +4 fp
                     ids: [508, 509, 554],
                     multiple: { "houg": 4 },
+                },
+            ],
+        },
+        // Type 99 Dive Bomber Model 22
+        "391": {
+            count: 0,
+            byShip: [
+                {
+                    // Hiyou, Junyou, Shoukaku, Zuikaku
+                    origins: [75, 92, 110, 111],
+                    multiple: { "houg": 1 },
+                },
+                {
+                    // Zuihou, Ryuuhou, Shouhou Kai
+                    ids: [116, 185, 282],
+                    multiple: { "houg": 1 },
+                },
+                {
+                    // Zuihou Kai, Zuihou K2, Zuihou K2B, Ryuuhou Kai
+                    ids: [117, 555, 560, 318],
+                    multiple: { "houg": 1, "houk": 1 },
+                },
+            ],
+        },
+        // Type 99 Dive Bomber Model 22 (Skilled)
+        "392": {
+            count: 0,
+            byShip: [
+                {
+                    // Hiyou, Junyou
+                    origins: [75, 92],
+                    multiple: { "houg": 1, "houk": 1 },
+                },
+                {
+                    // Shoukaku, Zuikaku
+                    origins: [110, 111],
+                    multiple: { "houg": 2, "houk": 1 },
+                },
+                {
+                    // Zuihou, Ryuuhou, Shouhou Kai
+                    ids: [116, 185, 282],
+                    multiple: { "houg": 2, "houk": 1 },
+                },
+                {
+                    // Zuihou Kai, Ryuuhou Kai
+                    ids: [117, 318],
+                    multiple: { "houg": 2, "houk": 2 },
+                },
+                {
+                    // Zuihou K2, Zuihou K2B
+                    ids: [555, 560],
+                    multiple: { "houg": 3, "houk": 2 },
                 },
             ],
         },
@@ -5073,7 +5122,7 @@ Equip.explicitStatsBonusGears = function(){
                         multiple: { "houg": 2, "houk": 1 },
                         synergy: {
                             flags: [ "surfaceRadar" ],
-                            single: { "houg": 2, "raig": 3, "houk": 1 },
+                            single: { "houg": 2, "raig": 1, "houk": 1 },
                         },
                     },
                     {
@@ -5083,23 +5132,49 @@ Equip.explicitStatsBonusGears = function(){
                         // total +6 fp, +4 tp, +4 ev
                         synergy: {
                             flags: [ "surfaceRadar" ],
-                            single: { "houg": 1, "raig": 1, "houk": 2 },
+                            single: { "houg": 1, "raig": 3, "houk": 2 },
                         },
                     },
                 ],
                 // Kagerou Class
-                "30": [
-                    {
-                        multiple: { "houg": 1, "houk": 1 },
-                    },
-                    {
-                        // Kagerou Class K2, total +2 for 1st gun
-                        remodel: 2,
-                        excludes: [556, 557, 558, 559],
-                        single: { "houg": 1 },
-                    },
-                ],
+                "30": {
+                    multiple: { "houg": 1, "houk": 1 },
+                },
             },
+            byShip: [
+                {
+                    // Kagerou K2, Shiranui K2, Kuroshio K2, one-time +1 fp
+                    ids: [566, 567, 568],
+                    single: { "houg": 1 },
+                },
+                {
+                    // Okinami Kai Ni, Akigumo Kai Ni
+                    ids: [569, 648],
+                    synergy: {
+                        flags: [ "surfaceRadar" ],
+                        single: { "raig": 2 },
+                    },
+                },
+                {
+                    // Akigumo Kai Ni
+                    ids: [648],
+                    multiple: { "houg": 2 },
+                    synergy: [
+                        {
+                            flags: [ "surfaceRadar" ],
+                            single: { "houg": 3, "raig": 4, "houk": 3 },
+                        },
+                        {
+                            flags: [ "skilledLookouts" ],
+                            single: { "houg": 2, "tyku": 2, "houk": 3 },
+                        },
+                        {
+                            flags: [ "searchlightSmall" ],
+                            single: { "houg": 3, "houk": -3 },
+                        },
+                    ],
+                },
+            ]
         },
         // 12.7cm Twin Gun Mount Model D Kai 3
         "366": {
@@ -5169,19 +5244,57 @@ Equip.explicitStatsBonusGears = function(){
                     },
                 ],
                 // Kagerou Class
-                "30": [
-                    {
-                        multiple: { "houg": 1, "houk": 1 },
-                    },
-                    {
-                        // Kagerou Class K2, +1 FP, +2 AA for one or two gun(s)
-                        remodel: 2,
-                        excludes: [556, 557, 558, 559],
-                        multiple: { "houg": 1, "tyku": 2 },
-                        countCap: 2,
-                    },
-                ],
+                "30": {
+                    multiple: { "houg": 1, "houk": 1 },
+                },
             },
+            byShip: [
+                {
+                    // Kagerou K2, Shiranui K2, Kuroshio K2, +1 fp, +2 aa for one or two gun(s)
+                    ids: [566, 567, 568],
+                    multiple: { "houg": 1, "tyku": 2 },
+                    countCap: 2,
+                },
+                {
+                    // Okinami Kai Ni, Akigumo Kai Ni
+                    ids: [569, 648],
+                    single: { "houg": 1, "tyku": 2 },
+                },
+                {
+                    // Akigumo Kai Ni, one-time +3 AA
+                    ids: [648],
+                    single: { "tyku": 3 },
+                },
+                {
+                    // Akigumo Kai Ni, one-time +5 AA for 2 guns
+                    ids: [648],
+                    single: { "tyku": 2 },
+                    minCount: 2,
+                },
+                {
+                    // Akigumo Kai Ni
+                    ids: [648],
+                    multiple: { "houg": 2 },
+                    synergy: [
+                        {
+                            flags: [ "surfaceRadar" ],
+                            single: { "houg": 2, "raig": 4, "houk": 2 },
+                        },
+                        {
+                            flags: [ "airRadar" ],
+                            single: { "houg": 1, "tyku": 5, "houk": 2 },
+                        },
+                        {
+                            flags: [ "twin127SmallGunMountModelDK2Nonexist", "skilledLookouts" ],
+                            single: { "houg": 2, "tyku": 2, "houk": 3 },
+                        },
+                        {
+                            flags: [ "twin127SmallGunMountModelDK2Nonexist", "searchlightSmall" ],
+                            single: { "houg": 3, "houk": -3 },
+                        },
+                    ],
+                },
+            ],
         },
         // 12.7cm Twin Gun Mount Model A Kai 3 + AAFD
         "295": {
@@ -5861,10 +5974,10 @@ Equip.explicitStatsBonusGears = function(){
             count: 0,
             byShip: [
                 {
-                    // Okinami K2 with Air Radar fp +1, aa +2, ev +3
+                    // Okinami K2, Akigumo K2 with Air Radar fp +1, aa +2, ev +3
                     // btw1, main.js also counted Surface Radar for her at the same time, but no bouns assigned at all.
                     // btw2, main.js's function `get_type3_nums` refers `api_type[2]` in fact, not our 't3'(`api_type[3]`), so it uses `12 || 13` for all radars.
-                    ids: [569],
+                    ids: [569, 648],
                     synergy: {
                         flags: [ "airRadar" ],
                         single: { "houg": 1, "tyku": 2, "houk": 3 },
@@ -5894,6 +6007,12 @@ Equip.accumulateShipBonusGear = function(bonusGears, equip){
         }
         if(equip.type === AUTOGYRO) synergyGears.rotorcraft += 1;
         if(synergyGears.helicopterIds.includes(equip.mid)) synergyGears.helicopter += 1;
+        if(synergyGears.twin127SmallGunMountModelDK2Ids.includes(equip.mid)) {
+            synergyGears.twin127SmallGunMountModelDK2 += 1;
+            synergyGears.twin127SmallGunMountModelDK2Nonexist = 0;
+        }
+        if(synergyGears.skilledLookoutsIds.includes(equip.mid)) synergyGears.skilledLookouts += 1;
+        if(synergyGears.searchlightSmallIds.includes(equip.mid)) synergyGears.searchlightSmall += 1;
         if(equip.btype == B_RADAR && equip.LOS >= 5) synergyGears.surfaceRadar += 1;
         if(equip.atype == A_AIRRADAR) synergyGears.airRadar += 1;
     }

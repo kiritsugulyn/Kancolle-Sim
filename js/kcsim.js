@@ -725,7 +725,7 @@ function shellPhaseTarget(ship,alive,subsalive,isOASW) {
 			result.alive = alive;
 		} else {
 			var targets;
-			if (ship.hasDivebomber) {
+			if (ship.CVshelltype && !ship.canShellInstall()) {
 				targets = [];
 				for (var j=0; j<alive.length; j++) if (!alive[j].isInstall) targets.push(alive[j]);
 			} else if (ship.isSub) {

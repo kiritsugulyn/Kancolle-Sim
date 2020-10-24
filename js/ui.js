@@ -146,7 +146,7 @@ function showAdditionalStats(fleet) {
 	var tr = $('<tr></tr>');
 	for (var i=0; i<ships.length; i++) {
 		var td = $('<td></td>'); tr.append(td);
-		td.append('<img src="assets/icons/'+SHIPDATA[ships[i].mid].image+'"/><br>');
+		td.append('<img src="assets/icons/'+SHIPDATA[ships[i].mid].image+'" width=160 height=40><br>');
 	}
 	table.append(tr); tr = $('<tr></tr>');
 	for (var i=0; i<ships.length; i++) {
@@ -287,7 +287,7 @@ function showAdditionalStats(fleet) {
 	table.append(tr); tr = $('<tr></tr>');
 	for (var i=0; i<ships.length; i++) {
 		var td = $('<td></td>'); tr.append(td);
-		if (ships[i].hasT3Shell || ships[i].numWG || ships[i].hasDH1 || ships[i].hasDH2 || ships[i].hasDH3 || ships[i].softSkinMult > 1 || ships[i].isoMult > 1) {
+		if ((!ships[i].CVshelltype || ships[i].canShellInstall()) && (ships[i].hasT3Shell || ships[i].numWG || ships[i].hasDH1 || ships[i].hasDH2 || ships[i].hasDH3 || ships[i].softSkinMult > 1 || ships[i].isoMult > 1)) {
 			td.append('VS Installation Power:<br>');
 			var html = '<div style="margin-left:16px">';
 			html += 'Soft-skin: '+Math.floor(ships[i].shellPower({isInstall:true}))+'<br>';
@@ -350,7 +350,7 @@ function dialogShip(types,side) {
 		var shiplast = SHIPDATA[baseships[i][baseships[i].length-1]];
 		var shipbase = SHIPDATA[baseships[i][0]];
 		if (--c<=0) { c=4; table.append(tr); tr = $('<tr></tr>'); }
-		var html = '<td><img src="assets/icons/'+shiplast.image+'" onclick="dSetShip('+baseships[i][baseships[i].length-1]+')"/><br>';
+		var html = '<td><img src="assets/icons/'+shiplast.image+'" onclick="dSetShip('+baseships[i][baseships[i].length-1]+')" width=160 height=40/><br>';
 		if (side==1) {
 			html = html.replace('<td>','<td onclick="dSetShip('+baseships[i][baseships[i].length-1]+')" style="cursor:pointer">');
 			html += '<span>'+shiplast.name+' ('+baseships[i]+')</span><br>';
@@ -3027,17 +3027,17 @@ function simDataRepToCodeFleetE(ship_ke,eParam,formation,oldIds,equips) {
 }
 
 //
-function toggleEchelon(useNew) {
-	if (useNew) {
-		ECHELON.shellmod = .75;
-		ECHELON.ASWmod = 1.1;
-		ECHELON.shellev = 1.6;
-	} else {
-		ECHELON.shellmod = .6;
-		ECHELON.ASWmod = 1;
-		ECHELON.shellev = 1.2;
-	}
-}
+// function toggleEchelon(useNew) {
+// 	if (useNew) {
+// 		ECHELON.shellmod = .75;
+// 		ECHELON.ASWmod = 1.1;
+// 		ECHELON.shellev = 1.6;
+// 	} else {
+// 		ECHELON.shellmod = .6;
+// 		ECHELON.ASWmod = 1;
+// 		ECHELON.shellev = 1.2;
+// 	}
+// }
 
 
 function getELoS(ships,hq=120) {
