@@ -1087,8 +1087,8 @@ Ship.prototype.ptMod = function() {
     var dmgMod = 1; 
     var accMod = 1;
     
-    let num1 = (this.equiptypes[MAINGUNS] || 0) + (this.equiptypes[MAINGUNSAA] || 0);
-    let num2 = (this.equiptypes[SECGUN] || 0) + (this.equiptypes[SECGUNAA] || 0);
+    let num1 = this.equiptypes[MAINGUNS] || 0;
+    let num2 = this.equiptypes[SECGUN] || 0;
     let num3 = this.equiptypes[AAGUN] || 0;
     let num4 = this.equiptypes[PICKET] || 0;
     let num5 = (this.equiptypes[SEAPLANEBOMBER] || 0) + (this.equiptypes[SEAPLANEFIGHTER] || 0);
@@ -1499,20 +1499,15 @@ LandBase.prototype.getCost = function() {
 		switch(eq.type) {
 			case LANDBOMBER:
 			case INTERCEPTOR:
-				cost[0] += Math.floor(1.5*this.PLANESLOTS[i]);
-				cost[1] += Math.floor(2*this.PLANESLOTS[i]/3);
-				break;
-			case SEAPLANE:
-			case CARRIERSCOUT:
-            case CARRIERSCOUT2:
-			case FLYINGBOAT:
-			case LANDSCOUT:
-				cost[0] += Math.floor(this.PLANESLOTS[i]);
-				cost[1] += Math.floor(.75*this.PLANESLOTS[i]);
-				break;
+				cost[0] += Math.ceil(1.5*this.PLANESLOTS[i]);
+				cost[1] += Math.floor(.7*this.PLANESLOTS[i]);
+                break;
+            case HEAVYBOMBER:
+                cost[0] += Math.floor(2*this.PLANESLOTS[i]);
+				cost[1] += Math.floor(2*this.PLANESLOTS[i]);
 			default:
 				cost[0] += Math.floor(this.PLANESLOTS[i]);
-				cost[1] += Math.floor(.66*this.PLANESLOTS[i]);
+				cost[1] += Math.ceil(.6*this.PLANESLOTS[i]);
 		}
 		//resupply cost
 		cost[0] += (this.PLANESLOTS[i] - this.planecount[i])*3;
@@ -1591,23 +1586,59 @@ Equip.prototype.setImprovement = function(level) {
         case AUTOGYRO:
             this.improves.Pasw = .2*level;
             break;
-	}
+        case SECGUN:
+            if ((this.atype == A_HAFD || this.atype == A_HAGUN)) {
+                this.improves.Pshell = .2*level;
+                this.improves.Pnb = .2*level;
+            }else{
+                this.improves.Pshell = .3*level;
+                this.improves.Pnb = .3*level;
+            }
+            break;
+        case BULGEM:
+            this.improves.AR = .2*level;
+            break;
+        case BULGEL:
+            this.improves.AR = .3*level;
+            break;
+    }
+
+    switch (this.btype){
+        case B_RADAR:
+            if (this.ACC >= 3) {
+                this.improves.ACCshell = 1.7*Math.sqrt(level);
+                this.improves.ACCnb = 1.6*Math.sqrt(level);
+            }else{
+                this.improves.ACCshell = Math.sqrt(level);
+                this.improves.ACCnb = 1.3*Math.sqrt(level);
+            }
+            break;
+    }
+    
+    switch (this.atype){
+        case A_AIRRADAR:
+            this.improves.AAfleet = 1.5*Math.sqrt(level);
+            break;
+        case A_HAFD:
+            this.improves.AAfleet = 3*Math.sqrt(level);
+            this.improves.AAself = 1.5*Math.sqrt(level);
+            break;
+        case A_HAGUN:
+        case AAFD:
+            this.improves.AAfleet = 2*Math.sqrt(level);
+            this.improves.AAself = Math.sqrt(level);
+            break;
+        case A_AAGUN:
+            if (this.AA >= 8) this.improves.AAself = 3*Math.sqrt(level);
+            else this.improves.AAself = 2*Math.sqrt(level);
+            break;
+    }
 	
 	var improve = (this.improve)? this.improve : EQTDATA[this.type].improve;
 	if (!improve) return;
 	for (var key in improve) {
 		this.improves[key] = improve[key]*Math.sqrt(level);
-	}
-	
-	var special = null;
-	if (this.type == RADARS || this.type == RADARL) {
-		if (this.atype) special = IMPROVESPECIAL['AIRRADAR'];
-		else special = IMPROVESPECIAL['SURFACERADAR'];
-	}
-	if ((this.type == MAINGUNSAA || this.type == SECGUNAA) && this.AA >= 8) special = IMPROVESPECIAL['HAFDGUN'];
-	if (special) {
-		for (var key in special) this.improves[key] = special[key]*Math.sqrt(level);
-	}
+    }
 }
 Equip.prototype.setProficiency = function(rank,forLBAS) {
 	if (!EQTDATA[this.type].isPlane) return;
@@ -1652,6 +1683,10 @@ Equip.explicitStatsBonusGears = function(){
             surfaceRadarIds: [28, 29, 31, 32, 88, 89, 124, 141, 142, 240, 278, 279, 307, 315],
             airRadar: 0,
             airRadarIds: [27, 30, 32, 89, 106, 124, 142, 278, 279, 307, 315],
+            enhancedBoiler: 0,
+            enhancedBoilerIds: [34],
+            newModelBoiler: 0,
+            newModelBoilerIds: [87],
             tripleTorpedo: 0,
             tripleTorpedoIds: [13, 125, 285],
             tripleTorpedoLateModel: 0,
@@ -3860,7 +3895,7 @@ Equip.explicitStatsBonusGears = function(){
                     multiple: { "houg": 2, "houk": 1 },
                 },
                 {
-                    // Kinukasa Kai, Furutaka Kai Ni, Kako Kai Ni
+                    // Kinugasa Kai, Furutaka Kai Ni, Kako Kai Ni
                     ids: [295, 416, 417],
                     multiple: { "houg": 1 },
                 },
@@ -4949,6 +4984,51 @@ Equip.explicitStatsBonusGears = function(){
                 },
             ],
         },
+        // 120mm Twin Gun Mount
+        "147": {
+            count: 0,
+            byClass: {
+                // Maestrale Class
+                "61": {
+                    multiple: { "houg": 1, "houk": 1 },
+                },
+            },
+        },
+        // 120mm/50 Twin Gun Mount mod.1936
+        "393": {
+            count: 0,
+            byClass: {
+                // Maestrale Class
+                "61": [
+                    {
+                        multiple: { "houg": 1, "houk": 1 },
+                    },
+                    {
+                        multiple: { "houg": 1, "tyku": 1 },
+                    },
+                ],
+            },
+        },
+        // 120mm/50 Twin Gun Mount Kai A.mod.1937
+        "394": {
+            count: 0,
+            byClass: {
+                // Maestrale Class
+                "61": [
+                    {
+                        multiple: { "houg": 1, "houk": 1 },
+                    },
+                    {
+                        multiple: { "houg": 1, "tyku": 1, "houk": 1 },
+                    },
+                ],
+            },
+            byShip: {
+                // extra +1 ev for Grecale all remodels
+                origins: [614],
+                multiple: { "houk": 1 },
+            },
+        },
         // 130mm B-13 Twin Gun Mount
         "282": {
             count: 0,
@@ -5985,12 +6065,291 @@ Equip.explicitStatsBonusGears = function(){
                 },
             ],
         },
+        // Improved Kanhon Type Turbine, speed boost synergy with boilers
+        // https://wikiwiki.jp/kancolle/%E9%80%9F%E5%8A%9B#da6be20e
+        "33": {
+            count: 0,
+            byShip: [
+                {
+                    // Fast Group A: Shimakaze, Tashkent, Taihou, Shoukaku, Zuikaku, Mogami, Mikuma, Suzuya, Kumano, Tone, Chikuma
+                    origins: [50, 516, 153, 110, 111, 70, 120, 124, 125, 71, 72],
+                    synergy: [
+                        {
+                            flags: [ "enhancedBoiler" ],
+                            byCount: {
+                                gear: "newModelBoiler",
+                                "1": { "soku": 5 },
+                                "2": { "soku": 10 },
+                                "3": { "soku": 10 },
+                                "4": { "soku": 10 },
+                            },
+                        },
+                        {
+                            flags: [ "newModelBoiler" ],
+                            single: { "soku": 10 },
+                        },
+                    ],
+                },
+                {
+                    // Fast Group B1: Amatsukaze, Iowa, Souryuu, Hiryuu, Unryuu, Amagi, Kongou, Haruna, Kirishima, Hiei, Agano, Noshiro, Yahagi, Sakawa
+                    origins: [181, 440, 90, 91, 404, 331, 78, 79, 85, 86, 137, 138, 139, 140],
+                    synergy: [
+                        {
+                            flags: [ "enhancedBoiler" ],
+                            single: { "soku": 5 },
+                        },
+                        {
+                            flags: [ "newModelBoiler" ],
+                            single: { "soku": 10 },
+                        },
+                    ],
+                },
+                {
+                    // Fast Group B2: Yuubari Kai Ni/K2D
+                    //   Almost fast CV: Akagi, Katsuragi, Intrepid, Ark Royal?, Aquila?, Graf Zeppelin?, Saratoga?, Hornet?
+                    //   Almost FBB: Littorio, Roma, Bismarck, Richelieu, South Dakota
+                    //   All fast DD: not here, see next item
+                    //   All fast CL/CLT: Nagara, Isuzu, Yura, Ooi, Kitakami, Tenryuu, Tatsuta, Natori, Sendai, Jintsuu, Naka, Kuma, Tama, Kiso, Kinu, Abukuma, Ooyodo, Gotland, Abruzzi, Garibaldi, Atlanta, De Ruyter, Perth, Helena
+                    //   All fast CA(V): Furutaka, Kako, Aoba, Myoukou, Nachi, Ashigara, Haguro, Takao, Atago, Maya, Choukai, Kinugasa, Prinz Eugen, Zara, Pola, Houston
+                    //   All fast CVL: Shouhou, Ryuujou, Zuihou, Chitose-Kou, Chiyoda-Kou
+                    origins: [115, 441, 442, 171, 492, 602, 83, 332, 549, 515, 444, 432, 433, 603,
+                            21, 22, 23, 24, 25, 51, 52, 53, 54, 55, 56, 99, 100, 101, 113, 114, 183, 574, 589, 590, 597, 604, 613, 615,
+                            59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 123, 176, 448, 449, 595,
+                            74, 76, 116, 102, 103
+                        ],
+                    excludes: [115, 293, 623, 102, 103, 104, 105, 106, 107],
+                    synergy: [
+                        {
+                            flags: [ "enhancedBoiler" ],
+                            byCount: {
+                                gear: "enhancedBoiler",
+                                "1": { "soku": 5 },
+                                "2": { "soku": 5 },
+                                "3": { "soku": 10 },
+                                "4": { "soku": 10 },
+                                "5": { "soku": 10 },
+                            },
+                        },
+                        {
+                            flags: [ "newModelBoiler" ],
+                            byCount: {
+                                gear: "newModelBoiler",
+                                "1": { "soku": 5 },
+                                "2": { "soku": 10 },
+                                "3": { "soku": 10 },
+                                "4": { "soku": 10 },
+                                "5": { "soku": 10 },
+                            },
+                        },
+                        {
+                            flags: [ "newModelBoiler", "enhancedBoiler" ],
+                            byCount: {
+                                gear: "enhancedBoiler",
+                                "1": { "soku": -5 },
+                            },
+                        },
+                    ],
+                },
+                {
+                    // Fast Group B2 for all fast DDs
+                    stypes: [2],
+                    // Except slow DDs(see Slow Group B special below) and DDs in other groups:
+                    //   Samuel B.Roberts, Shimakaze, Tashkent, Amatsukaze
+                    excludes: [561, 681, 50, 229, 516, 395, 181, 316],
+                    synergy: [
+                        {
+                            flags: [ "enhancedBoiler" ],
+                            byCount: {
+                                gear: "enhancedBoiler",
+                                "1": { "soku": 5 },
+                                "2": { "soku": 5 },
+                                "3": { "soku": 10 },
+                                "4": { "soku": 10 },
+                            },
+                        },
+                        {
+                            flags: [ "newModelBoiler" ],
+                            byCount: {
+                                gear: "newModelBoiler",
+                                "1": { "soku": 5 },
+                                "2": { "soku": 10 },
+                                "3": { "soku": 10 },
+                                "4": { "soku": 10 },
+                            },
+                        },
+                        {
+                            flags: [ "newModelBoiler", "enhancedBoiler" ],
+                            byCount: {
+                                gear: "enhancedBoiler",
+                                "1": { "soku": -5 },
+                            },
+                        },
+                    ],
+                },
+                {
+                    // Fast Group C: Yuubari/Yuubari Kai, Kaga, fast AV: Chitose, Chiyoda, Nisshin
+                    origins: [115, 84, 102, 103, 581],
+                    excludes: [622, 623, 624, 108, 109, 291, 292, 296, 297],
+                    synergy: [
+                        {
+                            flags: [ "enhancedBoiler" ],
+                            single: { "soku": 5 },
+                        },
+                        {
+                            flags: [ "newModelBoiler" ],
+                            single: { "soku": 5 },
+                        },
+                        {
+                            flags: [ "newModelBoiler", "enhancedBoiler" ],
+                            single: { "soku": -5 },
+                        },
+                    ],
+                },
+                {
+                    // Slow Group A: Yamato, Musashi, Nagato Kai Ni, Mutsu Kai Ni
+                    origins: [131, 143, 80, 81],
+                    excludes: [80, 275, 81, 276],
+                    synergy: [
+                        {
+                            flags: [ "enhancedBoiler" ],
+                            single: { "soku": 5 },
+                        },
+                        {
+                            flags: [ "newModelBoiler" ],
+                            byCount: {
+                                gear: "newModelBoiler",
+                                "1": { "soku": 5 },
+                                "2": { "soku": 10 },
+                                "3": { "soku": 15 },
+                                "4": { "soku": 15 },
+                            },
+                        },
+                        {
+                            flags: [ "newModelBoiler", "enhancedBoiler" ],
+                            byCount: {
+                                gear: "enhancedBoiler",
+                                "2": { "soku": 5 },
+                                "3": { "soku": 5 },
+                            },
+                        },
+                    ],
+                },
+                {
+                    // Slow Group B: Taigei/Ryuuhou, Jingei, Kamoi, Katori, Kashima
+                    //   All slow BB(V): Fusou, Yamashiro, Ise, Hyuuga, Nagato, Mutsu, Warspite, Nelson, Colorado, Gangut?
+                    //   Slow CVL: Hiyou, Houshou, Junyou, Taiyou, Shinyou, Gambier Bay
+                    //   Slow AV: Akitsushima, Mizuho, Commandant Teste
+                    origins: [184, 634, 162, 154, 465,
+                            26, 27, 77, 87, 80, 81, 439, 571, 601, 511,
+                            75, 89, 92, 521, 534, 544,
+                            445, 451, 491
+                        ],
+                    excludes: [541, 573],
+                    synergy: [
+                        {
+                            flags: [ "enhancedBoiler" ],
+                            byCount: {
+                                gear: "enhancedBoiler",
+                                "1": { "soku": 5 },
+                                "2": { "soku": 5 },
+                                "3": { "soku": 10 },
+                                "4": { "soku": 10 },
+                                "5": { "soku": 10 },
+                            },
+                        },
+                        {
+                            flags: [ "newModelBoiler" ],
+                            byCount: {
+                                gear: "newModelBoiler",
+                                "1": { "soku": 5 },
+                                "2": { "soku": 10 },
+                                "3": { "soku": 10 },
+                                "4": { "soku": 10 },
+                                "5": { "soku": 10 },
+                            },
+                        },
+                        {
+                            flags: [ "newModelBoiler", "enhancedBoiler" ],
+                            byCount: {
+                                gear: "enhancedBoiler",
+                                "1": { "soku": -5 },
+                                "3": { "soku": -5 },
+                                "4": { "soku": -5 },
+                            },
+                        },
+                        {
+                            flags: [ "enhancedBoiler", "newModelBoiler" ],
+                            byCount: {
+                                gear: "newModelBoiler",
+                                "2": { "soku": -5 },
+                                "3": { "soku": -5 },
+                                "4": { "soku": -5 },
+                            },
+                        },
+                    ],
+                },
+                {
+                    // Slow Group B special: Yuubari Kai Ni Toku, Samuel B.Roberts
+                    ids: [623, 561, 681],
+                    single: { "soku": 5 },
+                    synergy: [
+                        {
+                            flags: [ "enhancedBoiler" ],
+                            byCount: {
+                                gear: "enhancedBoiler",
+                                "3": { "soku": 5 },
+                                "4": { "soku": 5 },
+                                "5": { "soku": 5 },
+                            },
+                        },
+                        {
+                            flags: [ "newModelBoiler" ],
+                            byCount: {
+                                gear: "newModelBoiler",
+                                "2": { "soku": 5 },
+                                "3": { "soku": 5 },
+                                "4": { "soku": 5 },
+                                "5": { "soku": 5 },
+                            },
+                        },
+                        {
+                            flags: [ "newModelBoiler", "enhancedBoiler" ],
+                            byCount: {
+                                gear: "enhancedBoiler",
+                                "2": { "soku": 5 },
+                            },
+                        },
+                    ],
+                },
+                {
+                    // Slow Group C: Akashi, Hayasui, Akitsumaru, Shinshumaru?
+                    //   All SS(V): I-168, I-58, I-8, I-19, I-26, I-47, U-511, UIT-25, Maruyu, I-400, I-401, I-13, I-14
+                    origins: [182, 460, 161, 621,  126, 127, 128, 191, 483, 636, 431, 539, 163, 493, 155, 494, 495],
+                    synergy: [
+                        {
+                            flags: [ "enhancedBoiler" ],
+                            single: { "soku": 5 },
+                        },
+                        {
+                            flags: [ "newModelBoiler" ],
+                            single: { "soku": 5 },
+                        },
+                        {
+                            flags: [ "newModelBoiler", "enhancedBoiler" ],
+                            single: { "soku": -5 },
+                        },
+                    ],
+                },
+            ],
+        },
     };
 };
 
 Equip.accumulateShipBonusGear = function(bonusGears, equip){
     const synergyGears = bonusGears.synergyGears;
     if(synergyGears) {
+        if(synergyGears.enhancedBoilerIds.includes(equip.mid)) synergyGears.enhancedBoiler += 1;
+        if(synergyGears.newModelBoilerIds.includes(equip.mid)) synergyGears.newModelBoiler += 1;
         if(synergyGears.tripleTorpedoIds.includes(equip.mid)) synergyGears.tripleTorpedo += 1;
         if(synergyGears.tripleTorpedoLateModelIds.includes(equip.mid)) synergyGears.tripleTorpedoLateModel += 1;
         if(synergyGears.tripleTorpedoOxygenLateModelIds.includes(equip.mid)) synergyGears.tripleTorpedoOxygenLateModel += 1;

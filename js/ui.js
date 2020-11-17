@@ -18,12 +18,12 @@ if (!HASURLDATA || HASURLDATA_CONFIG) {
 // o.setAttribute('value',options[i][1]);
 // o.appendChild(document.createTextNode(options[i][0]));
 // document.getElementById('Sh'+s+'F'+f).appendChild(o);
-var edata = [['Main Gun (S)',[MAINGUNS,MAINGUNSAA],[MAINGUNS]],['Main Gun (M)',[MAINGUNM],[MAINGUNM]],['Main Gun (L)',[MAINGUNL,MAINGUNXL],[MAINGUNL]],['Secondary Gun',[SECGUN,SECGUNAA],[SECGUN]],
+var edata = [['Main Gun (S)',[MAINGUNS],[MAINGUNS]],['Main Gun (M)',[MAINGUNM],[MAINGUNM]],['Main Gun (L)',[MAINGUNL,MAINGUNXL],[MAINGUNL]],['Secondary Gun',[SECGUN],[SECGUN]],
 				['Anti-Air Weapon',[AAGUN,AAFD],[AAGUN,AAFD]],['Torpedo/Midgetsub',[TORPEDO,TORPEDOSS,MIDGETSUB],[TORPEDO]],
-				['Fighter/Interceptor',[FIGHTER,INTERCEPTOR],[FIGHTER,INTERCEPTOR]],['Torpedo Bomber',[TORPBOMBER],[TORPBOMBER]],['Dive Bomber/Jet',[DIVEBOMBER,JETBOMBER],[DIVEBOMBER,JETBOMBER]],['Land Bomber',[LANDBOMBER],[LANDBOMBER]],['Scout Plane',[SEAPLANE,CARRIERSCOUT,CARRIERSCOUT2,FLYINGBOAT,LANDSCOUT],[SEAPLANE,CARRIERSCOUT]],['ASW plane',[AUTOGYRO,ASWPLANE],[AUTOGYRO,ASWPLANE]],
+				['Fighter/Interceptor',[FIGHTER,INTERCEPTOR],[FIGHTER,INTERCEPTOR]],['Torpedo Bomber',[TORPBOMBER],[TORPBOMBER]],['Dive Bomber/Jet',[DIVEBOMBER,JETBOMBER],[DIVEBOMBER,JETBOMBER]],['(Heavy) Land Bomber',[LANDBOMBER,HEAVYBOMBER],[LANDBOMBER,HEAVYBOMBER]],['Scout Plane',[SEAPLANE,CARRIERSCOUT,CARRIERSCOUT2,FLYINGBOAT,LANDSCOUT],[SEAPLANE,CARRIERSCOUT]],['ASW plane',[AUTOGYRO,ASWPLANE],[AUTOGYRO,ASWPLANE]],
 				['Seaplane Bomber',[SEAPLANEBOMBER],[SEAPLANEBOMBER]],['Seaplane Fighter',[SEAPLANEFIGHTER],[SEAPLANEFIGHTER]],['RADAR',[RADARS,RADARL,RADARXL,SUBRADAR],[RADARS,SUBRADAR]],
 				['ASW Weapon',[SONARS,SONARL,DEPTHCHARGE],[SONARS,DEPTHCHARGE]],['Engine/Bulge',[ENGINE,BULGEM,BULGEL],[ENGINE,BULGEM]],['Shells',[APSHELL,TYPE3SHELL],[APSHELL,TYPE3SHELL]],
-				['Night Battle',[SEARCHLIGHTS,STARSHELL,PICKET,SEARCHLIGHTL],[SEARCHLIGHTS,STARSHELL,PICKET]],['Landingcraft',[LANDINGCRAFT,LANDINGTANK],[LANDINGCRAFT,LANDINGTANK]],['Rocket Artillery',[WG42],[WG42]],['Ration',[RATION],[RATION]],['Skilled Crew',[SCAMP,PICKET],[SCAMP,PICKET]],['Misc',[SRF,FCF,DRUM,REPAIR,OILDRUM,TRANSPORTITEM,OTHER],[]]];
+				['Night Battle',[SEARCHLIGHTS,STARSHELL,SEARCHLIGHTL],[SEARCHLIGHTS,STARSHELL]],['Landingcraft',[LANDINGCRAFT,LANDINGTANK],[LANDINGCRAFT,LANDINGTANK]],['Rocket Artillery',[WG42],[WG42]],['Ration',[RATION],[RATION]],['Skilled Crew',[SCAMP,PICKET],[SCAMP,PICKET]],['Misc',[SRF,FCF,DRUM,REPAIR,OILDRUM,TRANSPORTITEM,OTHER],[]]];
 if (!HASURLDATA || HASURLDATA_CONFIG) {
 	var table = $('<table class="dialog4"></table>'), c = 0;
 	while (c < edata.length) {
@@ -428,7 +428,7 @@ function dialogEquip(types) {
 				var equip = EQDATA[eqid];
 				if (equip.type !== type) continue;
 				var tr = $('<tr></tr>');
-				tr.append('<td class="left" onclick="dSetEquip('+eqid+')"><img src="assets/items/'+EQTDATA[equip.type].image+'.png"/></td>');
+				tr.append('<td class="left" onclick="dSetEquip('+eqid+')"><img src="assets/items/'+(equip.image || EQTDATA[equip.type].image)+'.png"/></td>');
 				var td = $('<td onclick="dSetEquip('+eqid+')"></td>');
 				td.append('<span>'+equip.name+'</span><br>');
 				for (var j=0; j<STATS.length; j++) {
@@ -1178,7 +1178,7 @@ function tableSetShip(fleet,slot,shipid,stats,equips,improves,profs,slots) {
 		
 		$('#T'+fleet+'imprv'+slot+i).val((improves)?improves[i]:0);
 		
-		if (eqid!='0') $('#T'+fleet+'eqimg'+slot+i).attr('src','assets/items/'+EQTDATA[EQDATA[eqid].type].image+'.png');
+		if (eqid!='0') $('#T'+fleet+'eqimg'+slot+i).attr('src','assets/items/'+(EQDATA[eqid].image || EQTDATA[EQDATA[eqid].type].image)+'.png');
 		else $('#T'+fleet+'eqimg'+slot+i).attr('src','assets/items/empty.png');
 	}
 }
@@ -1332,6 +1332,7 @@ function changedEquip(fleet,slot,equipslot,nochangeimprov) {
 		}
 		if (fleet == 'LB'){
 			if ([SEAPLANE, CARRIERSCOUT, CARRIERSCOUT2, FLYINGBOAT, LANDSCOUT].indexOf(equip.type) !== -1) $('#T'+fleet+'plane'+slot+equipslot).val(4);
+			else if (equip.type == HEAVYBOMBER) $('#T'+fleet+'plane'+slot+equipslot).val(9);
 			else $('#T'+fleet+'plane'+slot+equipslot).val(18);
 			if (equipid == 311) {
 				$('#T'+fleet+'prof'+slot+equipslot).val(0);
@@ -1341,7 +1342,7 @@ function changedEquip(fleet,slot,equipslot,nochangeimprov) {
 				changedProficiency('#T'+fleet+'prof'+slot+equipslot);
 			}
 		}
-		if(equipid!='0') $('#T'+fleet+'eqimg'+slot+equipslot).attr('src','assets/items/'+EQTDATA[equip.type].image+'.png');
+		if(equipid!='0') $('#T'+fleet+'eqimg'+slot+equipslot).attr('src','assets/items/'+(equip.image || EQTDATA[equip.type].image)+'.png');
 		else  $('#T'+fleet+'eqimg'+slot+equipslot).attr('src','assets/items/empty.png');
 	} else $('#T'+fleet+'e'+slot+equipslot+'_chosen').attr('title','');
 	if (!PREVEQS[fleet]) return;

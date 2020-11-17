@@ -2060,7 +2060,7 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 			var dmg = airstrikeLBAS(lbas,target,i,contactMod);
 			if (C) {
 				var showtorpedo = lbas.equips[i].istorpbomber;
-				if (lbas.equips[i].type == LANDBOMBER && target.isInstall) showtorpedo = false;
+				if ([LANDBOMBER,HEAVYBOMBER].indexOf(lbas.equips[i].type) !== -1 && target.isInstall) showtorpedo = false;
 				if (target.isSub) showtorpedo = false;
 				if (target.isescort) {
 					APIkouku.api_stage3_combined[(target.side)?'api_edam':'api_fdam'][target.num] += dmg;
@@ -2118,7 +2118,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 	lbas.critratebonus = 0; lbas.ACCplane = 0;
 	var dmg = 0, realdmg = 0;
 	var planebase;
-	if (equip.type == LANDBOMBER) planebase = (target.isInstall)? equip.DIVEBOMB : equip.TP;
+	if (equip.type == LANDBOMBER || equip.type == HEAVYBOMBER) planebase = (target.isInstall)? equip.DIVEBOMB : equip.TP;
 	else planebase = (equip.isdivebomber)? equip.DIVEBOMB : (target.isInstall)? 0 : equip.TP;
 	if (target.isSub) planebase = equip.ASW;
 	planebase = (planebase || 0) + (equip.ASImprove || 0);
