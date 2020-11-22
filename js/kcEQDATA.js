@@ -73,6 +73,7 @@ const B_NIGHTFIGHTER = 14;
 const B_NIGHTBOMBER = 15;
 const B_NIGHTBOMBER2 = 16;
 const B_NIGHTCREW = 17;
+const B_SUBRADAR = 18;
 const B_OTHER = 0;
 
 //anti-air type
@@ -488,6 +489,7 @@ EQTDATA[TRANSPORTITEM] = {
 EQTDATA[SUBRADAR] = {
 	name: 'Submarine Equipment',
 	image: 42,
+	btype: B_SUBRADAR,
 	canequip: ['SS','SSV'],
 };
 EQTDATA[JETBOMBER] = {

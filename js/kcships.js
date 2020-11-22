@@ -237,8 +237,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (eq.type == PICKET) this.hasLookout = true;
 		if (eq.type == DIVEBOMBER || eq.type == JETBOMBER) this.hasDivebomber = true;
 		if (eq.type == FCF) this.hasFCF = equips[i];
-		if (eq.type == SUBRADAR) this.hasSubRadar = true;
-		if ([213,214,383].indexOf(eq.mid) !== -1) this.numSpecialTorp = this.numSpecialTorp+1 || 1;
+		if ([213,214,383].indexOf(eq.mid) !== -1) this.numSpecialTorp = this.numSpecialTorp + 1 || 1;
 		if (eq.type == REPAIR) {
 			if (this.repairs) this.repairs.push(equips[i]);
 			else this.repairs = [equips[i]];
@@ -588,6 +587,8 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		this.AR += this.equipmentBonusStats('souk');
         this.EV += this.equipmentBonusStats('houk');
         this.ASWBonus = this.equipmentBonusStats('tais');
+        this.SPD += this.equipmentBonusStats('soku');
+        this.RNG += this.equipmentBonusStats('leng');
 	}
 }
 Ship.prototype.getFormation = function() {
@@ -622,13 +623,15 @@ Ship.prototype.NBtypes = function() {
 	var torps = (this.equiptypesB[B_TORPEDO])? this.equiptypesB[B_TORPEDO] : 0;
 	
 	if (MECHANICS.CVCI && this.canNBAirAttack()) {
-		let hasFuze = this.equips.some(eq => eq.mid == 320);
 		if (this.equiptypesB[B_NIGHTFIGHTER] >= 2 && this.equiptypesB[B_NIGHTBOMBER]) {
 			this._nbtypes.push(61);
 		}
-		if ((this.equiptypesB[B_NIGHTFIGHTER] && hasFuze) || (this.equiptypesB[B_NIGHTBOMBER] && hasFuze) || (this.equiptypesB[B_NIGHTFIGHTER] && this.equiptypesB[B_NIGHTBOMBER])) {
+		if (this.equiptypesB[B_NIGHTFIGHTER] && this.equiptypesB[B_NIGHTBOMBER]) {
 			this._nbtypes.push(62);
-		}
+        }
+        if (this.equips.some(eq => eq.mid == 320) && (this.equiptypesB[B_NIGHTFIGHTER] || this.equiptypesB[B_NIGHTBOMBER])){
+            this._nbtypes.push(64);
+        }
 		if (this.equiptypesB[B_NIGHTFIGHTER]) {
 			if ((this.equiptypesB[B_NIGHTFIGHTER] || 0) + (this.equiptypesB[B_NIGHTBOMBER] || 0) + (this.equiptypesB[B_NIGHTBOMBER2] || 0) >= 3) {
 				this._nbtypes.push(63);
@@ -640,7 +643,8 @@ Ship.prototype.NBtypes = function() {
 		if (this.hasLookout && torps && this.hasLOSRadar) this._nbtypes.push(8);
     }
     
-	if (this.isSub && this.hasSubRadar && this.numSpecialTorp) this._nbtypes.push(3);
+	if (this.isSub & this.equiptypesB[B_SUBRADAR] && this.numSpecialTorp) this._nbtypes.push(31);
+    else if (this.isSub && this.numSpecialTorp >= 2) this._nbtypes.push(32);
 	else if (torps >= 2) this._nbtypes.push(3);  //torp cut-in
 	else if (mguns >= 3) this._nbtypes.push(5); //triple gun cut-in
 	else if (mguns >= 2 && sguns) this._nbtypes.push(4);  //gun cut-in
@@ -739,9 +743,9 @@ function WGpower(num) {
 }
 
 Ship.prototype.shellPower = function(target,base,isSupport) {
-	var bonus = (this.improves.Pshell) && (!isSupport)? Math.floor(this.improves.Pshell) : 0;
+	var bonus = !isSupport? (this.improves.Pshell || 0) : 0;
 	//var shellbonus = (this.fleet && this.fleet.formation.shellbonus!==undefined)? this.fleet.formation.shellbonus : 5;
-    var shellbonus = (base != null)? base+5 : 5;
+    var shellbonus = (base||0) + 5;
 	if (target && target.isInstall) {
 		bonus += this.installFlat;
 		let fp = (this.isSub)? this.FP + 30 : this.FP;
@@ -1248,7 +1252,7 @@ CV.prototype.shellPower = function(target,base,isSupport) {
 	}
 	var bonus = (base||0) + 5;
 	if (target && target.isInstall) tp = 0;
-	var improvebonus = (this.improves.Pshell && !isSupport)? Math.floor(this.improves.Pshell) : 0;
+	var improvebonus = !isSupport? (this.improves.Pshell || 0) : 0;
 	let fp = this.FP + bonus + improvebonus;
 	if (installOnly) {
 		switch (target.installtype) {
@@ -1270,7 +1274,7 @@ CV.prototype.shellPower = function(target,base,isSupport) {
 				break;
 		}
 	}
-	return 25 + 1.5*(15 + fp + tp + Math.floor(1.3*dp));
+	return 25 + Math.floor(1.5*(15 + fp + tp + Math.floor(1.3*dp)));
 }
 CV.prototype.NBPower = function(target) {
 	if (this.canNBAirAttack()) {
@@ -1294,7 +1298,7 @@ CV.prototype.NBPower = function(target) {
 	return Ship.prototype.NBPower.call(this,target);
 }
 CV.prototype.canNBAirAttack = function() {
-	return (this.equiptypesB[B_NIGHTCREW] || this.hasBuiltInNightCrew) && this.HP/this.maxHP > .5;
+	return (this.equiptypesB[B_NIGHTCREW] || this.hasBuiltInNightCrew) && (this.equiptypesB[B_NIGHTFIGHTER] || this.equiptypesB[B_NIGHTBOMBER]) && this.HP/this.maxHP > .5;
 }
 CV.prototype.rocketBarrageChance = CAV.prototype.rocketBarrageChance;
 CV.prototype.canASW = function() {
@@ -1342,6 +1346,9 @@ function CVB(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 CVB.prototype = Object.create(CV.prototype);
 CVB.prototype.canStillShell = function() {
 	return (this.HP > this.maxHP*.25 && this.canShell());
+}
+CVB.prototype.canNBAirAttack = function() {
+	return (this.equiptypesB[B_NIGHTCREW] || this.hasBuiltInNightCrew) && (this.equiptypesB[B_NIGHTFIGHTER] || this.equiptypesB[B_NIGHTBOMBER]) && this.HP/this.maxHP > .25;
 }
 
 
@@ -4629,6 +4636,132 @@ Equip.explicitStatsBonusGears = function(){
                 "77": "74",
             },
         },
+        // 12.7cm Single Gun Mount
+        "78": {
+            count: 0,
+            starsDist: [],
+            byClass: {
+                // Z1 Class
+                "48": [
+                    {
+                        multiple: { "houg": 1, "houk": 1 },
+                        synergy: {
+                            flags: [ "surfaceRadar" ],
+                            single: { "houg": 2, "raig": 2, "houk": 2 },
+                        },
+                    },
+                    {
+                        minStars: 7,
+                        multiple: { "houg": 1 },
+                    },
+                    {
+                        minStars: 10,
+                        multiple: { "souk": 1 },
+                    },
+                ],
+            },
+        },
+        // 10cm Twin High-angle Gun Mount + Anti-Aircraft Fire Director
+        "122": {
+            count: 0,
+            starsDist: [],
+            byShip: [
+                {
+                    // Yukikaze Kai Ni
+                    ids: [656],
+                    minStars: 4,
+                    multiple: { "houg": 5, "tyku": 3, "houk": 2 },
+                },
+                {
+                    // Yukikaze Kai Ni
+                    ids: [656],
+                    synergy: [
+                        {
+                            flags: [ "surfaceRadar" ],
+                            single: { "houg": 4, "houk": 3 },
+                        },
+                        {
+                            flags: [ "airRadar" ],
+                            single: { "tyku": 4, "houk": 3 },
+                        },
+                    ],
+                },
+            ]
+        },
+        // Locally Modified 12.7cm Twin High-angle Gun Mount
+        "397": {
+            count: 0,
+            starsDist: [],
+            byShip: [
+                {
+                    // Tan Yang
+                    ids: [651],
+                    multiple: { "houg": 5, "tyku": 2, "houk": 1 },
+                },
+                {
+                    // Tan Yang
+                    ids: [651],
+                    minStars: 4,
+                    multiple: { "houg": 4, "houk": 1 },
+                },
+                {
+                    // Yukikaze Kai Ni
+                    ids: [656],
+                    multiple: { "houg": 3, "tyku": 1, "houk": 1 },
+                },
+                {
+                    // Tan Yang/Yukikaze Kai Ni
+                    ids: [651, 656],
+                    synergy: {
+                        flags: [ "surfaceRadar" ],
+                        single: { "houg": 3, "houk": 3 },
+                    },
+                },
+            ]
+        },
+        // Locally Modified 10cm Twin High-angle Gun Mount
+        "398": {
+            count: 0,
+            starsDist: [],
+            byShip: [
+                {
+                    // Tan Yang
+                    ids: [651],
+                    multiple: { "houg": 4, "tyku": 4, "houk": 2 },
+                },
+                {
+                    // Tan Yang
+                    ids: [651],
+                    minStars: 4,
+                    multiple: { "houg": 3, "houk": 2 },
+                },
+                {
+                    // Yukikaze Kai Ni
+                    ids: [656],
+                    multiple: { "houg": 3, "tyku": 2, "houk": 2 },
+                },
+                {
+                    // Yukikaze Kai Ni
+                    ids: [656],
+                    minStars: 4,
+                    multiple: { "houg": 2, "houk": 1 },
+                },
+                {
+                    // Tan Yang/Yukikaze Kai Ni
+                    ids: [651, 656],
+                    synergy: [
+                        {
+                            flags: [ "surfaceRadar" ],
+                            single: { "houg": 3, "houk": 3 },
+                        },
+                        {
+                            flags: [ "airRadar" ],
+                            single: { "tyku": 3, "houk": 3 },
+                        },
+                    ],
+                },
+            ]
+        },
         // 12.7cm Single High-angle Gun Mount (Late Model)
         "229": {
             count: 0,
@@ -4694,6 +4827,21 @@ Equip.explicitStatsBonusGears = function(){
                         flags: [ "surfaceRadar" ],
                         single: { "houg": 3, "houk": 2 },
                     },
+                },
+                {
+                    // Yukikaze Kai Ni
+                    ids: [656],
+                    multiple: { "houg": 2, "tyku": 3, "tais": 2 },
+                    synergy: [
+                        {
+                            flags: [ "surfaceRadar" ],
+                            single: { "houg": 2, "houk": 2 },
+                        },
+                        {
+                            flags: [ "airRadar" ],
+                            single: { "tyku": 3, "houk": 2 },
+                        },
+                    ],
                 },
             ],
         },
@@ -4821,6 +4969,30 @@ Equip.explicitStatsBonusGears = function(){
                     ids: [477,     478,        622, 624],
                     multiple: { "tyku": 2 },
                 },
+                {
+                    // Tan Yang
+                    ids: [651],
+                    multiple: { "houg": 3, "tyku": 3 },
+                    synergy: {
+                        flags: [ "surfaceRadar" ],
+                        single: { "houg": 2, "houk": 2 },
+                    },
+                },
+                {
+                    // Yukikaze K2
+                    ids: [656],
+                    multiple: { "houg": 3, "tyku": 3, "tais": 2, "houk": 3 },
+                    synergy: [
+                        {
+                            flags: [ "surfaceRadar" ],
+                            single: { "houg": 2, "houk": 2 },
+                        },
+                        {
+                            flags: [ "airRadar" ],
+                            single: { "tyku": 3, "houk": 2 },
+                        },
+                    ],
+                },
             ],
         },
         // 12.7cm Twin High-angle Gun Mount Kai Ni
@@ -4894,8 +5066,8 @@ Equip.explicitStatsBonusGears = function(){
                     multiple: { "tyku": 4 },
                 },
                 {
-                    // Ooi K2,Kitakami K2, Isuzu K2, Naka K2, Kinu K2, Yura K2 extra synergy
-                    ids: [118, 119,        141,      160,     487,     488],
+                    // Ooi K2,Kitakami K2, Isuzu K2, Naka K2, Kinu K2, Yura K2, Tan Yang, Yukikaze K2 extra synergy
+                    ids: [118, 119,        141,      160,     487,     488,     651,      656],
                     synergy: {
                         flags: [ "surfaceRadar" ],
                         single: { "houg": 1, "houk": 2 },
@@ -4915,6 +5087,11 @@ Equip.explicitStatsBonusGears = function(){
                     // Tenryuu K2, Tatsuta K2, Yuubari K2,K2D extra +2 aa
                     ids: [477,     478,        622, 624],
                     multiple: { "tyku": 2 },
+                },
+                {
+                    // Tan Yang/Yukikaze K2
+                    ids: [651, 656],
+                    multiple: { "houg": 3, "tyku": 3 },
                 },
             ],
         },
@@ -4979,6 +5156,21 @@ Equip.explicitStatsBonusGears = function(){
                         {
                             flags: [ "airRadar" ],
                             single: { "tyku": 2, "houk": 2 },
+                        },
+                    ],
+                },
+                {
+                    // Yukikaze Kai Ni
+                    ids: [656],
+                    multiple: { "tyku": 3, "houk": 2 },
+                    synergy: [
+                        {
+                            flags: [ "surfaceRadar" ],
+                            single: { "houg": 2, "houk": 2 },
+                        },
+                        {
+                            flags: [ "airRadar" ],
+                            single: { "tyku": 3, "houk": 2 },
                         },
                     ],
                 },
@@ -5156,14 +5348,14 @@ Equip.explicitStatsBonusGears = function(){
                     },
                     {
                         remodel: 2,
-                        excludes: [556, 557, 558, 559],
+                        excludes: [556, 557, 558, 559, 651],
                         // Kagerou Class K2 total +2 fp til 2 guns
                         multiple: { "houg": 1 },
                         countCap: 2,
                     },
                     {
                         remodel: 2,
-                        excludes: [556, 557, 558, 559],
+                        excludes: [556, 557, 558, 559, 651],
                         // Kagerou Class K2 total +5 instead of +4 if guns = 2
                         // https://wikiwiki.jp/kancolle/%E9%99%BD%E7%82%8E%E6%94%B9%E4%BA%8C
                         single: { "houg": 1 },
@@ -5172,8 +5364,8 @@ Equip.explicitStatsBonusGears = function(){
                 ],
             },
             byShip: {
-                // Yukikaze Kai, Shigure K2, Isokaze B Kai, extra +1 ev
-                ids: [145, 228, 557],
+                // Yukikaze, Shigure, Isokaze, extra +1 ev
+                origins: [20, 43, 167],
                 multiple: { "houk": 1 },
             },
         },
@@ -5223,8 +5415,8 @@ Equip.explicitStatsBonusGears = function(){
             },
             byShip: [
                 {
-                    // Kagerou K2, Shiranui K2, Kuroshio K2, one-time +1 fp
-                    ids: [566, 567, 568],
+                    // Kagerou K2, Shiranui K2, Kuroshio K2, Yukikaze K2, one-time +1 fp
+                    ids: [566, 567, 568, 656],
                     single: { "houg": 1 },
                 },
                 {
@@ -5518,6 +5710,11 @@ Equip.explicitStatsBonusGears = function(){
                 // Fletcher Class
                 "91": "87",
             },
+            byShip: {
+                // Tan Yang/Yukikaze K2
+                ids: [651, 656],
+                multiple: { "houg": 2, "tyku": 2, "souk": 1, "houk": 1 },
+            },
         },
         // 5inch Single Gun Mount Mk.30 Kai + GFCS Mk.37
         "308": {
@@ -5542,6 +5739,11 @@ Equip.explicitStatsBonusGears = function(){
                     // All DD
                     stypes: [2],
                     multiple: { "houg": 1 },
+                },
+                {
+                    // Tan Yang/Yukikaze K2
+                    ids: [651, 656],
+                    multiple: { "houg": 1, "tyku": 1, "houk": 1 },
                 },
             ],
         },
@@ -5609,6 +5811,11 @@ Equip.explicitStatsBonusGears = function(){
                 },
                 // Fletcher Class
                 "91": "87",
+            },
+            byShip: {
+                // Tan Yang/Yukikaze K2
+                ids: [651, 656],
+                single: { "houg": 2, "houk": 2, "saku": 3, "leng": 1 },
             },
         },
         // Type 13 Air Radar Kai
@@ -5814,8 +6021,8 @@ Equip.explicitStatsBonusGears = function(){
             count: 0,
             byShip: [
                 {
-                    // Yuubari K2/T, Isuzu K2, Naka K2, Yura K2
-                    ids: [622, 623,  141,      160,     488],
+                    // Yuubari K2/T, Isuzu K2, Naka K2, Yura K2, Yukikaze K2
+                    ids: [622, 623,  141,      160,     488,     656],
                     single: { "houk": 3, "tais": 1 },
                 },
                 {
@@ -5836,8 +6043,8 @@ Equip.explicitStatsBonusGears = function(){
             count: 0,
             byShip: [
                 {
-                    // Yuubari K2D, Isuzu K2, Naka K2, Yura K2
-                    ids: [624,      141,      160,     488],
+                    // Yuubari K2D, Isuzu K2, Naka K2, Yura K2, Yukikaze K2
+                    ids: [624,      141,      160,     488,     656],
                     multiple: { "houk": 1, "tais": 1 },
                 },
             ],
@@ -5847,8 +6054,8 @@ Equip.explicitStatsBonusGears = function(){
             count: 0,
             byShip: [
                 {
-                    // Isuzu K2, Naka K2, Yura K2
-                    ids: [141,   160,     488],
+                    // Isuzu K2, Naka K2, Yura K2, Yukikaze K2
+                    ids: [141,   160,     488,     656],
                     multiple: { "houk": 1, "tais": 2 },
                 },
                 {
@@ -5885,6 +6092,11 @@ Equip.explicitStatsBonusGears = function(){
                     ids: [629],
                     single: { "houk": 2, "tais": 1 },
                 },
+                {
+                    // Tan Yang/Yukikaze K2
+                    ids: [651, 656],
+                    single: { "houk": 2, "tais": 1 },
+                },
             ],
         },
         // Lightweight ASW Torpedo (Initial Test Model)
@@ -5914,6 +6126,11 @@ Equip.explicitStatsBonusGears = function(){
                 {
                     // Fletcher Mk.II, extra +1 ASW, +1 EV
                     ids: [629],
+                    single: { "houk": 1, "tais": 1 },
+                },
+                {
+                    // Tan Yang/Yukikaze K2
+                    ids: [651, 656],
                     single: { "houk": 1, "tais": 1 },
                 },
             ],

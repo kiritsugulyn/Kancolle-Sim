@@ -500,12 +500,7 @@ function simStatsCombined(numsims,type,foptions) {
 	
 	if (FLEETS1S[2]) {
 		for (let ship of FLEETS1S[2].ships) {
-			let bonus = ship.bonusBTemp || ship.bonusTemp;
-			if (bonus) ship.bonusSpecial = [{mod:bonus}];
-			if (ship.bonusDTemp) {
-				if (!ship.bonusSpecial) ship.bonusSpecial = [];
-				ship.bonusSpecial.push({mod:ship.bonusDTemp,on:[FLEETS2[FLEETS2.length-1].ships[0].mid]});
-			}
+			ship.bonusSpecial = ship.bonusA || 1;
 		}
 	}
 
@@ -531,13 +526,9 @@ function simStatsCombined(numsims,type,foptions) {
 			var options = foptions[j];
 			for (let n=0; n<2; n++) {
 				for (let ship of FLEETS1[n].ships) {
-					let bonus = (j==FLEETS2.length-1 && ship.bonusBTemp)? ship.bonusBTemp : ship.bonusTemp;
-					if (bonus && options.bonus) ship.bonusSpecial = [{mod:bonus}];
-					else ship.bonusSpecial = null;
-					if (ship.bonusDTemp) {
-						if (!ship.bonusSpecial) ship.bonusSpecial = [];
-						ship.bonusSpecial.push({mod:ship.bonusDTemp,on:[FLEETS2[FLEETS2.length-1].ships[0].mid]});
-					}
+					if (options.bonusA) ship.bonusSpecial = ship.bonusA || 1;
+					else if (options.bonusB) ship.bonusSpecial = ship.bonusB || 1;
+					else if (options.bonusC) ship.bonusSpecial = ship.bonusC || 1;
 				}
 			}
 			if (options.formation != '0') {
@@ -608,8 +599,8 @@ function simStatsCombined(numsims,type,foptions) {
 				if (useBucket) totalResult.totalBuckets++;
 				let fuelleft = ship.fuelleft - (ship._fuelUnderway || 0);
 				let ammoleft = ship.ammoleft - (ship._ammoUnderway || 0);
-				totalResult.totalFuelS += Math.floor(ship.fuel * (10-fuelleft)/10);
-				totalResult.totalAmmoS += Math.floor(ship.ammo * (10-ammoleft)/10);
+				totalResult.totalFuelS += Math.floor(ship.fuel * (10-fuelleft)/10 * (ship.LVL > 99? .85: 1));
+				totalResult.totalAmmoS += Math.floor(ship.ammo * (10-ammoleft)/10 * (ship.LVL > 99? .85: 1));
 				for (var k=0; k<ship.PLANESLOTS.length; k++) {
 					totalResult.totalBauxS += 5*(ship.PLANESLOTS[k]-ship.planecount[k]);
 					if (ship.PLANESLOTS[k] && ship.planecount[k] <= 0) totalResult.totalEmptiedPlanes++;
@@ -622,9 +613,9 @@ function simStatsCombined(numsims,type,foptions) {
 				if (s !== 2) {
 					for (var j=0; j<FLEETS1S[s].ships.length; j++) {
 						var shipS = FLEETS1S[s].ships[j];
-						totalResult.totalFuelS += Math.floor(shipS.fuel * .5);
-						if (FLEETS1S[s].supportType == 1) totalResult.totalAmmoS += Math.floor(shipS.ammo * .4);
-						else totalResult.totalAmmoS += Math.floor(shipS.ammo * .8);
+						totalResult.totalFuelS += Math.floor(shipS.fuel * .5 * (shipS.LVL > 99? .85: 1));
+						if (FLEETS1S[s].supportType == 1) totalResult.totalAmmoS += Math.floor(shipS.ammo * .4 * (shipS.LVL > 99? .85: 1));
+						else totalResult.totalAmmoS += Math.floor(shipS.ammo * .8 * (shipS.LVL > 99? .85: 1));
 						for (var k=0; k<shipS.PLANESLOTS.length; k++) totalResult.totalBauxS += 5*(shipS.PLANESLOTS[k]-shipS.planecount[k]);
 					}
 				}

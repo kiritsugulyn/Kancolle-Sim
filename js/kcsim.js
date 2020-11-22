@@ -100,9 +100,12 @@ var NBATTACKDATA = {
 	3: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.22, numHits: 2, torpedo: true, name: 'Torpedo CI' },
 	4: { dmgMod: 1.75, accMod: 1.5, chanceMod: 1.3, name: 'Sec. Gun CI' },
 	5: { dmgMod: 2, accMod: 2, chanceMod: 1.4, name: 'Main Gun CI' },
+	31: { dmgMod: 1.75, accMod: 1.65, chanceMod: 1.05, id: 3, numHits: 2, torpedo: true, name: 'SSCI (TR)' },
+	32: { dmgMod: 1.6, accMod: 1.65, chanceMod: 1.1, id: 3, numHits: 2, torpedo: true, name: 'SSCI (TT)' },
 	61: { dmgMod: 1.25, accMod: 1.25, chanceMod: 1.05, id: 6, name: 'CVCI (1.25)' },
 	62: { dmgMod: 1.2, accMod: 1.2, chanceMod: 1.15, id: 6, name: 'CVCI (1.2)' },
 	63: { dmgMod: 1.18, accMod: 1.2, chanceMod: 1.25, id: 6, name: 'CVCI (1.18)' },
+	64: { dmgMod: 1.2, accMod: 1.2, chanceMod: 1.15, id: 6, name: 'CVCI (1.2, suisei)' },
 	7: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.3, name: 'DDCI (GTR)' },
 	8: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.5, name: 'DDCI (LTR)' },
 }
@@ -433,17 +436,13 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 			let attackData = NBATTACKDATA[NBtype];
 			if (target.isInstall && attackData.torpedo) continue;
 			let chanceMod = attackData.chanceMod;
-			if (ship.isSub &&  NBtype == 3 && ((ship.numSpecialTorp && ship.hasSubRadar) || ship.numSpecialTorp >= 2)) chanceMod = 1.1;
 			let chance = (chanceMod == 0)? .99 : NBchance/chanceMod;
 			if (Math.random() < chance) {
 				if (attackData.numHits) da = attackData.numHits;
 				cutin = attackData.id || NBtype;
 				cutinR = NBtype;
 				let dmgMod = attackData.dmgMod;
-				if (ship.isSub && NBtype == 3) { //special sub TCI
-					if (ship.numSpecialTorp && ship.hasSubRadar) dmgMod = 1.75;
-					else if (ship.numSpecialTorp >= 2) dmgMod = 1.6;
-				} else if (NBtype == 7 || NBtype == 8) { //D-gun bonus
+ 				if (NBtype == 7 || NBtype == 8) { //D-gun bonus
 					let count = 0, count2 = 0;
 					for (let equip of ship.equips) {
 						if (equip.mid == 267) { count++; }
@@ -555,7 +554,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 		if (APIyasen.api_si_list) {
 			let si_list;
 			if (cutinR < 60) {
-				let btypeMap = { 1: [], 2: [], 8: [], 4: [] }, btypeAll = [];
+				let btypeMap = { 1: [], 2: [], 8: [], 4: [], 18: [] }, btypeAll = [];
 				for (let eq of ship.equips) {
 					if (btypeMap[eq.btype]) {
 						btypeMap[eq.btype].push(eq.mid);
@@ -573,6 +572,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 						si_list = [btypeMap[B_MAINGUN][0],btypeMap[B_TORPEDO][0]];
 						break;
 					case 3:
+					case 32:
 						si_list = [btypeMap[B_TORPEDO][0],btypeMap[B_TORPEDO][1]];
 						break;
 					case 4:
@@ -580,6 +580,9 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 						break;
 					case 5:
 						si_list = [btypeMap[B_MAINGUN][0],btypeMap[B_MAINGUN][1],btypeMap[B_MAINGUN][2]];
+						break;
+					case 31:
+						si_list = [btypeMap[B_TORPEDO][0],btypeMap[B_SUBRADAR][0]];
 						break;
 					case 7:
 						si_list = [btypeMap[B_MAINGUN][0],btypeMap[B_TORPEDO][0],btypeMap[B_RADAR][0]];
@@ -610,6 +613,8 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 					case 63:
 						si_list = [btypeAll[0],btypeAll[1],btypeAll[2]];
 						break;
+					case 64:
+						si_list = [btypeMap[B_NIGHTFIGHTER][0]||btypeMap[B_NIGHTBOMBER][0],btypeAll.filter(mid => mid === 320)[0]];
 					default:
 						si_list = [-1];
 						break;
@@ -1248,7 +1253,7 @@ function accuracyAndCrit(ship,target,hit,evMod,evFlat,critrateMod,isPlanes,critB
 	if (!(ship instanceof LandBase) && !ship.fleet.supportType){
 		var specialMod = 1; //e.g. equipment and historical bonus
 		if (target.equipWeak && ship.equips) specialMod *= getSpecialEquipBonus(ship,target);
-		if (ship.bonusSpecial) specialMod *= getShipHistoricalBonus(ship,target);
+		specialMod *= ship.bonusSpecial || 1;
 		hit *= specialMod;
 	}
 	hit = Math.floor(hit*100)*.01;
@@ -1314,12 +1319,13 @@ function damage(ship,target,base,preMod,postMod,cap,plane) {
 
 	var specialMod = 1; //e.g. equipment and historical bonus
 	if (target.equipWeak && ship.equips) specialMod *= getSpecialEquipBonus(ship,target,plane);
-	if (ship.bonusSpecial) specialMod *= getShipHistoricalBonus(ship,target);
+	specialMod *= ship.bonusSpecial || 1;
+	specialMod *= target.debuff || 1;
 	dmg *= specialMod;
-	if (C && specialMod !== 1) console.log('	speicalMod:'+specialMod.toFixed(2)+'	dmg after specialmod:'+dmg.toFixed(1));
+	if (C && specialMod !== 1) console.log('	speicalmod:'+specialMod.toFixed(2)+'	dmg after specialmod:'+dmg.toFixed(1));
 
 	var ar = target.AR + (target.improves.AR || 0);
-	dmg -= .7*ar+.6*Math.floor(Math.random()*ar) - (target.debuff||0);
+	dmg -= .7*ar+.6*Math.floor(Math.random()*ar);
 	if (target.isSub) dmg += (ship.aswPenetrate || 0);
 	if (C) console.log('	dmg after def:'+dmg.toFixed(1));
 	
@@ -1360,7 +1366,7 @@ function damageSupport(ship,target,base,preMod,postMod,cap){
 	}
 
 	var ar = target.AR + (target.improves.AR || 0);
-	dmg -= .7*ar+.6*Math.floor(Math.random()*ar) - (target.debuff||0);
+	dmg -= .7*ar+.6*Math.floor(Math.random()*ar);
 	if (target.isSub) dmg += (ship.aswPenetrate || 0);
 	if (C) console.log('	dmg after def:'+dmg.toFixed(1));
 	
@@ -2813,12 +2819,7 @@ function simStats(numsims,foptions) {
 	
 	if (FLEETS1S[2]) {
 		for (let ship of FLEETS1S[2].ships) {
-			let bonus = ship.bonusBTemp || ship.bonusTemp;
-			if (bonus) ship.bonusSpecial = [{mod:bonus}];
-			if (ship.bonusDTemp) {
-				if (!ship.bonusSpecial) ship.bonusSpecial = [];
-				ship.bonusSpecial.push({mod:ship.bonusDTemp,on:[FLEETS2[FLEETS2.length-1].ships[0].mid]});
-			}
+			ship.bonusSpecial = ship.bonusA || 1;
 		}
 	}
 
@@ -2843,13 +2844,9 @@ function simStats(numsims,foptions) {
 		for (var j=0; j<FLEETS2.length; j++) {
 			var options = foptions[j];
 			for (let ship of FLEETS1[0].ships) {
-				let bonus = (j==FLEETS2.length-1 && ship.bonusBTemp)? ship.bonusBTemp : ship.bonusTemp;
-				if (bonus && options.bonus) ship.bonusSpecial = [{mod:bonus}];
-				else ship.bonusSpecial = null;
-				if (ship.bonusDTemp) {
-					if (!ship.bonusSpecial) ship.bonusSpecial = [];
-					ship.bonusSpecial.push({mod:ship.bonusDTemp,on:[FLEETS2[FLEETS2.length-1].ships[0].mid]});
-				}
+				if (options.bonusA) ship.bonusSpecial = ship.bonusA || 1;
+				else if (options.bonusB) ship.bonusSpecial = ship.bonusB || 1;
+				else if (options.bonusC) ship.bonusSpecial = ship.bonusC || 1;
 			}
 			FLEETS1[0].DMGTOTALS = [0,0,0,0,0,0];
 			FLEETS1[0].SINKFLAGSHIP = [false, false, false, false, false, false];
@@ -2897,8 +2894,8 @@ function simStats(numsims,foptions) {
 			if (useBucket) totalResult.totalBuckets++;
 			let fuelleft = ship.fuelleft - (ship._fuelUnderway || 0);
 			let ammoleft = ship.ammoleft - (ship._ammoUnderway || 0);
-			totalResult.totalFuelS += Math.floor(ship.fuel * (10-fuelleft)/10);
-			totalResult.totalAmmoS += Math.floor(ship.ammo * (10-ammoleft)/10);
+			totalResult.totalFuelS += Math.floor(ship.fuel * (10-fuelleft)/10 * (ship.LVL > 99? .85: 1));
+			totalResult.totalAmmoS += Math.floor(ship.ammo * (10-ammoleft)/10 * (ship.LVL > 99? .85: 1));
 			for (var k=0; k<ship.PLANESLOTS.length; k++) {
 				totalResult.totalBauxS += 5*(ship.PLANESLOTS[k]-ship.planecount[k]);
 				if (ship.PLANESLOTS[k] && ship.planecount[k] <= 0) totalResult.totalEmptiedPlanes++;
@@ -2910,9 +2907,9 @@ function simStats(numsims,foptions) {
 				if (s !== 2) {
 					for (var j=0; j<FLEETS1S[s].ships.length; j++) {
 						var shipS = FLEETS1S[s].ships[j];
-						totalResult.totalFuelS += Math.floor(shipS.fuel * .5);
-						if (FLEETS1S[s].supportType == 1) totalResult.totalAmmoS += Math.floor(shipS.ammo * .4);
-						else totalResult.totalAmmoS += Math.floor(shipS.ammo * .8);
+						totalResult.totalFuelS += Math.floor(shipS.fuel * .5 * (shipS.LVL > 99? .85: 1));
+						if (FLEETS1S[s].supportType == 1) totalResult.totalAmmoS += Math.floor(shipS.ammo * .4 * (shipS.LVL > 99? .85: 1));
+						else totalResult.totalAmmoS += Math.floor(shipS.ammo * .8 * (shipS.LVL > 99? .85: 1));
 						for (var k=0; k<shipS.PLANESLOTS.length; k++) totalResult.totalBauxS += 5*(shipS.PLANESLOTS[k]-shipS.planecount[k]);
 					}
 				}
@@ -3558,16 +3555,6 @@ function getSpecialEquipBonus(ship,target,plane){
 			else specialMod *= (bonus.mod || 1);
 		}
 	})
-	return specialMod;
-}
-
-function getShipHistoricalBonus(ship,target){
-	var specialMod = 1;
-	for (var i=0; i<ship.bonusSpecial.length; i++) {
-		if (!ship.bonusSpecial[i].on || ship.bonusSpecial[i].on.indexOf(target.mid) != -1) {
-			specialMod *= ship.bonusSpecial[i].mod;
-		}
-	}
 	return specialMod;
 }
 
