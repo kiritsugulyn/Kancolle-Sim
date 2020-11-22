@@ -151,25 +151,25 @@ function showAdditionalStats(fleet) {
 	table.append(tr); tr = $('<tr></tr>');
 	for (var i=0; i<ships.length; i++) {
 		var td = $('<td></td>'); tr.append(td);
-		if (MECHANICS.equipBonus && ships[i].equipmentBonusStats('houg') > 0){
+		if (MECHANICS.visibleEquipBonus && ships[i].equipmentBonusStats('houg') > 0){
 			td.append('<span>FP: '+Math.floor(ships[i].FP)+'</span><br>');
 		}
-		if (MECHANICS.equipBonus && ships[i].equipmentBonusStats('raig') > 0){
+		if (MECHANICS.visibleEquipBonus && ships[i].equipmentBonusStats('raig') > 0){
 			td.append('<span>TP: '+Math.floor(ships[i].TP)+'</span><br>');
 		}
-		if (MECHANICS.equipBonus && ships[i].equipmentBonusStats('souk') > 0){
+		if (MECHANICS.visibleEquipBonus && ships[i].equipmentBonusStats('souk') > 0){
 			td.append('<span>AR: '+Math.floor(ships[i].AR)+'</span><br>');
 		}
-		if (MECHANICS.equipBonus && ships[i].equipmentBonusStats('houk') > 0){
+		if (MECHANICS.visibleEquipBonus && ships[i].equipmentBonusStats('houk') > 0){
 			td.append('<span>EV: '+Math.floor(ships[i].EV)+'</span><br>');
 		}
-		if (MECHANICS.equipBonus && ships[i].equipmentBonusStats('tais') > 0){
+		if (MECHANICS.visibleEquipBonus && ships[i].equipmentBonusStats('tais') > 0){
 			td.append('<span>ASW: '+(Math.floor(ships[i].ASW)+Math.floor(ships[i].ASWBonus))+'</span><br>');
 		}
-		if (MECHANICS.equipBonus && ships[i].equipmentBonusStats('soku') > 0){
+		if (MECHANICS.visibleEquipBonus && ships[i].equipmentBonusStats('soku') > 0){
 			td.append('<span>SPD: '+Math.floor(ships[i].SPD)+'</span><br>');
 		}
-		if (MECHANICS.equipBonus && ships[i].equipmentBonusStats('leng') > 0){
+		if (MECHANICS.visibleEquipBonus && ships[i].equipmentBonusStats('leng') > 0){
 			td.append('<span>RNG: '+Math.floor(ships[i].RNG)+'</span><br>');
 		}
 		if (fleet == 12 || fleet == 13){
@@ -1060,7 +1060,7 @@ function genOptions(fleetnum) {
 	div.append('<span class="option2"><input type="radio" id="bonusA'+fleetnum+'" name="shipbonus'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()" checked/><label for="bonusA'+fleetnum+'">A</label></span>');
 	div.append('<span class="option2"><input type="radio" id="bonusB'+fleetnum+'" name="shipbonus'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="bonusB'+fleetnum+'">B</label></span>');
 	div.append('<span class="option2"><input type="radio" id="bonusC'+fleetnum+'" name="shipbonus'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="bonusC'+fleetnum+'">C</label></span>');
-	div.append('<span class="option2 line"><input type="checkbox" id="eqbonus'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="eqbonus'+fleetnum+'">Special equip bonus: </label></span>');
+	div.append('<span class="option2 line"><label>Special equip bonus </label></span>');
 	var sel1 = document.createElement('select');  //world+level
 	sel1.setAttribute('id','eq1sel'+fleetnum);
 	sel1.setAttribute('onChange','changedEquipBonus1('+fleetnum+');raiseFleetChange()');
@@ -1110,16 +1110,14 @@ function extractOptions(num) {
 	options.bonusA = $('#bonusA'+num).prop('checked');
 	options.bonusB = $('#bonusB'+num).prop('checked');
 	options.bonusC = $('#bonusC'+num).prop('checked');
+	options.eqbonus = [];
+	options.eqbonus.push($('#eq1sel'+num).prop('value'));
+	options.eqbonus.push($('#eq2sel'+num).prop('value'));
 	options.emergencyrepair = $('#emergencyrepair'+num).prop('checked');
 	if ($('#maelstrom'+num).prop('checked')){
 		options.maelstrom = [0, 0];
 		options.maelstrom[0] = Number($('#fuelloss'+num).prop('value'));
 		options.maelstrom[1] = Number($('#ammoloss'+num).prop('value'));
-	}
-	if ($('#eqbonus'+num).prop('checked')){
-		options.eqbonus = [];
-		options.eqbonus.push($('#eq1sel'+num).prop('value'));
-		options.eqbonus.push($('#eq2sel'+num).prop('value'));
 	}
 	if ($('#fixengage'+num).prop('checked')){
 		options.engagemod = Number($('#engagemod'+num).prop('value'));

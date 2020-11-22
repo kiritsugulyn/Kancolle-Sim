@@ -176,7 +176,7 @@ var MECHANICS = {
 	zuiunCI: false,
 	aaResist: true,
 	divebomberInstall: true,
-	equipBonus: true
+	visibleEquipBonus: true
 };
 
 function getRepairCost(ship) {
