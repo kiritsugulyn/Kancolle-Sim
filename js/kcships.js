@@ -1581,7 +1581,7 @@ Equip.prototype.setImprovement = function(level) {
 			this.AAImprove = .2*level;
 			break;
 		case DIVEBOMBER:
-            if (this.AA && this.AA >=4) this.AAImprove = .25*level;
+            if ([60,154,219].indexOf(this.mid) !== -1) this.AAImprove = .25*level;
             else {
                 this.ASImprove = .2*level;
                 this.improves.Pshell = .2*level;

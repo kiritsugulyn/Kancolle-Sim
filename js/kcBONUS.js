@@ -16,7 +16,7 @@ var EQUIPBONUS = {
                 excludeLBAS: true
             }
         ],
-        'E-4 Boss': [
+        'E-4 X/Z3': [
             {
                 mod: [1.2, 1.3, 1.4],
                 eqids: [82, 83, 302],
