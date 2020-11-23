@@ -1193,7 +1193,7 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase) {
 	var res = rollHit(accuracyAndCrit(ship,target,acc,1.0,0,.2,!issupport),!issupport && ship.critdmgbonus);  // No evMod for airstrike
 	var equip = ship.equips[slot];
 	var dmg = 0, realdmg = 0;
-	var planebase = (equip.isdivebomber)? equip.DIVEBOMB : (target.isInstall)? 0 : equip.TP;
+	var planebase = (equip.isdivebomber)? (equip.DIVEBOMB || 0) : (target.isInstall)? 0 : (equip.TP || 0);
 	if (!issupport) planebase += (equip.ASImprove || 0);
 	if (C) console.log('	slot:'+slot+' planecount:'+ship.planecount[slot]+' planebase:'+planebase);
 	if (res) {
@@ -1386,8 +1386,8 @@ function softCap(num,cap) {
 	return (num > cap)? cap+Math.sqrt(num-cap) : num;
 }
 
-function compareAP(fleet1,fleet2,isjetphase,includeEscort,includeScout) {
-	var ap1 = fleet1.fleetAirPower(isjetphase,includeScout), ap2 = fleet2.fleetAirPower(isjetphase,includeScout);
+function compareAP(fleet1,fleet2,isjetphase,includeEscort,includeScout,isSupport) {
+	var ap1 = fleet1.fleetAirPower(isjetphase,includeScout,isSupport), ap2 = fleet2.fleetAirPower(isjetphase,includeScout);
 	if (includeEscort) {
 		if (fleet1.combinedWith) ap1 += fleet1.combinedWith.fleetAirPower(isjetphase,includeScout);
 		if (fleet2.combinedWith) ap2 += fleet2.combinedWith.fleetAirPower(isjetphase,includeScout);
@@ -1842,10 +1842,10 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 	} else if (suptype == 1 || suptype == 4) {
 		for (var i=0; i<shipsS.length; i++) shipsS[i].id = 1;
 		if (suptype == 4) {
-			supportASW(shipsS,subsalive2,subsalive2,(C)? BAPI.data.api_support_info.api_support_airatack : null,subsalive2[0].fleet.combinedWith);
+			supportASW(shipsS,subsalive2,alive2.concat(subsalive2),(C)? BAPI.data.api_support_info.api_support_airatack : null,subsalive2[0].fleet.combinedWith);
 		} else {
 			var prevAS = alive2[0].fleet.AS;
-			compareAP(shipsS[0].fleet,alive2[0].fleet);
+			compareAP(shipsS[0].fleet,alive2[0].fleet,false,false,false,true);
 			AADefenceFighters(shipsS,false,(C)? BAPI.data.api_support_info.api_support_airatack : null);
 			AADefenceBombersAndAirstrike(shipsS,alive2,alive2.concat(subsalive2),(C)? BAPI.data.api_support_info.api_support_airatack : null,true,false,alive2[0].fleet.combinedWith);
 			alive2[0].fleet.AS = prevAS;
@@ -1871,7 +1871,7 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 }
 
 function supportASW(carriers,targets,defenders,APIkouku,combinedAll) {
-	var bombers = [], hasbomber = false;
+	var bombers = [], hasbomber = false, ap1 = 0;
 	for (var i=0; i<carriers.length; i++) {
 		var ship = carriers[i];
 		bombers.push([]);
@@ -1879,6 +1879,7 @@ function supportASW(carriers,targets,defenders,APIkouku,combinedAll) {
 			var e = ship.equips[j];
 			if (EQTDATA[e.type].isPlane && e.type != FIGHTER && ship.planecount[j]>0 && e.ASW && e.ASW >= 1) {
 				bombers[i].push(j);
+				ap1 += Math.floor((e.AA || 0) * Math.sqrt(ship.planecount[j]));
 				hasbomber = true;
 				var side = (ship.side == 2 || ship.side == 3)? 0 : ship.side;
 				if (C && APIkouku.api_plane_from[side].indexOf(ship.apiID2)==-1) APIkouku.api_plane_from[side].push(ship.apiID2);
@@ -1886,13 +1887,35 @@ function supportASW(carriers,targets,defenders,APIkouku,combinedAll) {
 		}
 	}
 	if (!hasbomber) return;
-	
+
+	var fleet1 = carriers[0].fleet, fleet2 = targets[0].fleet, ap2 = fleet2.fleetAirPower();
+	if (ap1 >= ap2*3) fleet1.AS = 2
+	else if (ap1 >= ap2*1.5) fleet1.AS = 1; 
+	else if (ap2 >= ap1*3) fleet1.AS = -2;
+	else if (ap2 >= ap1*1.5) fleet1.AS = -1;
+	else fleet1.AS = 0;
+	if (C) console.log('AS (ASW support): '+ap1+' '+ap2+' '+fleet1.AS);
+
 	var AACInum = 0, AACImod = 1;
 	
 	for (var i=0; i<bombers.length; i++) {
 		var ship = carriers[i];
 		for (var j=0; j<bombers[i].length; j++) {
 			var slot = bombers[i][j];
+			// S1
+			var rmin, rplus;
+			switch(fleet1.AS) {
+				case 2: rmin = .025; rplus = .0333; break;
+				case 1: rmin = .075; rplus = .1; break;
+				case 0: rmin = .125; rplus = .1666; break;
+				case -1: rmin = .175; rplus = .2333; break;
+				case -2: rmin = .25; rplus = .3333; break;
+			}
+			var randplus = Math.floor((Math.floor(1000*rplus)+1)*Math.random())/1000;
+			var lostcount = Math.floor(ship.planecount[slot]*(rmin+randplus));
+			ship.planecount[slot] = Math.max(0,ship.planecount[slot]-lostcount);
+
+			// S2
 			var defender = defenders[Math.floor(Math.random()*defenders.length)];
 			var supportMod = .8;
 			var shotProp = (Math.random() < .5)? Math.floor(getAAShotProp(defender,ship.planecount[slot])*supportMod) : 0;

@@ -311,7 +311,7 @@ function showAdditionalStats(fleet) {
 	}
 	
 	$('#dialogadvstats').html('');
-	let ap = fleettemp.fleetAirPower(), airText = ap.toString();
+	let ap = fleet == 12 || fleet == 13? fleettemp.fleetAirPower(false,false,true): fleettemp.fleetAirPower(), airText = ap.toString();
 	if (fleettemp.combinedWith) {
 		ap2 = fleettemp.combinedWith.fleetAirPower();
 		if (ap2 > 0) {
@@ -1685,8 +1685,18 @@ function updateResults(results) {
 		for(var i=1; i<=node.MVPs.length; i++) resultAddWeight('mvp'+i,node.MVPs[i-1],addnum);
 		if (node.MVPsC) for(var i=1; i<=node.MVPsC.length; i++) resultAddWeight('mvpc'+i,node.MVPsC[i-1],addnum);
 		
-		for(var i=1; i<=node.sinkFlagships.length; i++) resultAddWeight('sinkfs'+i,node.sinkFlagships[i-1],node.flagsunk);
-		if (node.sinkFlagshipsC) for(var i=1; i<=node.sinkFlagshipsC.length; i++) resultAddWeight('sinkfsc'+i,node.sinkFlagshipsC[i-1],node.flagsunk);
+		let totalsunk = node.flagsunk;
+		for(var i=1; i<=node.sinkFlagships.length; i++) {
+			resultAddWeight('sinkfs'+i,node.sinkFlagships[i-1],node.flagsunk);
+			totalsunk -= node.sinkFlagships[i-1];
+		}
+		if (node.sinkFlagshipsC) {
+			for(var i=1; i<=node.sinkFlagshipsC.length; i++) {
+				resultAddWeight('sinkfsc'+i,node.sinkFlagshipsC[i-1],node.flagsunk);
+				totalsunk -= node.sinkFlagshipsC[i-1];
+			}
+		}
+		resultAddWeight('sinkfs0',totalsunk,node.flagsunk);
 
 		resultAddWeight('rredany',node.redded,addnum);
 		for(var i=0; i<node.redIndiv.length; i++) resultAddWeight('red'+(i+1),node.redIndiv[i],addnum);
@@ -1729,8 +1739,18 @@ function updateResults(results) {
 		resultAddWeight('rsunkfs',node.flagsunk,addnum);
 		resultAddWeight('rankNone',addnum-node.num,addnum);
 
-		for(var i=1; i<=node.sinkFlagships.length; i++) resultAddWeight('sinkfs'+i,node.sinkFlagships[i-1],node.flagsunk);
-		if (node.sinkFlagshipsC) for(var i=1; i<=node.sinkFlagshipsC.length; i++) resultAddWeight('sinkfsc'+i,node.sinkFlagshipsC[i-1],node.flagsunk);
+		let totalsunk = node.flagsunk;
+		for(var i=1; i<=node.sinkFlagships.length; i++) {
+			resultAddWeight('sinkfs'+i,node.sinkFlagships[i-1],node.flagsunk);
+			totalsunk -= node.sinkFlagships[i-1];
+		}
+		if (node.sinkFlagshipsC) {
+			for(var i=1; i<=node.sinkFlagshipsC.length; i++) {
+				resultAddWeight('sinkfsc'+i,node.sinkFlagshipsC[i-1],node.flagsunk);
+				totalsunk -= node.sinkFlagshipsC[i-1];
+			}
+		}
+		resultAddWeight('sinkfs0',totalsunk,node.flagsunk);
 		
 		for (var i=results.nodes.length; i<NUMNODESDEFAULT; i++) $('.res'+(i+1)).each(function() { $(this).hide(); } );
 		

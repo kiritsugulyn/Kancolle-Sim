@@ -33,11 +33,11 @@ Fleet.prototype.loadShips = function(ships) {
 	}
 	this.ships[0].isflagship = true;
 }
-Fleet.prototype.fleetAirPower = function(jetonly,includeScout) {  //get air power
+Fleet.prototype.fleetAirPower = function(jetonly,includeScout,isSupport) {  //get air power
 	this.AP = 0;
 	for (var i=0; i<this.ships.length; i++) {
 		if (this.ships[i].HP <= 0 || this.ships[i].retreated) continue;
-		this.AP += this.ships[i].airPower(jetonly,includeScout);
+		this.AP += isSupport? this.ships[i].airPowerSupport(): this.ships[i].airPower(jetonly,includeScout);
 	}
 	return this.AP;
 }
@@ -979,6 +979,16 @@ Ship.prototype.airPower = function(jetonly,includeScout) {
 		if (this.planecount[i] <= 0) continue;
 		if ((this.equips[i].isfighter && (!jetonly||this.equips[i].isjet)) || (includeScout && EQTDATA[this.equips[i].type].isPlane)) {
 			ap += Math.floor(((this.equips[i].AA||0) + (this.equips[i].AAImprove||0)) * Math.sqrt(this.planecount[i]) + (this.equips[i].APbonus||0));
+		}
+	}
+	return Math.floor(ap);
+}
+Ship.prototype.airPowerSupport = function(){
+    var ap = 0;
+	for (var i=0; i<this.equips.length; i++) {
+        if (this.planecount[i] <= 0) continue;
+		if (this.equips[i].isfighter) {
+			ap += Math.floor((this.equips[i].AA||0) * Math.sqrt(this.planecount[i]));
 		}
 	}
 	return Math.floor(ap);
