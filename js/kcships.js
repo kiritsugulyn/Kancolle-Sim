@@ -1106,7 +1106,7 @@ Ship.prototype.ptMod = function() {
     let num3 = this.equiptypes[AAGUN] || 0;
     let num4 = this.equiptypes[PICKET] || 0;
     let num5 = (this.equiptypes[SEAPLANEBOMBER] || 0) + (this.equiptypes[SEAPLANEFIGHTER] || 0);
-    let num6 = this.equiptypes[DIVEBOMBER] || 0;
+    let num6 = Math.max(this.equiptypes[DIVEBOMBER] || 0, this.equiptypes[JETBOMBER] || 0);
 
     if (num1 >= 1) dmgMod *= 1.5;
     if (num1 >= 2) dmgMod *= 1.4;
