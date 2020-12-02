@@ -3339,6 +3339,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 131,
 		nextlvl: 0,
+		EQUIPS: [276,276,239,365],
 	},
 	137: {
 		name: 'Agano',
@@ -3542,6 +3543,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 245,
 		nextlvl: 0,
+		EQUIPS: [296, 286],
 	},
 	145: {
 		name: 'Shigure Kai 2',
@@ -3567,6 +3569,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 243,
 		nextlvl: 0,
+		EQUIPS: [296, 286],
 	},
 	146: {
 		name: 'Kiso Kai 2',
@@ -3617,6 +3620,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 235,
 		nextlvl: 0,
+		EQUIPS: [295, 285, 166],
 	},
 	148: {
 		name: 'Musashi Kai',
@@ -3643,6 +3647,7 @@ var SHIPDATA = {
 		next: 546,
 		prev: 143,
 		nextlvl: 89,
+		EQUIPS: [276,276,239,365],
 	},
 	149: {
 		name: 'Kongou Kai 2',
@@ -4826,6 +4831,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 207,
 		nextlvl: 0,
+		EQUIPS: [295, 285],
 	},
 	196: {
 		name: 'Hiryuu Kai 2',
@@ -4901,6 +4907,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 252,
 		nextlvl: 0,
+		EQUIPS: [166, 167],
 	},
 	199: {
 		name: 'Ooshio Kai 2',
@@ -4925,7 +4932,8 @@ var SHIPDATA = {
 		ammo: 20,
 		next: 0,
 		prev: 249,
-		nextlvl: 0
+		nextlvl: 0,
+		EQUIPS: [166, 167],
 	},
 	200: {
 		name: 'Abukuma Kai 2',
@@ -4951,6 +4959,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 290,
 		nextlvl: 0,
+		EQUIPS: [309,58,179],
 	},
 	201: {
 		name: 'Fubuki Kai',
@@ -8034,6 +8043,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 238,
 		nextlvl: 0,
+		EQUIPS: [296, 285],
 	},
 	327: {
 		name: 'Asagumo Kai',
@@ -8690,6 +8700,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 449,
 		nextlvl: 0,
+		EQUIPS: [217,357,357,239],
 	},
 	362: {
 		name: 'Oyashio Kai',
@@ -8766,6 +8777,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 439,
 		nextlvl: 0,
+		EQUIPS: [161,161,370,365],
 	},
 	365: {
 		name: 'Aquila Kai',
@@ -9468,6 +9480,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 516,
 		nextlvl: 0,
+		EQUIPS: [282, 282],
 	},
 	396: {
 		name: 'Gambier Bay Kai',
@@ -9569,6 +9582,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 127,
 		nextlvl: 0,
+		EQUIPS: [383, 384],
 	},
 	400: {
 		name: 'I-8 Kai',
@@ -9769,6 +9783,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 233,
 		nextlvl: 0,
+		EQUIPS: [295, 285],
 	},
 	408: {
 		name: 'Junyou Kai 2',
@@ -10046,6 +10061,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 256,
 		nextlvl: 0,
+		EQUIPS: [166, 167],
 	},
 	419: {
 		name: 'Hatsushimo Kai 2',
@@ -10071,6 +10087,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 241,
 		nextlvl: 0,
+		EQUIPS: [296, 285],
 	},
 	420: {
 		name: 'Murakumo Kai 2',
@@ -10096,6 +10113,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 205,
 		nextlvl: 0,
+		EQUIPS: [295, 285],
 	},
 	421: {
 		name: 'Akizuki',
@@ -10249,6 +10267,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 201,
 		nextlvl: 0,
+		EQUIPS: [295, 285],
 	},
 	427: {
 		name: 'Choukai Kai 2',
@@ -10299,6 +10318,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 271,
 		nextlvl: 0,
+		EQUIPS: [363, 124],
 	},
 	429: {
 		name: 'Amagi Kai',
@@ -10451,6 +10471,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 254,
 		nextlvl: 0,
+		EQUIPS: [122,166],
 	},
 	435: {
 		name: 'Kisaragi Kai 2',
@@ -10476,6 +10497,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 255,
 		nextlvl: 0,
+		EQUIPS: [122,166],
 	},
 	436: {
 		name: 'Ro-500',
@@ -10526,6 +10548,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 234,
 		nextlvl: 0,
+		EQUIPS: [295, 285],
 	},
 	438: {
 		name: 'Saratoga Kai',
@@ -11183,6 +11206,7 @@ var SHIPDATA = {
 		next: 468,
 		prev: 248,
 		nextlvl: 85,
+		EQUIPS: [266, 286],
 	},
 	464: {
 		name: 'Kasumi Kai 2',
@@ -11208,6 +11232,7 @@ var SHIPDATA = {
 		next: 470,
 		prev: 253,
 		nextlvl: 88,
+		EQUIPS: [286, 166, 167],
 	},
 	465: {
 		name: 'Kashima',
@@ -11308,6 +11333,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 463,
 		nextlvl: 0,
+		EQUIPS: [149, 166, 167],
 	},
 	469: {
 		name: 'Kawakaze Kai 2',
@@ -11333,6 +11359,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 351,
 		nextlvl: 0,
+		EQUIPS: [296, 286, 166],
 	},
 	470: {
 		name: 'Kasumi Kai 2 B',
@@ -11759,6 +11786,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 289,
 		nextlvl: 0,
+		EQUIPS: [166, 167],
 	},
 	488: {
 		name: 'Yura Kai 2',
@@ -11784,6 +11812,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 220,
 		nextlvl: 0,
+		EQUIPS: [309, 217, 166],
 	},
 	489: {
 		name: 'Michishio Kai 2',
@@ -11809,6 +11838,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 250,
 		nextlvl: 0,
+		EQUIPS: [166, 167],
 	},
 	490: {
 		name: 'Arashio Kai 2',
@@ -11834,6 +11864,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 251,
 		nextlvl: 67,
+		EQUIPS: [166, 167],
 	},
 	491: {
 		name: 'Commandant Teste' ,
@@ -11985,6 +12016,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 358,
 		nextlvl: 0,
+		EQUIPS: [217,357,357,239],
 	},
 	497: {
 		name: 'Shiratsuyu Kai 2',
@@ -12010,6 +12042,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 242,
 		nextlvl: 0,
+		EQUIPS: [296, 286, 167],
 	},
 	498: {
 		name: 'Murasame Kai 2',
@@ -12035,6 +12068,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 244,
 		nextlvl: 0,
+		EQUIPS: [296, 286, 166],
 	},
 	499: {
 		name: 'Kamoi Kai',
@@ -12851,6 +12885,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 275,
 		nextlvl: 0,
+		EQUIPS: [290,318,124,365],
 	},
 	542: {
 		name: 'Yuugumo Kai 2',
@@ -12876,6 +12911,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 302,
 		nextlvl: 0,
+		EQUIPS: [267, 286],
 	},
 	543: {
 		name: 'Naganami Kai 2',
@@ -12901,6 +12937,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 304,
 		nextlvl: 0,
+		EQUIPS: [267, 286],
 	},
 	544: {
 		name: 'Gambier Bay',
@@ -12979,6 +13016,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 148,
 		nextlvl: 0,
+		EQUIPS: [281,128,239,216,365],
 	},
 	547: {
 		name: 'Tama Kai 2',
@@ -13004,6 +13042,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 216,
 		nextlvl: 0,
+		EQUIPS: [217, 217, 217],
 	},
 	548: {
 		name: 'Fumizuki Kai 2',
@@ -13029,6 +13068,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 257,
 		nextlvl: 0,
+		EQUIPS: [166, 167],
 	},
 	549: {
 		name: 'Intrepid',
@@ -13157,6 +13197,7 @@ var SHIPDATA = {
 		prev: 82,
 		nextlvl: 0,
 		excludeEquip: { 3: [2,3], 4: [2,3], 5: [2,3] },
+		EQUIPS: [290,290,157,323,365],
 	},
 	554: {
 		name: 'Hyuuga Kai 2',
@@ -13185,6 +13226,7 @@ var SHIPDATA = {
 		prev: 88,
 		nextlvl: 0,
 		excludeEquip: { 3: [2,3], 4: [2,3], 5: [2,3] },
+		EQUIPS: [290,290,157,323,365],
 	},
 	555: {
 		name: 'Zuihou Kai 2',
@@ -13412,6 +13454,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 303,
 		nextlvl: 0,
+		EQUIPS: [267, 286, 166],
 	},
 	564: {
 		name: 'Kazagumo Kai 2',
@@ -13437,6 +13480,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 349,
 		nextlvl: 0,
+		EQUIPS: [267, 286, 167],
 	},
 	565: {
 		name: 'Fukae',
@@ -13487,6 +13531,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 225,
 		nextlvl: 0,
+		EQUIPS: [266, 286],
 	},
 	567: {
 		name: 'Shiranui Kai 2',
@@ -13512,6 +13557,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 226,
 		nextlvl: 0,
+		EQUIPS: [266, 286],
 	},
 	568: {
 		name: 'Kuroshio Kai 2',
@@ -13537,6 +13583,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 227,
 		nextlvl: 0,
+		EQUIPS: [266, 286, 167],
 	},
 	569: {
 		name: 'Okinami Kai 2',
@@ -13562,6 +13609,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 359,
 		nextlvl: 0,
+		EQUIPS: [366, 286, 167],
 	},
 	570: {
 		name: 'Hirato',
@@ -13641,6 +13689,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 276,
 		nextlvl: 0,
+		EQUIPS: [290,318,365,124],
 	},
 	574: {
 		name: 'Gotland',
@@ -13718,6 +13767,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 571,
 		nextlvl: 0,
+		EQUIPS: [276,276,371,365],
 	},
 	578: {
 		name: 'Asashimo Kai 2',
@@ -13743,6 +13793,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 344,
 		nextlvl: 0,
+		EQUIPS: [267, 286, 167],
 	},
 	579: {
 		name: 'Gotland Kai',
@@ -13943,6 +13994,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 350,
 		nextlvl: 0,
+		EQUIPS: [166, 167],
 	},
 	589: {
 		name: 'L.d.S.D.d.Abruzzi',
@@ -14199,6 +14251,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 595,
 		nextlvl: 0,
+		EQUIPS: [357,357,239,307],
 	},
 	601: {
 		name: 'Colorado',
@@ -14375,6 +14428,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 636,
 		nextlvl: 0,
+		EQUIPS: [383, 384],
 	},
 	609: {
 		name: 'De Ruyter Kai',
@@ -14755,6 +14809,7 @@ var SHIPDATA = {
 		nextlvl: 88,
 		excludeEquip: { 4: [1,2,5,22] },
 		onlyEquip: { 5: [12,21,43] },
+		EQUIPS: [364,58,179],
 	},
 	624: {
 		name: 'Yuubari Kai 2 D',
@@ -14832,6 +14887,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 621,
 		nextlvl: 0,
+		EQUIPS: [166, 167, 217, 217],
 	},
 	627: {
 		name: 'Shikinami Kai 2',
@@ -14857,6 +14913,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 208,
 		nextlvl: 0,
+		EQUIPS: [296, 285],
 	},
 	628: {
 		name: 'Fletcher Kai Mod.2',
@@ -14883,6 +14940,7 @@ var SHIPDATA = {
 		prev: 692,
 		nextlvl: 90,
 		alwaysOASW: true,
+		EQUIPS: [308, 308, 376],
 	},
 	629: {
 		name: 'Fletcher Mk.II',
@@ -14909,6 +14967,7 @@ var SHIPDATA = {
 		prev: 628,
 		nextlvl: 90,
 		alwaysOASW: true,
+		EQUIPS: [308, 308, 376],
 	},
 	630: {
 		name: 'Gotland andra',
@@ -15158,7 +15217,8 @@ var SHIPDATA = {
 		ammo: 20,
 		next: 0,
 		prev: 301,
-		nextlvl: 0
+		nextlvl: 0,
+		EQUIPS: [366, 286],
 	},
 	651: {
 		name: 'Dan Yang',
@@ -15184,6 +15244,7 @@ var SHIPDATA = {
 		next: 656,
 		prev: 228,
 		nextlvl: 88,
+		EQUIPS: [397, 398],
 	},
 	656: {
 		name: 'Yukikaze Kai 2',
@@ -15209,6 +15270,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 651,
 		nextlvl: 0,
+		EQUIPS: [122, 286],
 	},
 	678: {
 		name: 'Hiburi Kai',
@@ -15461,6 +15523,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 562,
 		nextlvl: 0,
+		EQUIPS: [308, 308, 376],
 	},
 	690: {
 		name: 'Nisshin Kai',
@@ -15612,6 +15675,7 @@ var SHIPDATA = {
 		next: 0,
 		prev: 597,
 		nextlvl: 0,
+		EQUIPS: [363,362,307],
 	},
 	697: {
 		name: 'South Dakota Kai',
@@ -21220,9 +21284,17 @@ var SHIPDATA = {
 				eqtypes: [APSHELL],
 			},
 			{
-				mod: 1.3,
+				mod: 1.1,
 				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-			}
+			},
+			{
+				mod: 1.18,
+				eqids: [194],
+			},
+			{
+				mod: [1.1, 1.21],
+				eqtypes: [DIVEBOMBER],
+			},
 		],
 		HP: 730,
 		FP: 202,
@@ -21250,9 +21322,17 @@ var SHIPDATA = {
 				eqtypes: [APSHELL],
 			},
 			{
-				mod: 1.3,
+				mod: 1.1,
 				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-			}
+			},
+			{
+				mod: 1.18,
+				eqids: [194],
+			},
+			{
+				mod: [1.1, 1.21],
+				eqtypes: [DIVEBOMBER],
+			},
 		],
 		HP: 730,
 		FP: 242,
@@ -21280,9 +21360,17 @@ var SHIPDATA = {
 				eqtypes: [APSHELL],
 			},
 			{
-				mod: 1.3,
+				mod: 1.1,
 				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-			}
+			},
+			{
+				mod: 1.18,
+				eqids: [194],
+			},
+			{
+				mod: [1.1, 1.21],
+				eqtypes: [DIVEBOMBER],
+			},
 		],
 		HP: 730,
 		FP: 242,
@@ -21310,9 +21398,17 @@ var SHIPDATA = {
 				eqtypes: [APSHELL],
 			},
 			{
-				mod: 1.3,
+				mod: 1.1,
 				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-			}
+			},
+			{
+				mod: 1.18,
+				eqids: [194],
+			},
+			{
+				mod: [1.1, 1.21],
+				eqtypes: [DIVEBOMBER],
+			},
 		],
 		HP: 730,
 		FP: 222,
@@ -21340,9 +21436,17 @@ var SHIPDATA = {
 				eqtypes: [APSHELL],
 			},
 			{
-				mod: 1.3,
+				mod: 1.1,
 				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-			}
+			},
+			{
+				mod: 1.18,
+				eqids: [194],
+			},
+			{
+				mod: [1.1, 1.21],
+				eqtypes: [DIVEBOMBER],
+			},
 		],
 		HP: 730,
 		FP: 262,
@@ -21370,9 +21474,17 @@ var SHIPDATA = {
 				eqtypes: [APSHELL],
 			},
 			{
-				mod: 1.3,
+				mod: 1.1,
 				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-			}
+			},
+			{
+				mod: 1.18,
+				eqids: [194],
+			},
+			{
+				mod: [1.1, 1.21],
+				eqtypes: [DIVEBOMBER],
+			},
 		],
 		HP: 730,
 		FP: 282,
@@ -23108,9 +23220,17 @@ var SHIPDATA = {
 				eqtypes: [APSHELL],
 			},
 			{
-				mod: 1.3,
+				mod: 1.1,
 				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-			}
+			},
+			{
+				mod: 1.18,
+				eqids: [194],
+			},
+			{
+				mod: [1.1, 1.21],
+				eqtypes: [DIVEBOMBER],
+			},
 		],
 		HP: 770,
 		FP: 212,
@@ -23138,9 +23258,17 @@ var SHIPDATA = {
 				eqtypes: [APSHELL],
 			},
 			{
-				mod: 1.3,
+				mod: 1.1,
 				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-			}
+			},
+			{
+				mod: 1.18,
+				eqids: [194],
+			},
+			{
+				mod: [1.1, 1.21],
+				eqtypes: [DIVEBOMBER],
+			},
 		],
 		HP: 770,
 		FP: 252,
@@ -23168,9 +23296,17 @@ var SHIPDATA = {
 				eqtypes: [APSHELL],
 			},
 			{
-				mod: 1.3,
+				mod: 1.1,
 				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-			}
+			},
+			{
+				mod: 1.18,
+				eqids: [194],
+			},
+			{
+				mod: [1.1, 1.21],
+				eqtypes: [DIVEBOMBER],
+			},
 		],
 		HP: 770,
 		FP: 272,
@@ -23198,9 +23334,17 @@ var SHIPDATA = {
 				eqtypes: [APSHELL],
 			},
 			{
-				mod: 1.3,
+				mod: 1.1,
 				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-			}
+			},
+			{
+				mod: 1.18,
+				eqids: [194],
+			},
+			{
+				mod: [1.1, 1.21],
+				eqtypes: [DIVEBOMBER],
+			},
 		],
 		HP: 770,
 		FP: 232,
@@ -23228,9 +23372,17 @@ var SHIPDATA = {
 				eqtypes: [APSHELL],
 			},
 			{
-				mod: 1.3,
+				mod: 1.1,
 				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-			}
+			},
+			{
+				mod: 1.18,
+				eqids: [194],
+			},
+			{
+				mod: [1.1, 1.21],
+				eqtypes: [DIVEBOMBER],
+			},
 		],
 		HP: 770,
 		FP: 272,
@@ -23258,9 +23410,17 @@ var SHIPDATA = {
 				eqtypes: [APSHELL],
 			},
 			{
-				mod: 1.3,
+				mod: 1.1,
 				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-			}
+			},
+			{
+				mod: 1.18,
+				eqids: [194],
+			},
+			{
+				mod: [1.1, 1.21],
+				eqtypes: [DIVEBOMBER],
+			},
 		],
 		HP: 770,
 		FP: 292,

@@ -2988,13 +2988,6 @@ Equip.explicitStatsBonusGears = function(){
                 },
                 // Kamoi Class
                 "72": "62",
-                /* Queen Elizabeth Class, Ark Royal Class, J Class and Nelson Class (but they can not equip)
-                "67": {
-                    multiple: { "houg": 2, "tais": 2, "houk": 2, "saku": 2 },
-                },
-                "78": "67",
-                "82": "67",
-                "88": "67", */
             },
         },
         // Swordfish Mk.III Kai (Seaplane Model/Skilled)
@@ -3022,13 +3015,6 @@ Equip.explicitStatsBonusGears = function(){
                 },
                 // Kamoi Class
                 "72": "62",
-                /* Queen Elizabeth Class, Ark Royal Class, J Class and Nelson Class (but they can not equip)
-                "67": {
-                    multiple: { "houg": 2, "tais": 2, "houk": 2, "saku": 2 },
-                },
-                "78": "67",
-                "82": "67",
-                "88": "67", */
             },
         },
         // S9 Osprey
@@ -3085,9 +3071,8 @@ Equip.explicitStatsBonusGears = function(){
                 "88": {
                     multiple: { "houg": 2, "tais": 3, "houk": 2, "saku": 2 },
                 },
-                /*  Ark Royal Class and J Class, but they can not equip
-                "78": 88,
-                "82": 88, */
+                // Town Class
+                "108": "88",
             },
         },
         // Fairey Seafox Kai
@@ -3117,9 +3102,8 @@ Equip.explicitStatsBonusGears = function(){
                 "67": {
                     multiple: { "houg": 3, "tais": 1, "houk": 2, "saku": 3 },
                 },
-                /*  Ark Royal Class and J Class, but they can not equip
-                "78": 67,
-                "82": 67, */
+                // Town Class
+                "108": "67",
                 // Nelson Class
                 "88": [
                     {
@@ -3157,6 +3141,8 @@ Equip.explicitStatsBonusGears = function(){
                 "102": "95",
                 // St. Louis Class
                 "106": "95",
+                // North Carolina Class
+                "107": "95",
             },
         },
         // Ka Type Observation Autogyro
@@ -3625,6 +3611,8 @@ Equip.explicitStatsBonusGears = function(){
                 ],
                 // Colorado
                 "93": "65",
+                // North Carolina Class
+                "107": "65",
                 // South Dakota
                 "102": [
                     {
@@ -3685,6 +3673,8 @@ Equip.explicitStatsBonusGears = function(){
                         multiple: { "souk": 1 },
                     },
                 ],
+                // North Carolina Class
+                "107": "102",
             },
             byShip: {
                 // Any FBB
@@ -3752,6 +3742,8 @@ Equip.explicitStatsBonusGears = function(){
                         multiple: { "souk": 1 },
                     },
                 ],
+                // North Carolina Class
+                "107": "102",
             },
             byShip: {
                 // Any FBB
@@ -3813,6 +3805,27 @@ Equip.explicitStatsBonusGears = function(){
                 "99": "93",
                 // St. Louis
                 "106": "93",
+            },
+        },
+        // 6inch Mk.XXIII Triple Gun Mount
+        "399": {
+            count: 0,
+            starsDist: [],
+            byClass: {
+                // Town Class
+                "108": [
+                    {
+                        multiple: { "houg": 1, "houk": 2 },
+                    },
+                    {
+                        minStars: 3,
+                        multiple: { "houg": 1 },
+                    },
+                    {
+                        minStars: 5,
+                        multiple: { "houg": 1 },
+                    },
+                ],
             },
         },
         // 14cm Twin Gun Mount
@@ -4112,6 +4125,10 @@ Equip.explicitStatsBonusGears = function(){
                 "105": "67",
                 // St. Louis Class
                 "106": "67",
+                // North Carolina Class
+                "107": "67",
+                // Town Class
+                "108": "67",
             },
         },
         // 6inch Twin Rapid Fire Gun Mount Mk.XXI
@@ -4283,12 +4300,16 @@ Equip.explicitStatsBonusGears = function(){
                 "105": "95",
                 // St. Louis Class
                 "106": "95",
+                // North Carolina Class
+                "107": "95",
                 // Following British: Queen Elizabeth Class
                 "67": {
                     single: { "tyku": 1, "houk": 2 },
                 },
                 // Nelson Class
                 "88": "67",
+                // Town Class
+                "108": "67",
                 // Perth Class
                 "96": {
                     single: { "tyku": 1, "houk": 1 },
@@ -4315,12 +4336,16 @@ Equip.explicitStatsBonusGears = function(){
                 "105": "95",
                 // St. Louis Class
                 "106": "95",
+                // North Carolina Class
+                "107": "95",
                 // Following British: Queen Elizabeth Class
                 "67": {
                     single: { "houg": 1, "tyku": 1, "houk": 2, "saku": 1 },
                 },
                 // Nelson Class
                 "88": "67",
+                // Town Class
+                "108": "67",
                 // Perth Class
                 "96": {
                     single: { "houg": 1, "tyku": 1, "houk": 1 },
@@ -4425,6 +4450,8 @@ Equip.explicitStatsBonusGears = function(){
                 "82": {
                     multiple: { "houg": 1, "raig": 2 },
                 },
+                // Town Class
+                "108": "82",
                 // Perth Class
                 "96": {
                     multiple: { "houg": 1, "raig": 1 },
@@ -5787,6 +5814,8 @@ Equip.explicitStatsBonusGears = function(){
                 "105": "65",
                 // St. Louis Class
                 "106": "65",
+                // North Carolina Class
+                "107": "65",
             },
         },
         // SG Radar (Initial Model)
@@ -5815,6 +5844,8 @@ Equip.explicitStatsBonusGears = function(){
                 "105": "65",
                 // St. Louis Class
                 "106": "65",
+                // North Carolina Class
+                "107": "65",
                 // John C. Butler Class, range from medium to long
                 "87": {
                     single: { "houg": 3, "houk": 3, "saku": 4, "leng": 1 },
@@ -6000,6 +6031,8 @@ Equip.explicitStatsBonusGears = function(){
                 "82": "67",
                 // Nelson Class
                 "88": "67",
+                // Town Class
+                "108": "67",
             },
         },
         // Type 3 Active Sonar
@@ -6094,7 +6127,9 @@ Equip.explicitStatsBonusGears = function(){
                     single: { "houk": 1, "tais": 1 },
                 },
                 // Perth Class
-                "96": "87"
+                "96": "82",
+                // Town Class
+                "108": "82",
             },
             byShip: [
                 {
@@ -6127,6 +6162,8 @@ Equip.explicitStatsBonusGears = function(){
                 "82": {
                     single: { "houk": 1, "tais": 2 },
                 },
+                // Town Class
+                "108": "82",
                 // Perth Class
                 "96": {
                     single: { "houk": 1, "tais": 1 },
@@ -6334,13 +6371,13 @@ Equip.explicitStatsBonusGears = function(){
                 {
                     // Fast Group B2: Yuubari Kai Ni/K2D
                     //   Almost fast CV: Akagi, Katsuragi, Intrepid, Ark Royal?, Aquila?, Graf Zeppelin?, Saratoga?, Hornet?
-                    //   Almost FBB: Littorio, Roma, Bismarck, Richelieu, South Dakota
+                    //   Almost FBB: Littorio, Roma, Bismarck, Richelieu, South Dakota, Washington?
                     //   All fast DD: not here, see next item
-                    //   All fast CL/CLT: Nagara, Isuzu, Yura, Ooi, Kitakami, Tenryuu, Tatsuta, Natori, Sendai, Jintsuu, Naka, Kuma, Tama, Kiso, Kinu, Abukuma, Ooyodo, Gotland, Abruzzi, Garibaldi, Atlanta, De Ruyter, Perth, Helena
+                    //   All fast CL/CLT: Nagara, Isuzu, Yura, Ooi, Kitakami, Tenryuu, Tatsuta, Natori, Sendai, Jintsuu, Naka, Kuma, Tama, Kiso, Kinu, Abukuma, Ooyodo, Gotland, Abruzzi, Garibaldi, Atlanta, De Ruyter, Perth, Helena, Sheffield?
                     //   All fast CA(V): Furutaka, Kako, Aoba, Myoukou, Nachi, Ashigara, Haguro, Takao, Atago, Maya, Choukai, Kinugasa, Prinz Eugen, Zara, Pola, Houston
                     //   All fast CVL: Shouhou, Ryuujou, Zuihou, Chitose-Kou, Chiyoda-Kou
-                    origins: [115, 441, 442, 171, 492, 602, 83, 332, 549, 515, 444, 432, 433, 603,
-                            21, 22, 23, 24, 25, 51, 52, 53, 54, 55, 56, 99, 100, 101, 113, 114, 183, 574, 589, 590, 597, 604, 613, 615,
+                    origins: [115, 441, 442, 171, 492, 602, 654, 83, 332, 549, 515, 444, 432, 433, 603,
+                            21, 22, 23, 24, 25, 51, 52, 53, 54, 55, 56, 99, 100, 101, 113, 114, 183, 574, 589, 590, 597, 604, 613, 615, 514,
                             59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 123, 176, 448, 449, 595,
                             74, 76, 116, 102, 103
                         ],
