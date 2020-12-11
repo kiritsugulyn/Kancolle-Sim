@@ -123,6 +123,12 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	for (var i=0; i<ships2.length; i++) {
 		if (ships2[i].enableSecondShelling) doShell2 = true;
 	}
+
+	// update morale (day battle)
+	if (MECHANICS.morale && !noupdate && !NBonly) {
+		updateMoraleStart(ships1);
+		updateMoraleStart(ships1C);
+	}
 	
 	//jet lbas
 	if (LBASwaves && LBASwaves.length && !NBonly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
@@ -309,11 +315,11 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		if (C) BAPI.data.api_hougeki1 = {api_at_list:[-1],api_at_type:[-1],api_damage:[-1],api_df_list:[-1],api_cl_list:[-1],api_si_list:[-1]};
 		if (type==2) {
 			F1.basepowshell = F1.formation.shellbonus; F1.baseaccshell = F1.formation.accbase;
-			F2.basepowshell = F1.formation.shellbonusE; F2.baseaccshell = 65; //guess
+			F2.basepowshell = F1.formation.shellbonusE; F2.baseaccshell = 65; // source: https://bbs.nga.cn/read.php?pid=359696724
 			shellRange(false,(C)? BAPI.data.api_hougeki1 : undefined);
 		} else {
 			F1C.basepowshell = F1C.formation.shellbonus; F1C.baseaccshell = F1C.formation.accbase;
-			F2.basepowshell = F1C.formation.shellbonusE; F2.baseaccshell = F1C.formation.accbase;
+			F2.basepowshell = F1C.formation.shellbonusE; F2.baseaccshell = 65; // source: https://bbs.nga.cn/read.php?pid=359696724
 			shellRange(true,(C)? BAPI.data.api_hougeki1 : undefined);
 		}
 	}
@@ -328,10 +334,10 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	if (!NBonly) {
 		if (C) BAPI.data.api_hougeki2 = {api_at_list:[-1],api_at_type:[-1],api_damage:[-1],api_df_list:[-1],api_cl_list:[-1],api_si_list:[-1]};
 		F1.basepowshell = F1.formation.shellbonus; F1.baseaccshell = F1.formation.accbase;
-		F2.basepowshell = F1.formation.shellbonusE; F2.baseaccshell = F1.formation.accbase;
-		if (type == 3) F2.baseaccshell = 65;
+		F2.basepowshell = F1.formation.shellbonusE; F2.baseaccshell = 80; // source: https://bbs.nga.cn/read.php?pid=359696724
+		if (type == 3) F2.baseaccshell = 65; // guess
 		if (type==2) {
-			F2.baseaccshell = 65; //guess
+			F2.baseaccshell = 65; // source: https://bbs.nga.cn/read.php?pid=359696724
 			if (doShell2) shellOrder(false,(C)? BAPI.data.api_hougeki2 : undefined);
 		} else {
 			shellRange(false,(C)? BAPI.data.api_hougeki2 : undefined);
@@ -343,12 +349,12 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		if (C) BAPI.data.api_hougeki3 = {api_at_list:[-1],api_at_type:[-1],api_damage:[-1],api_df_list:[-1],api_cl_list:[-1],api_si_list:[-1]};
 		if (type==2) {
 			F1C.basepowshell = F1C.formation.shellbonus; F1C.baseaccshell = F1C.formation.accbase;
-			F2.basepowshell = F1C.formation.shellbonusE; F2.baseaccshell = F1C.formation.accbase;
+			F2.basepowshell = F1C.formation.shellbonusE; F2.baseaccshell = 80; // source: https://bbs.nga.cn/read.php?pid=359696724
 			shellRange(true,(C)? BAPI.data.api_hougeki3 : undefined);
 		} else if (doShell2) {
 			F1.basepowshell = F1.formation.shellbonus; F1.baseaccshell = F1.formation.accbase;
-			F2.basepowshell = F1.formation.shellbonusE; F2.baseaccshell = F1.formation.accbase;
-			if (type == 3) F2.baseaccshell = 65;
+			F2.basepowshell = F1.formation.shellbonusE; F2.baseaccshell = 80; // source: https://bbs.nga.cn/read.php?pid=359696724
+			if (type == 3) F2.baseaccshell = 65; // guess
 			shellOrder(false,(C)? BAPI.data.api_hougeki3 : undefined);
 		}
 	}
@@ -408,6 +414,13 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 				delete BAPI.data.api_support_info;
 			}
 		}
+
+		// update morale (night battle)
+		if (MECHANICS.morale && !noupdate) {
+			updateMoraleStart(ships1,true);
+			updateMoraleStart(ships1C,true)
+		}
+
 		nightPhase(order1,order2,alive1C,subsalive1C,alive2,subsalive2,NBonly,(C)? BAPI.yasen:undefined);
 	}
 	
@@ -453,10 +466,10 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	results.sinkFlagshipC = F1C.getSinkFlagship();
 	if (didNB) results.didNB = true;
 	
-	//update morale
+	//update morale (post battle)
 	if (MECHANICS.morale && !noupdate) {
-		updateMorale(ships1,results.rank,((didNB)? 0 : results.MVP),NBonly,didNB);
-		updateMorale(ships1C,results.rank,results.MVPC,NBonly,didNB);
+		updateMorale(ships1,results.rank,((didNB)? 0 : results.MVP));
+		updateMorale(ships1C,results.rank,results.MVPC);
 	}
 	
 	return results;
@@ -492,11 +505,14 @@ function simStatsCombined(numsims,type,foptions) {
 			ranks: {S:0,A:0,B:0,C:0,D:0,E:0},
 			flagsunk: 0,
 			airStates: [0,0,0,0,0],
+			nbStates: [0,0,0],
 			lbasKills: [0,0,0,0,0,0],
 			lbasKillsC: [0,0,0,0,0,0],
 			lbasWipes: [0,0,0,0,0,0,0,0,0,0,0,0],
 		});
 	}
+
+	if (FLEETS2[FLEETS2.length-1].combinedWith) totalResult.nodes[FLEETS2.length-1].survival2C = [0,0,0,0,0,0];
 	
 	if (FLEETS1S[2]) {
 		for (let ship of FLEETS1S[2].ships) {
@@ -571,6 +587,11 @@ function simStatsCombined(numsims,type,foptions) {
 			if (res.sinkFlagship > -1) totalResult.nodes[j].sinkFlagships[res.sinkFlagship]++;
 			if (res.sinkFlagshipC > -1) totalResult.nodes[j].sinkFlagshipsC[res.sinkFlagshipC]++;
 			totalResult.nodes[j].airStates[FLEETS1[0].AS+2]++;
+			if (res.didNB){
+				if (res.didNBescort) totalResult.nodes[j].nbStates[2]++;
+				else totalResult.nodes[j].nbStates[1]++;
+			}
+			else totalResult.nodes[j].nbStates[0]++;
 			if (res.lbasKills) {
 				for (let k=0; k<6; k++) {
 					if (res.lbasKills[k]) totalResult.nodes[j].lbasKills[k]++;
@@ -580,6 +601,11 @@ function simStatsCombined(numsims,type,foptions) {
 			if (res.lbasWipes) {
 				for (let k=0; k<res.lbasWipes.length; k++) {
 					if (res.lbasWipes[k]) totalResult.nodes[j].lbasWipes[k]++;
+				}
+			}
+			if (totalResult.nodes[j].survival2C && res.survival2C) {
+				for (let k = 0; k < res.survival2C.length; k++){
+					if (res.survival2C[k]) totalResult.nodes[j].survival2C[k]++;
 				}
 			}
 			//if ((res.redded && DORETREAT)||res.flagredded) break;
@@ -694,6 +720,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	var ships1 = F1.ships, ships2 = F2.ships, ships2C = F2C.ships;
 	var alive1 = [], alive2 = [], alive2C = [], subsalive1 = [], subsalive2 = [], subsalive2C = [];
 	var hasInstall1 = false, hasInstall2 = false, hasInstall2C = false;
+	var results = {};
 	for (var i=0; i<ships1.length; i++) {
 		if (ships1[i].HP <= 0) continue;
 		if (ships1[i].retreated) continue;
@@ -808,6 +835,11 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		if (ships2[i].enableSecondShelling) doShell2 = true;
 	}
 	
+	// update morale (day battle)
+	if (MECHANICS.morale && !noupdate && !NBonly) {
+		updateMoraleStart(ships1);
+	}
+
 	//jet lbas
 	if (LBASwaves && LBASwaves.length && !NBonly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
 		if (C) BAPI.data.api_air_base_injection = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null};
@@ -907,6 +939,10 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 			removeSunk(alive2C); removeSunk(subsalive2C);
 		}
 	}
+
+	//calculate survival of enemy escort
+	results.survival2C = [];
+	ships2C.forEach((ship) => results.survival2C.push(ship.HP > 0));
 	
 	//opening asw
 	if (MECHANICS.OASW && !NBonly && !aironly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
@@ -1003,7 +1039,6 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		removeSunk(alive2C); removeSunk(subsalive2C);
 	}
 	
-	var results = {};
 	if (noupdate) {
 		results.rankDay = getRank(ships1,ships2.concat(ships2C));
 		results.mvpDay = F1.getMVP();
@@ -1035,6 +1070,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		}
 		if (ships2C[0].HP > 0) count += 1;
 		var fightescort = (allsunk || count >= 3 || count2 >= 5);
+		if (fightescort) results.didNBescort = true;
 		
 		var order1 = [], order2 = [];
 		for (var i=0; i<ships1.length; i++) {
@@ -1063,6 +1099,12 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 			BAPI.yasen.api_active_deck = [1,n];
 			if (!NBonly) BAPI.yasen.api_ship_ke_combined = [];
 		}
+		
+		// update morale (night battle)
+		if (MECHANICS.morale && !noupdate) {
+			updateMoraleStart(ships1,true);
+		}
+
 		if (fightescort) nightPhase(order1,order2,alive1,subsalive1,alive2C,subsalive2C,NBonly,(C)? BAPI.yasen:undefined);
 		else nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,(C)? BAPI.yasen:undefined);
 	}
@@ -1094,9 +1136,9 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	results.sinkFlagship = F1.getSinkFlagship();
 	if (didNB) results.didNB = true;
 	
-	//update morale
+	//update morale (post battle)
 	if (MECHANICS.morale && !noupdate) {
-		updateMorale(ships1,results.rank,results.MVP,NBonly,didNB);
+		updateMorale(ships1,results.rank,results.MVP);
 	}
 	
 	return results;
@@ -1108,6 +1150,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	var ships1 = F1.ships, ships2 = F2.ships, ships1C = F1C.ships, ships2C = F2C.ships;
 	var alive1 = [], alive1C = [], alive2 = [], alive2C = [], subsalive1 = [], subsalive1C = [], subsalive2 = [], subsalive2C = [];
 	var hasInstall1 = false, hasInstall2 = false, hasInstall1C = false, hasInstall2C = false;
+	var results = {};
 	for (var i=0; i<ships1.length; i++) {
 		if (ships1[i].HP <= 0) continue;
 		if (ships1[i].retreated) continue;
@@ -1254,6 +1297,12 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	for (var i=0; i<ships2.length; i++) {
 		if (ships2[i].enableSecondShelling) doShell2 = true;
 	}
+
+	// update morale (day battle)
+	if (MECHANICS.morale && !noupdate && !NBonly) {
+		updateMoraleStart(ships1);
+		updateMoraleStart(ships1C);
+	}
 	
 	//jet lbas
 	if (LBASwaves && LBASwaves.length && !NBonly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
@@ -1351,6 +1400,10 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		removeSunk(alive2); removeSunk(alive2C);
 		removeSunk(subsalive2); removeSunk(subsalive2C);
 	}
+
+	//calculate survival of enemy escort
+	results.survival2C = [];
+	ships2C.forEach((ship) => results.survival2C.push(ship.HP > 0));
 	
 	//opening asw
 	if (MECHANICS.OASW && !NBonly && !aironly && alive1.length+subsalive1.length+alive1C.length+subsalive1C.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
@@ -1520,7 +1573,6 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		removeSunk(subsalive2); removeSunk(subsalive2C);
 	}
 	
-	var results = {};
 	if (noupdate) {
 		results.rankDay = getRank(ships1,ships2.concat(ships2C),ships1C);
 		results.mvpDay = F1.getMVP();
@@ -1557,6 +1609,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		}
 		if (ships2C[0].HP > 0) count += 1;
 		var fightescort = (allsunk || count >= 3 || count2 >= 5);
+		if (fightescort) results.didNBescort = true;
 		
 		var order1 = [], order2 = [];
 		for (var i=0; i<ships1C.length; i++) {
@@ -1585,6 +1638,13 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 			BAPI.yasen.api_active_deck = [1,n];
 			if (!NBonly) BAPI.yasen.api_ship_ke_combined = [];
 		}
+
+		// update morale (night battle)
+		if (MECHANICS.morale && !noupdate) {
+			updateMoraleStart(ships1,true);
+			updateMoraleStart(ships1C,true)
+		}
+
 		if (fightescort) nightPhase(order1,order2,alive1C,subsalive1C,alive2C,subsalive2C,NBonly,(C)? BAPI.yasen:undefined);
 		else nightPhase(order1,order2,alive1C,subsalive1C,alive2,subsalive2,NBonly,(C)? BAPI.yasen:undefined);
 	}
@@ -1631,10 +1691,10 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	results.sinkFlagshipC = F1C.getSinkFlagship();
 	if (didNB) results.didNB = true;
 	
-	//update morale
+	//update morale (post battle)
 	if (MECHANICS.morale && !noupdate) {
-		updateMorale(ships1,results.rank,((didNB)? 0 : results.MVP),NBonly,didNB);
-		updateMorale(ships1C,results.rank,results.MVPC,NBonly,didNB);
+		updateMorale(ships1,results.rank,((didNB)? 0 : results.MVP));
+		updateMorale(ships1C,results.rank,results.MVPC);
 	}
 	
 	return results;

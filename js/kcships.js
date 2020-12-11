@@ -939,21 +939,21 @@ Ship.prototype.getAACItype = function(atypes) {
 
 Ship.prototype.moraleMod = function(isTorp) {
 	if (isTorp) {
-		if (this.morale >= 53) return 1.3;
-		if (this.morale >= 33) return 1;
-		if (this.morale >= 23) return .7;
+		if (this.morale >= 50) return 1.3;
+		if (this.morale >= 30) return 1;
+		if (this.morale >= 20) return .7;
 		return .35;
 	}
-	if (this.morale >= 53) return 1.2;
-	if (this.morale >= 33) return 1;
-	if (this.morale >= 23) return .8;
+	if (this.morale >= 50) return 1.2;
+	if (this.morale >= 30) return 1;
+	if (this.morale >= 20) return .8;
 	return .5;
 }
 
 Ship.prototype.moraleModEv = function() {
-	if (this.morale >= 53) return .7;
-	if (this.morale >= 33) return 1;
-	if (this.morale >= 23) return 1.2;
+	if (this.morale >= 50) return .7;
+	if (this.morale >= 30) return 1;
+	if (this.morale >= 20) return 1.2;
 	return 1.4;
 }
 
@@ -1578,8 +1578,12 @@ Equip.prototype.setImprovement = function(level) {
 		case FIGHTER:
 		case SEAPLANEFIGHTER:
 		case INTERCEPTOR:
+        case LANDSCOUT:
 			this.AAImprove = .2*level;
-			break;
+            break;
+        case FLYINGBOAT:
+            this.AAImprove = .1*level;
+            break;
 		case DIVEBOMBER:
             if ([60,154,219].indexOf(this.mid) !== -1) this.AAImprove = .25*level;
             else {

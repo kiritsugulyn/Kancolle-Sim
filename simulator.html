@@ -123,6 +123,7 @@
 			<input type="checkbox" checked id="mech13" onchange="MECHANICS.aaResist=this.checked"/><label for="mech13">Anti-Air Resist</label><br>
 			<input type="checkbox" checked id="mech14" onchange="MECHANICS.divebomberInstall=this.checked"/><label for="mech14">Divebomber Installation Targeting</label><br>
 			<input type="checkbox" checked id="mech101" onchange="MECHANICS.visibleEquipBonus=this.checked"/><label for="mech101">Visible Equipment Bonus</label><br>
+			<input type="checkbox" checked id="mech102" onchange="MECHANICS.newVanguardMod=this.checked;updateVanguardMod()"/><label for="mech102">New Vanguard Modifiers</label><br>
 			<br>
 			<label for="mechshelldmg">Day Shelling Soft-Cap: </label><input id="mechshelldmg" type="number" min="0" max="9999" value="180" style="width:50px" onchange="SHELLDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
 			<label for="mechaswdmg">ASW Soft-Cap: </label><input id="mechaswdmg" type="number" min="0" max="9999" value="150" style="width:50px" onchange="ASWDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
@@ -249,7 +250,6 @@
 				 (Avg <span style="font-weight:bold">-<span id="rsunkfsHP"></span></span> HP per run)<br>
 				 (Avg <span style="font-weight:bold">-<span id="rsunkfsHPB"></span></span> HP per boss)<br>
 				<br>Enemy Flagship Sunk by:<br>
-				<span class="rescombined"><br>Main<br></span>
 				<img src="assets/stats/F1.png"></img> <span id="sinkfs1">0</span><br>
 				<img src="assets/stats/F2.png"></img> <span id="sinkfs2">0</span><br>
 				<img src="assets/stats/F3.png"></img> <span id="sinkfs3">0</span><br>
@@ -258,7 +258,6 @@
 				<img src="assets/stats/F6.png"></img> <span id="sinkfs6">0</span><br>
 				<div class="rescombined">
 					<br>
-					<span>Escort</span><br>
 					<img src="assets/stats/F1.png"></img> <span id="sinkfsc1">0</span><br>
 					<img src="assets/stats/F2.png"></img> <span id="sinkfsc2">0</span><br>
 					<img src="assets/stats/F3.png"></img> <span id="sinkfsc3">0</span><br>
@@ -266,14 +265,28 @@
 					<img src="assets/stats/F5.png"></img> <span id="sinkfsc5">0</span><br>
 					<img src="assets/stats/F6.png"></img> <span id="sinkfsc6">0</span><br>
 				</div>
-				<br>Others (friend fleet, LBAS, etc.): <span id="sinkfs0">0</span><br>
-				<br>
+				<br>Others (friend fleet, etc.): <span id="sinkfs0">0</span><br>
+				<br>No Night Battle: <span id="nbstate0">0</span>
+				<div class="bosscombined">
+					Night Battle with Main: <span id="nbstate1">0</span>
+					<br>Night Battle with Escort: <span id="nbstate2">0</span>
+				</div>
+				<div class="bosscombined">
+					<br>Enemy Escort Survival Before Shell:<br>
+					<img src="assets/stats/F1.png"></img> <span id="survival2C1">1</span><br>
+					<img src="assets/stats/F2.png"></img> <span id="survival2C2">1</span><br>
+					<img src="assets/stats/F3.png"></img> <span id="survival2C3">1</span><br>
+					<img src="assets/stats/F4.png"></img> <span id="survival2C4">1</span><br>
+					<img src="assets/stats/F5.png"></img> <span id="survival2C5">1</span><br>
+					<img src="assets/stats/F6.png"></img> <span id="survival2C6">1</span><br>
+				</div>
+			</div>
+			<div class="rescolumn">
 				<div class="resmulti">
 					<span>Rank Per Battle:</span>
 					<table id="ranktab" class="stattable"></table>
 				</div>
-			</div>
-			<div class="rescolumn">
+				<br><br>
 				<div class="ressingle">
 					<span><img src="assets/stats/MVP.png"> Rate:</span><br>
 					<span class="rescombined"><br>Main<br></span>

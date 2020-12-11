@@ -1675,6 +1675,9 @@ function updateResults(results) {
 	
 	if (ADDEDCOMBINED) $('.rescombined').each(function() { $(this).show(); });
 	else $('.rescombined').each(function() { $(this).hide(); });
+
+	if (FLEETS2[FLEETS2.length - 1].combinedWith) $('.bosscombined').each(function() { $(this).show(); });
+	else $('.bosscombined').each(function() { $(this).hide(); });
 	
 	if (results.nodes.length == 1) {
 		var node = results.nodes[0];
@@ -1697,12 +1700,14 @@ function updateResults(results) {
 			}
 		}
 		resultAddWeight('sinkfs0',totalsunk,node.flagsunk);
-
+		for (var i = 0; i < node.nbStates.length; i++) resultAddWeight('nbstate'+i,node.nbStates[i],addnum);
+		if (node.survival2C) for (var i = 1; i <= node.survival2C.length; i++) resultAddWeight('survival2C'+i,node.survival2C[i-1],addnum);
+		
 		resultAddWeight('rredany',node.redded,addnum);
 		for(var i=0; i<node.redIndiv.length; i++) resultAddWeight('red'+(i+1),node.redIndiv[i],addnum);
 		if (node.redIndivC) for(var i=0; i<node.redIndivC.length; i++) resultAddWeight('redc'+(i+1),node.redIndivC[i],addnum);
 		resultAddWeight('rnodam',node.undamaged,addnum);
-	
+
 		$('.ressingle').each(function() { $(this).show(); });
 		$('.resmulti').each(function() { $(this).hide(); });
 		$('.rescolumn').each(function() { $(this).css('width','250px'); } );
@@ -1751,7 +1756,9 @@ function updateResults(results) {
 			}
 		}
 		resultAddWeight('sinkfs0',totalsunk,node.flagsunk);
-		
+		for (var i = 0; i < node.nbStates.length; i++) resultAddWeight('nbstate'+i,node.nbStates[i],results.nodes[results.nodes.length-1].num);
+		if (node.survival2C) for (var i = 1; i <= node.survival2C.length; i++) resultAddWeight('survival2C'+i,node.survival2C[i-1],results.nodes[results.nodes.length-1].num);
+
 		for (var i=results.nodes.length; i<NUMNODESDEFAULT; i++) $('.res'+(i+1)).each(function() { $(this).hide(); } );
 		
 		$('.ressingle').each(function() { $(this).hide(); });
@@ -1960,7 +1967,6 @@ function changedPreset3(fleet) {
 	if (fleet.toString()[0] == '2') {
 		if (document.getElementById('T'+fleet+'r'+form)) document.getElementById('T'+fleet+'r'+form).checked = true;
 		if (node.toLowerCase().indexOf('boss') != -1) $('#NB'+fleet).prop('checked',true);
-		else if ((fleet == 2 && NUMFLEETS2 == 1) || (+fleet.toString()[1] == NUMFLEETS2)) $('#NB'+fleet).prop('checked',true);
 		else $('#NB'+fleet).prop('checked',false);
 		if (ENEMYCOMPS[world][level][node][version].NB) $('#NBonly'+fleet).prop('checked',true);
 		else $('#NBonly'+fleet).prop('checked',false);
@@ -3135,4 +3141,16 @@ function getELoS(ships,hq=120) {
 		results.push(elosE*c + elosS);
 	}
 	return results;
+}
+
+function updateVanguardMod() {
+
+	if (document.getElementById('mech102').checked){
+		VANGUARD1.shellacc = 1;
+		VANGUARD2.shellacc = 1;
+	}else{
+		VANGUARD1.shellacc = 0.8;
+		VANGUARD2.shellacc = 1.2;
+	}
+
 }

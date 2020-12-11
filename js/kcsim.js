@@ -3,35 +3,36 @@ var DOUBLELINE = {shellmod:.8,torpmod:.8,ASWmod:.8,AAmod:1.2, shellacc:1.2,torpa
 var DIAMOND = {shellmod:.7,torpmod:.7,ASWmod:1.2,AAmod:1.6, shellacc:1,torpacc:.4,NBacc:.7, shellev:1.1,torpev:1.1,NBev:1,ASWev:1, id:3};
 var ECHELON = {shellmod:.75,torpmod:.6,ASWmod:1.1,AAmod:1, shellacc:1.2,torpacc:.6,NBacc:.9, shellev:1.45,torpev:1.3,NBev:1.3,ASWev:1.3, id:4};
 var LINEABREAST = {shellmod:.6,torpmod:.6,ASWmod:1.3,AAmod:1, shellacc:1.2,torpacc:.3,NBacc:.8, shellev:1.3,torpev:1.4,NBev:1.2,ASWev:1.1, id:5};
-var VANGUARD1 = {shellmod:0.5,torpmod:1,ASWmod:1,AAmod:1.1, shellacc:.8,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:6};
-var VANGUARD2 = {shellmod:1,torpmod:1,ASWmod:.6,AAmod:1.1, shellacc:1.2,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:6};
+var VANGUARD1 = {shellmod:0.5,torpmod:1,ASWmod:1,AAmod:1.1, shellacc:1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:6};
+var VANGUARD2 = {shellmod:1,torpmod:1,ASWmod:.6,AAmod:1.1, shellacc:1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:6};
 
-var CTFCOMBINED1M = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:2,shellbonusE:10,accbase:90, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:11};
-var CTFCOMBINED1E = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:10,shellbonusE:5,accbase:55, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.35, id:11};
-var CTFCOMBINED2M = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellbonus:2,shellbonusE:10,accbase:90, shellacc:.9,torpacc:.9,NBacc:1, shellev:1.1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:12};
-var CTFCOMBINED2E = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellbonus:10,shellbonusE:5,accbase:55, shellacc:1,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.35, id:12};
-var CTFCOMBINED3M = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellbonus:2,shellbonusE:10,accbase:90, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:13};
-var CTFCOMBINED3E = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellbonus:10,shellbonusE:5,accbase:55, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.35, id:13};
-var CTFCOMBINED4M = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:2,shellbonusE:10,accbase:90, shellacc:1,torpacc:1,NBacc:1, shellev:.9,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:14};
-var CTFCOMBINED4E = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:10,shellbonusE:5,accbase:55, shellacc:1,torpacc:1,NBacc:1, shellev:.9,torpev:1,NBev:1,ASWev:1, shellaccflat:-.35, id:14};
+// Acc Base source: https://twitter.com/Xe_UCH/status/1172380690207215616
+var CTFCOMBINED1M = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:2,shellbonusE:10,accbase:78, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:11};
+var CTFCOMBINED1E = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:10,shellbonusE:5,accbase:43, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.35, id:11};
+var CTFCOMBINED2M = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellbonus:2,shellbonusE:10,accbase:78, shellacc:1,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:12};
+var CTFCOMBINED2E = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellbonus:10,shellbonusE:5,accbase:43, shellacc:1,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.35, id:12};
+var CTFCOMBINED3M = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellbonus:2,shellbonusE:10,accbase:78, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:13};
+var CTFCOMBINED3E = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellbonus:10,shellbonusE:5,accbase:43, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.35, id:13};
+var CTFCOMBINED4M = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:2,shellbonusE:10,accbase:78, shellacc:1.1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:14};
+var CTFCOMBINED4E = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:10,shellbonusE:5,accbase:43, shellacc:1.1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.35, id:14};
 
-var STFCOMBINED1M = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:10,shellbonusE:5,accbase:50, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:11};
-var STFCOMBINED1E = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:-5,shellbonusE:-5,accbase:75, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.15, id:11};
-var STFCOMBINED2M = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellbonus:10,shellbonusE:5,accbase:50, shellacc:1.2,torpacc:.9,NBacc:1, shellev:1.1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:12};
-var STFCOMBINED2E = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellbonus:-5,shellbonusE:-5,accbase:75, shellacc:1.2,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.15, id:12};
-var STFCOMBINED3M = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellbonus:10,shellbonusE:5,accbase:50, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:13};
-var STFCOMBINED3E = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellbonus:-5,shellbonusE:-5,accbase:75, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.15, id:13};
-var STFCOMBINED4M = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:10,shellbonusE:5,accbase:50, shellacc:1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:14};
-var STFCOMBINED4E = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:-5,shellbonusE:-5,accbase:75, shellacc:1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.15, id:14};
+var STFCOMBINED1M = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:10,shellbonusE:5,accbase:46, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:11};
+var STFCOMBINED1E = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:-5,shellbonusE:-5,accbase:70, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.15, id:11};
+var STFCOMBINED2M = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellbonus:10,shellbonusE:5,accbase:46, shellacc:1,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:12};
+var STFCOMBINED2E = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellbonus:-5,shellbonusE:-5,accbase:70, shellacc:1,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.15, id:12};
+var STFCOMBINED3M = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellbonus:10,shellbonusE:5,accbase:46, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:13};
+var STFCOMBINED3E = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellbonus:-5,shellbonusE:-5,accbase:70, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.15, id:13};
+var STFCOMBINED4M = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:10,shellbonusE:5,accbase:46, shellacc:1.1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:14};
+var STFCOMBINED4E = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:-5,shellbonusE:-5,accbase:70, shellacc:1.1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.15, id:14};
 
-var TTFCOMBINED1M = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:-5,shellbonusE:10,accbase:50, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:11};
-var TTFCOMBINED1E = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:10,shellbonusE:5,accbase:75, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:11};
-var TTFCOMBINED2M = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellbonus:-5,shellbonusE:10,accbase:50, shellacc:1.2,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:12};
-var TTFCOMBINED2E = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellbonus:10,shellbonusE:5,accbase:75, shellacc:1.2,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:12};
-var TTFCOMBINED3M = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellbonus:-5,shellbonusE:10,accbase:50, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:13};
-var TTFCOMBINED3E = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellbonus:10,shellbonusE:5,accbase:75, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:13};
-var TTFCOMBINED4M = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:-5,shellbonusE:10,accbase:50, shellacc:1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:14};
-var TTFCOMBINED4E = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:10,shellbonusE:5,accbase:75, shellacc:1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:14};
+var TTFCOMBINED1M = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:-5,shellbonusE:10,accbase:51, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:11};
+var TTFCOMBINED1E = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:10,shellbonusE:5,accbase:45, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:11};
+var TTFCOMBINED2M = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellbonus:-5,shellbonusE:10,accbase:51, shellacc:1,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:12};
+var TTFCOMBINED2E = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellbonus:10,shellbonusE:5,accbase:45, shellacc:1,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:12};
+var TTFCOMBINED3M = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellbonus:-5,shellbonusE:10,accbase:51, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:13};
+var TTFCOMBINED3E = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellbonus:10,shellbonusE:5,accbase:45, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:13};
+var TTFCOMBINED4M = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:-5,shellbonusE:10,accbase:51, shellacc:1.1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:14};
+var TTFCOMBINED4E = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:10,shellbonusE:5,accbase:45, shellacc:1.1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:14};
 
 var ALLFORMATIONS = {1:LINEAHEAD,2:DOUBLELINE,3:DIAMOND,4:ECHELON,5:LINEABREAST,6:VANGUARD1,
 	'111':CTFCOMBINED1M,'111E':CTFCOMBINED1E,'112':CTFCOMBINED2M,'112E':CTFCOMBINED2E,'113':CTFCOMBINED3M,'113E':CTFCOMBINED3E,'114':CTFCOMBINED4M,'114E':CTFCOMBINED4E,
@@ -176,7 +177,8 @@ var MECHANICS = {
 	zuiunCI: false,
 	aaResist: true,
 	divebomberInstall: true,
-	visibleEquipBonus: true
+	visibleEquipBonus: true,
+	newVanguardMod: true,
 };
 
 function getRepairCost(ship) {
@@ -276,14 +278,18 @@ function shell(ship,target,APIhou,attackSpecial) {
 	
 	var acc = hitRate(ship,(ship.fleet.baseaccshell||90),accflat,accMod); //use global hit acc
 	if (MECHANICS.fitGun && ship.ACCfit) acc += ship.ACCfit*.01;
+	if (MECHANICS.newVanguardMod && ship.fleet.formation.id == 6) acc += vanguardAccFlat(ship,target) * .01;
 	acc *= accMod2;
 	
 	var evFlat = 0;
 	if (target.fleet.formation.id == 6) {
-		if (target.num/target.fleet.ships.length <= .8) {
-			evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD1 : SIMCONSTS.vanguardEvOther1;
-		} else {
-			evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD2 : SIMCONSTS.vanguardEvOther2;
+		if (MECHANICS.newVanguardMod && target.fleet.ships.length == 6) evFlat += vanguardEvFlat(target);
+		else {
+			if (target.num/target.fleet.ships.length <= .8) {
+				evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD1 : SIMCONSTS.vanguardEvOther1;
+			} else {
+				evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD2 : SIMCONSTS.vanguardEvOther2;
+			}
 		}
 	}
 	
@@ -484,10 +490,13 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 		preMod *= .5;
 	}
 	if (target.fleet.formation.id == 6) {
-		if (target.num/target.fleet.ships.length <= .5) {
-			evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD1 : SIMCONSTS.vanguardEvOther1;
-		} else {
-			evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD2 : SIMCONSTS.vanguardEvOther2;
+		if (MECHANICS.newVanguardMod && target.fleet.ships.length == 6) evFlat += vanguardEvFlat(target);
+		else {
+			if (target.num/target.fleet.ships.length <= .8) {
+				evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD1 : SIMCONSTS.vanguardEvOther1;
+			} else {
+				evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD2 : SIMCONSTS.vanguardEvOther2;
+			}
 		}
 	}
 	
@@ -634,10 +643,13 @@ function ASW(ship,target,isnight,APIhou) {
 	if (!formationCountered(ship.fleet.formation.id,target.fleet.formation.id)) accMod *= ship.getFormation().shellacc;
 	var evFlat = 0;
 	if (target.fleet.formation.id == 6) {
-		if (target.num/target.fleet.ships.length <= .8) {
-			evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD1 : SIMCONSTS.vanguardEvOther1;
-		} else {
-			evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD2 : SIMCONSTS.vanguardEvOther2;
+		if (MECHANICS.newVanguardMod && target.fleet.ships.length == 6) evFlat += vanguardEvFlat(target);
+		else {
+			if (target.num/target.fleet.ships.length <= .8) {
+				evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD1 : SIMCONSTS.vanguardEvOther1;
+			} else {
+				evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD2 : SIMCONSTS.vanguardEvOther2;
+			}
 		}
 	}
 	var acc = hitRate(ship,80,sonarAcc,accMod);
@@ -1098,7 +1110,12 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 	if (targets2.length) {  //any targets?
 		for (var i=0; i<alive1.length+subsalive1.length; i++) {
 			var ship = (i < alive1.length) ? alive1[i] : subsalive1[i-alive1.length];
-			if (ship.fleet.combinedWith && !ship.isescort) continue;
+			if (ship.fleet.combinedWith && !ship.isescort) {
+				if (ship.nameJP.indexOf('深海竹棲姫') !== -1) {
+					if (!opening) continue;
+				} 
+				else continue;
+			}
 			if ((opening)? ship.canOpTorp() : ship.canTorp()) {
 				if (combinedAll) {
 					if (!targetsE2.length) targets2 = targetsM2;
@@ -1113,7 +1130,12 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 	if (targets1.length) {
 		for (var i=0; i<alive2.length+subsalive2.length; i++) {
 			var ship = (i < alive2.length) ? alive2[i] : subsalive2[i-alive2.length];
-			if (ship.fleet.combinedWith && !ship.isescort) continue;
+			if (ship.fleet.combinedWith && !ship.isescort) {
+				if (ship.nameJP.indexOf('深海竹棲姫') !== -1) {
+					if (!opening) continue;
+				} 
+				else continue;
+			}
 			if ((opening)? ship.canOpTorp() : ship.canTorp()) {
 				if (combinedAll) {
 					if (!targetsE1.length) targets1 = targetsM1;
@@ -1144,10 +1166,13 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 		
 		var evFlat = (target.improves.EVtorp)? ship.improves.EVtorp : 0;
 		if (target.fleet.formation.id == 6) {
-			if (target.num/target.fleet.ships.length <= .5) {
-				evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD1 : SIMCONSTS.vanguardEvOther1;
-			} else {
-				evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD2 : SIMCONSTS.vanguardEvOther2;
+			if (MECHANICS.newVanguardMod && target.fleet.ships.length == 6) evFlat += vanguardEvFlat(target);
+			else {
+				if (target.num/target.fleet.ships.length <= .8) {
+					evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD1 : SIMCONSTS.vanguardEvOther1;
+				} else {
+					evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD2 : SIMCONSTS.vanguardEvOther2;
+				}
 			}
 		}
 		
@@ -1801,6 +1826,17 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 				else if (!targetsM.length) targets = targetsE;
 				else targets = (Math.random() < .5)? targetsM : targetsE;
 			}
+			var evFlat = 0;
+			if (target.fleet.formation.id == 6) {
+				if (MECHANICS.newVanguardMod && target.fleet.ships.length == 6) evFlat += vanguardEvFlat(target);
+				else {
+					if (target.num/target.fleet.ships.length <= .8) {
+						evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD1 : SIMCONSTS.vanguardEvOther1;
+					} else {
+						evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD2 : SIMCONSTS.vanguardEvOther2;
+					}
+				}
+			}
 			var target = choiceWProtect(targets);
 			var accCrit, torpDmg;
 			if (suptype == 3) {
@@ -1810,14 +1846,14 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 				torpDmg += 8;
 				let accMod = ship.moraleMod(true);
 				if (FLEETS1[0] && FLEETS1[0].formation && !FLEETS1[0].combinedWith) accMod *= FLEETS1[0].formation.torpacc;
-				accCrit = accuracyAndCrit(ship,target,hitRate(ship,54,ship.ACC+torpDmg*.35,accMod),target.getFormation().torpev,0,1.2);
+				accCrit = accuracyAndCrit(ship,target,hitRate(ship,54,ship.ACC+torpDmg*.35,accMod),target.getFormation().torpev,evFlat,1.2);
 			} else {
 				var baseacc;
 				if (isboss) baseacc = (SIMCONSTS.supportShellB != null)? SIMCONSTS.supportShellB : 64;
 				else baseacc = (SIMCONSTS.supportShellN != null)? SIMCONSTS.supportShellN : 64;
 				let accMod = ship.moraleMod();
 				if (FLEETS1[0] && FLEETS1[0].formation && !FLEETS1[0].combinedWith) accMod *= FLEETS1[0].formation.shellacc;
-				accCrit = accuracyAndCrit(ship,target,hitRate(ship,baseacc,ship.ACC,accMod),target.getFormation().shellev,0,1);
+				accCrit = accuracyAndCrit(ship,target,hitRate(ship,baseacc,ship.ACC,accMod),target.getFormation().shellev,evFlat,1);
 			}
 			var res = rollHit(accCrit);
 			var dmg = 0, realdmg = 0;
@@ -2272,6 +2308,11 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 		if (ships2[i].enableSecondShelling) doShell2 = true;
 	}
 	
+	// update morale (day battle)
+	if (MECHANICS.morale && !noupdate && !NBonly) {
+		updateMoraleStart(ships1);
+	}
+
 	//jet lbas
 	if (LBASwaves && LBASwaves.length && !NBonly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
 		if (C) BAPI.data.api_air_base_injection = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null};
@@ -2485,12 +2526,16 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 				delete BAPI.data.api_support_info;
 			}
 		}
+
+		// update morale (night battle)
+		if (MECHANICS.morale && !noupdate) {
+			updateMoraleStart(ships1,true);
+		}
+		
 		nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,(C)? BAPI.yasen:undefined);
 	}
 	
 	if (!noupdate) {
-		// var subonly = true;
-		// for (var j=0; j<ships2.length; j++) if (ships2[j].type != 'SS') subonly = false;
 		updateSupply(ships1,didNB,NBonly,bombing,noammo);
 	}
 	
@@ -2517,9 +2562,9 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 	results.sinkFlagship = F1.getSinkFlagship();
 	if (didNB) results.didNB = true;
 	
-	//update morale
+	//update morale (post battle)
 	if (MECHANICS.morale && !noupdate) {
-		updateMorale(ships1,results.rank,results.MVP,NBonly,didNB);
+		updateMorale(ships1,results.rank,results.MVP);
 	}
 	
 	return results;
@@ -2670,25 +2715,30 @@ function underwaySupply(fleet) {
 	}
 }
 
-function updateMorale(ships1,rank,mvp,NBonly,didNB) {
-	for (var i=0; i<ships1.length; i++) {
-		if (ships1[i].morale < 30) ships1[i].morale -= 6;
-		switch(rank) {
-			case 'S': ships1[i].morale += 1; break;
-			case 'B': ships1[i].morale -= 1; break;
-			case 'C': ships1[i].morale -= 2; break;
-			case 'D': case 'E': ships1[i].morale -= 3; break;
-		}
-		if (NBonly) ships1[i].morale += 1;
-		if (didNB) ships1[i].morale -= 2;
+function updateMoraleStart(ships1,isNB){
+	if (isNB){
+		ships1.forEach((ship) => ship.morale -= 2);
+	}else{
+		ships1.forEach((ship) => ship.morale -= (ship.morale < 30? 9: 3));
 	}
-	ships1[0].morale += 3;
+	ships1.forEach((ship) => {
+		ship.morale = Math.min(Math.max(ship.morale, 0), 100);
+		if (C) console.log(ship.name+' '+ship.morale);
+	});
+}
+
+
+function updateMorale(ships1,rank,mvp) {
+	moraleMap = {'S': 4, 'A': 3, 'B': 2, 'C': 1, 'D': 0, 'E': 0};
+	ships1.forEach((ship) => {
+		ship.morale += moraleMap[rank];
+	})
+	if (['D','E'].indexOf(rank) === -1) ships1[0].morale += 3;
 	ships1[mvp].morale += 10;
-	for (var i=0; i<ships1.length; i++) {
-		if (ships1[i].morale > 100) ships1[i].morale = 100;
-		if (ships1[i].morale < 0) ships1[i].morale = 0;
-		if (C) console.log(ships1[i].name+' '+ships1[i].morale);
-	}
+	ships1.forEach((ship) => {
+		ship.morale = Math.min(Math.max(ship.morale, 0), 100);
+		if (C) console.log(ship.name+' '+ship.morale);
+	});
 }
 
 function maelstromLoss(fleet, losses){
@@ -2837,8 +2887,11 @@ function simStats(numsims,foptions) {
 			ranks: {S:0,A:0,B:0,C:0,D:0,E:0},
 			flagsunk: 0,
 			airStates: [0,0,0,0,0],
+			nbStates: [0,0,0],
 		});
 	}
+
+	if (FLEETS2[FLEETS2.length-1].combinedWith) totalResult.nodes[FLEETS2.length-1].survival2C = [0,0,0,0,0,0];
 	
 	if (FLEETS1S[2]) {
 		for (let ship of FLEETS1S[2].ships) {
@@ -2902,6 +2955,16 @@ function simStats(numsims,foptions) {
 			totalResult.nodes[j].MVPs[res.MVP]++;
 			if (res.sinkFlagship > -1) totalResult.nodes[j].sinkFlagships[res.sinkFlagship]++;
 			totalResult.nodes[j].airStates[FLEETS1[0].AS+2]++;
+			if (res.didNB){
+				if (res.didNBescort) totalResult.nodes[j].nbStates[2]++;
+				else totalResult.nodes[j].nbStates[1]++;
+			}
+			else totalResult.nodes[j].nbStates[0]++;
+			if (totalResult.nodes[j].survival2C && res.survival2C) {
+				for (let k = 0; k < res.survival2C.length; k++){
+					if (res.survival2C[k]) totalResult.nodes[j].survival2C[k]++;
+				}
+			}
 			if (!canContinue(FLEETS1[0].ships)) break;
 		}
 		let flagshipFinal = FLEETS2[FLEETS2.length-1].ships[0];
@@ -3596,4 +3659,33 @@ function dmgSpecialTarget(dmg,ship,target,plane){
 		else dmg = 0.35 * dmg + 15;
 	}
 	return Math.floor(dmg);
+}
+
+function vanguardEvFlat(ship) {
+	if (ship.num <= 2) return 7;
+	if (ship.num <= 4) {
+		if (ship.type == 'DD') return 20;
+		return 7;
+	}
+	if (ship.num == 5){
+		if (ship.type == 'DD') return 35;
+		return 15;
+	}
+	if (ship.num == 6) {
+		if (ship.type == 'DD') return 40;
+		return 20;
+	}
+	return 0;
+}
+
+function vanguardAccFlat(ship,target) {
+	var accFlat = 0;
+	if (ship.getFormation() == VANGUARD1) {
+		accFlat -= 20;
+	}else{
+		accFlat += 20;
+	}
+	if (ship.type == 'DD' && target.type == 'DD') accFlat += 12;
+	if (ship.type != 'DD' && target.type != 'DD') accFlat -= 12;
+	return accFlat;
 }
