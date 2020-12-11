@@ -1826,6 +1826,7 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 				else if (!targetsM.length) targets = targetsE;
 				else targets = (Math.random() < .5)? targetsM : targetsE;
 			}
+			var target = choiceWProtect(targets);
 			var evFlat = 0;
 			if (target.fleet.formation.id == 6) {
 				if (MECHANICS.newVanguardMod && target.fleet.ships.length == 6) evFlat += vanguardEvFlat(target);
@@ -1837,7 +1838,6 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 					}
 				}
 			}
-			var target = choiceWProtect(targets);
 			var accCrit, torpDmg;
 			if (suptype == 3) {
 				if (!ship.canTorp()) continue;
