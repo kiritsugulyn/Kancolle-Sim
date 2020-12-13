@@ -74,7 +74,6 @@ Fleet.prototype.fleetAntiAir = function(alreadyCombined) {
 	if (alreadyCombined) return FAA;
 	if (this.combinedWith) {
 		FAA += this.combinedWith.fleetAntiAir(true);
-		FAA *= ((this.isescort)? .48 : (this.side == 0)? .72 : .8);
 	}
 	// console.log('FLEET ANTI-AIR: '+FAA);
 	return FAA;
@@ -855,11 +854,6 @@ Ship.prototype.weightedAntiAir = function() {
 			this._wAA += this.equips[i].AA * mod;
 		}
 		this._wAA += (this.improves.AAself)? 2*this.improves.AAself : 0;
-		if (this.fleet.combinedWith) {
-			if (this.isescort) this._wAA*=.48;
-            else if (this.side==0) this._wAA*=.72;
-            else this._wAA*=.8;
-		}
 	}
 	return this._wAA;
 }
@@ -1199,9 +1193,10 @@ CAV.prototype.rocketBarrageChance = function() {
 	for (let equip of this.equips) {
 		if (equip.canBarrage) num++;
 	}
-	if (num <= 0) return 0;
-	let base = 48, numBonus = 40 + 30*num, classBonus = 70*(this.sclass == 2);
-	return (this.weightedAntiAir() + .9*this.LUK)/(400 - (base + numBonus + classBonus));
+    if (num <= 0) return 0;
+    let numBonus = (num - 1) * .15; 
+    let classBonus = .25 * (this.sclass == 2);
+	return (this.weightedAntiAir() + .9*this.LUK)/281 + numBonus + classBonus;
 }
 
 function BBV(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {

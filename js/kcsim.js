@@ -1505,8 +1505,14 @@ function AADefenceFighters(carriers,showplanes,APIkouku,isjetphase) {
 
 function getAAShotProp(defender,slotsize,resistMod) {
 	var sAA = defender.weightedAntiAir();
+	var mod = 1;
 	if (MECHANICS.aaResist && resistMod) sAA = Math.floor(sAA*resistMod);
-	return Math.floor(slotsize*sAA/400);
+	if (defender.fleet.combinedWith){
+		if (defender.isescort) mod *= .48;
+		else if (defender.side == 0) mod *= .72;
+		else mod *= .8;
+	}
+	return Math.floor(slotsize*sAA*mod/400);
 }
 
 function getAAShotFlat(defender,resistModShip,resistModFleet) {
@@ -1516,6 +1522,11 @@ function getAAShotFlat(defender,resistModShip,resistModFleet) {
 	if (MECHANICS.aaResist) {
 		if (resistModShip) sAA = Math.floor(sAA*resistModShip);
 		if (resistModFleet) fAA = Math.floor(fAA*resistModFleet);
+	}
+	if (defender.fleet.combinedWith){
+		if (defender.isescort) mod *= .48;
+		else if (defender.side == 0) mod *= .72;
+		else mod *= .8;
 	}
 	return (sAA+fAA)*mod;
 }
