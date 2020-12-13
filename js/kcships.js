@@ -45,11 +45,10 @@ Fleet.prototype.fleetAntiAir = function(alreadyCombined) {
 	if (this._baseFAA === undefined) {
 		this._baseFAA = 0;
 		for (var i=0; i<this.ships.length; i++) {
-			if (this.ships[i].HP <= 0) { continue; }
-			if (this.ships[i].retreated) continue;
+            var baseFAA = 0;
 			for (var j=0; j<this.ships[i].equips.length; j++) {
 				var equip = this.ships[i].equips[j];
-				var mod = 0;
+                var mod = 0;
 				switch(equip.atype) {
 					case A_HAGUN:
 					case A_HAFD:
@@ -64,9 +63,10 @@ Fleet.prototype.fleetAntiAir = function(alreadyCombined) {
 					default:
 						mod = .2; break;
 				}
-				if (equip.AA) this._baseFAA += Math.floor(equip.AA * mod);
+				baseFAA += (equip.AA || 0) * mod;
 			}
-			if (this.ships[i].improves.AAfleet) this._baseFAA += this.ships[i].improves.AAfleet;
+            if (this.ships[i].improves.AAfleet) baseFAA += this.ships[i].improves.AAfleet;
+            this._baseFAA += Math.floor(baseFAA);
 		}
 		if (this.side == 0) this._baseFAA /= 1.3; //player side fleetAA is lower?
 	}
@@ -837,7 +837,7 @@ Ship.prototype.weightedAntiAir = function() {
 	if (this._wAA === undefined) {
 		this._wAA = this.AA;
 		for (var i=0; i<this.equips.length; i++) if (this.equips[i].AA) this._wAA -= this.equips[i].AA; //get base AA
-		if (this.side==1) this._wAA = 2*Math.sqrt(this._wAA);
+		if (this.side==1) this._wAA = 2*Math.sqrt(this.AA);
 		for (var i=0; i<this.equips.length; i++) {
 			var mod = 0;
 			switch (this.equips[i].atype) {
