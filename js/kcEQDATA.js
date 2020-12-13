@@ -2470,7 +2470,7 @@ var EQDATA = {
 		atype: A_AAGUN,
 		isconcentrated: true,
 		FP: 1,
-		AA: 10,
+		AA: 11,
 		AR: 1,
 		ACC: 1,
 		EV: 2
