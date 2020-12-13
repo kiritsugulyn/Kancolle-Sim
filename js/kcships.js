@@ -1548,9 +1548,6 @@ PLANEDEFAULT.CVshelltype = true;
 function Equip(equipid,level,rank,forLBAS) {
 	for(var key in EQDATA[equipid]) this[key] = EQDATA[equipid][key];
 	this.mid = equipid;
-	this.improves = {};
-	if (level) this.setImprovement(level);
-	if (rank) this.setProficiency(rank,forLBAS);
 	
 	var eq = EQDATA[equipid];
 	if (EQTDATA[eq.type].isfighter && eq.AA) this.isfighter = true;
@@ -1565,7 +1562,12 @@ function Equip(equipid,level,rank,forLBAS) {
 		this.atype = EQTDATA[eq.type].atype;
 		if (this.atype == A_HAGUN && this.AA >= 8) this.atype = A_HAFD;
 		if (this.atype == A_AAGUN && this.AA >= 9) this.isconcentrated = true;
-	}
+    }
+    
+    this.improves = {};
+    if (level) this.setImprovement(level);
+    if (rank) this.setProficiency(rank,forLBAS);
+    
 }
 Equip.prototype.setImprovement = function(level) {
 	this.level = level;
