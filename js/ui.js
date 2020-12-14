@@ -507,7 +507,7 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
 	
 	var dl = document.createElement('div');
 	dl.setAttribute('style','float:left;width:200px;margin:10px');
-	dl.innerHTML = '<b>From code:</b><br><textarea id="{tid}tcode" cols="20" rows="2" autocomplete="off" ></textarea><br><input type="button" id="{tid}codeb" value="Load" onClick="clickedLoadFromCode({nt})"/><br><br>'.replace(/{tid}/g,tid).replace(/{nt}/g,fleetnum);
+	dl.innerHTML = '<b>From code:</b><br><textarea id="{tid}tcode" cols="20" rows="2" autocomplete="off" ></textarea><br><input type="button" id="{tid}codeb" value="Load" onClick="clickedLoadFromCode({nt});raiseFleetChange();"/><br><br>'.replace(/{tid}/g,tid).replace(/{nt}/g,fleetnum);
 	d.appendChild(dl);
 	dl = document.createElement('div');
 	dl.setAttribute('style','float:left;width:200px; margin:10px');
