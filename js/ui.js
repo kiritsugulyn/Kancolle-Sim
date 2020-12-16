@@ -1080,8 +1080,13 @@ function genOptions(fleetnum) {
 	var o = document.createElement('option');
 	sel2.appendChild(o);
 	td.append(div);
+	div = $('<div></div>');
+	div.append('<span class="option2"><label>Enemy Settings: </label></span>');
+	div.append('<span class="option2"><input type="checkbox" id="randformflag'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="randform'+fleetnum+'">Random formation</label></span>');
+	div.append('<span class="option2"><textarea id="randform'+fleetnum+'" cols="30" rows="1" autocomplete="off" ></textarea></span>')
+	td.append(div);
 	html.append(td);
-	
+
 	$('#optionstable').append(html);
 }
 
@@ -1121,6 +1126,14 @@ function extractOptions(num) {
 	}
 	if ($('#fixengage'+num).prop('checked')){
 		options.engagemod = Number($('#engagemod'+num).prop('value'));
+	}
+	if ($('#randformflag'+num).prop('checked')){
+		try{
+			options.randform = JSON.parse($('#randform'+num).prop('value'));
+			if (!checkRandForm(options.randform)) delete options.randform;
+		}catch(e){
+			if (options.randform) delete options.randform;
+		}
 	}
 	return options;
 }
@@ -2361,6 +2374,7 @@ function clickedWatchBattle() {
 	}
 	
 	var formdef = FLEETS1[0].formation;
+	var formdef2 = FLEETS2.map(f => f.formation);
 	for (var j=0; j<FLEETS2.length; j++) {
 		var options = foptions[j];
 		var BAPI = {data:{},yasen:{},mvp:[],rating:''};
@@ -2370,6 +2384,11 @@ function clickedWatchBattle() {
 		} else {
 			FLEETS1[0].formation = formdef;
 			if (ADDEDCOMBINED) FLEETS1[1].formation = formdefc;
+		}
+		if (options.randform && !FLEETS2[j].combinedWith) {
+			let tempform = randFormation(options.randform);
+			if (tempform != '0') FLEETS2[j].formation = ALLFORMATIONS[tempform];
+			else FLEETS2[j].formation = formdef2[j];
 		}
 
 		var supportF = (j==FLEETS2.length-1)? supportB : supportN;
@@ -3152,5 +3171,18 @@ function updateVanguardMod() {
 		VANGUARD1.shellacc = 0.8;
 		VANGUARD2.shellacc = 1.2;
 	}
+
+}
+
+function checkRandForm(obj) {
+
+	if (typeof obj !== "object") return false;
+	var chance = 0;
+	for (var key in obj) {
+		if ([1,2,3,4,5,6].indexOf(Number(key)) === -1) return false;
+		chance += Number(obj[key]);
+	}
+	if (chance !== 100) return false;
+	return true;
 
 }

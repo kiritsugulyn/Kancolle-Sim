@@ -2927,6 +2927,7 @@ function simStats(numsims,foptions) {
 	//var BAPI = {data:{},yasen:{},mvp:[],rating:''};
 	C = false;
 	var formdef = FLEETS1[0].formation;
+	var formdef2 = FLEETS2.map(f => f.formation);
 	for (var i=0; i<numsims; i++) {
 		for (var j=0; j<FLEETS2.length; j++) {
 			var options = foptions[j];
@@ -2939,6 +2940,11 @@ function simStats(numsims,foptions) {
 			FLEETS1[0].SINKFLAGSHIP = [false, false, false, false, false, false];
 			if (options.formation != '0') FLEETS1[0].formation = ALLFORMATIONS[options.formation];
 			else FLEETS1[0].formation = formdef;
+			if (options.randform && !FLEETS2[j].combinedWith) {
+				let tempform = randFormation(options.randform);
+				if (tempform != '0') FLEETS2[j].formation = ALLFORMATIONS[tempform];
+				else FLEETS2[j].formation = formdef2[j];
+			}
 			var supportNum = 0;
 			let friendFleet = null;
 			if (options.maelstrom) maelstromLoss(FLEETS1[0], options.maelstrom);
@@ -3699,4 +3705,14 @@ function vanguardAccFlat(ship,target) {
 	if (ship.type == 'DD' && target.type == 'DD') accFlat += 12;
 	if (ship.type != 'DD' && target.type != 'DD') accFlat -= 12;
 	return accFlat;
+}
+
+function randFormation(obj) {
+	var rand = Math.floor(Math.random() * 100);
+	var acc = 0; 
+	for (var key in obj) {
+		acc += obj[key];
+		if (rand < acc) return key;
+	}
+	return '0';
 }

@@ -537,6 +537,7 @@ function simStatsCombined(numsims,type,foptions) {
 	//var BAPI = {data:{},yasen:{},mvp:[],rating:''};
 	C = false;
 	var formdef = FLEETS1[0].formation, formdefc = FLEETS1[1].formation;
+	var formdef2 = FLEETS2.map(f => f.formation);
 	for (var i=0; i<numsims; i++) {
 		for (var j=0; j<FLEETS2.length; j++) {
 			var options = foptions[j];
@@ -553,6 +554,11 @@ function simStatsCombined(numsims,type,foptions) {
 			} else {
 				FLEETS1[0].formation = formdef;
 				FLEETS1[1].formation = formdefc;
+			}
+			if (options.randform && !FLEETS2[j].combinedWith) {
+				let tempform = randFormation(options.randform);
+				if (tempform != '0') FLEETS2[j].formation = ALLFORMATIONS[tempform];
+				else FLEETS2[j].formation = formdef2[j];
 			}
 			FLEETS1[0].DMGTOTALS = [0,0,0,0,0,0]; FLEETS1[1].DMGTOTALS = [0,0,0,0,0,0];
 			FLEETS1[0].SINKFLAGSHIP = [false, false, false, false, false, false]; FLEETS1[1].SINKFLAGSHIP = [false, false, false, false, false, false]; 
