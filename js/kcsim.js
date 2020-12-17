@@ -779,15 +779,14 @@ function canSpecialAttack(ship,isNB) {
 	if (ship.fleet.didSpecial) return false;
 	if (ship.attackSpecial == 100) {
 		if (ship.fleet.ships[0] != ship) return false;
-		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated).length < 6) return false;
+		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 6) return false;
 		if (ship.fleet.formation.id != 12 && ship.fleet.formation.id != 2) return false;
 		if (ship.HP/ship.maxHP <= .5) return false;
-		for (let s of ship.fleet.ships) { if (s.isSub) return false; }
 		if (ship.fleet.ships[2].CVshelltype || ship.fleet.ships[4].CVshelltype) return false;
 		return Math.random() < SIMCONSTS.nelsonTouchRate/100;
 	} else if (ship.attackSpecial == 101 || ship.attackSpecial == 102) {
 		if (ship.fleet.ships[0] != ship) return false;
-		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated).length < 6) return false;
+		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 6) return false;
 		if (ship.fleet.formation.id != 12 && ship.fleet.formation.id != 4) return false;
 		if (ship.HP/ship.maxHP <= .5) return false;
 		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[1].type) == -1) return false;
@@ -796,7 +795,7 @@ function canSpecialAttack(ship,isNB) {
 		return Math.random() < rate/100;
 	} else if (ship.attackSpecial == 103) {
 		if (ship.fleet.ships[0] != ship) return false;
-		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated).length < 6) return false;
+		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 6) return false;
 		if (ship.fleet.formation.id != 12 && ship.fleet.formation.id != 4) return false;
 		for (let i=0; i<=2; i++) {
 			let s = ship.fleet.ships[i];
@@ -809,7 +808,7 @@ function canSpecialAttack(ship,isNB) {
 	} else if (ship.attackSpecial == 104) {
 		if (!isNB) return false;
 		if (ship.fleet.ships[0] != ship) return false;
-		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated).length < 5) return false;
+		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 5) return false;
 		if (ship.fleet.formation.id != 1 && ship.fleet.formation.id != 14) return false;
 		for (let i=0; i<=1; i++) {
 			let s = ship.fleet.ships[i];
@@ -846,41 +845,52 @@ function getSpecialAttackMod(ship,attackSpecial) {
 		if (ENGAGEMENT == 0.6) mod *= 1.25;
 	} else if (attackSpecial == 101) {
 		mod = (ship.isflagship)? 1.4 : 1.2;
-		if (ship.fleet.ships[1].mid == 81 || ship.fleet.ships[1].mid == 276) {
+		if (ship.fleet.ships[1].mid == 276) {
 			mod *= ((ship.isflagship)? 1.15 : 1.35);
 		} else if (ship.fleet.ships[1].mid == 573) {
 			mod *= ((ship.isflagship)? 1.2 : 1.4);
-		} else if (ship.fleet.ships[1].mid == 571 || ship.fleet.ships[1].mid == 576) {
+		} else if (ship.fleet.ships[1].mid == 576) {
 			mod *= ((ship.isflagship)? 1.1 : 1.25);
 		}
 		if (ship.equiptypesB[B_APSHELL]) mod *= 1.35;
 		if (ship.hasLOSRadar) mod *= 1.15;
 	} else if (attackSpecial == 102) {
 		mod = (ship.isflagship)? 1.4 : 1.2;
-		if (ship.fleet.ships[1].mid == 80 || ship.fleet.ships[1].mid == 275) {
-			mod *= ((ship.isflagship)? 1.15 : 1.35);
-		} else if (ship.fleet.ships[1].mid == 541) {
+		if (ship.fleet.ships[1].mid == 541) {
 			mod *= ((ship.isflagship)? 1.2 : 1.4);
 		}
 		if (ship.equiptypesB[B_APSHELL]) mod *= 1.35;
 		if (ship.hasLOSRadar) mod *= 1.15;
 	} else if (attackSpecial == 103) {
-		let mod2 = 1;
 		if (ship.isflagship) {
 			mod = 1.3;
+			if (ship.equiptypesB[B_APSHELL]) mod *= 1.35;
+			if (ship.hasLOSRadar) mod *= 1.15;
+		} else if (ship.num == 2) {
+			mod = 1.15;
+			if ([19,88,93].indexOf(ship.sclass) != -1) mod *= 1.1;
+			if (ship.equiptypesB[B_APSHELL]) mod *= 1.35;
+			if (ship.hasLOSRadar) mod *= 1.15;
 		} else {
 			mod = 1.15;
-			if (ship.num == 3 && [19,88,93].indexOf(ship.sclass) != -1) mod *= 1.15;
-			let ship2 = ship.fleet.ships[1];
-			if ([19,88,93].indexOf(ship2.sclass) != -1) mod2 *= 1.1;
-			if (ship2.equiptypesB[B_APSHELL]) mod2 *= 1.35;
-			if (ship2.hasLOSRadar) mod2 *= 1.15;
+			let ship1 = ship.fleet.ships[1];
+			if ([19,88,93].indexOf(ship.sclass) != -1) {
+				mod *= 1.15;
+				if ([19,88,93].indexOf(ship1.sclass) != -1) mod *= 1.1;
+				if (ship1.equiptypesB[B_APSHELL] || ship1.hasLOSRadar){
+					if (ship1.equiptypesB[B_APSHELL]) mod *= 1.35;
+					if (ship1.hasLOSRadar) mod *= 1.15;
+				}else{
+					if (ship.equiptypesB[B_APSHELL]) mod *= 1.35;
+					if (ship.hasLOSRadar) mod *= 1.15;
+				}
+			}else if (SHIPDATA[ship1.mid].SLOTS.length == 5 && ship1.equips.length == 5 && (ship1.equips[4].btype == B_APSHELL || (ship1.equips[4].btype == B_RADAR && ship1.equips[4].LOS >= 5)) && ship.equips.length > 0){
+				if (ship1.equiptypesB[B_APSHELL]) mod *= 1.35;
+				if (ship1.hasLOSRadar) mod *= 1.15;
+				if (ship1.equips[4].btype == B_APSHELL) mod *= 1.35;
+				if (ship1.equips[4].btype == B_RADAR && ship1.equips[4].LOS >= 5) mod *= 1.15;
+			}
 		}
-		if (mod2 == 1) {
-			if (ship.equiptypesB[B_APSHELL]) mod2 *= 1.35;
-			if (ship.hasLOSRadar) mod2 *= 1.15;
-		}
-		mod *= mod2;
 	} else if (attackSpecial == 104) {
 		mod = 1.9;
 		if (ENGAGEMENT == 1.2) mod *= 1.25;
