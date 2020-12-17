@@ -1166,7 +1166,7 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 		
 		var evFlat = (target.improves.EVtorp)? ship.improves.EVtorp : 0;
 		if (target.fleet.formation.id == 6) {
-			if (MECHANICS.newVanguardMod && target.fleet.ships.length == 6) evFlat += vanguardEvFlat(target);
+			if (MECHANICS.newVanguardMod && target.fleet.ships.length == 6) evFlat += vanguardEvFlat(target, true);
 			else {
 				if (target.num/target.fleet.ships.length <= .8) {
 					evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD1 : SIMCONSTS.vanguardEvOther1;
@@ -3678,24 +3678,46 @@ function dmgSpecialTarget(dmg,ship,target,plane){
 	return Math.floor(dmg);
 }
 
-function vanguardEvFlat(ship) {
-	if (ship.num <= 2) return 7;
-	if (ship.num <= 4) {
-		if (ship.type == 'DD') return 20;
-		return 7;
-	}
-	if (ship.num == 5){
-		if (ship.type == 'DD') return 35;
-		return 15;
-	}
-	if (ship.num == 6) {
-		if (ship.type == 'DD') return 40;
-		return 20;
+function vanguardEvFlat(ship, isTorpedo) {
+	// Source: https://twitter.com/Xe_UCH/status/1298910160664924160
+	if (isTorpedo) {
+		if (ship.num <= 2) return 15;
+		if (ship.num == 3) {
+			if (ship.type == 'DD') return 45;
+			return 15;
+		} 
+		if (ship.num == 4) {
+			if (ship.type == 'DD') return 55;
+			return 40;
+		}
+		if (ship.num == 5){
+			if (ship.type == 'DD') return 65;
+			return 45; // guess
+		}
+		if (ship.num == 6) {
+			if (ship.type == 'DD') return 75;
+			return 50; // guess
+		}
+	}else{  // Source: https://twitter.com/Xe_UCH/status/1332267790686769159
+		if (ship.num <= 2) return 7;
+		if (ship.num <= 4) {
+			if (ship.type == 'DD') return 20;
+			return 7;
+		}
+		if (ship.num == 5){
+			if (ship.type == 'DD') return 35;
+			return 15;
+		}
+		if (ship.num == 6) {
+			if (ship.type == 'DD') return 40;
+			return 20;
+		}
 	}
 	return 0;
 }
 
 function vanguardAccFlat(ship,target) {
+	// Source: https://twitter.com/Xe_UCH/status/1332267790686769159
 	var accFlat = 0;
 	if (ship.getFormation() == VANGUARD1) {
 		accFlat -= 20;
