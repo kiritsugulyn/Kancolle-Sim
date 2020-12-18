@@ -19,7 +19,7 @@
             "tacc": "0",
             "bonusA": "0",
             "bonusB": "1.15",
-            "bonusC": "1.69",
+            "bonusC": "1.696",
             "items": {
                 "i1": {
                     "id": "314",
@@ -66,7 +66,7 @@
             "tacc": "0",
             "bonusA": "1.25",
             "bonusB": "1.2",
-            "bonusC": "1.575",
+            "bonusC": "1.56",
             "items": {
                 "i1": {
                     "id": "267",
@@ -216,7 +216,7 @@
             "tacc": "0",
             "bonusA": "1.375",
             "bonusB": "1.2",
-            "bonusC": "1.575",
+            "bonusC": "1.56",
             "items": {
                 "i1": {
                     "id": "267",
