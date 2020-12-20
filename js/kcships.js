@@ -676,15 +676,6 @@ Ship.prototype.AStype = function() {
 		if (numZuiun >= 2) this._astype.push(200);
     }
 	
-	if (MECHANICS.CVCI && this.CVshelltype && (this.mid < 1500 || this.canCVCI)) {
-        let d = this.equips.filter((eq, i) => eq.type == DIVEBOMBER && this.planecount[i] > 0).length || 0;
-        let t = this.equips.filter((eq, i) => eq.type == TORPBOMBER && this.planecount[i] > 0).length || 0;
-        let f = this.equips.filter((eq, i) => eq.type == FIGHTER && this.planecount[i] > 0).length || 0;
-		if (d >= 1 && t >= 1 && f >= 1) this._astype.push(71);
-		if (d >= 2 && t >= 1) this._astype.push(72);
-		if (d >= 1 && t >= 1) this._astype.push(73);
-	}
-	
 	var mguns = this.equiptypesB[B_MAINGUN] || 0, sguns = this.equiptypesB[B_SECGUN] || 0, radars = this.equiptypesB[B_RADAR] || 0, apshells = this.equiptypesB[B_APSHELL] || 0;
 	var recons = this.equiptypesB[B_RECON] || 0;
 	if (recons <= 0 || mguns <= 0) return this._astype;
@@ -1227,13 +1218,24 @@ function CV(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 CV.prototype = Object.create(Ship.prototype);
 CV.prototype.canNB = function() { return (((this.nightattack && this.HP/this.maxHP > .25) || this.canNBAirAttack()) && !this.retreated); }
 CV.prototype.canAS = function() {
-	if (this.HP/this.maxHP <= .25) return false;
-	let diveFlag = false, torpFlag = false;
-	for (var i=0; i<this.equips.length; i++) {
-		if(this.equips[i].type == DIVEBOMBER && this.planecount[i]) diveFlag = true;
-		if(this.equips[i].type == TORPBOMBER && this.planecount[i]) torpFlag = true;
-	}
-	return diveFlag && torpFlag;
+    if (this.HP/this.maxHP <= .25) return false;
+    if (this.mid > 1500 && !this.canCVCI) return false;
+    return true;
+}
+CV.prototype.FBAplanenum = 0;
+CV.prototype.AStype = function() {
+    this._astype = [];
+    this.FBAplanenum = 0;
+    if (MECHANICS.CVCI && this.CVshelltype) {
+        let d = this.equips.filter((eq, i) => eq.type == DIVEBOMBER && this.planecount[i] > 0).length || 0;
+        let t = this.equips.filter((eq, i) => eq.type == TORPBOMBER && this.planecount[i] > 0).length || 0;
+        let f = this.equips.filter((eq, i) => eq.type == FIGHTER && this.planecount[i] > 0).length || 0;
+		if (d >= 1 && t >= 1 && f >= 1) this._astype.push(71);
+		if (d >= 2 && t >= 1) this._astype.push(72);
+        if (d >= 1 && t >= 1) this._astype.push(73);
+        this.FBAplanenum = d + t + f;
+    }
+    return this._astype;
 }
 CV.prototype.APweak = true;
 CV.prototype.canShell = function() {

@@ -250,12 +250,14 @@ function shell(ship,target,APIhou,attackSpecial) {
 			critRateBonus = 0;
 			overrideCritDmgBonus += .1  *(ship.ACCplane||0)/12.46; //base scaling on average proficiency
 			critRateBonus += .09 * (ship.ACCplane||0)/12.46;
-			if (ship.equips[0] && ship.equips[0].rank == 7) {
-				overrideCritDmgBonus += .15; //base scaling on 8 - 5.6 mods of standard crit dmg bonus
-				critRateBonus += .07 * (ship.equiptypes[FIGHTER] + ship.equiptypes[TORPBOMBER] + ship.equiptypes[DIVEBOMBER] >= 3 ? 2:1);
-			}else if (ship.equips[0] && ship.equips[0].rank == 6) {
-				overrideCritDmgBonus += .1;
-				critRateBonus += .06 * (ship.equiptypes[FIGHTER] + ship.equiptypes[TORPBOMBER] + ship.equiptypes[DIVEBOMBER] >= 3 ? 2:1);
+			if (ship.equips[0] && ([TORPBOMBER, DIVEBOMBER].indexOf(ship.equips[0].type) !== -1 || (cutinR == 71 && ship.equips[0].type == FIGHTER)) && ship.planecount[0]) {
+				if (ship.equips[0].rank == 7) {
+					overrideCritDmgBonus += .15; //base scaling on 8 - 5.6 mods of standard crit dmg bonus
+					critRateBonus += .07 * ((ship.FBAplanenum || 0) >= 3 ? 2 : 1);
+				}else if (ship.equips[0].rank == 6) {
+					overrideCritDmgBonus += .1;
+					critRateBonus += .06 * ((ship.FBAplanenum || 0) >= 3 ? 2 : 1);
+				}
 			}
 		}
 	}
