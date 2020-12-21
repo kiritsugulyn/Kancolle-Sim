@@ -44,7 +44,7 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	F1.airstrikeMod = -10; F1C.airstrikeMod = -20;
 	F1.airstrikeaccMod = 10; F1C.airstrikeaccMod = -20;
 	if (type == 3){  // guess based on Fall 2020 E4 data 
-		F1.airstrikeaccMod = -20;
+		F1.airstrikeaccMod = -10;
 	}
 	
 	// if (aironly && ships2.length <= 2 && [652,651,650].indexOf(ships2[0].mid) != -1) bombing = true;
@@ -1213,7 +1213,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	F1.airstrikeaccMod = 10; F1C.airstrikeaccMod = -20;
 	F2.airstrikeaccMod = 10; F2C.airstrikeaccMod = -20;
 	if (type == 3){  // guess based on Fall 2020 E4 data 
-		F1.airstrikeaccMod = -20;
+		F1.airstrikeaccMod = -10;
 	}
 
 	if (bombing) aironly = true;
