@@ -7,32 +7,32 @@ var VANGUARD1 = {shellmod:0.5,torpmod:1,ASWmod:1,AAmod:1.1, shellacc:1,torpacc:1
 var VANGUARD2 = {shellmod:1,torpmod:1,ASWmod:.6,AAmod:1.1, shellacc:1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:6};
 
 // Acc Base source: https://twitter.com/Xe_UCH/status/1172380690207215616
-var CTFCOMBINED1M = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:2,shellbonusE:10,accbase:78, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:11};
-var CTFCOMBINED1E = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:10,shellbonusE:5,accbase:43, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.35, id:11};
-var CTFCOMBINED2M = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellbonus:2,shellbonusE:10,accbase:78, shellacc:1,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:12};
-var CTFCOMBINED2E = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellbonus:10,shellbonusE:5,accbase:43, shellacc:1,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.35, id:12};
-var CTFCOMBINED3M = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellbonus:2,shellbonusE:10,accbase:78, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:13};
-var CTFCOMBINED3E = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellbonus:10,shellbonusE:5,accbase:43, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.35, id:13};
-var CTFCOMBINED4M = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:2,shellbonusE:10,accbase:78, shellacc:1.1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:14};
-var CTFCOMBINED4E = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:10,shellbonusE:5,accbase:43, shellacc:1.1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.35, id:14};
+var CTFCOMBINED1M = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:2,shellbonusE:10,accbase:78, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:11};
+var CTFCOMBINED1E = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:10,shellbonusE:5,accbase:43, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:11};
+var CTFCOMBINED2M = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellbonus:2,shellbonusE:10,accbase:78, shellacc:1,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:12};
+var CTFCOMBINED2E = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellbonus:10,shellbonusE:5,accbase:43, shellacc:1,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:12};
+var CTFCOMBINED3M = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellbonus:2,shellbonusE:10,accbase:78, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:13};
+var CTFCOMBINED3E = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellbonus:10,shellbonusE:5,accbase:43, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:13};
+var CTFCOMBINED4M = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:2,shellbonusE:10,accbase:78, shellacc:1.1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:14};
+var CTFCOMBINED4E = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:10,shellbonusE:5,accbase:43, shellacc:1.1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:14};
 
-var STFCOMBINED1M = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:10,shellbonusE:5,accbase:46, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:11};
-var STFCOMBINED1E = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:-5,shellbonusE:-5,accbase:70, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.15, id:11};
-var STFCOMBINED2M = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellbonus:10,shellbonusE:5,accbase:46, shellacc:1,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:12};
-var STFCOMBINED2E = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellbonus:-5,shellbonusE:-5,accbase:70, shellacc:1,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.15, id:12};
-var STFCOMBINED3M = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellbonus:10,shellbonusE:5,accbase:46, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:13};
-var STFCOMBINED3E = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellbonus:-5,shellbonusE:-5,accbase:70, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.15, id:13};
-var STFCOMBINED4M = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:10,shellbonusE:5,accbase:46, shellacc:1.1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:14};
-var STFCOMBINED4E = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:-5,shellbonusE:-5,accbase:70, shellacc:1.1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.15, id:14};
+var STFCOMBINED1M = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:10,shellbonusE:5,accbase:46, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:11};
+var STFCOMBINED1E = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:-5,shellbonusE:-5,accbase:70, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:11};
+var STFCOMBINED2M = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellbonus:10,shellbonusE:5,accbase:46, shellacc:1,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:12};
+var STFCOMBINED2E = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellbonus:-5,shellbonusE:-5,accbase:70, shellacc:1,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:12};
+var STFCOMBINED3M = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellbonus:10,shellbonusE:5,accbase:46, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:13};
+var STFCOMBINED3E = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellbonus:-5,shellbonusE:-5,accbase:70, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:13};
+var STFCOMBINED4M = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:10,shellbonusE:5,accbase:46, shellacc:1.1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:14};
+var STFCOMBINED4E = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:-5,shellbonusE:-5,accbase:70, shellacc:1.1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:14};
 
-var TTFCOMBINED1M = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:-5,shellbonusE:10,accbase:51, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:11};
-var TTFCOMBINED1E = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:10,shellbonusE:5,accbase:45, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:11};
-var TTFCOMBINED2M = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellbonus:-5,shellbonusE:10,accbase:51, shellacc:1,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:12};
-var TTFCOMBINED2E = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellbonus:10,shellbonusE:5,accbase:45, shellacc:1,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:12};
-var TTFCOMBINED3M = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellbonus:-5,shellbonusE:10,accbase:51, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:13};
-var TTFCOMBINED3E = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellbonus:10,shellbonusE:5,accbase:45, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:13};
-var TTFCOMBINED4M = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:-5,shellbonusE:10,accbase:51, shellacc:1.1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:-.4, id:14};
-var TTFCOMBINED4E = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:10,shellbonusE:5,accbase:45, shellacc:1.1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, shellaccflat:0, id:14};
+var TTFCOMBINED1M = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:-5,shellbonusE:10,accbase:51, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:11};
+var TTFCOMBINED1E = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:10,shellbonusE:5,accbase:45, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:11};
+var TTFCOMBINED2M = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellbonus:-5,shellbonusE:10,accbase:51, shellacc:1,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:12};
+var TTFCOMBINED2E = {shellmod:1,torpmod:.9,ASWmod:1.1,AAmod:1, shellbonus:10,shellbonusE:5,accbase:45, shellacc:1,torpacc:.9,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:12};
+var TTFCOMBINED3M = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellbonus:-5,shellbonusE:10,accbase:51, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:13};
+var TTFCOMBINED3E = {shellmod:.7,torpmod:.6,ASWmod:1,AAmod:1.5, shellbonus:10,shellbonusE:5,accbase:45, shellacc:1,torpacc:.6,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:13};
+var TTFCOMBINED4M = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:-5,shellbonusE:10,accbase:51, shellacc:1.1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:14};
+var TTFCOMBINED4E = {shellmod:1.1,torpmod:1,ASWmod:.7,AAmod:1, shellbonus:10,shellbonusE:5,accbase:45, shellacc:1.1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:14};
 
 var ALLFORMATIONS = {1:LINEAHEAD,2:DOUBLELINE,3:DIAMOND,4:ECHELON,5:LINEABREAST,6:VANGUARD1,
 	'111':CTFCOMBINED1M,'111E':CTFCOMBINED1E,'112':CTFCOMBINED2M,'112E':CTFCOMBINED2E,'113':CTFCOMBINED3M,'113E':CTFCOMBINED3E,'114':CTFCOMBINED4M,'114E':CTFCOMBINED4E,
@@ -275,7 +275,6 @@ function shell(ship,target,APIhou,attackSpecial) {
 	}
 	
 	var accflat = (ship.ACC)? ship.ACC : 0;
-	//if (ship.fleet.formation.shellaccflat) accflat += ship.fleet.formation.shellaccflat; //try global for enemy too
 	if (ship.improves.ACCshell) accflat += ship.improves.ACCshell;
 	
 	var acc = hitRate(ship,(ship.fleet.baseaccshell||90),accflat,accMod); //use global hit acc
@@ -1515,19 +1514,19 @@ function AADefenceFighters(carriers,showplanes,APIkouku,isjetphase) {
 	}
 }
 
-function getAAShotProp(defender,slotsize,resistMod) {
+function getAAShotProp(defender,slotsize,isbombing,resistMod) {
 	var sAA = defender.weightedAntiAir();
 	var mod = 1;
 	if (MECHANICS.aaResist && resistMod) sAA = Math.floor(sAA*resistMod);
 	if (defender.fleet.combinedWith){
 		if (defender.isescort) mod *= .48;
-		else if (defender.side == 0) mod *= .72;
+		else if (isbombing && defender.side == 0) mod *= .72;
 		else mod *= .8;
 	}
 	return Math.floor(slotsize*sAA*mod/400);
 }
 
-function getAAShotFlat(defender,resistModShip,resistModFleet) {
+function getAAShotFlat(defender,isbombing,resistModShip,resistModFleet) {
 	var mod = (defender.side==0)? .1 : 0.09375;
 	var fAA = (MECHANICS.fixFleetAA)? defender.fleet.fleetAntiAir() : 0;
 	var sAA = defender.weightedAntiAir();
@@ -1537,7 +1536,7 @@ function getAAShotFlat(defender,resistModShip,resistModFleet) {
 	}
 	if (defender.fleet.combinedWith){
 		if (defender.isescort) mod *= .48;
-		else if (defender.side == 0) mod *= .72;
+		else if (isbombing && defender.side == 0) mod *= .72;
 		else mod *= .8;
 	}
 	return (sAA+fAA)*mod;
@@ -1658,7 +1657,7 @@ function getContact(carriers) {
 	return null;
 }
 
-function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupport,isjetphase,combinedAll) {
+function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupport,isbombing,isjetphase,combinedAll) {
 	var bombers = [], hasbomber = false;
 	for (var i=0; i<carriers.length; i++) {
 		var ship = carriers[i];
@@ -1706,8 +1705,8 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 			var slot = bombers[i][j];
 			var defender = defenders[Math.floor(Math.random()*defenders.length)];
 			var supportMod = (issupport)? .8 : 1;
-			var shotProp = (Math.random() < .5)? Math.floor(getAAShotProp(defender,ship.planecount[slot],ship.equips[slot].aaResistShip)*supportMod) : 0;
-			var shotFlat = (Math.random() < .5)? Math.floor(getAAShotFlat(defender,ship.equips[slot].aaResistShip,ship.equips[slot].aaResistFleet)*AACImod*supportMod) : 0;
+			var shotProp = (Math.random() < .5)? Math.floor(getAAShotProp(defender,ship.planecount[slot],isbombing,ship.equips[slot].aaResistShip)*supportMod) : 0;
+			var shotFlat = (Math.random() < .5)? Math.floor(getAAShotFlat(defender,isbombing,ship.equips[slot].aaResistShip,ship.equips[slot].aaResistFleet)*AACImod*supportMod) : 0;
 			var shotFix = ((defender.side==0 || AACInum)? 1 : 0) + AACInum;
 			
 			if (C) {
@@ -1786,8 +1785,8 @@ function airPhase(alive1,subsalive1,alive2,subsalive2,APIkouku,isjetphase,isbomb
 		AADefenceFighters(carriers2,alive1.length,APIkouku,isjetphase);
 		
 		//bomber defence
-		if (!isbombing) AADefenceBombersAndAirstrike(carriers1,alive2,alive2.concat(subsalive2),APIkouku,false,isjetphase,includeEscort);
-		AADefenceBombersAndAirstrike(carriers2,alive1,alive1.concat(subsalive1),APIkouku,false,isjetphase,includeEscort);
+		if (!isbombing) AADefenceBombersAndAirstrike(carriers1,alive2,alive2.concat(subsalive2),APIkouku,false,isbombing,isjetphase,includeEscort);
+		AADefenceBombersAndAirstrike(carriers2,alive1,alive1.concat(subsalive1),APIkouku,false,isbombing,isjetphase,includeEscort);
 	}
 	if (C) {
 		for (var i=0; i<2; i++)
@@ -1906,7 +1905,7 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 			var prevAS = alive2[0].fleet.AS;
 			compareAP(shipsS[0].fleet,alive2[0].fleet,false,false,false,true);
 			AADefenceFighters(shipsS,false,(C)? BAPI.data.api_support_info.api_support_airatack : null);
-			AADefenceBombersAndAirstrike(shipsS,alive2,alive2.concat(subsalive2),(C)? BAPI.data.api_support_info.api_support_airatack : null,true,false,alive2[0].fleet.combinedWith);
+			AADefenceBombersAndAirstrike(shipsS,alive2,alive2.concat(subsalive2),(C)? BAPI.data.api_support_info.api_support_airatack : null,true,false,false,alive2[0].fleet.combinedWith);
 			alive2[0].fleet.AS = prevAS;
 		}
 		if (C) {
@@ -2098,8 +2097,8 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 		if (!eq.isdivebomber && !eq.istorpbomber) continue;
 		var defender = defenders[Math.floor(Math.random()*defenders.length)];
 		var supportMod = 1;
-		var shotProp = (Math.random() < .5)? Math.floor(getAAShotProp(defender,lbas.planecount[i],eq.aaResistShip)*supportMod) : 0;
-		var shotFlat = (Math.random() < .5)? Math.floor(getAAShotFlat(defender,eq.aaResistShip,eq.aaResistFleet)*AACImod*supportMod) : 0;
+		var shotProp = (Math.random() < .5)? Math.floor(getAAShotProp(defender,lbas.planecount[i],false,eq.aaResistShip)*supportMod) : 0;
+		var shotFlat = (Math.random() < .5)? Math.floor(getAAShotFlat(defender,false,eq.aaResistShip,eq.aaResistFleet)*AACImod*supportMod) : 0;
 		var shotFix = ((defender.side==0 || AACInum)? 1 : 0) + AACInum;
 		
 		if (C) {
