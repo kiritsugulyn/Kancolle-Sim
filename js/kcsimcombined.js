@@ -515,7 +515,10 @@ function simStatsCombined(numsims,type,foptions) {
 		});
 	}
 
-	if (FLEETS2[FLEETS2.length-1].combinedWith) totalResult.nodes[FLEETS2.length-1].survival2C = [0,0,0,0,0,0];
+	if (FLEETS2[FLEETS2.length-1].combinedWith) {
+		totalResult.nodes[FLEETS2.length-1].survival2C = [0,0,0,0,0,0];
+		totalResult.nodes[FLEETS2.length-1].survival2 = [0,0,0,0,0,0];
+	} 
 	
 	if (FLEETS1S[2]) {
 		for (let ship of FLEETS1S[2].ships) {
@@ -615,6 +618,11 @@ function simStatsCombined(numsims,type,foptions) {
 			if (totalResult.nodes[j].survival2C && res.survival2C) {
 				for (let k = 0; k < res.survival2C.length; k++){
 					if (res.survival2C[k]) totalResult.nodes[j].survival2C[k]++;
+				}
+			}
+			if (totalResult.nodes[j].survival2 && res.survival2) {
+				for (let k = 0; k < res.survival2.length; k++){
+					if (res.survival2[k]) totalResult.nodes[j].survival2[k]++;
 				}
 			}
 			//if ((res.redded && DORETREAT)||res.flagredded) break;
@@ -1063,6 +1071,10 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		removeSunk(alive2); removeSunk(subsalive2);
 		removeSunk(alive2C); removeSunk(subsalive2C);
 	}
+
+	//calculate survival of enemy main
+	results.survival2 = [];
+	ships2.forEach((ship) => results.survival2.push(ship.HP > 0));
 	
 	//night battle
 	var didNB = false;
@@ -1605,6 +1617,10 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		removeSunk(alive2); removeSunk(subsalive2);
 		removeSunk(alive2C); removeSunk(subsalive2C);
 	}
+
+	//calculate survival of enemy main
+	results.survival2 = [];
+	ships2.forEach((ship) => results.survival2.push(ship.HP > 0));
 	
 	//night battle
 	var didNB = false;

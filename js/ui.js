@@ -1715,6 +1715,7 @@ function updateResults(results) {
 		resultAddWeight('sinkfs0',totalsunk,node.flagsunk);
 		for (var i = 0; i < node.nbStates.length; i++) resultAddWeight('nbstate'+i,node.nbStates[i],addnum);
 		if (node.survival2C) for (var i = 1; i <= node.survival2C.length; i++) resultAddWeight('survival2C'+i,node.survival2C[i-1],addnum);
+		if (node.survival2) for (var i = 1; i <= node.survival2.length; i++) resultAddWeight('survival2'+i,node.survival2[i-1],addnum);
 		
 		resultAddWeight('rredany',node.redded,addnum);
 		for(var i=0; i<node.redIndiv.length; i++) resultAddWeight('red'+(i+1),node.redIndiv[i],addnum);
@@ -1771,6 +1772,7 @@ function updateResults(results) {
 		resultAddWeight('sinkfs0',totalsunk,node.flagsunk);
 		for (var i = 0; i < node.nbStates.length; i++) resultAddWeight('nbstate'+i,node.nbStates[i],results.nodes[results.nodes.length-1].num);
 		if (node.survival2C) for (var i = 1; i <= node.survival2C.length; i++) resultAddWeight('survival2C'+i,node.survival2C[i-1],results.nodes[results.nodes.length-1].num);
+		if (node.survival2) for (var i = 1; i <= node.survival2.length; i++) resultAddWeight('survival2'+i,node.survival2[i-1],results.nodes[results.nodes.length-1].num);
 
 		for (var i=results.nodes.length; i<NUMNODESDEFAULT; i++) $('.res'+(i+1)).each(function() { $(this).hide(); } );
 		
