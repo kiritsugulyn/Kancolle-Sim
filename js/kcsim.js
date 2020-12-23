@@ -2081,35 +2081,9 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 	AADefenceFighters([lbas],true,APIkouku,isjetphase);
 	AADefenceFighters(carriers2,true,APIkouku,isjetphase);
 	
-	//bomber defence
-	var defenders = [];
-	var AACImod = 1;
-	var AACInum = 0;
-	for (var i=0; i<alive2.length; i++) defenders.push(alive2[i]);
-	for (var i=0; i<subsalive2.length; i++) defenders.push(subsalive2[i]);
-	if (SIMCONSTS.enableEnemyAACILBAS) {
-		let AACIResult = getAACI(defenders,APIkouku);
-		AACInum = AACIResult.num;
-		AACImod = AACIResult.mod;
-	}
-	for (var i=0; i<lbas.equips.length; i++) {
-		var eq = lbas.equips[i];
-		if (!eq.isdivebomber && !eq.istorpbomber) continue;
-		var defender = defenders[Math.floor(Math.random()*defenders.length)];
-		var supportMod = 1;
-		var shotProp = (Math.random() < .5)? Math.floor(getAAShotProp(defender,lbas.planecount[i],false,eq.aaResistShip)*supportMod) : 0;
-		var shotFlat = (Math.random() < .5)? Math.floor(getAAShotFlat(defender,false,eq.aaResistShip,eq.aaResistFleet)*AACImod*supportMod) : 0;
-		var shotFix = ((defender.side==0 || AACInum)? 1 : 0) + AACInum;
-		
-		if (C) {
-			APIkouku.api_stage2.api_f_count += lbas.planecount[i];
-			APIkouku.api_stage2.api_f_lostcount += shotProp+shotFlat+shotFix;
-			console.log(lbas.planecount[i] + ' ' + defender.name + ' ' + shotProp + ' ' + shotFlat);
-		}
-		lbas.planecount[i] = Math.max(0,lbas.planecount[i]-shotProp-shotFlat-shotFix);
-		if (lbas.planecount[i] <= 0) continue;
-		
-		var contactMod = 1;
+	// contact
+	var contactMod = 1;
+	if (!isjetphase) {
 		if (lbas.airState() != -2 && lbas.airState() != 0) {
 			var contactdata = getContact([lbas]);
 			if (contactdata) {
@@ -2125,6 +2099,34 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 			}
 		}
 		contactMod *= contactModLB;
+	}
+
+	//bomber defence
+	var defenders = [];
+	var AACImod = 1;
+	var AACInum = 0;
+	for (var i=0; i<alive2.length; i++) defenders.push(alive2[i]);
+	for (var i=0; i<subsalive2.length; i++) defenders.push(subsalive2[i]);
+	if (SIMCONSTS.enableEnemyAACILBAS) {
+		let AACIResult = getAACI(defenders,APIkouku);
+		AACInum = AACIResult.num;
+		AACImod = AACIResult.mod;
+	}
+	for (var i=0; i<lbas.equips.length; i++) {
+		var eq = lbas.equips[i];
+		if (!eq.isdivebomber && !eq.istorpbomber) continue;
+		var defender = defenders[Math.floor(Math.random()*defenders.length)];
+		var shotProp = (Math.random() < .5)? Math.floor(getAAShotProp(defender,lbas.planecount[i],false,eq.aaResistShip)) : 0;
+		var shotFlat = (Math.random() < .5)? Math.floor(getAAShotFlat(defender,false,eq.aaResistShip,eq.aaResistFleet)*AACImod) : 0;
+		var shotFix = ((defender.side==0 || AACInum)? 1 : 0) + AACInum;
+		
+		if (C) {
+			APIkouku.api_stage2.api_f_count += lbas.planecount[i];
+			APIkouku.api_stage2.api_f_lostcount += shotProp+shotFlat+shotFix;
+			console.log(lbas.planecount[i] + ' ' + defender.name + ' ' + shotProp + ' ' + shotFlat);
+		}
+		lbas.planecount[i] = Math.max(0,lbas.planecount[i]-shotProp-shotFlat-shotFix);
+		if (lbas.planecount[i] <= 0) continue;
 		
 		let isASWPlane = MECHANICS.LBASBuff && eq.ASW >= 7;
 		var targets = (isASWPlane)? subsalive2.concat(alive2) : alive2;
@@ -2144,7 +2146,7 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 				if (targetsSub.length) targets = targetsSub;
 			}
 			var target = choiceWProtect(targets);
-			var dmg = airstrikeLBAS(lbas,target,i,contactMod);
+			var dmg = airstrikeLBAS(lbas,target,i,contactMod,isjetphase);
 			if (C) {
 				var showtorpedo = lbas.equips[i].istorpbomber;
 				if ([LANDBOMBER,HEAVYBOMBER].indexOf(lbas.equips[i].type) !== -1 && target.isInstall) showtorpedo = false;
@@ -2175,7 +2177,7 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 	}
 }
 
-function airstrikeLBAS(lbas,target,slot,contactMod) {
+function airstrikeLBAS(lbas,target,slot,contactMod,isjetphase) {
 	if (!contactMod) contactMod = 1;
 	var equip = lbas.equips[slot];
 	var acc = target.isSub? .88: .95;
@@ -2210,10 +2212,12 @@ function airstrikeLBAS(lbas,target,slot,contactMod) {
 	if (target.isSub) planebase = equip.ASW;
 	planebase = (planebase || 0) + (equip.ASImprove || 0);
 	if (res) {
-		var dmgbase = 25+planebase*Math.sqrt(1.8*lbas.planecount[slot]);
-		var preMod = (equip.type == LANDBOMBER)? .8 : (equip.isjet? 1 / Math.sqrt(2): 1);
+		var planecount = lbas.planecount[slot];
+		if (!isjetphase && equip.type != HEAVYBOMBER) planecount *= 1.8;
+		var dmgbase = 25 + planebase * Math.sqrt(planecount);
+		var preMod = (equip.type == LANDBOMBER)? .8 : (equip.isjet && !isjetphase? 1 / Math.sqrt(2): 1);
 		if (target.isSub) {
-			preMod = (planebase >= 10)? .7 + Math.random()*.3 : .35 + Math.random()*.45;
+			preMod = (equip.ASW >= 10)? .7 + Math.random()*.3 : .35 + Math.random()*.45;
 		}
 		preMod *= (target.LBWeak || 1);
 		var postMod = (equip.type == LANDBOMBER)? 1.8 : 1;
