@@ -1021,12 +1021,12 @@ function nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,API
 	var light1 = false, lightship1 = 0, slrerolls1 = 0;
 	for (var i=0; i<alive1.length; i++) {
 		if (alive1[i].retreated) continue;
-		if (alive1[i].hasSearchlight) { light1 = true; lightship1 = i; slrerolls1 = alive1[i].hasSearchlight; break; }
+		if (alive1[i].hasSearchlight && alive1[i].HP > 1) { light1 = true; lightship1 = i; slrerolls1 = alive1[i].hasSearchlight; break; }
 	}
 	var light2 = false, lightship2 = 0, slrerolls2 = 0;
 	for (var i=0; i<alive2.length; i++) {
 		if (alive2[i].retreated) continue;
-		if (alive2[i].hasSearchlight) { light2 = true; lightship2 = i; slrerolls2 = alive2[i].hasSearchlight; break; }
+		if (alive2[i].hasSearchlight && alive2[i].HP > 1) { light2 = true; lightship2 = i; slrerolls2 = alive2[i].hasSearchlight; break; }
 	}
 	var scout1 = false;
 	if (alive1[0] && alive1[0].fleet.AS != -2 && (NBonly || alive1[0].fleet.AS != 0)) {
@@ -1050,7 +1050,7 @@ function nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,API
 				let k=0;
 				for (; k<ships.length; k++) {
 					if (alive2.length <= 0) break;
-					var target = choiceWProtect(alive2,slrerolls2);
+					var target = choiceWProtect(alive2,slrerolls2,true);
 					if (NBattack(order1[i],target,NBonly,[[star1,star2],[light1,light2],[scout1,scout2]],APIhou,order1[i].attackSpecial)) alive2.splice(alive2.indexOf(target),1);
 				}
 				order1[i].fleet.didSpecial = 1;
@@ -1058,20 +1058,20 @@ function nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,API
 					apiAdjustHougekiSpecial(APIhou,k);
 				}
 			} else if (subsalive2.length && order1[i].canASW() && !order1[i].planeasw) {
-				var target = choiceWProtect(subsalive2);
+				var target = choiceWProtect(subsalive2,0,true);
 				if (ASW(order1[i],target,(!NBonly&&!order1[i].isescort),APIhou)) subsalive2.splice(subsalive2.indexOf(target),1);
 			} else if (alive2.length) {
-				var target = choiceWProtect(alive2,slrerolls2);
+				var target = choiceWProtect(alive2,slrerolls2,true);
 				if (NBattack(order1[i],target,NBonly,[[star1,star2],[light1,light2],[scout1,scout2]],APIhou)) alive2.splice(alive2.indexOf(target),1);
 			}
 		}
 		if (alive2.length+subsalive2.length <= 0) break;
 		if (i < order2.length && order2[i].canNB() && (order2[i].nightattack != 3 || light1)) {
 			if (subsalive1.length && order2[i].canASW() && !order2[i].planeasw) {
-				var target = choiceWProtect(subsalive1);
+				var target = choiceWProtect(subsalive1,0,true);
 				if (ASW(order2[i],target,(!NBonly&&!order2[i].isescort),APIhou)) subsalive1.splice(subsalive1.indexOf(target),1);
 			} else if (alive1.length) {
-				var target = choiceWProtect(alive1,slrerolls1);
+				var target = choiceWProtect(alive1,slrerolls1,true);
 				if (NBattack(order2[i],target,NBonly,[[star2,star1],[light2,light1],[scout2,scout1]],APIhou)) alive1.splice(alive1.indexOf(target),1);
 			}
 		}
@@ -1437,7 +1437,7 @@ function compareAP(fleet1,fleet2,isjetphase,includeEscort,includeScout,isSupport
 	if (C) console.log('AS: '+ap1+' '+ap2+' '+fleet1.AS + ' '+fleet2.AS);
 }
 
-function choiceWProtect(targets,searchlightRerolls) {
+function choiceWProtect(targets,searchlightRerolls,isNightPhase) {
 	DIDPROTECT = false; //disgusting hack, rework later?
 	var target = targets[Math.floor(Math.random()*targets.length)];
 	if (searchlightRerolls) {
@@ -1449,10 +1449,11 @@ function choiceWProtect(targets,searchlightRerolls) {
 	if (target.getFormation() == VANGUARD1) {
 		target = targets[Math.floor(Math.random()*targets.length)];
 	}
-	if (!target.isflagship || target.isInstall || target.isescort || !MECHANICS.flagProtect) return target;
+	if (!target.isflagship || target.isInstall || (target.isescort && !isNightPhase) || !MECHANICS.flagProtect) return target;
 	
 	//flagship protection
 	var rate = [0,.45,.6,.75,.6,.6,.75][target.fleet.formation.id];
+	if (isNightPhase && target.fleet.combinedWith) rate = .45;   // guess: default line ahead for combined fleet night battle
 	if (!rate) rate = .6;
 	if (Math.random() < rate) {
 		var defenders = [];
@@ -3245,12 +3246,12 @@ function getNightEquips(alive1,alive2,APIyasen) {
 	var light1 = false, lightship1 = 0, slrerolls1 = 0;
 	for (var i=0; i<alive1.length; i++) {
 		if (alive1[i].retreated) continue;
-		if (alive1[i].hasSearchlight) { light1 = true; lightship1 = i; slrerolls1 = alive1[i].hasSearchlight; break; }
+		if (alive1[i].hasSearchlight && alive1[i].HP > 1) { light1 = true; lightship1 = i; slrerolls1 = alive1[i].hasSearchlight; break; }
 	}
 	var light2 = false, lightship2 = 0, slrerolls2 = 0;
 	for (var i=0; i<alive2.length; i++) {
 		if (alive2[i].retreated) continue;
-		if (alive2[i].hasSearchlight) { light2 = true; lightship2 = i; slrerolls2 = alive2[i].hasSearchlight; break; }
+		if (alive2[i].hasSearchlight && alive2[i].HP > 1) { light2 = true; lightship2 = i; slrerolls2 = alive2[i].hasSearchlight; break; }
 	}
 	var scout1 = false;
 	for (var i=0; i<alive1.length; i++) {
