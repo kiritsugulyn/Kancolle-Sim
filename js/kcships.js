@@ -1592,6 +1592,7 @@ Equip.prototype.setImprovement = function(level) {
             }
 			break;
 		case LANDBOMBER:
+        case HEAVYBOMBER:
 			this.AAImprove = .5*Math.sqrt(level);
 			this.ASImprove = .7*Math.sqrt(level);
 			break;
