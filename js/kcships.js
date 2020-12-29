@@ -667,11 +667,8 @@ Ship.prototype.AStype = function() {
 	this._astype = [];
 	
 	if (MECHANICS.zuiunCI && this.canZuiunCI && this.equiptypesB[B_MAINGUN]) {
-		let numZuiun = 0, num634 = 0;
-		for (let equip of this.equips) {
-			if (equip.type == SEAPLANEBOMBER && equip.nameJP.indexOf('瑞雲') != -1) numZuiun++;
-			if (equip.type == DIVEBOMBER && equip.nameJP.indexOf('六三四空') != -1) num634++;
-		}
+        let numZuiun = this.equips.filter((eq, i) => eq.type == SEAPLANEBOMBER && eq.nameJP.indexOf('瑞雲') !== -1 && this.planecount[i] > 0).length || 0;
+        let num634 = this.equips.filter((eq, i) => eq.type == DIVEBOMBER && eq.nameJP.indexOf('六三四空') !== -1 && this.planecount[i] > 0).length || 0;
 		if (num634 >= 2) this._astype.push(201);
 		if (numZuiun >= 2) this._astype.push(200);
     }
@@ -1206,6 +1203,16 @@ BBV.prototype.canOASW = function() {
 	return Ship.prototype.canOASW.call(this);
 }
 BBV.prototype.rocketBarrageChance = CAV.prototype.rocketBarrageChance;
+BBV.prototype.canAS = function() {
+    if (this.HP/this.maxHP <= .25) return false;
+    if (MECHANICS.zuiunCI && this.canZuiunCI && this.equiptypesB[B_MAINGUN]) {
+        let numZuiun = this.equips.filter((eq, i) => eq.type == SEAPLANEBOMBER && eq.nameJP.indexOf('瑞雲') !== -1 && this.planecount[i] > 0).length || 0;
+        let num634 = this.equips.filter((eq, i) => eq.type == DIVEBOMBER && eq.nameJP.indexOf('六三四空') !== -1 && this.planecount[i] > 0).length || 0;
+		if (num634 >= 2) return true;
+		if (numZuiun >= 2) return true;
+    }
+    return Ship.prototype.canAS.call(this);
+}
 
 function BBVT(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	BBV.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);

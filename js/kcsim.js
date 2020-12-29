@@ -174,7 +174,7 @@ var MECHANICS = {
 	destroyerNBCI: true,
 	LBASBuff: true,
 	installRevamp: true,
-	zuiunCI: false,
+	zuiunCI: true,
 	aaResist: true,
 	divebomberInstall: true,
 	visibleEquipBonus: true,
@@ -1121,12 +1121,7 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 	if (targets2.length) {  //any targets?
 		for (var i=0; i<alive1.length+subsalive1.length; i++) {
 			var ship = (i < alive1.length) ? alive1[i] : subsalive1[i-alive1.length];
-			if (ship.fleet.combinedWith && !ship.isescort) {
-				if (ship.nameJP.indexOf('深海竹棲姫') !== -1) {
-					if (!opening) continue;
-				} 
-				else continue;
-			}
+			if (ship.fleet.combinedWith && !ship.isescort && (!ship.canOpTorpMain || !opening)) continue;
 			if ((opening)? ship.canOpTorp() : ship.canTorp()) {
 				if (combinedAll) {
 					if (!targetsE2.length) targets2 = targetsM2;
@@ -1141,12 +1136,7 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 	if (targets1.length) {
 		for (var i=0; i<alive2.length+subsalive2.length; i++) {
 			var ship = (i < alive2.length) ? alive2[i] : subsalive2[i-alive2.length];
-			if (ship.fleet.combinedWith && !ship.isescort) {
-				if (ship.nameJP.indexOf('深海竹棲姫') !== -1) {
-					if (!opening) continue;
-				} 
-				else continue;
-			}
+			if (ship.fleet.combinedWith && !ship.isescort && (!ship.canOpTorpMain || !opening)) continue;
 			if ((opening)? ship.canOpTorp() : ship.canTorp()) {
 				if (combinedAll) {
 					if (!targetsE1.length) targets1 = targetsM1;
@@ -2372,10 +2362,10 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 		}
 	
 		for (var i=0; i<alive1.length; i++) {   //remove dead things
-			if (alive1[i].HP <= 0) { alive1.splice(i,1); i--; F1.clearFleetAntiAir(); }
+			if (alive1[i].HP <= 0) { alive1.splice(i,1); i--; }
 		}
 		for (var i=0; i<alive2.length; i++) {
-			if (alive2[i].HP <= 0) { alive2.splice(i,1); i--; F2.clearFleetAntiAir(); }
+			if (alive2[i].HP <= 0) { alive2.splice(i,1); i--; }
 		}
 	}
 	
@@ -2412,10 +2402,10 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 		}
 		
 		for (var i=0; i<alive1.length; i++) {   //remove dead things
-			if (alive1[i].HP <= 0) { alive1.splice(i,1); i--; F1.clearFleetAntiAir(); }
+			if (alive1[i].HP <= 0) { alive1.splice(i,1); i--; }
 		}
 		for (var i=0; i<alive2.length; i++) {
-			if (alive2[i].HP <= 0) { alive2.splice(i,1); i--; F2.clearFleetAntiAir(); }
+			if (alive2[i].HP <= 0) { alive2.splice(i,1); i--; }
 		}
 	}
 	
@@ -2431,10 +2421,10 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 		}
 		
 		for (var i=0; i<alive1.length; i++) {   //remove dead things
-			if (alive1[i].HP <= 0) { alive1.splice(i,1); i--; F1.clearFleetAntiAir(); }
+			if (alive1[i].HP <= 0) { alive1.splice(i,1); i--; }
 		}
 		for (var i=0; i<alive2.length; i++) {
-			if (alive2[i].HP <= 0) { alive2.splice(i,1); i--; F2.clearFleetAntiAir(); }
+			if (alive2[i].HP <= 0) { alive2.splice(i,1); i--; }
 		}
 	}
 	
