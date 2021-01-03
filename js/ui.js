@@ -573,12 +573,19 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
 		sel1.appendChild(g);
 	}
 	
-	dl = document.createElement('div');
-	dl.setAttribute('style','float:left;width:150px;margin:10px');
-	$(dl).append('<b>Options:</b><br>');
-	$(dl).append('<input type="button" value="All High Morale" onclick="setMoraleAll('+fleetnum+', 85)"/><br>');
-	$(dl).append('<input type="button" value="All Normal Morale" onclick="setMoraleAll('+fleetnum+', 49)"/>');
-	d.appendChild(dl);
+	if ([1,11,12,13,14].indexOf(fleetnum) !== -1){
+		dl = document.createElement('div');
+		dl.setAttribute('style','float:left;width:150px;margin:10px');
+		$(dl).append('<b>Options:</b><br>');
+		if (fleetnum == 14){
+			$(dl).append('<input type="button" value="All Max Luck" onclick="setLuckAll('+fleetnum+', true)"/><br>');
+			$(dl).append('<input type="button" value="All Min Luck" onclick="setLuckAll('+fleetnum+', false)"/>');
+		}else{
+			$(dl).append('<input type="button" value="All High Morale" onclick="setMoraleAll('+fleetnum+', 85)"/><br>');
+			$(dl).append('<input type="button" value="All Normal Morale" onclick="setMoraleAll('+fleetnum+', 49)"/>');
+		}
+		d.appendChild(dl);
+	}
 
 	dl = document.createElement('div');
 	dl.setAttribute('style','float:left;width:150;margin:10px');
@@ -1269,6 +1276,15 @@ function setImprove(fleet,ship,eqslot,type,level) {
 function setMoraleAll(fleet,num){
 	for (var i = 0; i < 6; i++){
 		if ($('#T'+fleet+'morale'+i)) $('#T'+fleet+'morale'+i).val(num);
+	}
+	raiseFleetChange();
+}
+
+function setLuckAll(fleet,flag){
+	for (var i = 0; i < 6; i++){
+		var mid = $('#T'+fleet+'n'+i).val();
+		if (flag) $('#T'+fleet+'luk'+i).val(SHIPDATA[mid].LUKmax||60);
+		else $('#T'+fleet+'luk'+i).val(SHIPDATA[mid].LUK||20);
 	}
 	raiseFleetChange();
 }
