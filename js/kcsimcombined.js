@@ -957,9 +957,6 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		}
 	}
 
-	//calculate survival of enemy escort
-	results.survival2C = [];
-	ships2C.forEach((ship) => results.survival2C.push(ship.HP > 0));
 	
 	//opening asw
 	if (MECHANICS.OASW && !NBonly && !aironly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
@@ -991,6 +988,10 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		removeSunk(alive2); removeSunk(subsalive2);
 		removeSunk(alive2C); removeSunk(subsalive2C);
 	}
+
+	//calculate survival of enemy escort
+	results.survival2C = [];
+	ships2C.forEach((ship) => results.survival2C.push(ship.HP/ship.maxHP > .25));
 	
 	//recalculate fLoS before shelling because recon may have been shot down
 	F1.clearFleetLoS();
@@ -1425,9 +1426,6 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		removeSunk(subsalive2); removeSunk(subsalive2C);
 	}
 
-	//calculate survival of enemy escort
-	results.survival2C = [];
-	ships2C.forEach((ship) => results.survival2C.push(ship.HP > 0));
 	
 	//opening asw
 	if (MECHANICS.OASW && !NBonly && !aironly && alive1.length+subsalive1.length+alive1C.length+subsalive1C.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
@@ -1461,6 +1459,10 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		removeSunk(alive2); removeSunk(alive2C);
 		removeSunk(subsalive2); removeSunk(subsalive2C);
 	}
+
+	//calculate survival of enemy escort
+	results.survival2C = [];
+	ships2C.forEach((ship) => results.survival2C.push(ship.HP/ship.maxHP > .25));
 	
 	//shelling functions
 	var shellRange = function(d1,d2,api_hou) {
