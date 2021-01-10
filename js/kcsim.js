@@ -3028,7 +3028,7 @@ function simStats(numsims,foptions) {
 		//support
 		for (var s=0; s<=FLEETS1S.length; s++) {
 			if (FLEETS1S[s]) {
-				if (s !== 2) {
+				if (s < 2) {
 					for (var j=0; j<FLEETS1S[s].ships.length; j++) {
 						var shipS = FLEETS1S[s].ships[j];
 						totalResult.totalFuelS += Math.floor(shipS.fuel * .5 * (shipS.LVL > 99? .85: 1));
