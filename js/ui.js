@@ -573,11 +573,11 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
 		sel1.appendChild(g);
 	}
 	
-	if ([1,11,12,13,14].indexOf(fleetnum) !== -1){
+	if ([1,11,12,13,14,15,16,17].indexOf(fleetnum) !== -1){
 		dl = document.createElement('div');
 		dl.setAttribute('style','float:left;width:150px;margin:10px');
 		$(dl).append('<b>Options:</b><br>');
-		if (fleetnum == 14){
+		if (fleetnum >= 14 && fleetnum < 18){
 			$(dl).append('<input type="button" value="All Max Luck" onclick="setLuckAll('+fleetnum+', true)"/><br>');
 			$(dl).append('<input type="button" value="All Min Luck" onclick="setLuckAll('+fleetnum+', false)"/>');
 		}else{
@@ -826,7 +826,7 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
 		}
 		t.appendChild(tr);
 	}
-	else if (fleetnum == 14) {
+	else if (fleetnum >= 14 && fleetnum < 18) {
 		var tr = document.createElement('tr');
 		for (var j=0; j<6; j++) {
 			var td = document.createElement('td');
@@ -1092,6 +1092,11 @@ function genOptions(fleetnum) {
 	div.append('<span class="option2"><input type="checkbox" id="randformflag'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="randform'+fleetnum+'">Random formation</label></span>');
 	div.append('<span class="option2"><textarea id="randform'+fleetnum+'" cols="30" rows="1" autocomplete="off" ></textarea></span>')
 	td.append(div);
+	div = $('<div></div>');
+	div.append('<span class="option2"><label>Friend Fleet Settings (only boss node): </label></span>');
+	div.append('<span class="option2"><input type="checkbox" id="randfriendflag'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="randform'+fleetnum+'">Random friend fleet</label></span>');
+	div.append('<span class="option2"><textarea id="randfriend'+fleetnum+'" cols="30" rows="1" autocomplete="off" ></textarea></span>')
+	td.append(div);
 	html.append(td);
 
 	$('#optionstable').append(html);
@@ -1142,6 +1147,14 @@ function extractOptions(num) {
 			if (options.randform) delete options.randform;
 		}
 	}
+	if ($('#randfriendflag'+num).prop('checked') && ADDEDFRIENDFLEET){
+		try{
+			options.randfriend = JSON.parse($('#randfriend'+num).prop('value'));
+			if (!checkRandFriend(options.randfriend)) delete options.randfriend;
+		}catch(e){
+			if (options.randfriend) delete options.randfriend;
+		}
+	}
 	return options;
 }
 
@@ -1166,6 +1179,7 @@ function loadOptions(num,options) {
 	
 	if (options.bonus != null) $('#bonus'+num).prop('checked',options.bonus);
 	if (options.emergencyrepair != null) $('#emergencyrepair'+num).prop('checked',options.emergencyrepair);
+	if (options.lbloss) $('#lbloss'+num).prop('checked',options.lbloss);
 }
 
 var DRAGINFO = [];
@@ -1402,7 +1416,7 @@ function changedEquip(fleet,slot,equipslot,nochangeimprov) {
 			} else {
 				$('#T'+fleet+'prof'+slot+equipslot).hide();
 			}
-			if (equipid>0 && equipid<500 && [12,13,14].indexOf(fleet) == -1) {
+			if (equipid>0 && equipid<500 && (fleet==1 || fleet==11 || fleet=='LB')) {
 				$('#T'+fleet+'prof'+slot+equipslot).val(7);
 				changedProficiency('#T'+fleet+'prof'+slot+equipslot);
 			} else {
@@ -1664,10 +1678,14 @@ function clickedDelSupportB() {
 var ADDEDFRIENDFLEET = false;
 function clickedAddFriendFleet(update) {
 	if (ADDEDFRIENDFLEET) return;
-	if (!document.getElementById('T14')) genFleetHTML('fleetspace1FF', 14, 'Friend Fleet', '#CCEEAA');
-	else $('#T14').css('display','block');
+	for (var i = 4; i < 8; i++){
+		if (!document.getElementById('T1'+i)) genFleetHTML('fleetspace1FF', 10+i, 'Friend Fleet', '#CCEEAA');
+		else $('#T1'+i).css('display','block');
+	}
 	ADDEDFRIENDFLEET = true;
-	if (update) updateFleetCode('14');
+	if (update){
+		for (var i = 4; i < 8; i++) updateFleetCode('1'+i);
+	}
 	$('#btnDelFF').css('display','');
 	$('#btnAddFF').css('display','none');
 	raiseFleetChange();
@@ -1675,8 +1693,10 @@ function clickedAddFriendFleet(update) {
 
 function clickedDelFriendFleet() {
 	if (!ADDEDFRIENDFLEET) return;
-	$('#T14').css('display','none');
-	saveFleet('14','');
+	for (var i = 4; i < 8; i++) {
+		$('#T1'+i).css('display','none');
+		saveFleet('1'+i,'');
+	}
 	ADDEDFRIENDFLEET = false;
 	$('#btnDelFF').css('display','none');
 	$('#btnAddFF').css('display','');
@@ -2300,12 +2320,14 @@ function extractForSim() {
 		}
 	}
 	if (ADDEDFRIENDFLEET) {
-		d = loadIntoSim(14,0);
-		if (!d[0].length) FLEETS1S[2] = null;
-		else {
-			FLEETS1S[2] = new Fleet(0);
-			FLEETS1S[2].loadShips(d[0]);
-			FLEETS1S[2].formation = ALLFORMATIONS[d[1]];
+		for (let i = 0; i < 4; i++){
+			d = loadIntoSim(14+i,0);
+			if (!d[0].length) FLEETS1S[i+2] = null;
+			else {
+				FLEETS1S[i+2] = new Fleet(0);
+				FLEETS1S[i+2].loadShips(d[0]);
+				FLEETS1S[i+2].formation = ALLFORMATIONS[d[1]];
+			}
 		}
 	}
 	
@@ -2371,11 +2393,12 @@ function clickedWatchBattle() {
 	var supportN = (ADDEDSUPPORTN)? FLEETS1S[0] : null;
 	var supportB = (ADDEDSUPPORTB)? FLEETS1S[1] : null;
 	var friendFleet = (ADDEDFRIENDFLEET)? FLEETS1S[2] : null;
-	if (friendFleet) {
-		for (let ship of friendFleet.ships) {
+
+	FLEETS1S.forEach((fleet) => {
+		if (fleet.ships) fleet.ships.forEach((ship) => {
 			ship.bonusSpecial = ship.bonusA || 1;
-		}
-	}
+		});
+	});
 
 	for (var j=0; j<FLEETS2.length; j++) {
 		let options = foptions[j];
@@ -2410,7 +2433,17 @@ function clickedWatchBattle() {
 		}
 
 		var supportF = (j==FLEETS2.length-1)? supportB : supportN;
-		var friendFleetF = (j==FLEETS2.length-1)? friendFleet : null;
+		var friendFleetF = null;
+		if (j==FLEETS2.length-1) {
+			if (options.randfriend) {
+				let temp = randFriendFleet(options.randfriend);
+				let tempFriendFleet = FLEETS1S[temp];
+				if (tempFriendFleet !== null) friendFleetF = tempFriendFleet; 
+				else friendFleetF = friendFleet;
+			}else{
+				friendFleetF = friendFleet;
+			}
+		}
 		if (options.maelstrom) maelstromLoss(FLEETS1[0], options.maelstrom);
 		if (options.lbloss) landBaseLoss();
 		if (j==FLEETS2.length-1) {
@@ -3198,6 +3231,19 @@ function checkRandForm(obj) {
 	var chance = 0;
 	for (var key in obj) {
 		if ([1,2,3,4,5,6].indexOf(Number(key)) === -1) return false;
+		chance += Number(obj[key]);
+	}
+	if (chance !== 100) return false;
+	return true;
+
+}
+
+function checkRandFriend(obj) {
+
+	if (typeof obj !== "object") return false;
+	var chance = 0;
+	for (var key in obj) {
+		if ([1,2,3,4].indexOf(Number(key)) === -1) return false;
 		chance += Number(obj[key]);
 	}
 	if (chance !== 100) return false;

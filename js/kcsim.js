@@ -2913,11 +2913,11 @@ function simStats(numsims,foptions) {
 		totalResult.nodes[FLEETS2.length-1].survival2 = [0,0,0,0,0,0];
 	} 
 	
-	if (FLEETS1S[2]) {
-		for (let ship of FLEETS1S[2].ships) {
+	FLEETS1S.forEach((fleet) => {
+		if (fleet.ships) fleet.ships.forEach((ship) => {
 			ship.bonusSpecial = ship.bonusA || 1;
-		}
-	}
+		});
+	});
 
 	for (var j=0; j<FLEETS2.length; j++) {
 		let options = foptions[j];
@@ -2960,7 +2960,14 @@ function simStats(numsims,foptions) {
 			if (options.lbloss) landBaseLoss();
 			if (j == FLEETS2.length - 1) {
 				supportNum = 1;
-				friendFleet = FLEETS1S[2];
+				if (options.randfriend) {
+					let temp = randFriendFleet(options.randfriend);
+					let tempFriendFleet = FLEETS1S[temp];
+					if (tempFriendFleet !== null) friendFleet = tempFriendFleet; 
+					else friendFleet = FLEETS1S[2];
+				}else{
+					friendFleet = FLEETS1S[2];
+				}
 				underwaySupply(FLEETS1[0]);
 			}
 			var LBASwaves = [];
@@ -3751,4 +3758,14 @@ function randFormation(obj) {
 		if (rand < acc) return key;
 	}
 	return '0';
+}
+
+function randFriendFleet(obj) {
+	var rand = Math.floor(Math.random() * 100);
+	var acc = 0; 
+	for (var key in obj) {
+		acc += obj[key];
+		if (rand < acc) return 1 + Number(key);
+	}
+	return 2;
 }

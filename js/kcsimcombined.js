@@ -520,11 +520,11 @@ function simStatsCombined(numsims,type,foptions) {
 		totalResult.nodes[FLEETS2.length-1].survival2 = [0,0,0,0,0,0];
 	} 
 	
-	if (FLEETS1S[2]) {
-		for (let ship of FLEETS1S[2].ships) {
+	FLEETS1S.forEach((fleet) => {
+		if (fleet.ships) fleet.ships.forEach((ship) => {
 			ship.bonusSpecial = ship.bonusA || 1;
-		}
-	}
+		});
+	});
 
 	for (var j=0; j<FLEETS2.length; j++) {
 		let options = foptions[j];
@@ -574,7 +574,14 @@ function simStatsCombined(numsims,type,foptions) {
 			if (options.lbloss) landBaseLoss();
 			if (j == FLEETS2.length - 1) {
 				supportNum = 1;
-				friendFleet = FLEETS1S[2];
+				if (options.randfriend) {
+					let temp = randFriendFleet(options.randfriend);
+					let tempFriendFleet = FLEETS1S[temp];
+					if (tempFriendFleet !== null) friendFleet = tempFriendFleet; 
+					else friendFleet = FLEETS1S[2];
+				}else{
+					friendFleet = FLEETS1S[2];
+				}
 				underwaySupply(FLEETS1[0]);
 			}
 			if (options.emergencyrepair) emergencyRepair(FLEETS1[0]);
