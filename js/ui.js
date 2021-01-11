@@ -2395,7 +2395,7 @@ function clickedWatchBattle() {
 	var friendFleet = (ADDEDFRIENDFLEET)? FLEETS1S[2] : null;
 
 	FLEETS1S.forEach((fleet) => {
-		if (fleet.ships) fleet.ships.forEach((ship) => {
+		if (fleet !== null && fleet.ships) fleet.ships.forEach((ship) => {
 			ship.bonusSpecial = ship.bonusA || 1;
 		});
 	});
