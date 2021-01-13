@@ -3657,18 +3657,18 @@ function getSpecialEquipBonus(ship,target,plane){
 		let count = 0;
 		if (bonus.eqtypes) {
 			if (bonus.distinct){
-				let eqs = ship.equips.filter((eq,i) => bonus.eqtypes.indexOf(eq.type) !== -1 && (!EQTDATA[eq.type].isPlane || ship.planecount[i] > 0));
+				let eqs = ship.equips.filter((eq,i) => bonus.eqtypes.indexOf(eq.type) !== -1 && (!EQTDATA[eq.type].isPlane || bonus.noPlaneCheck || ship.planecount[i] > 0));
 				count = eqs.map((eq) => eq.type).filter((eqtype,i,a) => a.indexOf(eqtype) === i).length;
 			}else{
-				count = ship.equips.filter((eq,i) => bonus.eqtypes.indexOf(eq.type) !== -1 && (!EQTDATA[eq.type].isPlane || ship.planecount[i] > 0)).length;
+				count = ship.equips.filter((eq,i) => bonus.eqtypes.indexOf(eq.type) !== -1 && (!EQTDATA[eq.type].isPlane || bonus.noPlaneCheck || ship.planecount[i] > 0)).length;
 			}
 		}
 		else if (bonus.eqids) {
 			if (bonus.distinct){
-				let eqs = ship.equips.filter((eq,i) => bonus.eqids.indexOf(eq.mid) !== -1 && (!EQTDATA[eq.type].isPlane || ship.planecount[i] > 0));
+				let eqs = ship.equips.filter((eq,i) => bonus.eqids.indexOf(eq.mid) !== -1 && (!EQTDATA[eq.type].isPlane || bonus.noPlaneCheck || ship.planecount[i] > 0));
 				count = eqs.map((eq) => eq.mid).filter((eqid,i,a) => a.indexOf(eqid) === i).length;
 			}else{
-				count = ship.equips.filter((eq,i) => bonus.eqids.indexOf(eq.mid) !== -1 && (!EQTDATA[eq.type].isPlane || ship.planecount[i] > 0)).length;
+				count = ship.equips.filter((eq,i) => bonus.eqids.indexOf(eq.mid) !== -1 && (!EQTDATA[eq.type].isPlane || bonus.noPlaneCheck || ship.planecount[i] > 0)).length;
 			}
 		}
 		if (count > 0) {
@@ -3696,11 +3696,13 @@ function dmgSpecialTarget(dmg,ship,target,plane){
 		if (plane) dmg *= Math.random() < 0.5? 0.5: 0.8;
 		else dmg = 0.35 * dmg + 15;
 	}
+	if (target.isFrenchBBHime && [392,492].indexOf(ship.mid) !== -1) dmg *= 1.17;
 	return Math.floor(dmg);
 }
 
 function vanguardEvFlat(ship, isTorpedo) {
 	// Source: https://twitter.com/Xe_UCH/status/1298910160664924160
+	// Update: https://twitter.com/Xe_UCH/status/1349290257825419268
 	if (isTorpedo) {
 		if (ship.num <= 2) return 15;
 		if (ship.num == 3) {
@@ -3709,17 +3711,21 @@ function vanguardEvFlat(ship, isTorpedo) {
 		} 
 		if (ship.num == 4) {
 			if (ship.type == 'DD') return 55;
-			return 40;
+			return 45;
 		}
 		if (ship.num == 5){
 			if (ship.type == 'DD') return 65;
-			return 45; // guess
+			return 45; 
 		}
 		if (ship.num == 6) {
 			if (ship.type == 'DD') return 75;
-			return 50; // guess
+			return 55; 
 		}
-	}else{  // Source: https://twitter.com/Xe_UCH/status/1332267790686769159
+	}
+	else
+	// Source: https://twitter.com/Xe_UCH/status/1332267790686769159
+	// Update: https://twitter.com/Xe_UCH/status/1349290257825419268
+	{
 		if (ship.num <= 2) return 7;
 		if (ship.num <= 4) {
 			if (ship.type == 'DD') return 20;
