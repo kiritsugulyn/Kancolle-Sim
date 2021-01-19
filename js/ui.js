@@ -1821,6 +1821,7 @@ function updateResults(results) {
 	resultAddWeight('rfsup',results.totalFuelS,results.totalnum);
 	resultAddWeight('rasup',results.totalAmmoS,results.totalnum);
 	resultAddWeight('rbsup',results.totalBauxS,results.totalnum);
+	resultAddWeight('rssup',results.totalSteelS,results.totalnum);
 	resultAddWeight('rfrep',results.totalFuelR,results.totalnum);
 	resultAddWeight('rsrep',results.totalSteelR,results.totalnum);
 	resultAddWeight('bucketrep',results.totalBuckets,results.totalnum);
@@ -1828,14 +1829,14 @@ function updateResults(results) {
 	var Srate = RESVALUES['rankS'][0]/results.totalnum;
 	$('#rfpS').text(Math.round(1000*(RESVALUES['rfsup'][0]+RESVALUES['rfrep'][0])/results.totalnum/Srate)/1000);
 	$('#rapS').text(Math.round(1000*RESVALUES['rasup'][0]/results.totalnum/Srate)/1000);
-	$('#rspS').text(Math.round(1000*RESVALUES['rsrep'][0]/results.totalnum/Srate)/1000);
+	$('#rspS').text(Math.round(1000*(RESVALUES['rssup'][0]+RESVALUES['rsrep'][0])/results.totalnum/Srate)/1000);
 	$('#rbpS').text(Math.round(1000*RESVALUES['rbsup'][0]/results.totalnum/Srate)/1000);
 	$('#bucketpS').text(Math.round(1000*RESVALUES['bucketrep'][0]/results.totalnum/Srate)/1000);
 	
 	var Frate = RESVALUES['rsunkfs'][0]/results.totalnum;
 	$('#rfpF').text(Math.round(1000*(RESVALUES['rfsup'][0]+RESVALUES['rfrep'][0])/results.totalnum/Frate)/1000);
 	$('#rapF').text(Math.round(1000*RESVALUES['rasup'][0]/results.totalnum/Frate)/1000);
-	$('#rspF').text(Math.round(1000*RESVALUES['rsrep'][0]/results.totalnum/Frate)/1000);
+	$('#rspF').text(Math.round(1000*(RESVALUES['rssup'][0]+RESVALUES['rsrep'][0])/results.totalnum/Frate)/1000);
 	$('#rbpF').text(Math.round(1000*RESVALUES['rbsup'][0]/results.totalnum/Frate)/1000);
 	$('#bucketpF').text(Math.round(1000*RESVALUES['bucketrep'][0]/results.totalnum/Frate)/1000);
 	

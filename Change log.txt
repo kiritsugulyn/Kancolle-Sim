@@ -1,0 +1,34 @@
+1. Combined fleet target selection
+    Air battle:
+    1. No team selection (equal target chance among surviving ships)
+    2. All escorts (main and escort team) can protect flagship
+    LBAS:
+    1. Team selection: Main 0.45 Escort 0.55
+    2. Only main can protect flagship
+    Support Hougeki:
+    1. Team selection: Main 0.45 Escort 0.55
+    2. Only main can protect flagship
+    Opening torpedo:
+    1. No team selection (equal target chance among surviving ships)
+    2. Only main can protect flagship
+    2nd round Hougeki: https://twitter.com/noratako5/status/835179687420682241
+    1. Team selection: Main 0.6 Escort 0.4
+    2. Only main can protect flagship
+    Closing torpedo: https://twitter.com/noratako5/status/835180133342334976
+    1. Team selection: Main 0.35 Escort 0.65
+    2. Only main can protect flagship
+    Night battle (Enemy -> Friend (Tanaka) fleet):
+    1. Protection rate = 0.45
+    Night battle (Enemy -> Friend):
+    1. Protection rate = 0.6
+
+2. Kira evasion modifier = 0.8 (can set in advanced settings)
+
+3. Combined fleet acc tuning
+    12v12 shell acc Base: Main 90 (no change) Escort 70
+    6v12 shell acc Base (no change): 90
+    Combined fleet air battle acc base (no change): CTF/STF: Main as target 105, Escort as target 75; TCF: Main as target 85, Escort as target 75
+    3rd formation shell acc mod = 0.7
+    Based on above, for all formations, now Shell/Torp/ASW acc mod = Shell/Torp/ASW damage mod
+
+4. Include jet steel cost

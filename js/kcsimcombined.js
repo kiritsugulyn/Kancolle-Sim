@@ -2,6 +2,7 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	var ships1 = F1.ships, ships2 = F2.ships, ships1C = F1C.ships;
 	var alive1 = [], alive1C = [], alive2 = [], subsalive1 = [], subsalive1C = [], subsalive2 = [];
 	var hasInstall1 = false, hasInstall2 = false, hasInstall1C = false;
+	var results = { jetCost: 0 };
 	for (var i=0; i<ships1.length; i++) {
 		if (ships1[i].HP <= 0) continue;
 		if (ships1[i].retreated) continue;
@@ -143,6 +144,7 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		var jetLBAS = LandBase.createJetLandBase(uniqueLBs);
 		if (jetLBAS.equips.length) {
 			compareAP(jetLBAS,F2,true,false,true);
+			results.jetCost += calJetCost([jetLBAS],alive2);
 			LBASPhase(jetLBAS,alive2,subsalive2,true,(C)?BAPI.data.api_air_base_injection:undefined);
 			removeSunk(alive2); removeSunk(subsalive2);
 			if (C) {
@@ -158,6 +160,7 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	if (!NBonly && !bombing && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
 		if (C) BAPI.data.api_injection_kouku = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null,api_stage3_combined:null};
 		compareAP(F1,F2,true);
+		results.jetCost += calJetCost(alive1.concat(alive1C),alive2);
 		airPhase(alive1.concat(alive1C),subsalive1.concat(subsalive1C),alive2,subsalive2,(C)? BAPI.data.api_injection_kouku:undefined,true);
 		if (C) {
 			if (!BAPI.data.api_injection_kouku.api_stage1) BAPI.data.api_injection_kouku = null;
@@ -368,7 +371,6 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		torpedoPhase(alive1C,subsalive1C,alive2,subsalive2,false,(C)? BAPI.data.api_raigeki:undefined);
 	}
 	
-	var results = {};
 	if (noupdate) {
 		results.rankDay = getRank(ships1,ships2,ships1C);
 		results.mvpDay = F1.getMVP();
@@ -485,6 +487,7 @@ function simStatsCombined(numsims,type,foptions) {
 		totalFuelS: 0,
 		totalAmmoS: 0,
 		totalBauxS: 0,
+		totalSteelS: 0,
 		totalFuelR: 0,
 		totalSteelR: 0,
 		totalBuckets: 0,
@@ -632,6 +635,7 @@ function simStatsCombined(numsims,type,foptions) {
 					if (res.survival2[k]) totalResult.nodes[j].survival2[k]++;
 				}
 			}
+			if (res.jetCost) totalResult.totalSteelS += res.jetCost;
 			//if ((res.redded && DORETREAT)||res.flagredded) break;
 			if (!canContinue(FLEETS1[0].ships,FLEETS1[1].ships)) break;
 		}
@@ -744,7 +748,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	var ships1 = F1.ships, ships2 = F2.ships, ships2C = F2C.ships;
 	var alive1 = [], alive2 = [], alive2C = [], subsalive1 = [], subsalive2 = [], subsalive2C = [];
 	var hasInstall1 = false, hasInstall2 = false, hasInstall2C = false;
-	var results = {};
+	var results = { jetCost: 0 };
 	for (var i=0; i<ships1.length; i++) {
 		if (ships1[i].HP <= 0) continue;
 		if (ships1[i].retreated) continue;
@@ -874,6 +878,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		var jetLBAS = LandBase.createJetLandBase(uniqueLBs);
 		if (jetLBAS.equips.length) {
 			compareAP(jetLBAS,F2,true,true,true);
+			results.jetCost += calJetCost([jetLBAS],alive2.concat(alive2C));
 			LBASPhase(jetLBAS,alive2.concat(alive2C),subsalive2.concat(subsalive2C),true,(C)?BAPI.data.api_air_base_injection:undefined);
 			removeSunk(alive2); removeSunk(alive2C);
 			removeSunk(subsalive2); removeSunk(subsalive2C);
@@ -890,6 +895,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	if (!NBonly && !bombing && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
 		if (C) BAPI.data.api_injection_kouku = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null,api_stage3_combined:null};
 		compareAP(F1,F2,true,true);
+		results.jetCost += calJetCost(alive1,alive2.concat(alive2C));
 		airPhase(alive1,subsalive1,alive2.concat(alive2C),subsalive2.concat(subsalive2C),(C)? BAPI.data.api_injection_kouku:undefined,true,false,true);
 		if (C) {
 			if (!BAPI.data.api_injection_kouku.api_stage1) BAPI.data.api_injection_kouku = null;
@@ -1008,8 +1014,8 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	//shelling 1
 	if (C && !NBonly) BAPI.data.api_hougeki1 = null;
 	if (!NBonly && !aironly && alive1.length+subsalive1.length > 0 && alive2C.length+subsalive2C.length > 0) {
-		F1.basepowshell = SIMCONSTS.shellEcEF || 5; F2C.basepowshell = SIMCONSTS.shellEcEE || -5;
-		F1.baseaccshell = SIMCONSTS.accEcEF; F2C.baseaccshell = SIMCONSTS.accEcEE;
+		F1.basepowshell = 5; F2C.basepowshell = -5;
+		F1.baseaccshell = 90; F2C.baseaccshell = 90;
 		var order1 = [], order2 = [];
 		orderByRange(ships1,order1,hasInstall2C);
 		orderByRange(ships2C,order2,hasInstall1);
@@ -1028,8 +1034,8 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	
 	//shelling 2
 	if (!NBonly && !aironly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
-		F1.basepowshell = SIMCONSTS.shellEcMF || 5; F2.basepowshell = SIMCONSTS.shellEcME || 10;
-		F1.baseaccshell = SIMCONSTS.accEcMF; F2.baseaccshell = SIMCONSTS.accEcME;
+		F1.basepowshell = 5; F2.basepowshell = 10;
+		F1.baseaccshell = 90; F2.baseaccshell = 90;
 		
 		var order1 = [], order2 = [];
 		orderByRange(ships1,order1,hasInstall2);
@@ -1041,8 +1047,8 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	
 	//shelling 3
 	if (doShell2 && !NBonly && !aironly && alive1.length+subsalive1.length > 0 && (alive2.length+subsalive2.length > 0 || alive2C.length+subsalive2C.length > 0)) {
-		F1.basepowshell = SIMCONSTS.shellEcMF || 5; F2.basepowshell = SIMCONSTS.shellEcME || 10;
-		F1.baseaccshell = SIMCONSTS.accEcMF; F2.baseaccshell = SIMCONSTS.accEcME;
+		F1.basepowshell = 5; F2.basepowshell = 10;
+		F1.baseaccshell = 90; F2.baseaccshell = 90;
 		
 		var order1 = [], order2 = [];
 		for (var i=0; i<ships1.length; i++) {
@@ -1179,7 +1185,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	var ships1 = F1.ships, ships2 = F2.ships, ships1C = F1C.ships, ships2C = F2C.ships;
 	var alive1 = [], alive1C = [], alive2 = [], alive2C = [], subsalive1 = [], subsalive1C = [], subsalive2 = [], subsalive2C = [];
 	var hasInstall1 = false, hasInstall2 = false, hasInstall1C = false, hasInstall2C = false;
-	var results = {};
+	var results = { jetCost: 0 };
 	for (var i=0; i<ships1.length; i++) {
 		if (ships1[i].HP <= 0) continue;
 		if (ships1[i].retreated) continue;
@@ -1346,6 +1352,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		var jetLBAS = LandBase.createJetLandBase(uniqueLBs);
 		if (jetLBAS.equips.length) {
 			compareAP(jetLBAS,F2,false,true,true);
+			results.jetCost += calJetCost([jetLBAS],alive2.concat(alive2C));
 			LBASPhase(jetLBAS,alive2.concat(alive2C),subsalive2.concat(subsalive2C),true,(C)?BAPI.data.api_air_base_injection:undefined);
 			removeSunk(alive2); removeSunk(alive2C);
 			removeSunk(subsalive2); removeSunk(subsalive2C);
@@ -1362,6 +1369,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	if (!NBonly && !bombing && alive1.length+subsalive1.length+alive2C.length+subsalive1C.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
 		if (C) BAPI.data.api_injection_kouku = {api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null,api_stage3_combined:null};
 		compareAP(F1,F2,true,true);
+		results.jetCost += calJetCost(alive1.concat(alive1C),alive2.concat(alive2C));
 		airPhase(alive1.concat(alive1C),subsalive1.concat(subsalive1C),alive2.concat(alive2C),subsalive2.concat(subsalive2C),(C)? BAPI.data.api_injection_kouku:undefined,true,false,true);
 		if (C) {
 			if (!BAPI.data.api_injection_kouku.api_stage1) BAPI.data.api_injection_kouku = null;
@@ -1525,9 +1533,8 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		// F1.basepowshell = F1.formation.shellbonus;
 		// F2.basepowshell = F1.formation.shellbonus;
 		F1.basepowshell = SIMCONSTS.shellEcMF || ((type==3)? -5 : 2); F2.basepowshell = SIMCONSTS.shellEcME || 10;
-		F1.baseaccshell = SIMCONSTS.accEcMF; F2.baseaccshell = SIMCONSTS.accEcME;
+		F1.baseaccshell = SIMCONSTS.accEcMF || 90; F2.baseaccshell = SIMCONSTS.accEcME || 90;
 		if (type==2) {
-			//F2.baseaccshell = 65; //guess
 			shellRange(d1M, d2M, (C)? BAPI.data.api_hougeki1 : undefined);
 		} else {
 			shellRange(d1M, d2M, (C)? BAPI.data.api_hougeki1 : undefined);
@@ -1547,13 +1554,13 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 			// F1.basepowshell = F1.formation.shellbonus;
 			// F2.basepowshell = F1.formation.shellbonus;
 			F1.basepowshell = SIMCONSTS.shellEcMF || ((type==3)? -5 : 2); F2.basepowshell = SIMCONSTS.shellEcME || 10;
-			F1.baseaccshell = SIMCONSTS.accEcMF; F2.baseaccshell = SIMCONSTS.accEcME;
+			F1.baseaccshell = SIMCONSTS.accEcMF || 90; F2.baseaccshell = SIMCONSTS.accEcME || 90;
 			if (doShell2) shellOrder(d1A, d2A, (C)? BAPI.data.api_hougeki2 : undefined);
 		} else {
 			// F1C.basepowshell = F1C.formation.shellbonus;
 			// F2.basepowshell = F1C.formation.shellbonus;
 			F1C.basepowshell = SIMCONSTS.shellEcEF || -5; F2C.basepowshell = SIMCONSTS.shellEcEE || -5;
-			F1C.baseaccshell = SIMCONSTS.accEcEF; F2C.baseaccshell = SIMCONSTS.accEcEE;
+			F1C.baseaccshell = SIMCONSTS.accEcEF || 70; F2C.baseaccshell = SIMCONSTS.accEcEE || 70;
 			shellRange(d1E, d2E, (C)? BAPI.data.api_hougeki2 : undefined);
 		}
 		removeSunk(alive1); removeSunk(alive1C);
@@ -1581,13 +1588,13 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 			// F1C.basepowshell = F1C.formation.shellbonus;
 			// F2.basepowshell = F1C.formation.shellbonus;
 			F1C.basepowshell = SIMCONSTS.shellEcEF || -5; F2C.basepowshell = SIMCONSTS.shellEcEE || -5;
-			F1C.baseaccshell = SIMCONSTS.accEcEF; F2C.baseaccshell = SIMCONSTS.accEcEE;
+			F1C.baseaccshell = SIMCONSTS.accEcEF || 70; F2C.baseaccshell = SIMCONSTS.accEcEE || 70;
 			shellRange(d1E, d2E, (C)? BAPI.data.api_hougeki3 : undefined);
 		} else if (doShell2) {
 			// F1.basepowshell = F1.formation.shellbonus;
 			// F2.basepowshell = F1.formation.shellbonus;
 			F1.basepowshell = SIMCONSTS.shellEcMF || ((type==3)? -5 : 2); F2.basepowshell = SIMCONSTS.shellEcME || 10;
-			F1.baseaccshell = SIMCONSTS.accEcMF; F2.baseaccshell = SIMCONSTS.accEcME;
+			F1.baseaccshell = SIMCONSTS.accEcMF || 90; F2.baseaccshell = SIMCONSTS.accEcME || 90;
 			shellOrder(d1A, d2A, (C)? BAPI.data.api_hougeki3 : undefined);
 		}
 		removeSunk(alive1); removeSunk(alive1C);

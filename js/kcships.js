@@ -933,7 +933,7 @@ Ship.prototype.moraleMod = function(isTorp) {
 }
 
 Ship.prototype.moraleModEv = function() {
-	if (this.morale >= 50) return .7;
+	if (this.morale >= 50) return SIMCONSTS.kiraEvMod || .8;
 	if (this.morale >= 30) return 1;
 	if (this.morale >= 20) return 1.2;
 	return 1.4;
