@@ -1560,7 +1560,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 			// F1C.basepowshell = F1C.formation.shellbonus;
 			// F2.basepowshell = F1C.formation.shellbonus;
 			F1C.basepowshell = SIMCONSTS.shellEcEF || -5; F2C.basepowshell = SIMCONSTS.shellEcEE || -5;
-			F1C.baseaccshell = SIMCONSTS.accEcEF || 70; F2C.baseaccshell = SIMCONSTS.accEcEE || 70;
+			F1C.baseaccshell = SIMCONSTS.accEcEF || 75; F2C.baseaccshell = SIMCONSTS.accEcEE || 75;
 			shellRange(d1E, d2E, (C)? BAPI.data.api_hougeki2 : undefined);
 		}
 		removeSunk(alive1); removeSunk(alive1C);
@@ -1588,7 +1588,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 			// F1C.basepowshell = F1C.formation.shellbonus;
 			// F2.basepowshell = F1C.formation.shellbonus;
 			F1C.basepowshell = SIMCONSTS.shellEcEF || -5; F2C.basepowshell = SIMCONSTS.shellEcEE || -5;
-			F1C.baseaccshell = SIMCONSTS.accEcEF || 70; F2C.baseaccshell = SIMCONSTS.accEcEE || 70;
+			F1C.baseaccshell = SIMCONSTS.accEcEF || 75; F2C.baseaccshell = SIMCONSTS.accEcEE || 75;
 			shellRange(d1E, d2E, (C)? BAPI.data.api_hougeki3 : undefined);
 		} else if (doShell2) {
 			// F1.basepowshell = F1.formation.shellbonus;
