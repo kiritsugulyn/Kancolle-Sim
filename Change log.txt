@@ -22,13 +22,11 @@
     Night battle (Enemy -> Friend):
     1. Protection rate = 0.6
 
-2. Kira evasion modifier = 0.8 (can set in advanced settings)
-
-3. Combined fleet acc tuning
-    12v12 shell acc Base: Main 90 (no change) Escort 70
+2. Combined fleet acc tuning
+    12v12 shell acc Base: Main 90 (no change) Escort 75
     6v12 shell acc Base (no change): 90
     Combined fleet air battle acc base (no change): CTF/STF: Main as target 105, Escort as target 75; TCF: Main as target 85, Escort as target 75
     3rd formation shell acc mod = 0.7
     Based on above, for all formations, now Shell/Torp/ASW acc mod = Shell/Torp/ASW damage mod
 
-4. Include jet steel cost
+3. Include jet steel cost
