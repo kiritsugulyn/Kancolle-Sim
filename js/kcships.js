@@ -339,7 +339,8 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if ([4,16,20].indexOf(this.sclass) != -1 && (fitcounts[101] || fitcounts[102])) this.ACCfit += 4 - 2*((fitcounts[101] || 0) + (fitcounts[102] || 0));  // 5500T class fit
 		if (this.sclass == 41 && fitcounts[102]) this.ACCfit += 8 - 2*(fitcounts[102] || 0);  // Agano class fit
 		if (fitcounts[103]) this.ACCfit -= 3*fitcounts[103];   // 20.3cm dual gun fit
-		if (fitcounts[104]) this.ACCfit -= 10*fitcounts[104];   // 8inch triple gun fit
+        if (fitcounts[104]) this.ACCfit -= 10*fitcounts[104];   // 8inch triple gun fit
+        if (this.mid > 1500) this.ACCfit -= 2;  // Abyssal CL fit
 		this.ACCfitN = this.ACCfit;
 	}
 

@@ -341,7 +341,6 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		if (C) BAPI.data.api_hougeki2 = {api_at_list:[-1],api_at_type:[-1],api_damage:[-1],api_df_list:[-1],api_cl_list:[-1],api_si_list:[-1]};
 		F1.basepowshell = F1.formation.shellbonus; F1.baseaccshell = F1.formation.accbase;
 		F2.basepowshell = F1.formation.shellbonusE; F2.baseaccshell = 80; // source: https://bbs.nga.cn/read.php?pid=359696724
-		if (type == 3) F2.baseaccshell = 65; // guess
 		if (type==2) {
 			F2.baseaccshell = 65; // source: https://bbs.nga.cn/read.php?pid=359696724
 			if (doShell2) shellOrder(false,(C)? BAPI.data.api_hougeki2 : undefined);
@@ -360,7 +359,6 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		} else if (doShell2) {
 			F1.basepowshell = F1.formation.shellbonus; F1.baseaccshell = F1.formation.accbase;
 			F2.basepowshell = F1.formation.shellbonusE; F2.baseaccshell = 80; // source: https://bbs.nga.cn/read.php?pid=359696724
-			if (type == 3) F2.baseaccshell = 65; // guess
 			shellOrder(false,(C)? BAPI.data.api_hougeki3 : undefined);
 		}
 	}

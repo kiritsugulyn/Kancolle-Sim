@@ -1056,7 +1056,7 @@ function nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,API
 				for (; k<ships.length; k++) {
 					if (alive2.length <= 0) break;
 					var target = choiceWProtect(alive2,slrerolls2,true);
-					if (NBattack(order1[i],target,NBonly,[[star1,star2],[light1,light2],[scout1,scout2]],APIhou,order1[i].attackSpecial)) alive2.splice(alive2.indexOf(target),1);
+					if (NBattack(ships[k],target,NBonly,[[star1,star2],[light1,light2],[scout1,scout2]],APIhou,order1[i].attackSpecial)) alive2.splice(alive2.indexOf(target),1);
 				}
 				order1[i].fleet.didSpecial = 1;
 				if (C) {
@@ -2655,7 +2655,7 @@ function getRankRaid(ships1) {
 function updateSupply(ships,didNB,NBonly,bombing,noammo,isECombined) {
 	let costSpecial = null, shipsSpecial = null;
 	if (ships[0].fleet.didSpecial == 1) {
-		if (ships[0].attackSpecial == 101 || ships[0].attackSpecial == 102) costSpecial = 1.5;
+		if (ships[0].attackSpecial == 101 || ships[0].attackSpecial == 102 || ships[0].attackSpecial == 103) costSpecial = 1.5;
 		else if (ships[0].attackSpecial == 104) costSpecial = 1.3;
 		if (costSpecial) shipsSpecial = getSpecialAttackShips(ships,ships[0].attackSpecial);
 		ships[0].fleet.didSpecial = 2;
