@@ -30,3 +30,9 @@
     Based on above, for all formations, now Shell/Torp/ASW acc mod = Shell/Torp/ASW damage mod
 
 3. Include jet steel cost
+
+4. Echelon Torp Acc Mod: 0.6 -> 0.7
+
+5. TACC adjustment for enemy SS
+   So class: [50, 60, 70] -> [40, 50, 60]
+   SS new princess and summer version: [70, 80, 90, 100] -> [45, 50, 55, 60]

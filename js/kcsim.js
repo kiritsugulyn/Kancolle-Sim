@@ -1,7 +1,7 @@
 var LINEAHEAD = {shellmod:1,torpmod:1,ASWmod:.6,AAmod:1, shellacc:1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:1};
 var DOUBLELINE = {shellmod:.8,torpmod:.8,ASWmod:.8,AAmod:1.2, shellacc:1.2,torpacc:.8,NBacc:.9, shellev:1,torpev:1,NBev:1,ASWev:1, id:2};
 var DIAMOND = {shellmod:.7,torpmod:.7,ASWmod:1.2,AAmod:1.6, shellacc:1,torpacc:.4,NBacc:.7, shellev:1.1,torpev:1.1,NBev:1,ASWev:1, id:3};
-var ECHELON = {shellmod:.75,torpmod:.6,ASWmod:1.1,AAmod:1, shellacc:1.2,torpacc:.6,NBacc:.9, shellev:1.45,torpev:1.3,NBev:1.3,ASWev:1.3, id:4};
+var ECHELON = {shellmod:.75,torpmod:.6,ASWmod:1.1,AAmod:1, shellacc:1.2,torpacc:.7,NBacc:.9, shellev:1.45,torpev:1.3,NBev:1.3,ASWev:1.3, id:4};
 var LINEABREAST = {shellmod:.6,torpmod:.6,ASWmod:1.3,AAmod:1, shellacc:1.2,torpacc:.3,NBacc:.8, shellev:1.3,torpev:1.4,NBev:1.2,ASWev:1.1, id:5};
 var VANGUARD1 = {shellmod:0.5,torpmod:1,ASWmod:1,AAmod:1.1, shellacc:1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:6};
 var VANGUARD2 = {shellmod:1,torpmod:1,ASWmod:.6,AAmod:1.1, shellacc:1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:6};
@@ -297,9 +297,6 @@ function shell(ship,target,APIhou,attackSpecial) {
 		}
 	}
 	
-	if (target.isAnchorage) {
-		postMod *= ship.anchoragePostMult;
-	}
 	
 	if (da) {
 		var res1 = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,1.3,ship.CVshelltype));
@@ -504,9 +501,6 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 		}
 	}
 	
-	if (target.isAnchorage) {
-		postMod *= ship.anchoragePostMult;
-	}
 	
 	if (da) {
 		var res1 = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,critrateMod));
@@ -1190,9 +1184,6 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 		}
 		
 		let postMod = 1;
-		if (target.isAnchorage) {
-			postMod *= ship.anchoragePostMult;
-		}
 		
 		var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().torpev,evFlat,1.5));
 		var realdmg = 0, dmg = 0;
@@ -2205,7 +2196,8 @@ function airstrikeLBAS(lbas,target,slot,contactMod,isjetphase) {
 	if (equip.type == LANDBOMBER || equip.type == HEAVYBOMBER) planebase = (target.isInstall)? equip.DIVEBOMB : equip.TP;
 	else planebase = (equip.isdivebomber)? equip.DIVEBOMB : (target.isInstall)? 0 : equip.TP;
 	if (target.isSub) planebase = equip.ASW;
-	planebase = (planebase || 0) + (equip.ASImprove || 0);
+	if (planebase) planebase += equip.ASImprove || 0;
+	else planebase = 0;
 	if (res) {
 		var planecount = lbas.planecount[slot];
 		if (!isjetphase && equip.type != HEAVYBOMBER) planecount *= 1.8;
@@ -3699,12 +3691,21 @@ function dmgSpecialTarget(dmg,ship,target,plane){
 		}
 		if (ship instanceof LandBase && target.mid <= 1658) dmg += 100;
 	}
-	if (plane && plane.isdivebomber) dmg *= target.divebombWeak || 1;
 	if (target.isPT) {
 		if (plane) dmg *= Math.random() < 0.5? 0.5: 0.8;
 		else dmg = 0.35 * dmg + 15;
 	}
-	if (target.isFrenchBBHime && [392,492].indexOf(ship.mid) !== -1) dmg *= 1.17;
+
+	if (plane) {
+		if (plane.isdivebomber) dmg *= target.divebombWeak || 1;
+		if (plane.mid == 405 && target.type == 'DD') dmg *= 1.08;
+		else if (plane.mid == 406 && ['FBB','BB','BBV'].indexOf(target.type) !== -1) dmg *= 1.35;
+	}else {
+		if (target.isAnchorage) dmg *= ship.anchoragePostMult || 1;
+		else if (target.isSummerBBHime) dmg *= ship.summerBBHimePostMult || 1;
+		else if (target.isSummerCAHime) dmg *= ship.summerCAHimePostMult || 1;
+		else if (target.isFrenchBBHime) dmg *= ship.FrenchBBHimePostMult || 1;
+	}
 	return Math.floor(dmg);
 }
 

@@ -569,7 +569,25 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	if (installeqs.m4a1) this.anchoragePostMult *= 1.75;
 	if (installeqs.T3) this.anchoragePostMult *= 1.35;
 	if (installeqs.DB) this.anchoragePostMult *= 1.4;
-	if (installeqs.DB >= 2) this.anchoragePostMult *= 1.5;
+    if (installeqs.DB >= 2) this.anchoragePostMult *= 1.5;
+    
+    this.summerBBHimePostMult = 1;
+    if (this.equiptypes[APSHELL]) this.summerBBHimePostMult *= 1.2;
+    if (this.equiptypes[SEAPLANEBOMBER] || this.equiptypes[SEAPLANEFIGHTER]) this.summerBBHimePostMult *= 1.1;
+
+    this.summerCAHimePostMult = 1;
+    if (this.equiptypes[APSHELL]) this.summerCAHimePostMult *= 1.1;
+    if (this.equiptypes[SEAPLANEBOMBER] || this.equiptypes[SEAPLANEFIGHTER]) this.summerCAHimePostMult *= 1.15;
+
+    this.FrenchBBHimePostMult = 1;
+    if (this.equiptypes[APSHELL]) this.FrenchBBHimePostMult *= 1.2;
+    if (this.equiptypes[SEAPLANEBOMBER] || this.equiptypes[SEAPLANEFIGHTER]) this.FrenchBBHimePostMult *= 1.1;
+    if (this.equiptypes[DIVEBOMBER]) {
+        this.FrenchBBHimePostMult *= 1.1;
+        if (this.equiptypes[DIVEBOMBER] >= 2) this.FrenchBBHimePostMult *= 1.15;
+    }
+    if ([392,492].indexOf(this.mid) !== -1)  this.FrenchBBHimePostMult *= 1.17;
+    if (this.equips.some((eq) => eq.mid == 194)) this.FrenchBBHimePostMult *= 1.2;
 	
     [this.ptDmgMod, this.ptAccMod] = this.ptMod();
 	
@@ -4685,14 +4703,14 @@ Equip.explicitStatsBonusGears = function(){
                     multiple: { "raig": 2, "houk": -2 },
                 },
                 {
-                    // Ooi K2, Nisshin A
-                    ids: [118, 586],
+                    // Ooi K2, Nisshin A, Kuma K2D
+                    ids: [118, 586, 657],
                     multiple: { "raig": 1, "houk": -2 },
                 },
                 {
                     // All other ships who can equip it
                     stypes: [4, 13, 14, 16],
-                    excludes: [118, 119, 586, 623],
+                    excludes: [118, 119, 586, 623, 657],
                     multiple: { "houg": -1, "houk": -7 },
                 },
             ],
@@ -5068,6 +5086,15 @@ Equip.explicitStatsBonusGears = function(){
                     multiple: { "tyku": 2 },
                 },
                 {
+                    // Kiso K2, Tama K2, Kuma K2,K2D
+                    ids: [146,  547,     652, 657],
+                    single: { "houg": 2, "tyku": 2 },
+                    synergy: {
+                        flags: [ "surfaceRadar" ],
+                        single: { "houg": 1, "houk": 1 },
+                    },
+                },
+                {
                     // Tan Yang
                     ids: [651],
                     multiple: { "houg": 3, "tyku": 3 },
@@ -5185,6 +5212,20 @@ Equip.explicitStatsBonusGears = function(){
                     // Tenryuu K2, Tatsuta K2, Yuubari K2,K2D extra +2 aa
                     ids: [477,     478,        622, 624],
                     multiple: { "tyku": 2 },
+                },
+                {
+                    // Kuma K2,K2D
+                    ids: [652, 657],
+                    multiple: { "houg": 3 },
+                },
+                {
+                    // Kiso K2, Tama K2, Kuma K2,K2D
+                    ids: [146,  547,     652, 657],
+                    single: { "tyku": 2 },
+                    synergy: {
+                        flags: [ "surfaceRadar" ],
+                        single: { "houg": 1, "houk": 3 },
+                    },
                 },
                 {
                     // Tan Yang/Yukikaze K2
@@ -6406,7 +6447,7 @@ Equip.explicitStatsBonusGears = function(){
                         {
                             flags: [ "enhancedBoiler" ],
                             byCount: {
-                                gear: "newModelBoiler",
+                                gear: "enhancedBoiler",
                                 "1": { "soku": 5 },
                                 "2": { "soku": 10 },
                                 "3": { "soku": 10 },

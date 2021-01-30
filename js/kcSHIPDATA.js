@@ -5338,7 +5338,7 @@ var SHIPDATA = {
 		ammo: 30,
 		next: 0,
 		prev: 99,
-		nextlvl: 0,
+		nextlvl: 652,
 	},
 	216: {
 		name: 'Tama Kai',
@@ -15296,6 +15296,32 @@ var SHIPDATA = {
 		nextlvl: 88,
 		EQUIPS: [397, 398],
 	},
+	652: {
+		name: 'Kuma Kai 2',
+		nameJP: '球磨改二',
+		image: 'K652.jpg',
+		type: 'CL', sclass: 4,
+		nid: 452,
+		added: '2021-01-13',
+		HP: 46, HPmax: 59,
+		FP: 70, FPbase: 22,
+		TP: 92, TPbase: 32,
+		AA: 80, AAbase: 32,
+		AR: 70, ARbase: 29,
+		EV: 82, EVbase: 42,
+		ASW: 80, ASWbase: 40,
+		LOS: 58, LOSbase: 13,
+		LUK: 16, LUKmax: 86,
+		RNG: 1,
+		SPD: 10,
+		SLOTS: [1, 1, 1],
+		fuel: 25,
+		ammo: 35,
+		next: 657,
+		prev: 215,
+		nextlvl: 88,
+		EQUIPS: [217, 217, 217],
+	},
 	653: {
 		name: 'Scirocco',
 		nameJP: 'Scirocco',
@@ -15372,6 +15398,32 @@ var SHIPDATA = {
 		nextlvl: 0,
 		EQUIPS: [122, 286],
 	},
+	657: {
+		name: 'Kuma Kai 2 D',
+		nameJP: '球磨改二丁',
+		image: 'K657.jpg',
+		type: 'CL', sclass: 4,
+		nid: 457,
+		added: '2021-01-13',
+		HP: 46, HPmax: 59,
+		FP: 67, FPbase: 17,
+		TP: 84, TPbase: 0,
+		AA: 84, AAbase: 35,
+		AR: 70, ARbase: 29,
+		EV: 81, EVbase: 41,
+		ASW: 84, ASWbase: 48,
+		LOS: 53, LOSbase: 13,
+		LUK: 16, LUKmax: 86,
+		RNG: 1,
+		SPD: 10,
+		SLOTS: [0, 0, 0],
+		fuel: 25,
+		ammo: 35,
+		next: 0,
+		prev: 652,
+		nextlvl: 88,
+		EQUIPS: [166, 167, 309],
+	},
 	658: {
 		name: 'Scirocco Kai',
 		nameJP: 'Scirocco改',
@@ -15411,7 +15463,7 @@ var SHIPDATA = {
 		AR: 104, ARbase: 84,
 		EV: 66, EVbase: 35,
 		ASW: 0, ASWbase: 0,
-		LOS: 62, LOSbase: 20,  //guess
+		LOS: 62, LOSbase: 18,  
 		LUK: 38, LUKmax: 108,
 		RNG: 3,
 		SPD: 10,
@@ -16040,9 +16092,9 @@ var SHIPDATA = {
 		TP: 98, TPbase: 30,
 		AA: 71, AAbase: 28,
 		AR: 54, ARbase: 12,
-		EV: 83, EVbase: 38,  // guess
-		ASW: 79, ASWbase: 35,  // guess
-		LOS: 43, LOSbase: 15,  // guess
+		EV: 83, EVbase: 37,  
+		ASW: 79, ASWbase: 34,
+		LOS: 43, LOSbase: 14,
 		LUK: 38, LUKmax: 108,
 		RNG: 1,
 		SPD: 10,
@@ -17544,7 +17596,7 @@ var SHIPDATA = {
 		LUK: 15,
 		RNG: 1,
 		SPD: 5,
-		TACC: 50,
+		TACC: 40,	// Adjust 50 -> 40 based on historical data
 		SLOTS: [0, 0],
 		EQUIPS: [515, 503],
 		fuel: 0,
@@ -17566,7 +17618,7 @@ var SHIPDATA = {
 		LUK: 30,
 		RNG: 1,
 		SPD: 5,
-		TACC: 60,
+		TACC: 50,	// Adjust 60 -> 50 based on historical data
 		SLOTS: [0, 0, 0],
 		EQUIPS: [515, 515, 503],
 		fuel: 0,
@@ -17588,7 +17640,7 @@ var SHIPDATA = {
 		LUK: 45,
 		RNG: 1,
 		SPD: 5,
-		TACC: 70,
+		TACC: 60,	// Adjust 70 -> 60 based on historical data
 		SLOTS: [0, 0, 0],
 		EQUIPS: [515, 515, 515],
 		fuel: 0,
@@ -20400,16 +20452,7 @@ var SHIPDATA = {
 		nameJP: '戦艦夏姫',
 		image: 'SBBHn.jpg',
 		type: 'BB',
-		equipWeak: [
-			{
-				mod: 1.2,
-				eqtypes: [APSHELL],
-			},
-			{
-				mod: 1.1,
-				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-			}
-		],
+		isSummerBBHime: true,
 		HP: 400,
 		FP: 180,
 		TP: 0,
@@ -20430,16 +20473,7 @@ var SHIPDATA = {
 		nameJP: '戦艦夏姫',
 		image: 'SBBHn.jpg',
 		type: 'BB',
-		equipWeak: [
-			{
-				mod: 1.2,
-				eqtypes: [APSHELL],
-			},
-			{
-				mod: 1.1,
-				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-			}
-		],
+		isSummerBBHime: true,
 		HP: 450,
 		FP: 185,
 		TP: 0,
@@ -20460,16 +20494,7 @@ var SHIPDATA = {
 		nameJP: '戦艦夏姫',
 		image: 'SBBHn.jpg',
 		type: 'BB',
-		equipWeak: [
-			{
-				mod: 1.2,
-				eqtypes: [APSHELL],
-			},
-			{
-				mod: 1.1,
-				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-			}
-		],
+		isSummerBBHime: true,
 		HP: 530,
 		FP: 195,
 		TP: 0,
@@ -20610,16 +20635,7 @@ var SHIPDATA = {
 		nameJP: '重巡夏姫',
 		image: 'SCAHn.jpg',
 		type: 'CA',
-		equipWeak: [
-			{
-				mod: 1.1,
-				eqtypes: [APSHELL],
-			},
-			{
-				mod: 1.15,
-				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-			}
-		],
+		isSummerCAHime: true,
 		HP: 400,
 		FP: 110,
 		TP: 74,
@@ -20640,16 +20656,7 @@ var SHIPDATA = {
 		nameJP: '重巡夏姫',
 		image: 'SCAHn.jpg',
 		type: 'CA',
-		equipWeak: [
-			{
-				mod: 1.1,
-				eqtypes: [APSHELL],
-			},
-			{
-				mod: 1.15,
-				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-			}
-		],
+		isSummerCAHime: true,
 		HP: 450,
 		FP: 140,
 		TP: 82,
@@ -20670,16 +20677,7 @@ var SHIPDATA = {
 		nameJP: '重巡夏姫',
 		image: 'SCAHn.jpg',
 		type: 'CA',
-		equipWeak: [
-			{
-				mod: 1.1,
-				eqtypes: [APSHELL],
-			},
-			{
-				mod: 1.15,
-				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-			}
-		],
+		isSummerCAHime: true,
 		HP: 550,
 		FP: 170,
 		TP: 90,
@@ -21299,7 +21297,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 30,
 		LUK: 60,
-		TACC: 80,
+		TACC: 50,	// Adjust 80 -> 50 based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -21320,7 +21318,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 36,
 		LUK: 70,
-		TACC: 90,
+		TACC: 55,	// Adjust 90 -> 55 based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -21341,7 +21339,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 48,
 		LUK: 80,
-		TACC: 100,
+		TACC: 60,	// Adjust 100 -> 60 based on historical data
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -21479,26 +21477,6 @@ var SHIPDATA = {
 		nameJP: '戦艦仏棲姫',
 		image: 'S1745.jpg',
 		type: 'BBV',
-		equipWeak: [
-			{
-				mod: 1.2,
-				eqtypes: [APSHELL],
-			},
-			{
-				mod: 1.1,
-				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-				noPlaneCheck: true,
-			},
-			{
-				mod: 1.2,
-				eqids: [194],
-				noPlaneCheck: true,
-			},
-			{
-				mod: [1.1, 1.265],
-				eqtypes: [DIVEBOMBER],
-			},
-		],
 		isFrenchBBHime: true,
 		HP: 730,
 		FP: 202,
@@ -21520,26 +21498,6 @@ var SHIPDATA = {
 		nameJP: '戦艦仏棲姫',
 		image: 'S1745.jpg',
 		type: 'BBV',
-		equipWeak: [
-			{
-				mod: 1.2,
-				eqtypes: [APSHELL],
-			},
-			{
-				mod: 1.1,
-				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-				noPlaneCheck: true,
-			},
-			{
-				mod: 1.2,
-				eqids: [194],
-				noPlaneCheck: true,
-			},
-			{
-				mod: [1.1, 1.265],
-				eqtypes: [DIVEBOMBER],
-			},
-		],
 		isFrenchBBHime: true,
 		HP: 730,
 		FP: 242,
@@ -21561,26 +21519,6 @@ var SHIPDATA = {
 		nameJP: '戦艦仏棲姫',
 		image: 'S1745.jpg',
 		type: 'BBV',
-		equipWeak: [
-			{
-				mod: 1.2,
-				eqtypes: [APSHELL],
-			},
-			{
-				mod: 1.1,
-				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-				noPlaneCheck: true,
-			},
-			{
-				mod: 1.2,
-				eqids: [194],
-				noPlaneCheck: true,
-			},
-			{
-				mod: [1.1, 1.265],
-				eqtypes: [DIVEBOMBER],
-			},
-		],
 		isFrenchBBHime: true,
 		HP: 730,
 		FP: 242,
@@ -21602,26 +21540,6 @@ var SHIPDATA = {
 		nameJP: '戦艦仏棲姫-壊',
 		image: 'S1748.jpg',
 		type: 'BBV',
-		equipWeak: [
-			{
-				mod: 1.2,
-				eqtypes: [APSHELL],
-			},
-			{
-				mod: 1.1,
-				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-				noPlaneCheck: true,
-			},
-			{
-				mod: 1.2,
-				eqids: [194],
-				noPlaneCheck: true,
-			},
-			{
-				mod: [1.1, 1.265],
-				eqtypes: [DIVEBOMBER],
-			},
-		],
 		isFrenchBBHime: true,
 		HP: 730,
 		FP: 222,
@@ -21643,26 +21561,6 @@ var SHIPDATA = {
 		nameJP: '戦艦仏棲姫-壊',
 		image: 'S1748.jpg',
 		type: 'BBV',
-		equipWeak: [
-			{
-				mod: 1.2,
-				eqtypes: [APSHELL],
-			},
-			{
-				mod: 1.1,
-				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-				noPlaneCheck: true,
-			},
-			{
-				mod: 1.2,
-				eqids: [194],
-				noPlaneCheck: true,
-			},
-			{
-				mod: [1.1, 1.265],
-				eqtypes: [DIVEBOMBER],
-			},
-		],
 		isFrenchBBHime: true,
 		HP: 730,
 		FP: 262,
@@ -21684,26 +21582,6 @@ var SHIPDATA = {
 		nameJP: '戦艦仏棲姫-壊',
 		image: 'S1748.jpg',
 		type: 'BBV',
-		equipWeak: [
-			{
-				mod: 1.2,
-				eqtypes: [APSHELL],
-			},
-			{
-				mod: 1.1,
-				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-				noPlaneCheck: true,
-			},
-			{
-				mod: 1.2,
-				eqids: [194],
-				noPlaneCheck: true,
-			},
-			{
-				mod: [1.1, 1.265],
-				eqtypes: [DIVEBOMBER],
-			},
-		],
 		isFrenchBBHime: true,
 		HP: 730,
 		FP: 282,
@@ -22521,7 +22399,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 20,
 		LUK: 50,
-		TACC: 70,
+		TACC: 45,	// Adjust 70 -> 45 based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -22848,7 +22726,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 20,
 		LUK: 50,
-		TACC: 70,
+		TACC: 45,	// Adjust based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -22869,7 +22747,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 30,
 		LUK: 60,
-		TACC: 80,
+		TACC: 50,	// Adjust based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -22890,7 +22768,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 36,
 		LUK: 70,
-		TACC: 90,
+		TACC: 55,	// Adjust based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -22911,7 +22789,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 48,
 		LUK: 80,
-		TACC: 100,
+		TACC: 60,	// Adjust based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -23433,26 +23311,6 @@ var SHIPDATA = {
 		nameJP: '戦艦仏棲姫 バカンスmode',
 		image: 'S1834.jpg',
 		type: 'BBV',
-		equipWeak: [
-			{
-				mod: 1.2,
-				eqtypes: [APSHELL],
-			},
-			{
-				mod: 1.1,
-				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-				noPlaneCheck: true,
-			},
-			{
-				mod: 1.2,
-				eqids: [194],
-				noPlaneCheck: true,
-			},
-			{
-				mod: [1.1, 1.265],
-				eqtypes: [DIVEBOMBER],
-			},
-		],
 		isFrenchBBHime: true,
 		HP: 770,
 		FP: 212,
@@ -23474,26 +23332,6 @@ var SHIPDATA = {
 		nameJP: '戦艦仏棲姫 バカンスmode',
 		image: 'S1834.jpg',
 		type: 'BBV',
-		equipWeak: [
-			{
-				mod: 1.2,
-				eqtypes: [APSHELL],
-			},
-			{
-				mod: 1.1,
-				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-				noPlaneCheck: true,
-			},
-			{
-				mod: 1.2,
-				eqids: [194],
-				noPlaneCheck: true,
-			},
-			{
-				mod: [1.1, 1.265],
-				eqtypes: [DIVEBOMBER],
-			},
-		],
 		isFrenchBBHime: true,
 		HP: 770,
 		FP: 252,
@@ -23515,26 +23353,6 @@ var SHIPDATA = {
 		nameJP: '戦艦仏棲姫 バカンスmode',
 		image: 'S1834.jpg',
 		type: 'BBV',
-		equipWeak: [
-			{
-				mod: 1.2,
-				eqtypes: [APSHELL],
-			},
-			{
-				mod: 1.1,
-				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-				noPlaneCheck: true,
-			},
-			{
-				mod: 1.2,
-				eqids: [194],
-				noPlaneCheck: true,
-			},
-			{
-				mod: [1.1, 1.265],
-				eqtypes: [DIVEBOMBER],
-			},
-		],
 		isFrenchBBHime: true,
 		HP: 770,
 		FP: 272,
@@ -23556,26 +23374,6 @@ var SHIPDATA = {
 		nameJP: '戦艦仏棲姫-壊 バカンスmode',
 		image: 'S1837.jpg',
 		type: 'BBV',
-		equipWeak: [
-			{
-				mod: 1.2,
-				eqtypes: [APSHELL],
-			},
-			{
-				mod: 1.1,
-				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-				noPlaneCheck: true,
-			},
-			{
-				mod: 1.2,
-				eqids: [194],
-				noPlaneCheck: true,
-			},
-			{
-				mod: [1.1, 1.265],
-				eqtypes: [DIVEBOMBER],
-			},
-		],
 		isFrenchBBHime: true,
 		HP: 770,
 		FP: 232,
@@ -23597,26 +23395,6 @@ var SHIPDATA = {
 		nameJP: '戦艦仏棲姫-壊 バカンスmode',
 		image: 'S1837.jpg',
 		type: 'BBV',
-		equipWeak: [
-			{
-				mod: 1.2,
-				eqtypes: [APSHELL],
-			},
-			{
-				mod: 1.1,
-				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-				noPlaneCheck: true,
-			},
-			{
-				mod: 1.2,
-				eqids: [194],
-				noPlaneCheck: true,
-			},
-			{
-				mod: [1.1, 1.265],
-				eqtypes: [DIVEBOMBER],
-			},
-		],
 		isFrenchBBHime: true,
 		HP: 770,
 		FP: 272,
@@ -23638,26 +23416,6 @@ var SHIPDATA = {
 		nameJP: '戦艦仏棲姫-壊 バカンスmode',
 		image: 'S1837.jpg',
 		type: 'BBV',
-		equipWeak: [
-			{
-				mod: 1.2,
-				eqtypes: [APSHELL],
-			},
-			{
-				mod: 1.1,
-				eqtypes: [SEAPLANEBOMBER, SEAPLANEFIGHTER],
-				noPlaneCheck: true,
-			},
-			{
-				mod: 1.2,
-				eqids: [194],
-				noPlaneCheck: true,
-			},
-			{
-				mod: [1.1, 1.265],
-				eqtypes: [DIVEBOMBER],
-			},
-		],
 		isFrenchBBHime: true,
 		HP: 770,
 		FP: 292,
