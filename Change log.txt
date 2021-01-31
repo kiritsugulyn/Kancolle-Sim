@@ -33,6 +33,15 @@
 
 4. Echelon Torp Acc Mod: 0.6 -> 0.7
 
-5. TACC adjustment for enemy SS
+5. 12v6 Torp Acc Base: 85 -> 70
+
+6. TACC adjustment for enemies
+   Ka class: [20, 30, 35] -> [20, 30, 40]
+   Yo class: [25, 30, 40] -> [25, 35, 45]
    So class: [50, 60, 70] -> [40, 50, 60]
-   SS new princess and summer version: [70, 80, 90, 100] -> [45, 50, 55, 60]
+   SS new princess and summer version: [70, 80, 90, 100] -> [40, 50, 60, 70]
+   Chi class: [30, 40, 60] -> [20, 30, 50]
+
+7. Air strike modifier for installation:
+   Isolated island princess: 1.5 ~ 2
+   Artillery Imp: 1.6 ~ 2.2

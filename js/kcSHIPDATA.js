@@ -16320,7 +16320,7 @@ var SHIPDATA = {
 		LUK: 5,
 		RNG: 2,
 		SPD: 10,
-		TACC: 30,
+		TACC: 20,	// Source: https://twitter.com/Xe_UCH/status/977110215429562369
 		SLOTS: [2, 2, 2],
 		EQUIPS: [504, 513, 513],
 		fuel: 0,
@@ -16597,7 +16597,7 @@ var SHIPDATA = {
 		LUK: 10,
 		RNG: 2,
 		SPD: 10,
-		TACC: 40,
+		TACC: 30,	// Source: https://twitter.com/Xe_UCH/status/977110215429562369
 		SLOTS: [2, 2, 2],
 		EQUIPS: [506, 514, 514],
 		fuel: 0,
@@ -16857,7 +16857,7 @@ var SHIPDATA = {
 		LUK: 10,
 		RNG: 1,
 		SPD: 5,
-		TACC: 30,
+		TACC: 35,	// Source: http://jbbs.shitaraba.net/bbs/read_archive.cgi/netgame/12394/1394874004/
 		SLOTS: [0, 0, 0],
 		EQUIPS: [515, 514, 514],
 		fuel: 0,
@@ -16879,7 +16879,7 @@ var SHIPDATA = {
 		LUK: 20,
 		RNG: 1,
 		SPD: 5,
-		TACC: 35,
+		TACC: 40,	// Source: http://jbbs.shitaraba.net/bbs/read_archive.cgi/netgame/12394/1394874004/
 		SLOTS: [0, 0, 0],
 		EQUIPS: [515, 515, 513],
 		fuel: 0,
@@ -16901,7 +16901,7 @@ var SHIPDATA = {
 		LUK: 20,
 		RNG: 1,
 		SPD: 5,
-		TACC: 40,
+		TACC: 45,	// Source: http://jbbs.shitaraba.net/bbs/read_archive.cgi/netgame/12394/1394874004/
 		SLOTS: [0, 0, 0],
 		EQUIPS: [515, 515, 514],
 		fuel: 0,
@@ -17420,7 +17420,7 @@ var SHIPDATA = {
 		LUK: 30,
 		RNG: 2,
 		SPD: 10,
-		TACC: 60,
+		TACC: 50,	//Source: https://jbbs.shitaraba.net/bbs/read_archive.cgi/netgame/12394/1383823982/
 		SLOTS: [1, 1, 1],
 		EQUIPS: [506, 515, 515],
 		fuel: 0,
@@ -19684,8 +19684,6 @@ var SHIPDATA = {
 		image: 'SArtImp.jpg',
 		type: 'BB',
 		installtype: 2,
-		LBWeak: 1.6,
-		divebombWeak: 1.55,
 		HP: 130,
 		FP: 100,
 		TP: 0,
@@ -19710,8 +19708,6 @@ var SHIPDATA = {
 		image: 'SArtImp.jpg',
 		type: 'BB',
 		installtype: 2,
-		LBWeak: 1.6,
-		divebombWeak: 1.55,
 		HP: 130,
 		FP: 100,
 		TP: 0,
@@ -19736,8 +19732,6 @@ var SHIPDATA = {
 		image: 'SArtImp.jpg',
 		type: 'BB',
 		installtype: 2,
-		LBWeak: 1.6,
-		divebombWeak: 1.55,
 		HP: 130,
 		FP: 100,
 		TP: 0,
@@ -19763,8 +19757,6 @@ var SHIPDATA = {
 		type: 'CV',
 		installtype: 4,
 		nightattack: 2,
-		LBWeak: 1.18,
-		divebombWeak: 1.7,
 		HP: 480,
 		FP: 150,
 		TP: 0,
@@ -19790,8 +19782,6 @@ var SHIPDATA = {
 		type: 'CV',
 		installtype: 4,
 		nightattack: 2,
-		LBWeak: 1.18,
-		divebombWeak: 1.7,
 		HP: 480,
 		FP: 150,
 		TP: 0,
@@ -19816,8 +19806,6 @@ var SHIPDATA = {
 		type: 'CV',
 		installtype: 4,
 		nightattack: 2,
-		LBWeak: 1.18,
-		divebombWeak: 1.7,
 		HP: 450,
 		FP: 150,
 		TP: 0,
@@ -19842,8 +19830,6 @@ var SHIPDATA = {
 		image: 'SIIH.jpg',
 		type: 'Installation',
 		installtype: 4,
-		LBWeak: 1.18,
-		divebombWeak: 1.7,
 		HP: 480,
 		FP: 180,
 		TP: 0,
@@ -19868,8 +19854,6 @@ var SHIPDATA = {
 		image: 'SIIH.jpg',
 		type: 'BB',
 		installtype: 4,
-		LBWeak: 1.18,
-		divebombWeak: 1.7,
 		HP: 480,
 		FP: 180,
 		TP: 0,
@@ -21318,7 +21302,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 36,
 		LUK: 70,
-		TACC: 55,	// Adjust 90 -> 55 based on main version
+		TACC: 60,	// Adjust 90 -> 60 based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -21339,7 +21323,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 48,
 		LUK: 80,
-		TACC: 60,	// Adjust 100 -> 60 based on historical data
+		TACC: 70,	// Adjust 100 -> 70 based on historical data
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -22399,7 +22383,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 20,
 		LUK: 50,
-		TACC: 45,	// Adjust 70 -> 45 based on main version
+		TACC: 40,	// Adjust 70 -> 40 based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -22726,7 +22710,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 20,
 		LUK: 50,
-		TACC: 45,	// Adjust based on main version
+		TACC: 40,	// Adjust based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -22768,7 +22752,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 36,
 		LUK: 70,
-		TACC: 55,	// Adjust based on main version
+		TACC: 60,	// Adjust based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -22789,7 +22773,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 48,
 		LUK: 80,
-		TACC: 60,	// Adjust based on main version
+		TACC: 70,	// Adjust based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,

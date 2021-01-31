@@ -1164,12 +1164,13 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 		power *= ship.getFormation().torpmod*ENGAGEMENT*(combinedAll? ship.damageMod(true) : damageMods[ship.id]);
 		if (power > 150) power = 150 + Math.sqrt(power-150);
 		
+		var accbase = (!combinedAll && (ship.isescort||target.isescort))? 70 : 85;	// Based on past data, Torp Acc -10 ~ 15 for 12v6
 		var accflat = (ship.ACC)? ship.ACC : 0;
 		if (ship.improves.ACCtorp) accflat += Math.floor(ship.improves.ACCtorp);
 		accflat += Math.floor(power/5);
 		if (ship.TACC) accflat += ship.TACC;
 		var ptMod = (target.isPT)? .4 : 1;
-		var acc = hitRate(ship,85,accflat,ship.getFormation().torpacc*ship.moraleMod(true)*ptMod);
+		var acc = hitRate(ship,accbase,accflat,ship.getFormation().torpacc*ship.moraleMod(true)*ptMod);
 		
 		var evFlat = (target.improves.EVtorp)? ship.improves.EVtorp : 0;
 		if (target.fleet.formation.id == 6) {
@@ -3698,6 +3699,8 @@ function dmgSpecialTarget(dmg,ship,target,plane){
 
 	if (plane) {
 		if (plane.isdivebomber) dmg *= target.divebombWeak || 1;
+		if (ship.mid >= 1665 && ship.mid <= 1667) dmg *= (1.6 + Math.random() * .6)		// guess
+		else if (ship.mid >= 1668 && ship.mid <= 1672) dmg *= (1.5 + Math.random() * .5);   // Source: https://twitter.com/yukicacoon/status/1355546046026289154
 		if (plane.mid == 405 && target.type == 'DD') dmg *= 1.08;
 		else if (plane.mid == 406 && ['FBB','BB','BBV'].indexOf(target.type) !== -1) dmg *= 1.35;
 	}else {
