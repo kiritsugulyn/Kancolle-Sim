@@ -17596,7 +17596,7 @@ var SHIPDATA = {
 		LUK: 15,
 		RNG: 1,
 		SPD: 5,
-		TACC: 40,	// Adjust 50 -> 40 based on historical data
+		TACC: 30,	// guess
 		SLOTS: [0, 0],
 		EQUIPS: [515, 503],
 		fuel: 0,
@@ -17640,7 +17640,7 @@ var SHIPDATA = {
 		LUK: 45,
 		RNG: 1,
 		SPD: 5,
-		TACC: 60,	// Adjust 70 -> 60 based on historical data
+		TACC: 70,
 		SLOTS: [0, 0, 0],
 		EQUIPS: [515, 515, 515],
 		fuel: 0,

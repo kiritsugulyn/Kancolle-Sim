@@ -38,7 +38,7 @@
 6. TACC adjustment for enemies
    Ka class: [20, 30, 35] -> [20, 30, 40]
    Yo class: [25, 30, 40] -> [25, 35, 45]
-   So class: [50, 60, 70] -> [40, 50, 60]
+   So class: [50, 60, 70] -> [30, 50, 70]
    SS new princess and summer version: [70, 80, 90, 100] -> [40, 50, 60, 70]
    Chi class: [30, 40, 60] -> [20, 30, 50]
 
