@@ -29,7 +29,6 @@ for (var i=0; i<SHIPIDSORTED.length; i++) {
 			case 'BB':
 			case 'FBB':
 			case 'BBV':
-			case 'BBVT':
 				SHIPCLASSSORTED['Battleships'].push(SHIPIDSORTED[i]);
 				break;
 			case 'CV':
