@@ -17596,7 +17596,7 @@ var SHIPDATA = {
 		LUK: 15,
 		RNG: 1,
 		SPD: 5,
-		TACC: 30,	// guess
+		TACC: 50,
 		SLOTS: [0, 0],
 		EQUIPS: [515, 503],
 		fuel: 0,
@@ -17618,7 +17618,7 @@ var SHIPDATA = {
 		LUK: 30,
 		RNG: 1,
 		SPD: 5,
-		TACC: 50,	// Adjust 60 -> 50 based on historical data
+		TACC: 60,
 		SLOTS: [0, 0, 0],
 		EQUIPS: [515, 515, 503],
 		fuel: 0,
@@ -17640,7 +17640,7 @@ var SHIPDATA = {
 		LUK: 45,
 		RNG: 1,
 		SPD: 5,
-		TACC: 70,
+		TACC: 80,	// Based on 14 summer api data
 		SLOTS: [0, 0, 0],
 		EQUIPS: [515, 515, 515],
 		fuel: 0,
@@ -21281,7 +21281,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 30,
 		LUK: 60,
-		TACC: 50,	// Adjust 80 -> 50 based on main version
+		TACC: 60,	// Adjust based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -21302,7 +21302,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 36,
 		LUK: 70,
-		TACC: 60,	// Adjust 90 -> 60 based on main version
+		TACC: 70,	// Adjust based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -21323,7 +21323,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 48,
 		LUK: 80,
-		TACC: 70,	// Adjust 100 -> 70 based on historical data
+		TACC: 80,	// Adjust 100 -> 80 based on historical data
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -22383,7 +22383,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 20,
 		LUK: 50,
-		TACC: 40,	// Adjust 70 -> 40 based on main version
+		TACC: 50,	// Adjust based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -22710,7 +22710,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 20,
 		LUK: 50,
-		TACC: 40,	// Adjust based on main version
+		TACC: 50,	// Adjust based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -22731,7 +22731,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 30,
 		LUK: 60,
-		TACC: 50,	// Adjust based on main version
+		TACC: 60,	// Adjust based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -22752,7 +22752,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 36,
 		LUK: 70,
-		TACC: 60,	// Adjust based on main version
+		TACC: 70,	// Adjust based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -22773,7 +22773,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 48,
 		LUK: 80,
-		TACC: 70,	// Adjust based on main version
+		TACC: 80,	// Adjust based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,

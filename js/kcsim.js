@@ -1,6 +1,7 @@
 var LINEAHEAD = {shellmod:1,torpmod:1,ASWmod:.6,AAmod:1, shellacc:1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:1};
 var DOUBLELINE = {shellmod:.8,torpmod:.8,ASWmod:.8,AAmod:1.2, shellacc:1.2,torpacc:.8,NBacc:.9, shellev:1,torpev:1,NBev:1,ASWev:1, id:2};
 var DIAMOND = {shellmod:.7,torpmod:.7,ASWmod:1.2,AAmod:1.6, shellacc:1,torpacc:.4,NBacc:.7, shellev:1.1,torpev:1.1,NBev:1,ASWev:1, id:3};
+var ECHELONOLD = {shellmod:.6,torpmod:.6,ASWmod:1,AAmod:1, shellacc:1.2,torpacc:.6,NBacc:.8, shellev:1.2,torpev:1.3,NBev:1.1,ASWev:1.3, id:4};
 var ECHELON = {shellmod:.75,torpmod:.6,ASWmod:1.1,AAmod:1, shellacc:1.2,torpacc:.75,NBacc:.9, shellev:1.45,torpev:1.3,NBev:1.3,ASWev:1.3, id:4};
 var LINEABREAST = {shellmod:.6,torpmod:.6,ASWmod:1.3,AAmod:1, shellacc:1.2,torpacc:.3,NBacc:.8, shellev:1.3,torpev:1.4,NBev:1.2,ASWev:1.1, id:5};
 var VANGUARD1 = {shellmod:0.5,torpmod:1,ASWmod:1,AAmod:1.1, shellacc:1,torpacc:1,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:6};
@@ -639,7 +640,7 @@ function ASW(ship,target,isnight,APIhou) {
 	sonarAcc += (ship.improves.ACCasw || 0);
 	var accMod = ship.moraleMod();
 	// Combined fleet ASW acc data: https://twitter.com/kankenRJ/status/813545025770401792
-	if (ship.fleet.combinedWith) accMod *= ship.getFormation().ASWmod;
+	if (ship.getFormation().id > 10) accMod *= ship.getFormation().ASWmod;
 	else if (!formationCountered(ship.fleet.formation.id,target.fleet.formation.id)) accMod *= ship.getFormation().shellacc;
 	var evFlat = 0;
 	if (target.fleet.formation.id == 6) {
@@ -1164,7 +1165,7 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 		power *= ship.getFormation().torpmod*ENGAGEMENT*(combinedAll? ship.damageMod(true) : damageMods[ship.id]);
 		if (power > 150) power = 150 + Math.sqrt(power-150);
 		
-		var accbase = (!combinedAll && (ship.isescort||target.isescort))? 65 : 85;	// Based on past data, Torp Acc -15 ~ 20 for 12v6
+		var accbase = 85;
 		var accflat = (ship.ACC)? ship.ACC : 0;
 		if (ship.improves.ACCtorp) accflat += Math.floor(ship.improves.ACCtorp);
 		accflat += Math.floor(power/5);
@@ -1788,7 +1789,7 @@ function airPhase(alive1,subsalive1,alive2,subsalive2,APIkouku,isjetphase,isbomb
 	}
 }
 
-function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
+function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isBoss,isNight) {
 	if (C) {
 		BAPI.data.api_support_flag = suptype;
 		BAPI.data.api_support_info = { api_support_airatack:null, api_support_hourai:null };
@@ -1824,6 +1825,7 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 	if (suptype != 4 && !alive2.length) return;
 	if (suptype == 2 || suptype == 3) {
 		var hou = (BAPI)? BAPI.data.api_support_info.api_support_hourai : undefined;
+		var checkFormMod = FLEETS1[0] && FLEETS1[0].formation && (!FLEETS1[0].combinedWith || isNight) && !alive2[0].fleet.combinedWith;
 		for (var i=0; i<shipsS.length; i++) {
 			var ship = shipsS[i];
 			var targets = alive2;
@@ -1859,24 +1861,28 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isboss) {
 				for (var j=0; j<ship.equips.length; j++) if (ship.equips[j].TP) torpDmg -= ship.equips[j].TP; //is this correct?
 				torpDmg += 8;
 				let accMod = ship.moraleMod(true);
-				if (FLEETS1[0] && FLEETS1[0].formation && !FLEETS1[0].combinedWith) accMod *= FLEETS1[0].formation.torpacc;
+				if (checkFormMod) accMod *= FLEETS1[0].formation.torpacc;
 				accCrit = accuracyAndCrit(ship,target,hitRate(ship,54,ship.ACC+torpDmg*.35,accMod),target.getFormation().torpev,evFlat,1.2);
 			} else {
 				var baseacc;
-				if (isboss) baseacc = (SIMCONSTS.supportShellB != null)? SIMCONSTS.supportShellB : 64;
+				if (isBoss) baseacc = (SIMCONSTS.supportShellB != null)? SIMCONSTS.supportShellB : 64;
 				else baseacc = (SIMCONSTS.supportShellN != null)? SIMCONSTS.supportShellN : 64;
 				let accMod = ship.moraleMod();
-				if (FLEETS1[0] && FLEETS1[0].formation && !FLEETS1[0].combinedWith) accMod *= FLEETS1[0].formation.shellacc;
+				if (checkFormMod) accMod *= FLEETS1[0].formation.shellacc;
 				accCrit = accuracyAndCrit(ship,target,hitRate(ship,baseacc,ship.ACC,accMod),target.getFormation().shellev,evFlat,1);
 			}
 			var res = rollHit(accCrit);
 			var dmg = 0, realdmg = 0;
 			if (res) {
 				var preMod = ENGAGEMENT;
-				if (FLEETS1[0] && FLEETS1[0].formation && !FLEETS1[0].combinedWith) preMod *= FLEETS1[0].formation.shellmod;
 				var dmg;
-				if (suptype==3) dmg = damageSupport(ship,target,torpDmg*.55,preMod,{critMod:res},150);
-				else dmg = damageSupport(ship,target,ship.shellPower(target,-1,true),preMod,{critMod:res},150);
+				if (suptype == 3) {
+					if (checkFormMod) preMod *= FLEETS1[0].formation.torpmod;
+					dmg = damageSupport(ship,target,torpDmg*.55,preMod,{critMod:res},150);
+				}else {
+					if (checkFormMod) preMod *= FLEETS1[0].formation.shellmod;
+					dmg = damageSupport(ship,target,ship.shellPower(target,-1,true),preMod,{critMod:res},150);
+				}
 				realdmg = takeDamage(target,dmg);
 			} else { realdmg = 0; }
 			if (C) {
@@ -2432,7 +2438,7 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 	if (Fsupport && (!NBonly || (MECHANICS.LBASBuff && Fsupport.supportType != 1)) && !aironly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
 		var chance = Fsupport.supportChance(Fsupport.supportBoss);
 		if (Math.random() < chance) {
-			supportPhase(Fsupport.ships,alive2,subsalive2,Fsupport.supportType,BAPI,Fsupport.supportBoss);
+			supportPhase(Fsupport.ships,alive2,subsalive2,Fsupport.supportType,BAPI,Fsupport.supportBoss,NBonly);
 			removeSunk(alive2); removeSunk(subsalive2);
 		}	
 	}
@@ -3346,7 +3352,7 @@ function simNightFirstCombined(F1,F2,Fsupport,LBASwaves,BAPI) {
 	if (Fsupport && MECHANICS.LBASBuff && Fsupport.supportType != 1 && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
 		var chance = Fsupport.supportChance(Fsupport.supportBoss);
 		if (Math.random() < chance) {
-			supportPhase(Fsupport.ships,alive2.concat(alive2C),subsalive2.concat(subsalive2C),Fsupport.supportType,BAPI,Fsupport.supportBoss);
+			supportPhase(Fsupport.ships,alive2.concat(alive2C),subsalive2.concat(subsalive2C),Fsupport.supportType,BAPI,Fsupport.supportBoss,true);
 			BAPI.data.api_n_support_flag = BAPI.data.api_support_flag;
 			BAPI.data.api_n_support_info = BAPI.data.api_support_info;
 			delete BAPI.data.api_support_flag; delete BAPI.data.api_support_info;

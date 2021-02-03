@@ -50,6 +50,11 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	
 	// if (aironly && ships2.length <= 2 && [652,651,650].indexOf(ships2[0].mid) != -1) bombing = true;
 	if (bombing) aironly = true;
+
+	// replace Echelon modifier with old one for single fleet
+	if (F1.formation.id == 4) F1.formation = ECHELONOLD;
+	if (F1C.formation.id == 4) F1C.formation = ECHELONOLD;
+	if (F2.formation.id == 4) F2.formation = ECHELONOLD;
 	
 	//code here
 	if (C) {
@@ -245,7 +250,7 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	if (Fsupport && (!NBonly || (MECHANICS.LBASBuff && Fsupport.supportType != 1)) && !aironly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
 		var chance = Fsupport.supportChance(Fsupport.supportBoss);
 		if (Math.random() < chance) {
-			supportPhase(Fsupport.ships,alive2,subsalive2,Fsupport.supportType,BAPI,Fsupport.supportBoss,Fsupport.supportBoss);
+			supportPhase(Fsupport.ships,alive2,subsalive2,Fsupport.supportType,BAPI,Fsupport.supportBoss,NBonly);
 			removeSunk(alive2); removeSunk(subsalive2);
 		}
 	}
@@ -556,8 +561,13 @@ function simStatsCombined(numsims,type,foptions) {
 				}
 			}
 			if (options.formation != '0') {
-				FLEETS1[0].formation = ALLFORMATIONS[type+options.formation];
-				FLEETS1[1].formation = ALLFORMATIONS[type+options.formation+'E'];
+				if (options.NBonly) {
+					FLEETS1[0].formation = ALLFORMATIONS[options.formation];
+					FLEETS1[1].formation = ALLFORMATIONS[options.formation];
+				}else{
+					FLEETS1[0].formation = ALLFORMATIONS[type+options.formation];
+					FLEETS1[1].formation = ALLFORMATIONS[type+options.formation+'E'];
+				}
 			} else {
 				FLEETS1[0].formation = formdef;
 				FLEETS1[1].formation = formdefc;
@@ -791,6 +801,9 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	
 	if (bombing) aironly = true;
 	
+	// replace Echelon modifier with old one for single fleet
+	if (F1.formation.id == 4) F1.formation = ECHELONOLD;
+
 	//initial
 	if (C) {
 		console.log('ENGAGEMENT: '+ENGAGEMENT);
@@ -1432,7 +1445,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	//support phase
 	if (Fsupport && !NBonly && !aironly && alive1.length+subsalive1.length+alive1C.length+subsalive1C.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
 		var chance = Fsupport.supportChance(Fsupport.supportBoss);
-		if (Math.random() < chance) supportPhase(Fsupport.ships,alive2.concat(alive2C),subsalive2.concat(subsalive2C),Fsupport.supportType,BAPI);
+		if (Math.random() < chance) supportPhase(Fsupport.ships,alive2.concat(alive2C),subsalive2.concat(subsalive2C),Fsupport.supportType,BAPI,Fsupport.supportBoss);
 		removeSunk(alive1); removeSunk(alive1C);
 		removeSunk(subsalive1); removeSunk(subsalive1C);
 		removeSunk(alive2); removeSunk(alive2C);
