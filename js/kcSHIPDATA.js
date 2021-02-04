@@ -26312,7 +26312,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 36,
 		LUK: 60,
-		TACC: 75,
+		TACC: 80,
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
