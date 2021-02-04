@@ -1548,6 +1548,7 @@ function clickedAddNode(update) {
 		document.getElementById('fleetspace2').appendChild(e);
 		genFleetHTML('fleetspace2', 20+NUMFLEETS2, 'Enemy Fleet '+NUMFLEETS2, '#ffaaaa', false, false, true);
 		genOptions(20+NUMFLEETS2);
+		updateNBFormSelection(20+NUMFLEETS2);
 	} else {
 		$('#T2'+NUMFLEETS2).css('display','block');
 		$('#arrow'+NUMFLEETS2).css('display','block');
@@ -3261,10 +3262,10 @@ function checkRandFriend(obj) {
 }
 
 function updateNBFormSelection(fleetnum) {
+	var def = document.getElementsByClassName('option2 ofdefault'+fleetnum);
+	var single = document.getElementsByClassName('option2 ofsingle'+fleetnum);
+	var combined = document.getElementsByClassName('option2 ofcombined'+fleetnum);
 	if (ADDEDCOMBINED) {
-		var def = document.getElementsByClassName('option2 ofdefault'+fleetnum);
-		var single = document.getElementsByClassName('option2 ofsingle'+fleetnum);
-		var combined = document.getElementsByClassName('option2 ofcombined'+fleetnum);
 		if (document.getElementById('NBonly'+fleetnum).checked){
 			for (var i = 0; i < def.length; i++) def[i].style.display = 'none';
 			for (var i = 0; i < single.length; i++) single[i].style.display = '';
@@ -3275,9 +3276,8 @@ function updateNBFormSelection(fleetnum) {
 			for (var i = 0; i < combined.length; i++) combined[i].style.display = '';
 		}
 	}else{
-		var combined = document.getElementsByClassName('option2 ofcombined'+fleetnum);
 		for (var i = 0; i < def.length; i++) def[i].style.display = '';
-		for (var i = 0; i < single.length; i++) def[i].style.display = '';
+		for (var i = 0; i < single.length; i++) single[i].style.display = '';
 		for (var i = 0; i < combined.length; i++) combined[i].style.display = 'none';
 	}
 }
