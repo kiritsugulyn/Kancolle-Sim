@@ -2572,6 +2572,8 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 	results.flagsunk = (ships2[0].HP <= 0);
 	results.undamaged = true;
 	results.buckets = 0;
+	results.repairCost1 = 0;
+	results.repairCost2 = 0;
 	for (var i=0; i<ships1.length; i++) {
 		if (ships1[i].HP/ships1[i].maxHP <= .25) {
 			results.redded = true;
@@ -2580,7 +2582,10 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 		}
 		if (ships1[i].HP/ships1[i].maxHP <= .5) results.undamaged = false;
 		if (ships1[i].HP/ships1[i].maxHP <= BUCKETPERCENT || getRepairTime(ships1[i]) > BUCKETTIME) results.buckets++;
-		//if (ships1[i].repairsOrig && ships1[i].repairsOrig.length > ships1[i]
+		if (ships1[i].repairsOrig && ships1[i].repairsOrig.length > ships1[i].repairs.length) {
+			results.repairCost1 += ships1[i].repairsOrig.filter(mid => mid == 42).length - ships1[i].repairs.filter(mid => mid == 42).length;
+			results.repairCost2 += ships1[i].repairsOrig.filter(mid => mid == 43).length - ships1[i].repairs.filter(mid => mid == 43).length;
+		}
 	}
 	results.MVP = F1.getMVP();
 	results.sinkFlagship = F1.getSinkFlagship();
@@ -2895,6 +2900,8 @@ function simStats(numsims,foptions) {
 		totalFuelR: 0,
 		totalSteelR: 0,
 		totalBuckets: 0,
+		totalRepairCost1: 0,
+		totalRepairCost2: 0,
 		totalEmptiedPlanes: 0,
 		totalEmptiedLBAS: 0,
 		totalGaugeDamage: 0,
@@ -3012,6 +3019,8 @@ function simStats(numsims,foptions) {
 				}
 			}
 			if (res.jetCost) totalResult.totalSteelS += res.jetCost;
+			if (res.repairCost1) totalResult.totalRepairCost1 += res.repairCost1;
+			if (res.repairCost2) totalResult.totalRepairCost2 += res.repairCost2;
 			if (!canContinue(FLEETS1[0].ships)) break;
 		}
 		let flagshipFinal = FLEETS2[FLEETS2.length-1].ships[0];

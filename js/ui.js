@@ -1592,6 +1592,8 @@ function clickedAddComb(update) {
 		$('#plus').css('display','block');
 	}
 	ADDEDCOMBINED = true;
+	updateNBFormSelection(2);
+	for (var i = 2; i <= NUMFLEETS2; i++) updateNBFormSelection(20+i);
 	if (update) updateFleetCode('11');
 	$('#btnDelComb').css('display','');
 	$('#btnAddComb').css('display','none');
@@ -1618,6 +1620,8 @@ function clickedDelComb() {
 	//document.cookie = 'fleet11=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 	saveFleet('11','');
 	ADDEDCOMBINED = false;
+	updateNBFormSelection(2);
+	for (var i = 2; i <= NUMFLEETS2; i++) updateNBFormSelection(20+i);
 	$('#btnDelComb').css('display','none');
 	$('#btnAddComb').css('display','');
 	$('.ofcombined').each(function(){ $(this).hide(); });
@@ -1826,6 +1830,8 @@ function updateResults(results) {
 	resultAddWeight('rfrep',results.totalFuelR,results.totalnum);
 	resultAddWeight('rsrep',results.totalSteelR,results.totalnum);
 	resultAddWeight('bucketrep',results.totalBuckets,results.totalnum);
+	resultAddWeight('repair1rep',results.totalRepairCost1,results.totalnum);
+	resultAddWeight('repair2rep',results.totalRepairCost2,results.totalnum);
 	
 	var Srate = RESVALUES['rankS'][0]/results.totalnum;
 	$('#rfpS').text(Math.round(1000*(RESVALUES['rfsup'][0]+RESVALUES['rfrep'][0])/results.totalnum/Srate)/1000);

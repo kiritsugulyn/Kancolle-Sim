@@ -450,6 +450,8 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	results.flagsunk = (ships2[0].HP <= 0);
 	results.undamaged = true;
 	results.buckets = 0;
+	results.repairCost1 = 0;
+	results.repairCost2 = 0;
 	for (var i=0; i<ships1.length; i++) {
 		if (ships1[i].HP/ships1[i].maxHP <= .25) {
 			results.redded = true;
@@ -458,6 +460,10 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		}
 		if (ships1[i].HP/ships1[i].maxHP <= .5) results.undamaged = false;
 		if (ships1[i].HP/ships1[i].maxHP <= BUCKETPERCENT || getRepairTime(ships1[i]) > BUCKETTIME) results.buckets++;
+		if (ships1[i].repairsOrig && ships1[i].repairsOrig.length > ships1[i].repairs.length) {
+			results.repairCost1 += ships1[i].repairsOrig.filter(mid => mid == 42).length - ships1[i].repairs.filter(mid => mid == 42).length;
+			results.repairCost2 += ships1[i].repairsOrig.filter(mid => mid == 43).length - ships1[i].repairs.filter(mid => mid == 43).length;
+		}
 	}
 	for (var i=0; i<ships1C.length; i++) {
 		if (ships1C[i].HP/ships1C[i].maxHP <= .25) {
@@ -467,6 +473,10 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		}
 		if (ships1C[i].HP/ships1C[i].maxHP <= .5) results.undamaged = false;
 		if (ships1C[i].HP/ships1C[i].maxHP <= BUCKETPERCENT || getRepairTime(ships1C[i]) > BUCKETTIME) results.buckets++;
+		if (ships1C[i].repairsOrig && ships1C[i].repairsOrig.length > ships1C[i].repairs.length) {
+			results.repairCost1 += ships1C[i].repairsOrig.filter(mid => mid == 42).length - ships1C[i].repairs.filter(mid => mid == 42).length;
+			results.repairCost2 += ships1C[i].repairsOrig.filter(mid => mid == 43).length - ships1C[i].repairs.filter(mid => mid == 43).length;
+		}
 	}
 	results.MVP = F1.getMVP();
 	results.MVPC = F1C.getMVP();
@@ -494,6 +504,8 @@ function simStatsCombined(numsims,type,foptions) {
 		totalFuelR: 0,
 		totalSteelR: 0,
 		totalBuckets: 0,
+		totalRepairCost1: 0,
+		totalRepairCost2: 0,
 		totalEmptiedPlanes: 0,
 		totalEmptiedLBAS: 0,
 		totalGaugeDamage: 0,
@@ -644,6 +656,8 @@ function simStatsCombined(numsims,type,foptions) {
 				}
 			}
 			if (res.jetCost) totalResult.totalSteelS += res.jetCost;
+			if (res.repairCost1) totalResult.totalRepairCost1 += res.repairCost1;
+			if (res.repairCost2) totalResult.totalRepairCost2 += res.repairCost2;
 			//if ((res.redded && DORETREAT)||res.flagredded) break;
 			if (!canContinue(FLEETS1[0].ships,FLEETS1[1].ships)) break;
 		}
@@ -1169,6 +1183,8 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	results.flagsunk = (ships2[0].HP <= 0);
 	results.undamaged = true;
 	results.buckets = 0;
+	results.repairCost1 = 0;
+	results.repairCost2 = 0;
 	for (var i=0; i<ships1.length; i++) {
 		if (ships1[i].HP/ships1[i].maxHP <= .25) {
 			results.redded = true;
@@ -1177,6 +1193,10 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		}
 		if (ships1[i].HP/ships1[i].maxHP <= .5) results.undamaged = false;
 		if (ships1[i].HP/ships1[i].maxHP <= BUCKETPERCENT || getRepairTime(ships1[i]) > BUCKETTIME) results.buckets++;
+		if (ships1[i].repairsOrig && ships1[i].repairsOrig.length > ships1[i].repairs.length) {
+			results.repairCost1 += ships1[i].repairsOrig.filter(mid => mid == 42).length - ships1[i].repairs.filter(mid => mid == 42).length;
+			results.repairCost2 += ships1[i].repairsOrig.filter(mid => mid == 43).length - ships1[i].repairs.filter(mid => mid == 43).length;
+		}
 	}
 	results.MVP = F1.getMVP();
 	results.sinkFlagship = F1.getSinkFlagship();
@@ -1722,6 +1742,8 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	results.flagsunk = (ships2[0].HP <= 0);
 	results.undamaged = true;
 	results.buckets = 0;
+	results.repairCost1 = 0;
+	results.repairCost2 = 0;
 	for (var i=0; i<ships1.length; i++) {
 		if (ships1[i].HP/ships1[i].maxHP <= .25) {
 			results.redded = true;
@@ -1730,6 +1752,10 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		}
 		if (ships1[i].HP/ships1[i].maxHP <= .5) results.undamaged = false;
 		if (ships1[i].HP/ships1[i].maxHP <= BUCKETPERCENT || getRepairTime(ships1[i]) > BUCKETTIME) results.buckets++;
+		if (ships1[i].repairsOrig && ships1[i].repairsOrig.length > ships1[i].repairs.length) {
+			results.repairCost1 += ships1[i].repairsOrig.filter(mid => mid == 42).length - ships1[i].repairs.filter(mid => mid == 42).length;
+			results.repairCost2 += ships1[i].repairsOrig.filter(mid => mid == 43).length - ships1[i].repairs.filter(mid => mid == 43).length;
+		}
 	}
 	for (var i=0; i<ships1C.length; i++) {
 		if (ships1C[i].HP/ships1C[i].maxHP <= .25) {
@@ -1739,6 +1765,10 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		}
 		if (ships1C[i].HP/ships1C[i].maxHP <= .5) results.undamaged = false;
 		if (ships1C[i].HP/ships1C[i].maxHP <= BUCKETPERCENT || getRepairTime(ships1C[i]) > BUCKETTIME) results.buckets++;
+		if (ships1C[i].repairsOrig && ships1C[i].repairsOrig.length > ships1C[i].repairs.length) {
+			results.repairCost1 += ships1C[i].repairsOrig.filter(mid => mid == 42).length - ships1C[i].repairs.filter(mid => mid == 42).length;
+			results.repairCost2 += ships1C[i].repairsOrig.filter(mid => mid == 43).length - ships1C[i].repairs.filter(mid => mid == 43).length;
+		}
 	}
 	results.MVP = F1.getMVP();
 	results.MVPC = F1C.getMVP();
