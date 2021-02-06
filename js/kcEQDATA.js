@@ -1231,7 +1231,7 @@ var EQDATA = {
 		improveType: 1,
 		FPfitclass: 102,
 		fitclass: 102,
-		FP: 4,
+		FP: 5,
 		AA: 3,
 		RNG: 2,
 		ACC: 3
@@ -2085,7 +2085,7 @@ var EQDATA = {
 		improveType: 1,
 		FPfitclass: 102,
 		fitclass: 102,
-		FP: 5,
+		FP: 6,
 		AA: 3,
 		RNG: 2,
 		ACC: 4
@@ -5055,6 +5055,18 @@ var EQDATA = {
 		AA: 4,
 		ACC: 2,
 		LOS: 3,
+	},
+	407: {
+		name: '15.2cm Twin Cannon Kai Ni',
+		nameJP: '15.2cm連装砲改二',
+		added: '2021-02-05',
+		type: MAINGUNM,
+		fitclass: 102,
+		FP: 6,
+		AA: 4,
+		RNG: 2,
+		ACC: 4,
+		AR: 1,
 	},
 	501: {
 		name: '5inch Single Cannon',

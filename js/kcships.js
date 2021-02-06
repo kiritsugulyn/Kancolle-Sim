@@ -336,10 +336,10 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (FPfitcounts[102]) this.FPfit += 2*Math.sqrt(FPfitcounts[102]);	// dual gun fit
 
 		this.ACCfit = 0; 
-		if ([4,16,20].indexOf(this.sclass) != -1 && (fitcounts[101] || fitcounts[102])) this.ACCfit += 4 - 2*((fitcounts[101] || 0) + (fitcounts[102] || 0));  // 5500T class fit
-		if (this.sclass == 41 && fitcounts[102]) this.ACCfit += 8 - 2*(fitcounts[102] || 0);  // Agano class fit
-		if (fitcounts[103]) this.ACCfit -= 3*fitcounts[103];   // 20.3cm dual gun fit
-        if (fitcounts[104]) this.ACCfit -= 10*fitcounts[104];   // 8inch triple gun fit
+		if ([4,16,20,34].indexOf(this.sclass) != -1 && fitcounts[101]) this.ACCfit += 2 - 2 * Math.max(fitcounts[101] - 1, 0);  // 5500T class + Yuubari fit
+		if (this.sclass == 41 && fitcounts[102]) this.ACCfit += 6 - 3 * Math.max(fitcounts[102] - 2, 0);  // Agano class fit
+		if (fitcounts[103]) this.ACCfit -= (this.sclass == 41? 4 : 3) * fitcounts[103];   // 20.3cm dual gun fit
+        if (fitcounts[104]) this.ACCfit -= 10 * fitcounts[104];   // 8inch triple gun fit
         if (this.mid > 1500) this.ACCfit -= 2;  // Abyssal CL fit
 		this.ACCfitN = this.ACCfit;
 	}
@@ -932,7 +932,7 @@ Ship.prototype.getAACItype = function(atypes) {
             if (atypes[A_HAGUN] >= 3) types.push(30);
             if (atypes[A_HAGUN] >= 2) types.push(31);
         }
-        if (([67,78,82,88].indexOf(this.sclass) !== -1 || (this.sclass == 6 && this.findRemodelLvl() >= 2)) && ((hasID[191] && hasID[300]) || (hasID[301] && hasID[191]) || (hasID[301] >= 2))) types.push(32); //royal navy + Kongou-class
+        if (([67,78,82,88,108].indexOf(this.sclass) !== -1 || (this.sclass == 6 && this.findRemodelLvl() >= 2)) && ((hasID[191] && hasID[300]) || (hasID[301] && hasID[191]) || (hasID[301] >= 2))) types.push(32); //royal navy + Kongou-class
     }
 	
 	return types;
@@ -2328,6 +2328,48 @@ Equip.explicitStatsBonusGears = function(){
                 },
             ],
         },
+        // Swordfish
+        "242": {
+            count: 0,
+            byClass: {
+                // Ark Royal Class
+                "78": {
+                    multiple: { "houg": 2, "houk": 1 },
+                },
+                // Houshou Class
+                "27": {
+                    multiple: { "houg": 1 },
+                },
+            },
+        },
+        // Swordfish Mk.II (Skilled)
+        "243": {
+            count: 0,
+            byClass: {
+                // Ark Royal Class
+                "78": {
+                    multiple: { "houg": 3, "houk": 1 },
+                },
+                // Houshou Class
+                "27": {
+                    multiple: { "houg": 2 },
+                },
+            },
+        },
+        // Swordfish Mk.III (Skilled)
+        "244": {
+            count: 0,
+            byClass: {
+                // Ark Royal Class
+                "78": {
+                    multiple: { "houg": 4, "houk": 2 },
+                },
+                // Houshou Class
+                "27": {
+                    multiple: { "houg": 3 },
+                },
+            },
+        },
         // Ju 87C Kai Ni (w/ KMX)
         "305": {
             count: 0,
@@ -2858,6 +2900,22 @@ Equip.explicitStatsBonusGears = function(){
                 },
             ],
         },
+        // Zuiun
+        "26": {
+            byShip: {
+                // Noshiro Kai Ni
+                ids: [662],
+                single: { "houg": 2, "houk": 1 },
+            },
+        },
+        // Prototype Seiran
+        "62": {
+            byShip: {
+                // Noshiro Kai Ni
+                ids: [662],
+                single: { "houg": 2, "houk": 1 },
+            },
+        },
         // Zuiun (634 Air Group)
         "79": {
             count: 0,
@@ -2873,10 +2931,25 @@ Equip.explicitStatsBonusGears = function(){
                     multiple: { "houg": 2 },
                 },
             },
+            byShip: [
+                {
+                    // Ise Class Kai
+                    ids: [82, 88],
+                    multiple: { "houg": 2 },
+                },
+                {
+                    // Noshiro Kai Ni
+                    ids: [662],
+                    single: { "houg": 2, "houk": 1 },
+                },
+            ],
+        },
+        // Zuiun Model 12
+        "80": {
             byShip: {
-                // Ise Class Kai
-                ids: [82, 88],
-                multiple: { "houg": 2 },
+                // Noshiro Kai Ni
+                ids: [662],
+                single: { "houg": 2, "houk": 1 },
             },
         },
         // Zuiun Model 12 (634 Air Group)
@@ -2894,10 +2967,33 @@ Equip.explicitStatsBonusGears = function(){
                     multiple: { "houg": 2 },
                 },
             },
+            byShip: [
+                {
+                    // Ise Class Kai
+                    ids: [82, 88],
+                    multiple: { "houg": 2 },
+                },
+                {
+                    // Noshiro Kai Ni
+                    ids: [662],
+                    single: { "houg": 2, "houk": 1 },
+                },
+            ],
+        },
+        // Zuiun (631 Air Group)
+        "207": {
             byShip: {
-                // Ise Class Kai
-                ids: [82, 88],
-                multiple: { "houg": 2 },
+                // Noshiro Kai Ni
+                ids: [662],
+                single: { "houg": 2, "houk": 1 },
+            },
+        },
+        // Seiran (631 Air Group)
+        "208": {
+            byShip: {
+                // Noshiro Kai Ni
+                ids: [662],
+                single: { "houg": 2, "houk": 1 },
             },
         },
         // Zuiun (634 Air Group / Skilled)
@@ -2915,11 +3011,18 @@ Equip.explicitStatsBonusGears = function(){
                     multiple: { "houg": 2 },
                 },
             },
-            byShip: {
-                // Ise Class Kai
-                ids: [82, 88],
-                multiple: { "houg": 3, "houk": 1 },
-            },
+            byShip: [
+                {
+                    // Ise Class Kai
+                    ids: [82, 88],
+                    multiple: { "houg": 3, "houk": 1 },
+                },
+                {
+                    // Noshiro Kai Ni
+                    ids: [662],
+                    single: { "houg": 3, "houk": 1 },
+                },
+            ],
         },
         // Zuiun Kai Ni (634 Air Group)
         "322": {
@@ -2931,6 +3034,11 @@ Equip.explicitStatsBonusGears = function(){
                     multiple: { "houg": 5, "tyku": 2, "tais": 1, "houk": 2 },
                 },
             },
+            byShip: {
+                // Noshiro Kai Ni
+                ids: [662],
+                single: { "houg": 3, "houk": 1 },
+            },
         },
         // Zuiun Kai Ni (634 Air Group / Skilled)
         "323": {
@@ -2941,6 +3049,11 @@ Equip.explicitStatsBonusGears = function(){
                     remodel: 2,
                     multiple: { "houg": 6, "tyku": 3, "tais": 2, "houk": 3 },
                 },
+            },
+            byShip: {
+                // Noshiro Kai Ni
+                ids: [662],
+                single: { "houg": 3, "houk": 1 },
             },
         },
         // Laté 298B
@@ -3908,6 +4021,73 @@ Equip.explicitStatsBonusGears = function(){
                 },
             },
         },
+        // 15.5cm Triple Gun Mount
+        "5": {
+            count: 0,
+            byClass: {
+                // Mogami Class
+                "9": {
+                    multiple: { "houg": 1 },
+                },
+                // Ooyodo Class
+                "52": "9",
+            },
+        },
+        // 15.5cm Triple Gun Mount Kai
+        "235": {
+            count: 0,
+            byClass: {
+                // Mogami Class
+                "9": {
+                    multiple: { "houg": 1, "tyku": 1 },
+                },
+                // Ooyodo Class
+                "52": "9",
+            },
+            byShip: {
+                // Ooyodo Kai
+                ids: [321],
+                multiple: { "houg": 1, "houk": 1 },
+                synergy: [
+                    {
+                        flags: [ "surfaceRadar" ],
+                        single: { "houg": 3, "houk": 2 },
+                    },
+                    {
+                        flags: [ "airRadar" ],
+                        single: { "tyku": 3, "houk": 3 },
+                    },
+                ],
+            },
+        },
+        // 15.2cm Twin Gun Mount Kai
+        "139": {
+            count: 0,
+            byShip: {
+                // Noshiro Kai Ni
+                ids: [662],
+                multiple: { "houg": 2, "tyku": 1 },
+            },
+        },
+        // 15.2cm Twin Gun Mount Kai Ni
+        "407": {
+            count: 0,
+            byShip: {
+                // Noshiro Kai Ni
+                ids: [662],
+                multiple: { "houg": 4, "tyku": 2, "houk": 1 },
+                synergy: [
+                    {
+                        flags: [ "surfaceRadar" ],
+                        single: { "houg": 2, "raig": 2, "houk": 2 },
+                    },
+                    {
+                        flags: [ "airRadar" ],
+                        single: { "tyku": 2, "houk": 3 },
+                    },
+                ],
+            },
+        },
         // 20.3cm (No.2) Twin Gun Mount
         "90": {
             count: 0,
@@ -4021,57 +4201,6 @@ Equip.explicitStatsBonusGears = function(){
                     multiple: { "houg": 2, "tyku": 1, "houk": 1 },
                 },
             },
-        },
-        // Searchlight
-        "74": {
-            count: 0,
-            byShip: [
-                {
-                    // All remodels of: Akatsuki, Choukai, Kirishima, Hiei
-                    origins: [34, 69, 85, 86],
-                    single: { "houg": 4, "houk": -1 },
-                },
-                {
-                    // Jintsuu
-                    origins: [55],
-                    single: { "houg": 8, "raig": 6, "houk": -1 },
-                },
-                {
-                    // Akigumo
-                    origins: [132],
-                    multiple: { "houg": 2 },
-                },
-                {
-                    // Yukikaze
-                    origins: [20],
-                    multiple: { "houg": 1, "tyku": 1 },
-                },
-            ],
-        },
-        // Type 96 150cm Searchlight
-        "140": {
-            count: 0,
-            byShip: [
-                {
-                    // All remodels of: Kirishima, Hiei
-                    origins: [85, 86],
-                    single: { "houg": 6, "houk": -2 },
-                },
-                {
-                    // Hiei Kai Ni C
-                    ids: [592],
-                    single: { "houg": 3, "raig": 3 },
-                    synergy: {
-                        flags: [ "kamikazeTwinTorpedo" ],
-                        single: { "raig": 5 },
-                    },
-                },
-                {
-                    // Yamato, Musashi
-                    origins: [131, 143],
-                    single: { "houg": 4, "houk": -1 },
-                },
-            ],
         },
         // Bofors 15.2cm Twin Gun Mount Model 1930
         "303": {
@@ -4587,6 +4716,15 @@ Equip.explicitStatsBonusGears = function(){
                     origins: [642],
                     minStars: 10,
                     single: { "raig": 2 },
+                },
+                {
+                    // Noshiro Kai Ni
+                    ids: [662],
+                    multiple: { "raig": 2 },
+                    synergy: {
+                        flags: [ "surfaceRadar" ],
+                        single: { "raig": 3, "houk": 2 },
+                    },
                 },
             ],
         },
@@ -5886,6 +6024,19 @@ Equip.explicitStatsBonusGears = function(){
                 },
             ],
         },
+        // 8cm High-angle Gun Kai + Extra Machine Guns
+        "220": {
+            count: 0,
+            byShip: {
+                // Noshiro Kai Ni
+                ids: [662],
+                multiple: { "houg": 1, "tyku": 3, "houk": 2 },
+                synergy: {
+                    flags: [ "airRadar" ],
+                    single: { "tyku": 3, "houk": 3 },
+                },
+            },
+        },
         // GFCS Mk.37
         "307": {
             count: 0,
@@ -5989,6 +6140,42 @@ Equip.explicitStatsBonusGears = function(){
                     multiple: { "tyku": 1, "houk": 3, "souk": 1 },
                 },
             ],
+        },
+        // 25mm Twin Autocannon Mount
+        "39": {
+            count: 0,
+            byShip: {
+                // Noshiro Kai Ni
+                ids: [662],
+                multiple: { "tyku": 2, "houk": 1 },
+            },
+        },
+        // 25mm Triple Autocannon Mount
+        "40": {
+            count: 0,
+            byShip: {
+                // Noshiro Kai Ni
+                ids: [662],
+                multiple: { "tyku": 2, "houk": 1 },
+            },
+        },
+        // 25mm Single Autocannon Mount
+        "49": {
+            count: 0,
+            byShip: {
+                // Noshiro Kai Ni
+                ids: [662],
+                multiple: { "tyku": 2, "houk": 1 },
+            },
+        },
+        // 25mm Triple Autocannon Mount (Concentrated Deployment)
+        "131": {
+            count: 0,
+            byShip: {
+                // Noshiro Kai Ni
+                ids: [662],
+                multiple: { "tyku": 2, "houk": 1 },
+            },
         },
         // Type 1 Armor-Piercing Shell Kai
         "365": {
@@ -6164,6 +6351,12 @@ Equip.explicitStatsBonusGears = function(){
         // Type 4 Passive Sonar
         "149": {
             count: 0,
+            byClass: {
+                // Akizuki Class
+                "54": {
+                    single: { "houk": 2, "tais": 1 },
+                },
+            },
             byShip: [
                 {
                     // Yuubari K2/T, Isuzu K2, Naka K2, Yura K2, Yukikaze K2
@@ -6175,13 +6368,12 @@ Equip.explicitStatsBonusGears = function(){
                     ids: [624],
                     single: { "houk": 5, "tais": 3 },
                 },
-            ],
-            byClass: {
-                // Akizuki Class
-                "54": {
-                    single: { "houk": 2, "tais": 1 },
+                {
+                    // Noshiro K2
+                    ids: [662],
+                    multiple: { "tais": 2, "houk": 4 },
                 },
-            },
+            ],
         },
         // Type 3 Depth Charge Projector (Concentrated Deployment)
         "287": {
@@ -6191,6 +6383,11 @@ Equip.explicitStatsBonusGears = function(){
                     // Yuubari K2D, Isuzu K2, Naka K2, Yura K2, Yukikaze K2
                     ids: [624,      141,      160,     488,     656],
                     multiple: { "houk": 1, "tais": 1 },
+                },
+                {
+                    // Noshiro K2
+                    ids: [662],
+                    multiple: { "tais": 3 },
                 },
             ],
         },
@@ -6207,6 +6404,11 @@ Equip.explicitStatsBonusGears = function(){
                     // Yuubari K2D
                     ids: [624],
                     multiple: { "houk": 2, "tais": 3 },
+                },
+                {
+                    // Noshiro K2
+                    ids: [662],
+                    multiple: { "tais": 4, "houk": 1 },
                 },
             ],
         },
@@ -6415,6 +6617,62 @@ Equip.explicitStatsBonusGears = function(){
                 "31": "7"
             },
         },
+        // All Small Searchlights
+        "t2_29": {
+            count: 0,
+            byShip: [
+                {
+                    // All remodels of: Akatsuki, Choukai, Kirishima, Hiei
+                    origins: [34, 69, 85, 86],
+                    single: { "houg": 4, "houk": -1 },
+                },
+                {
+                    // Jintsuu
+                    origins: [55],
+                    single: { "houg": 8, "raig": 8, "houk": -1 },
+                },
+                {
+                    // Akigumo
+                    origins: [132],
+                    multiple: { "houg": 2 },
+                },
+                {
+                    // Yukikaze
+                    origins: [20],
+                    multiple: { "houg": 1, "tyku": 1 },
+                },
+                {
+                    // Noshiro Kai Ni
+                    ids: [662],
+                    multiple: { "houg": 4, "raig": 2 },
+                },
+            ],
+        },
+        // All Large Searchlights
+        "t2_42": {
+            count: 0,
+            byShip: [
+                {
+                    // All remodels of: Kirishima, Hiei
+                    origins: [85, 86],
+                    single: { "houg": 6, "houk": -2 },
+                },
+                {
+                    // Hiei Kai Ni C
+                    ids: [592],
+                    single: { "houg": 3, "raig": 3 },
+                    synergy: {
+                        flags: [ "kamikazeTwinTorpedo" ],
+                        single: { "raig": 5 },
+                    },
+                },
+                {
+                    // Yamato, Musashi
+                    origins: [131, 143],
+                    single: { "houg": 4, "houk": -1 },
+                },
+            ],
+        },
         // All Radars
         "t3_11": {
             count: 0,
@@ -6428,6 +6686,39 @@ Equip.explicitStatsBonusGears = function(){
                         flags: [ "airRadar" ],
                         single: { "houg": 1, "tyku": 2, "houk": 3 },
                     },
+                },
+            ],
+        },
+        // All Seaplane Reconnaissances
+        "t2_10": {
+            count: 0,
+            byShip: [
+                {
+                    // Noshiro K2
+                    ids: [662],
+                    single: { "houg": 2, "tais": 3, "houk": 1 },
+                },
+            ],
+        },
+        // All Seaplane Bombers
+        "t2_11": {
+            count: 0,
+            byShip: [
+                {
+                    // Noshiro K2
+                    ids: [662],
+                    single: { "houg": 1, "tais": 1, "houk": 1 },
+                },
+            ],
+        },
+        // All Rotorcraft
+        "t2_25": {
+            count: 0,
+            byShip: [
+                {
+                    // Noshiro K2
+                    ids: [662],
+                    single: { "tais": 4, "houk": 1 },
                 },
             ],
         },
@@ -6459,6 +6750,7 @@ Equip.explicitStatsBonusGears = function(){
                 {
                     // Fast Group B1: Amatsukaze, Iowa, Souryuu, Hiryuu, Unryuu, Amagi, Kongou, Haruna, Kirishima, Hiei, Agano, Noshiro, Yahagi, Sakawa
                     origins: [181, 440, 90, 91, 404, 331, 78, 79, 85, 86, 137, 138, 139, 140],
+                    excludes: [662],
                     synergy: [
                         {
                             flags: [ "enhancedBoiler" ],
@@ -6471,19 +6763,19 @@ Equip.explicitStatsBonusGears = function(){
                     ],
                 },
                 {
-                    // Fast Group B2: Yuubari Kai Ni/K2D
+                    // Fast Group B2: Yuubari Kai Ni/K2D, Noshiro K2
                     //   Almost fast CV: Akagi, Katsuragi, Intrepid, Ark Royal?, Aquila?, Graf Zeppelin?, Saratoga?, Hornet?
                     //   Almost FBB: Littorio, Roma, Bismarck, Richelieu, South Dakota, Washington?
                     //   All fast DD: not here, see next item
                     //   All fast CL/CLT: Nagara, Isuzu, Yura, Ooi, Kitakami, Tenryuu, Tatsuta, Natori, Sendai, Jintsuu, Naka, Kuma, Tama, Kiso, Kinu, Abukuma, Ooyodo, Gotland, Abruzzi, Garibaldi, Atlanta, De Ruyter, Perth, Helena, Sheffield?
                     //   All fast CA(V): Furutaka, Kako, Aoba, Myoukou, Nachi, Ashigara, Haguro, Takao, Atago, Maya, Choukai, Kinugasa, Prinz Eugen, Zara, Pola, Houston
                     //   All fast CVL: Shouhou, Ryuujou, Zuihou, Chitose-Kou, Chiyoda-Kou
-                    origins: [115, 441, 442, 171, 492, 602, 654, 83, 332, 549, 515, 444, 432, 433, 603,
+                    origins: [115, 138, 441, 442, 171, 492, 602, 654, 83, 332, 549, 515, 444, 432, 433, 603,
                             21, 22, 23, 24, 25, 51, 52, 53, 54, 55, 56, 99, 100, 101, 113, 114, 183, 574, 589, 590, 597, 604, 613, 615, 514,
                             59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 123, 176, 448, 449, 595,
                             74, 76, 116, 102, 103
                         ],
-                    excludes: [115, 293, 623, 102, 103, 104, 105, 106, 107],
+                    excludes: [115, 293, 623, 138, 306, 102, 103, 104, 105, 106, 107],
                     synergy: [
                         {
                             flags: [ "enhancedBoiler" ],

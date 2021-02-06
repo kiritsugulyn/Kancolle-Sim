@@ -635,7 +635,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 	return (target.HP <= 0);
 }
 
-function ASW(ship,target,isnight,APIhou) {
+function ASW(ship,target,isnight,APIhou,isOASW) {
 	var sonarAcc = 0;
 	for (var i=0; i<ship.equips.length; i++) if (ship.equips[i].type == SONARS) sonarAcc += 2*ship.equips[i].ASW;
 	sonarAcc += (ship.improves.ACCasw || 0);
@@ -655,7 +655,7 @@ function ASW(ship,target,isnight,APIhou) {
 		}
 	}
 	var acc = hitRate(ship,80,sonarAcc,accMod);
-	var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().ASWev,evFlat,1.3,ship.planeasw), ship.planeasw? (ship.critdmgbonus || 1) : 1);
+	var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().ASWev,evFlat,1.3,ship.planeasw&&!isOASW), ship.planeasw&&!isOASW? (ship.critdmgbonus || 1) : 1);
 	var dmg = 0, realdmg = 0;
 	var preMod = (isnight)? 0 : ship.getFormation().ASWmod*ENGAGEMENT*ship.damageMod();
 	if (res) {
@@ -761,13 +761,13 @@ function shellPhaseTarget(ship,alive,subsalive,isOASW) {
 	return result;
 }
 
-function shellPhaseAttack(ship,targetData,APIhou,attackSpecial) {
+function shellPhaseAttack(ship,targetData,APIhou,isOASW,attackSpecial) {
 	switch (targetData.type) {
 		case 1: //shell
 			if (shell(ship,targetData.target,APIhou,attackSpecial)) targetData.alive.splice(targetData.alive.indexOf(targetData.target),1);
 			break;
 		case 2: //ASW
-			if (ASW(ship,targetData.target,false,APIhou)) targetData.alive.splice(targetData.alive.indexOf(targetData.target),1);
+			if (ASW(ship,targetData.target,false,APIhou,isOASW)) targetData.alive.splice(targetData.alive.indexOf(targetData.target),1);
 			break;
 		case 3: //laser
 			var targets = targetData.target;
@@ -931,7 +931,7 @@ function shellPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,APIhou,isO
 				for (; k<ships.length; k++) {
 					if (alive2.length <= 0) break;
 					var targetData = shellPhaseTarget(ships[k],alive2,[]);
-					shellPhaseAttack(ships[k],targetData,APIhou,order1[i].attackSpecial);
+					shellPhaseAttack(ships[k],targetData,APIhou,isOASW,order1[i].attackSpecial);
 				}
 				order1[i].fleet.didSpecial = 1;
 				if (C) {
@@ -939,13 +939,13 @@ function shellPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,APIhou,isO
 				}
 			} else {
 				var targetData = shellPhaseTarget(order1[i],alive2,subsalive2,isOASW);
-				shellPhaseAttack(order1[i],targetData,APIhou);
+				shellPhaseAttack(order1[i],targetData,APIhou,isOASW);
 			}
 		}
 		if (alive2.length+subsalive2.length <= 0) break;
 		if (i < order2.length && order2[i].canStillShell()) {
 			var targetData = shellPhaseTarget(order2[i],alive1,subsalive1,isOASW);
-			shellPhaseAttack(order2[i],targetData,APIhou);
+			shellPhaseAttack(order2[i],targetData,APIhou,isOASW);
 		}
 		if (alive1.length+subsalive1.length <= 0) break;
 	}
@@ -960,7 +960,7 @@ function doShellC(ship,targets,APIhou,isOASW,attackSpecial) {
 		targetData = shellPhaseTarget(ship,targets.alive2,targets.subsalive2,isOASW);
 		if (!targetData.target && targets.alive2C) targetData = shellPhaseTarget(ship,targets.alive2C,targets.subsalive2C,isOASW);
 	}
-	shellPhaseAttack(ship,targetData,APIhou,attackSpecial);
+	shellPhaseAttack(ship,targetData,APIhou,isOASW,attackSpecial);
 }
 
 function shellPhaseC(order1,order2,targets,APIhou,isOASW) {
@@ -998,7 +998,7 @@ function shellPhaseC(order1,order2,targets,APIhou,isOASW) {
 				targetData = shellPhaseTarget(order2[i],targets.alive1,targets.subsalive1,isOASW);
 				if (!targetData.target && targets.alive1C) targetData = shellPhaseTarget(order2[i],targets.alive1C,targets.subsalive1C,isOASW);
 			}
-			shellPhaseAttack(order2[i],targetData,APIhou);
+			shellPhaseAttack(order2[i],targetData,APIhou,isOASW);
 		}
 		var num1 = targets.alive1.length+targets.subsalive1.length;
 		if (targets.alive1C) num1 += targets.alive1C.length+targets.subsalive1C.length;
