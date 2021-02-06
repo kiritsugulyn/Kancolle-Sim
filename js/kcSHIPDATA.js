@@ -5336,9 +5336,9 @@ var SHIPDATA = {
 		SLOTS: [1, 1, 1],
 		fuel: 25,
 		ammo: 30,
-		next: 0,
+		next: 652,
 		prev: 99,
-		nextlvl: 652,
+		nextlvl: 88,
 	},
 	216: {
 		name: 'Tama Kai',
