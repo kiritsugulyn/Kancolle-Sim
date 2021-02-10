@@ -6371,7 +6371,7 @@ Equip.explicitStatsBonusGears = function(){
                 {
                     // Noshiro K2
                     ids: [662],
-                    multiple: { "tais": 2, "houk": 4 },
+                    single: { "tais": 2, "houk": 4 },
                 },
             ],
         },
@@ -6644,7 +6644,7 @@ Equip.explicitStatsBonusGears = function(){
                 {
                     // Noshiro Kai Ni
                     ids: [662],
-                    multiple: { "houg": 4, "raig": 2 },
+                    single: { "houg": 4, "raig": 2 },
                 },
             ],
         },
