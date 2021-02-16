@@ -1236,6 +1236,7 @@ BBV.prototype.canAS = function() {
 
 function CV(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
+    this.planeasw = true;
 }
 CV.prototype = Object.create(Ship.prototype);
 CV.prototype.canNB = function() { return (((this.nightattack && this.HP/this.maxHP > .25) || this.canNBAirAttack()) && !this.retreated); }
@@ -1333,7 +1334,7 @@ CV.prototype.rocketBarrageChance = CAV.prototype.rocketBarrageChance;
 CV.prototype.canASW = function() {
     if (this.mid !== 646) return false;
 	if (this.HP/this.maxHP <= .5) return false;
-	for (var i=0; i<this.equips.length; i++) { if (this.equips[i].isdivebomber || this.equips[i].istorpbomber) return true; }
+	for (var i=0; i<this.equips.length; i++) { if ((this.equips[i].isdivebomber || this.equips[i].istorpbomber) && (this.planecount[i] > 0)) return true; }
 	return false;
 }
 CV.prototype.canOASW = function() {
@@ -1351,12 +1352,11 @@ CV.prototype.canShellInstall = function () {
 
 function CVL(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	CV.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
-	this.planeasw = true;
 }
 CVL.prototype = Object.create(CV.prototype);
 CVL.prototype.canASW = function() {
 	if (this.HP/this.maxHP <= .5) return false;
-	for (var i=0; i<this.equips.length; i++) { if (this.equips[i].isdivebomber || this.equips[i].istorpbomber) return true; }
+	for (var i=0; i<this.equips.length; i++) { if ((this.equips[i].isdivebomber || this.equips[i].istorpbomber) && (this.planecount[i] > 0)) return true; }
 	return false;
 }
 CVL.prototype.canOASW = function() {

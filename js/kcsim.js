@@ -337,7 +337,7 @@ function shell(ship,target,APIhou,attackSpecial) {
 			}
 		}
 	} else {
-		var res = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,1.3,ship.CVshelltype,critRateBonus,cutin == 7), ship.CVshelltype? (overrideCritDmgBonus || ship.critdmgbonus || 1): 1);
+		var res = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,1.3,ship.CVshelltype,critRateBonus), ship.CVshelltype? (overrideCritDmgBonus || ship.critdmgbonus || 1): 1);
 		var dmg = (cutin)? getScratchDamage(target.HP) : 0, realdmg = 0;
 		if (res) {
 			dmg = damage(ship,target,ship.shellPower(target,ship.fleet.basepowshell),[preMod,ship.FPfit||0],{postMod:postMod,apMod:apMod,critMod:res},SHELLDMGBASE);
@@ -643,6 +643,7 @@ function ASW(ship,target,isnight,APIhou,isOASW) {
 	// Combined fleet ASW acc data: https://twitter.com/kankenRJ/status/813545025770401792
 	if (ship.getFormation().id > 10) accMod *= ship.getFormation().ASWmod;
 	else if (!formationCountered(ship.fleet.formation.id,target.fleet.formation.id)) accMod *= ship.getFormation().shellacc;
+	var evMod = target.getFormation().ASWev;
 	var evFlat = 0;
 	if (target.fleet.formation.id == 6) {
 		if (MECHANICS.newVanguardMod && target.fleet.ships.length == 6) evFlat += vanguardEvFlat(target);
@@ -655,7 +656,8 @@ function ASW(ship,target,isnight,APIhou,isOASW) {
 		}
 	}
 	var acc = hitRate(ship,80,sonarAcc,accMod);
-	var res = rollHit(accuracyAndCrit(ship,target,acc,target.getFormation().ASWev,evFlat,1.3,ship.planeasw&&!isOASW), ship.planeasw&&!isOASW? (ship.critdmgbonus || 1) : 1);
+	var isPlaneASW = ship.planeasw && !isOASW && ship.mid !== 646;
+	var res = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,1.3,isPlaneASW), isPlaneASW? (ship.critdmgbonus || 1) : 1);
 	var dmg = 0, realdmg = 0;
 	var preMod = (isnight)? 0 : ship.getFormation().ASWmod*ENGAGEMENT*ship.damageMod();
 	if (res) {
@@ -1273,7 +1275,7 @@ function hitRate(ship,accBase,accFlat,accMod) {
 	return (accBase + 2*Math.sqrt(ship.LVL) + 1.5*Math.sqrt(ship.LUK) + accFlat)*accMod*.01;
 }
 
-function accuracyAndCrit(ship,target,hit,evMod,evFlat,critrateMod,isPlanes,critBonusFlat,cvCI) {
+function accuracyAndCrit(ship,target,hit,evMod,evFlat,critrateMod,isPlanes,critBonusFlat) {
 	if (evMod===undefined) evMod = 1;
 	
 	var evade = Math.floor((target.EV+Math.sqrt(target.LUK*2)) * evMod); //formation
@@ -1298,8 +1300,10 @@ function accuracyAndCrit(ship,target,hit,evMod,evFlat,critrateMod,isPlanes,critB
 	if (isPlanes) acc += (ship.ACCplane||0)*.01;
 
 	var crit = Math.floor(Math.sqrt(100*acc)*critrateMod)*.01;
-	if (isPlanes && !cvCI) crit += (ship.critratebonus||0)*.01;
-	crit += critBonusFlat || 0;
+	if (isPlanes) {
+		if (critBonusFlat) crit += critBonusFlat || 0;
+		else crit += (ship.critratebonus||0)*.01;
+	}
 
 	if (C) console.log('	accfinal:'+acc.toFixed(2)+', crit:'+crit.toFixed(2));
 	return [acc,crit];
