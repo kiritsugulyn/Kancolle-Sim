@@ -1365,7 +1365,7 @@ CVL.prototype.canOASW = function() {
     let found = this.equips.some((eq) => eq.ASW >= 7 && [TORPBOMBER, AUTOGYRO, ASWPLANE].indexOf(eq.type) !== -1);
     if (!found) return this.ASW + (this.ASWBonus || 0) >= this.OASWstat && this.equiptypesB[B_SONAR] && isPlayable(this.mid);
     let threshold = (this.equiptypesB[B_SONAR])? 50 : 65;
-    return this.ASW + (this.ASWBonus || 0) >= threshold;
+    return this.ASW >= threshold;
 }
 CVL.prototype.APweak = false;
 
@@ -1464,8 +1464,8 @@ function DE(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 DE.prototype = Object.create(Ship.prototype);
 DE.prototype.canASW = function() { return true; }
 DE.prototype.canOASW = function() {
-    if (this.ASW + (this.ASWBonus || 0) >= 60 && this.equiptypesB[B_SONAR]) return true;
-    if (this.equips.reduce((acc, eq) => acc + (eq.ASW || 0), 0) >= 4) return this.ASW + (this.ASWBonus || 0) >= 75;
+    if (this.ASW >= 60 && this.equiptypesB[B_SONAR]) return true;
+    if (this.equips.reduce((acc, eq) => acc + (eq.ASW || 0), 0) >= 4) return this.ASW >= 75;
 }
 
 
