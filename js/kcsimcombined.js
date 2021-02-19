@@ -460,9 +460,10 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		}
 		if (ships1[i].HP/ships1[i].maxHP <= .5) results.undamaged = false;
 		if (ships1[i].HP/ships1[i].maxHP <= BUCKETPERCENT || getRepairTime(ships1[i]) > BUCKETTIME) results.buckets++;
-		if (ships1[i].repairsOrig && ships1[i].repairsOrig.length > ships1[i].repairs.length) {
-			results.repairCost1 += ships1[i].repairsOrig.filter(mid => mid == 42).length - ships1[i].repairs.filter(mid => mid == 42).length;
-			results.repairCost2 += ships1[i].repairsOrig.filter(mid => mid == 43).length - ships1[i].repairs.filter(mid => mid == 43).length;
+		if (ships1[i].repairSpent) {
+			results.repairCost1 += ships1[i].repairSpent == 1;
+			results.repairCost2 += ships1[i].repairSpent == 2;
+			delete ships1[i].repairSpent;
 		}
 	}
 	for (var i=0; i<ships1C.length; i++) {
@@ -473,9 +474,10 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		}
 		if (ships1C[i].HP/ships1C[i].maxHP <= .5) results.undamaged = false;
 		if (ships1C[i].HP/ships1C[i].maxHP <= BUCKETPERCENT || getRepairTime(ships1C[i]) > BUCKETTIME) results.buckets++;
-		if (ships1C[i].repairsOrig && ships1C[i].repairsOrig.length > ships1C[i].repairs.length) {
-			results.repairCost1 += ships1C[i].repairsOrig.filter(mid => mid == 42).length - ships1C[i].repairs.filter(mid => mid == 42).length;
-			results.repairCost2 += ships1C[i].repairsOrig.filter(mid => mid == 43).length - ships1C[i].repairs.filter(mid => mid == 43).length;
+		if (ships1C[i].repairSpent) {
+			results.repairCost1 += ships1C[i].repairSpent == 1;
+			results.repairCost2 += ships1C[i].repairSpent == 2;
+			delete ships1C[i].repairSpent;
 		}
 	}
 	results.MVP = F1.getMVP();
@@ -1193,9 +1195,10 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		}
 		if (ships1[i].HP/ships1[i].maxHP <= .5) results.undamaged = false;
 		if (ships1[i].HP/ships1[i].maxHP <= BUCKETPERCENT || getRepairTime(ships1[i]) > BUCKETTIME) results.buckets++;
-		if (ships1[i].repairsOrig && ships1[i].repairsOrig.length > ships1[i].repairs.length) {
-			results.repairCost1 += ships1[i].repairsOrig.filter(mid => mid == 42).length - ships1[i].repairs.filter(mid => mid == 42).length;
-			results.repairCost2 += ships1[i].repairsOrig.filter(mid => mid == 43).length - ships1[i].repairs.filter(mid => mid == 43).length;
+		if (ships1[i].repairSpent) {
+			results.repairCost1 += ships1[i].repairSpent == 1;
+			results.repairCost2 += ships1[i].repairSpent == 2;
+			delete ships1[i].repairSpent;
 		}
 	}
 	results.MVP = F1.getMVP();
@@ -1752,9 +1755,10 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		}
 		if (ships1[i].HP/ships1[i].maxHP <= .5) results.undamaged = false;
 		if (ships1[i].HP/ships1[i].maxHP <= BUCKETPERCENT || getRepairTime(ships1[i]) > BUCKETTIME) results.buckets++;
-		if (ships1[i].repairsOrig && ships1[i].repairsOrig.length > ships1[i].repairs.length) {
-			results.repairCost1 += ships1[i].repairsOrig.filter(mid => mid == 42).length - ships1[i].repairs.filter(mid => mid == 42).length;
-			results.repairCost2 += ships1[i].repairsOrig.filter(mid => mid == 43).length - ships1[i].repairs.filter(mid => mid == 43).length;
+		if (ships1[i].repairSpent) {
+			results.repairCost1 += ships1[i].repairSpent == 1;
+			results.repairCost2 += ships1[i].repairSpent == 2;
+			delete ships1[i].repairSpent;
 		}
 	}
 	for (var i=0; i<ships1C.length; i++) {
@@ -1765,9 +1769,10 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		}
 		if (ships1C[i].HP/ships1C[i].maxHP <= .5) results.undamaged = false;
 		if (ships1C[i].HP/ships1C[i].maxHP <= BUCKETPERCENT || getRepairTime(ships1C[i]) > BUCKETTIME) results.buckets++;
-		if (ships1C[i].repairsOrig && ships1C[i].repairsOrig.length > ships1C[i].repairs.length) {
-			results.repairCost1 += ships1C[i].repairsOrig.filter(mid => mid == 42).length - ships1C[i].repairs.filter(mid => mid == 42).length;
-			results.repairCost2 += ships1C[i].repairsOrig.filter(mid => mid == 43).length - ships1C[i].repairs.filter(mid => mid == 43).length;
+		if (ships1C[i].repairSpent) {
+			results.repairCost1 += ships1C[i].repairSpent == 1;
+			results.repairCost2 += ships1C[i].repairSpent == 2;
+			delete ships1C[i].repairSpent;
 		}
 	}
 	results.MVP = F1.getMVP();

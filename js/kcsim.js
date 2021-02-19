@@ -1262,8 +1262,15 @@ function takeDamage(ship,damage) {
 	ship.HP -= damage;
 	if (ship.HP <= 0 && ship.repairs && ship.repairs.length) {
 		var repair = ship.repairs.shift();
-		if (repair == 42) ship.HP = Math.floor(.2*ship.maxHP);
-		else if (repair == 43) { ship.HP = ship.maxHP; ship.fuelleft = ship.ammoleft = 10; }
+		if (repair == 42) {
+			ship.HP = Math.floor(.2*ship.maxHP);
+			ship.repairSpent = 1;
+		}
+		else if (repair == 43) { 
+			ship.HP = ship.maxHP; 
+			ship.fuelleft = ship.ammoleft = 10;
+			ship.repairSpent = 2;
+		}
 		if (ship.side==0) ship.protection = true;
 	}
 	
@@ -2586,9 +2593,10 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 		}
 		if (ships1[i].HP/ships1[i].maxHP <= .5) results.undamaged = false;
 		if (ships1[i].HP/ships1[i].maxHP <= BUCKETPERCENT || getRepairTime(ships1[i]) > BUCKETTIME) results.buckets++;
-		if (ships1[i].repairsOrig && ships1[i].repairsOrig.length > ships1[i].repairs.length) {
-			results.repairCost1 += ships1[i].repairsOrig.filter(mid => mid == 42).length - ships1[i].repairs.filter(mid => mid == 42).length;
-			results.repairCost2 += ships1[i].repairsOrig.filter(mid => mid == 43).length - ships1[i].repairs.filter(mid => mid == 43).length;
+		if (ships1[i].repairSpent) {
+			results.repairCost1 += ships1[i].repairSpent == 1;
+			results.repairCost2 += ships1[i].repairSpent == 2;
+			delete ships1[i].repairSpent;
 		}
 	}
 	results.MVP = F1.getMVP();
