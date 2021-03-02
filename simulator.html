@@ -125,8 +125,12 @@
 			<input type="checkbox" checked id="mech101" onchange="MECHANICS.visibleEquipBonus=this.checked"/><label for="mech101">Visible Equipment Bonus</label><br>
 			<input type="checkbox" checked id="mech102" onchange="MECHANICS.newVanguardMod=this.checked;updateVanguardMod()"/><label for="mech102">New Vanguard Modifiers</label><br>
 			<br>
-			<label for="mechshelldmg">Day Shelling Soft-Cap: </label><input id="mechshelldmg" type="number" min="0" max="9999" value="180" style="width:50px" onchange="SHELLDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
-			<label for="mechaswdmg">ASW Soft-Cap: </label><input id="mechaswdmg" type="number" min="0" max="9999" value="150" style="width:50px" onchange="ASWDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
+			<label for="mechshelldmg">Day Shelling Soft-Cap: </label><input id="mechshelldmg" type="number" min="0" max="9999" value="220" style="width:50px" onchange="SHELLDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
+			<label for="mechnightdmg">Night Battle Soft-Cap: </label><input id="mechnightdmg" type="number" min="0" max="9999" value="360" style="width:50px" onchange="NIGHTDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
+			<label for="mechtorpdmg">Torpedo Soft-Cap: </label><input id="mechtorpdmg" type="number" min="0" max="9999" value="180" style="width:50px" onchange="TORPDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
+			<label for="mechairdmg">Air Strike Soft-Cap: </label><input id="mechairdmg" type="number" min="0" max="9999" value="170" style="width:50px" onchange="AIRSTRIKEDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
+			<label for="mechaswdmg">ASW Soft-Cap: </label><input id="mechaswdmg" type="number" min="0" max="9999" value="170" style="width:50px" onchange="ASWDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
+			<label for="mechsupportdmg">Support Soft-Cap: </label><input id="mechsupportdmg" type="number" min="0" max="9999" value="170" style="width:50px" onchange="SUPPORTDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
 			<br>
 			<input type="checkbox" id="advCostW6" onchange="SIMCONSTS.airRaidCostW6=this.checked;raiseFleetChange()" /><label for="advCostW6">Use World 6 costs for Air Raid (4% <img src="assets/stats/fuel.png" /> 8% <img src="assets/stats/ammo.png" />)</label><br>
 			<br>

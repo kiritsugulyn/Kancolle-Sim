@@ -121,8 +121,12 @@ var LBAS = [null,null,null];
 var ENGAGEMENT = 1;
 var FIXENAGEMENT = false;
 const CRITMOD = 1.5;
-var SHELLDMGBASE = 180;
-var ASWDMGBASE = 150;
+var SHELLDMGBASE = 220;
+var NIGHTDMGBASE = 360;
+var TORPDMGBASE = 180;
+var AIRSTRIKEDMGBASE = 170;
+var ASWDMGBASE = 170;
+var SUPPORTDMGBASE = 170;
 var FIXTORPEDOSUPPORT = false;
 var SIMCONSTS = {
 	shellEcMF: null,
@@ -507,13 +511,13 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 		var res1 = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,critrateMod));
 		var dmg1 = getScratchDamage(target.HP), realdmg1 = 0;
 		if (res1) {
-			dmg1 = damage(ship,target,ship.NBPower(target)+bonus,[preMod,ship.FPfit||0],{postMod:postMod,critMod:res1},300);
+			dmg1 = damage(ship,target,ship.NBPower(target)+bonus,[preMod,ship.FPfit||0],{postMod:postMod,critMod:res1},NIGHTDMGBASE);
 			realdmg1 = takeDamage(target,dmg1);
 		} else { realdmg1 = takeDamage(target,dmg1) };
 		var res2 = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,critrateMod));
 		var dmg2 = getScratchDamage(target.HP), realdmg2 = 0;
 		if (res2) {
-			dmg2 = damage(ship,target,ship.NBPower(target)+bonus,[preMod,ship.FPfit||0],{postMod:postMod,critMod:res2},300);
+			dmg2 = damage(ship,target,ship.NBPower(target)+bonus,[preMod,ship.FPfit||0],{postMod:postMod,critMod:res2},NIGHTDMGBASE);
 			realdmg2 = takeDamage(target,dmg2);
 		} else { realdmg2 = takeDamage(target,dmg2); }
 		ship.fleet.giveCredit(ship,target,realdmg1+realdmg2);
@@ -538,7 +542,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 		var res = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,critrateMod,isNBAirAttack), isNBAirAttack? (ship.critdmgbonus || 1) : 1);
 		var dmg = (cutin)? getScratchDamage(target.HP) : 0; var realdmg = 0;
 		if (res) {
-			dmg = damage(ship,target,ship.NBPower(target)+bonus,[preMod,ship.FPfit||0],{postMod:postMod,critMod:res},300);
+			dmg = damage(ship,target,ship.NBPower(target)+bonus,[preMod,ship.FPfit||0],{postMod:postMod,critMod:res},NIGHTDMGBASE);
 			realdmg = takeDamage(target,dmg);
 		} else { realdmg = takeDamage(target,dmg); }
 		ship.fleet.giveCredit(ship,target,realdmg);
@@ -1167,7 +1171,7 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 		var power = (combinedAll)? ship.TP+15 : (ship.isescort||target.isescort)? ship.TP : (ship.TP+5);
 		power += (ship.improves.Ptorp || 0);
 		power *= ship.getFormation().torpmod*ENGAGEMENT*(combinedAll? ship.damageMod(true) : damageMods[ship.id]);
-		if (power > 150) power = 150 + Math.sqrt(power-150);
+		if (power > TORPDMGBASE) power = TORPDMGBASE + Math.sqrt(power-TORPDMGBASE);
 		
 		var accbase = 85;
 		var accflat = (ship.ACC)? ship.ACC : 0;
@@ -1238,11 +1242,11 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase) {
 		if (issupport){
 			if (MECHANICS.LBASBuff) postMod *= 1.35;
 			var dmgbase = 3 + Math.sqrt(ship.planecount[slot]) * planebase;
-			dmg = damageSupport(ship,target,dmgbase,preMod,{postMod:postMod,critMod:res},150);
+			dmg = damageSupport(ship,target,dmgbase,preMod,{postMod:postMod,critMod:res},SUPPORTDMGBASE);
 		}else{
 			postMod *= contactMod;
 			var dmgbase = 25 + (target.fleet.airstrikeMod || 0) + Math.sqrt(ship.planecount[slot]) * planebase;   // main -10, escort -20
-			dmg = damage(ship,target,dmgbase,preMod,{postMod:postMod,critMod:res},150,equip);
+			dmg = damage(ship,target,dmgbase,preMod,{postMod:postMod,critMod:res},AIRSTRIKEDMGBASE,equip);
 		}
 		realdmg = takeDamage(target,dmg);
 	}
@@ -1324,7 +1328,7 @@ function rollHit(accCrit,critdmgbonus) {
 }
 
 function damage(ship,target,base,preMod,postMod,cap,plane) {
-	if (!cap) cap = 150;
+	if (!cap) cap = 170;
 	if (typeof preMod === 'undefined') preMod = 1;
 	if (typeof postMod === 'undefined') postMod = 1;
 	if (C) console.log('	ship:'+ship.id+' target:'+target.id+' base:'+base);
@@ -1382,7 +1386,7 @@ function damage(ship,target,base,preMod,postMod,cap,plane) {
 }
 
 function damageSupport(ship,target,base,preMod,postMod,cap){
-	if (!cap) cap = 150;
+	if (!cap) cap = 170;
 	if (typeof preMod === 'undefined') preMod = 1;
 	if (typeof postMod === 'undefined') postMod = 1;
 	if (C) console.log('	ship:'+ship.id+' target:'+target.id+' base:'+base);
@@ -1891,10 +1895,10 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isBoss,isNight) {
 				var dmg;
 				if (suptype == 3) {
 					if (checkFormMod) preMod *= FLEETS1[0].formation.torpmod;
-					dmg = damageSupport(ship,target,torpDmg*.55,preMod,{critMod:res},150);
+					dmg = damageSupport(ship,target,torpDmg*.55,preMod,{critMod:res},SUPPORTDMGBASE);
 				}else {
 					if (checkFormMod) preMod *= FLEETS1[0].formation.shellmod;
-					dmg = damageSupport(ship,target,ship.shellPower(target,-1,true),preMod,{critMod:res},150);
+					dmg = damageSupport(ship,target,ship.shellPower(target,-1,true),preMod,{critMod:res},SUPPORTDMGBASE);
 				}
 				realdmg = takeDamage(target,dmg);
 			} else { realdmg = 0; }
@@ -2047,7 +2051,7 @@ function airstrikeSupportASW(ship,target,slot) {
 		if (r < .4) postMod *= 1.2;
 		else if (r < .5) postMod *= 1.5;
 		else postMod *= 2;
-		dmg = damageSupport(ship,target,dmgbase,preMod,{postMod:postMod,critMod:res},150);
+		dmg = damageSupport(ship,target,dmgbase,preMod,{postMod:postMod,critMod:res},SUPPORTDMGBASE);
 		realdmg = takeDamage(target,dmg);
 	}
 	ship.fleet.giveCredit(ship,target,realdmg);
@@ -2216,6 +2220,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod,isjetphase) {
 	if (equip.type == LANDBOMBER || equip.type == HEAVYBOMBER) planebase = (target.isInstall)? equip.DIVEBOMB : equip.TP;
 	else planebase = (equip.isdivebomber)? equip.DIVEBOMB : (target.isInstall)? 0 : equip.TP;
 	if (target.isSub) planebase = equip.ASW;
+	if (equip.mid == 224 && target.type == 'DD') planebase = 25;
 	if (planebase) planebase += equip.ASImprove || 0;
 	else planebase = 0;
 	if (res) {
@@ -2226,11 +2231,13 @@ function airstrikeLBAS(lbas,target,slot,contactMod,isjetphase) {
 		if (target.isSub) {
 			preMod = (equip.ASW >= 10)? .7 + Math.random()*.3 : .35 + Math.random()*.45;
 		}
+		if (equip.mid == 405 && target.type == 'DD') preMod *= 1.08;
+		else if (equip.mid == 406 && ['FBB','BB','BBV'].indexOf(target.type) !== -1) preMod *= 1.35;
 		preMod *= (target.LBWeak || 1);
 		var postMod = (equip.type == LANDBOMBER)? 1.8 : 1;
 		postMod *= contactMod;
 		if (target.fleet.combinedWith) postMod *= 1.1;
-		dmg = damage(lbas,target,dmgbase,preMod,{postMod:postMod,critMod:res},150,equip);
+		dmg = damage(lbas,target,dmgbase,preMod,{postMod:postMod,critMod:res},AIRSTRIKEDMGBASE,equip);
 		realdmg = takeDamage(target,dmg);
 	}
 	if(C) {
@@ -3730,8 +3737,6 @@ function dmgSpecialTarget(dmg,ship,target,plane){
 		if (plane.isdivebomber) dmg *= target.divebombWeak || 1;
 		if (ship.mid >= 1665 && ship.mid <= 1667) dmg *= (1.6 + Math.random() * .6)		// guess
 		else if (ship.mid >= 1668 && ship.mid <= 1672) dmg *= (1.5 + Math.random() * .5);   // Source: https://twitter.com/yukicacoon/status/1355546046026289154
-		if (plane.mid == 405 && target.type == 'DD') dmg *= 1.08;
-		else if (plane.mid == 406 && ['FBB','BB','BBV'].indexOf(target.type) !== -1) dmg *= 1.35;
 	}else {
 		if (target.isAnchorage) dmg *= ship.anchoragePostMult || 1;
 		else if (target.isSummerBBHime) dmg *= ship.summerBBHimePostMult || 1;
