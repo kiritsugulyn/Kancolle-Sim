@@ -181,10 +181,8 @@ var MECHANICS = {
 	CVCI: true,
 	destroyerNBCI: true,
 	LBASBuff: true,
-	installRevamp: true,
 	zuiunCI: true,
 	aaResist: true,
-	divebomberInstall: true,
 	visibleEquipBonus: true,
 	newVanguardMod: true,
 };
@@ -511,13 +509,13 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 		var res1 = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,critrateMod));
 		var dmg1 = getScratchDamage(target.HP), realdmg1 = 0;
 		if (res1) {
-			dmg1 = damage(ship,target,ship.NBPower(target)+bonus,[preMod,ship.FPfit||0],{postMod:postMod,critMod:res1},NIGHTDMGBASE);
+			dmg1 = damage(ship,target,ship.NBPower(target,bonus),[preMod,ship.FPfit||0],{postMod:postMod,critMod:res1},NIGHTDMGBASE);
 			realdmg1 = takeDamage(target,dmg1);
 		} else { realdmg1 = takeDamage(target,dmg1) };
 		var res2 = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,critrateMod));
 		var dmg2 = getScratchDamage(target.HP), realdmg2 = 0;
 		if (res2) {
-			dmg2 = damage(ship,target,ship.NBPower(target)+bonus,[preMod,ship.FPfit||0],{postMod:postMod,critMod:res2},NIGHTDMGBASE);
+			dmg2 = damage(ship,target,ship.NBPower(target,bonus),[preMod,ship.FPfit||0],{postMod:postMod,critMod:res2},NIGHTDMGBASE);
 			realdmg2 = takeDamage(target,dmg2);
 		} else { realdmg2 = takeDamage(target,dmg2); }
 		ship.fleet.giveCredit(ship,target,realdmg1+realdmg2);
@@ -542,7 +540,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 		var res = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,critrateMod,isNBAirAttack), isNBAirAttack? (ship.critdmgbonus || 1) : 1);
 		var dmg = (cutin)? getScratchDamage(target.HP) : 0; var realdmg = 0;
 		if (res) {
-			dmg = damage(ship,target,ship.NBPower(target)+bonus,[preMod,ship.FPfit||0],{postMod:postMod,critMod:res},NIGHTDMGBASE);
+			dmg = damage(ship,target,ship.NBPower(target,bonus),[preMod,ship.FPfit||0],{postMod:postMod,critMod:res},NIGHTDMGBASE);
 			realdmg = takeDamage(target,dmg);
 		} else { realdmg = takeDamage(target,dmg); }
 		ship.fleet.giveCredit(ship,target,realdmg);
