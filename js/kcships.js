@@ -1291,7 +1291,7 @@ CV.prototype.shellPower = function(target,base,isSupport) {
 CV.prototype.NBPower = function(target,bonus) {
 	if (this.canNBAirAttack()) {
 		let power = this.FP - this.equipmentBonusStats('houg');
-        power += bonus;
+        power += bonus || 0;
 		for (let i=0; i<this.equips.length; i++) {
 			let equip = this.equips[i];
             power -= (equip.FP || 0);
