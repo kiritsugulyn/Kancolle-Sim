@@ -1177,9 +1177,42 @@ function loadOptions(num,options) {
 		}
 	}
 	
-	if (options.bonus != null) $('#bonus'+num).prop('checked',options.bonus);
-	if (options.emergencyrepair != null) $('#emergencyrepair'+num).prop('checked',options.emergencyrepair);
+	$('#emergencyrepair'+num).prop('checked',options.emergencyrepair);
 	if (options.lbloss) $('#lbloss'+num).prop('checked',options.lbloss);
+
+	$('#bonusA'+num).prop('checked', options.bonusA);
+	$('#bonusB'+num).prop('checked', options.bonusB);
+	$('#bonusC'+num).prop('checked', options.bonusC);
+
+	if (options.maelstrom){
+		$('#maelstrom'+num).prop('checked', true);
+		$('#fuelloss'+num).prop('value', options.maelstrom[0]);
+		$('#ammoloss'+num).prop('value', options.maelstrom[1]);
+	}else{
+		$('#maelstrom'+num).prop('checked', false);
+	}
+
+	if (options.engagemod) {
+		$('#fixengage'+num).prop('checked', true);
+		$('#engagemod'+num).prop('value', options.engagemod);
+	}else{
+		$('#fixengage'+num).prop('checked', false);
+	}
+
+	if (options.randform){
+		$('#randformflag'+num).prop('checked', true);
+		$('#randform'+num).prop('value', JSON.stringify(options.randform));
+	}else{
+		$('#randformflag'+num).prop('checked', false);
+	}
+
+	if (options.randfriend && ADDEDFRIENDFLEET){
+		$('#randfriendflag'+num).prop('checked', true);
+		$('#randfriend'+num).prop('value', JSON.stringify(options.randfriend));
+	}else{
+		$('#randfriendflag'+num).prop('checked', false);
+	}
+	
 }
 
 var DRAGINFO = [];
@@ -2004,6 +2037,13 @@ function changedPreset2(fleet) {
 		o.appendChild(document.createTextNode(version));
 		preset3.appendChild(o);
 	}
+	if (ENEMYRANDFORMS[world] && ENEMYRANDFORMS[world][level] && ENEMYRANDFORMS[world][level][node]) {
+		$('#randformflag'+fleet).prop('checked',true);
+		$('#randform'+fleet).prop('value', JSON.stringify(ENEMYRANDFORMS[world][level][node]));
+	}else{
+		$('#randformflag'+fleet).prop('checked',false);
+		$('#randform'+fleet).prop('value', '');
+	}
 	changedPreset3(fleet);
 }
 
@@ -2027,12 +2067,35 @@ function changedPreset3(fleet) {
 		if (document.getElementById('T'+fleet+'r'+form)) document.getElementById('T'+fleet+'r'+form).checked = true;
 		if (node.toLowerCase().indexOf('boss') != -1) $('#NB'+fleet).prop('checked',true);
 		else $('#NB'+fleet).prop('checked',false);
-		if (ENEMYCOMPS[world][level][node][version].NB) $('#NBonly'+fleet).prop('checked',true);
-		else $('#NBonly'+fleet).prop('checked',false);
-		if (ENEMYCOMPS[world][level][node][version].air) $('#aironly'+fleet).prop('checked',true);
-		else $('#aironly'+fleet).prop('checked',false);
-		if (ENEMYCOMPS[world][level][node][version].bomb) $('#landbomb'+fleet).prop('checked',true);
-		else $('#landbomb'+fleet).prop('checked',false);
+		let special = false
+		if (ENEMYCOMPS[world][level][node][version].NB) {
+			$('#NBonly'+fleet).prop('checked',true);
+			special = true;
+		}
+		if (ENEMYCOMPS[world][level][node][version].air) {
+			$('#aironly'+fleet).prop('checked',true);
+			special = true;
+		}
+		if (ENEMYCOMPS[world][level][node][version].bomb) {
+			$('#landbomb'+fleet).prop('checked',true);
+			special = true;
+		} 
+		if (ENEMYCOMPS[world][level][node][version].sub) {
+			$('#noammo'+fleet).prop('checked',true);
+			special = true;
+		}
+		if (!special) {
+			$('#NBonly'+fleet).prop('checked',false);
+			$('#aironly'+fleet).prop('checked',false);
+			$('#landbomb'+fleet).prop('checked',false);
+			$('#noammo'+fleet).prop('checked',false);
+			$('#defnode'+fleet).prop('checked',true);
+		}
+		if (world == 'World 6') {
+			$('#advCostW6').prop('checked',true);
+		}else{
+			$('#advCostW6').prop('checked',false);
+		}
 	}
 
 	if (fleet.toString()[0] == '3') {
@@ -2656,7 +2719,7 @@ function clickedAddLBAS() {
 			let tid = 'TLB';
 			var sel = document.createElement('select');
 			sel.setAttribute('id',tid+'e'+j+i);
-			sel.setAttribute('onChange','changedEquip(\'LB\','+j+','+i+');saveLBAS()');
+			sel.setAttribute('onChange','changedEquip(\'LB\','+j+','+i+');saveLBAS();showLBASAirPower()');
 			for (let equiptype in EQSORTED) {
 				var g = document.createElement('optgroup');
 				g.setAttribute('label',equiptype);
@@ -2678,9 +2741,9 @@ function clickedAddLBAS() {
 			var plid = tid+'plane'+j+i;
 			var imgid = tid+'eqimg'+j+i;
 			$(sp).append('<div style="float:left;width:24px;height:24px"><img src="assets/items/0.png" style="position:absolute;width:24;height:24px"/><img id="'+imgid+'" src="assets/items/empty.png" style="position:absolute;width:24px;height:24px"/></div>');
-			$(sp).append('<input type="number" id="'+plid+'" style="width:35px;float:left" min="0" max="999" value="18" onchange="saveLBAS()"/>');
-			$(sp).append('<select id="'+prid+'" style="width:40px" onchange="changedProficiency(this);saveLBAS()">'+IMPROVEHTMLPLANE+'</select>');
-			$(sp).append('<span style="float:right;font-size:12px;color:#45A9A5">&#9733; <select id="'+nid+'" style="width:40px" onchange="saveLBAS()">'+IMPROVEHTMLAKASHI+'</select></span><br>');
+			$(sp).append('<input type="number" id="'+plid+'" style="width:35px;float:left" min="0" max="999" value="18" onchange="saveLBAS();showLBASAirPower();"/>');
+			$(sp).append('<select id="'+prid+'" style="width:40px" onchange="changedProficiency(this);saveLBAS();showLBASAirPower();">'+IMPROVEHTMLPLANE+'</select>');
+			$(sp).append('<span style="float:right;font-size:12px;color:#45A9A5">&#9733; <select id="'+nid+'" style="width:40px" onchange="saveLBAS();showLBASAirPower();">'+IMPROVEHTMLAKASHI+'</select></span><br>');
 			td.appendChild(sp);
 		}
 	}
@@ -2708,6 +2771,7 @@ function saveLBAS() {
 		}
 	}
 	localStorage.simulator_lbas = JSON.stringify(data);
+	$('#lbasJSON').val(JSON.stringify(data));
 	raiseFleetChange();
 }
 
@@ -2725,6 +2789,28 @@ function loadLBAS(datastr) {
 			$('#TLBplane'+i+j).val(data['s'+i]['i'+j].slot);
 		}
 	}
+}
+
+function showLBASAirPower() {
+	var output = 'Sortie Air Power: ';
+	for (var i=0; i<3; i++) {
+		var slots = [], equips = [], imprvs = [], profs = [];
+		for (var j=0; j<4; j++) {
+			var eqid = parseInt($('#TLBe'+i+j).val());
+			if (!eqid) continue;
+			slots.push(parseInt($('#TLBplane'+i+j).val()));
+			equips.push(eqid);
+			imprvs.push(parseInt($('#TLBimprv'+i+j).val()));
+			profs.push(parseInt($('#TLBprof'+i+j).val()));
+		}
+		var tempLBAS = new LandBase(equips,imprvs,profs);
+		output += 'LBAS ' + (i + 1) + ' - ' + tempLBAS.airPower() + '; ';
+	}
+	$('#lbasAP').text(output);
+}
+
+function clickedLoadLBAS() {
+	loadLBAS($('#lbasJSON').prop('value'));
 }
 
 

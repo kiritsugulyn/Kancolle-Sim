@@ -1482,7 +1482,7 @@ LandBase.prototype.airPower = function(jetonly) {
 		}
 		if (EQTDATA[this.equips[i].type].isPlane && (!jetonly||this.equips[i].isjet)) {
 			var base = (this.equips[i].AA||0) + (this.equips[i].AAImprove||0);
-			if (this.equips[i].type == LANDBOMBER || this.equips[i].type == INTERCEPTOR) base += (this.equips[i].EV||0)*1.5;
+			if (this.equips[i].type == INTERCEPTOR) base += (this.equips[i].EV||0)*1.5;
 			ap += Math.floor(base * Math.sqrt(this.planecount[i]) + (this.equips[i].APbonus||0));
 		}
 	}
