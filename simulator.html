@@ -132,6 +132,15 @@
 			<label for="mechaswdmg">ASW Soft-Cap: </label><input id="mechaswdmg" type="number" min="0" max="9999" value="170" style="width:50px" onchange="ASWDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
 			<label for="mechsupportdmg">Support Soft-Cap: </label><input id="mechsupportdmg" type="number" min="0" max="9999" value="170" style="width:50px" onchange="SUPPORTDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
 			<br>
+			<span>Special Attack Activation Rate:</span><br>
+			<table>
+			<tr><td>Nelson Touch:</td><td><input type="number" min="0" max="100" value="60" onchange="SIMCONSTS.nelsonTouchRate = +this.value;raiseFleetChange()" />%</td></tr>
+			<tr><td>Nagato Cut-In:</td><td><input type="number" min="0" max="100" value="60" onchange="SIMCONSTS.nagatoSpecialRate = +this.value;raiseFleetChange()" />%</td></tr>
+			<tr><td>Mutsu Cut-In:</td><td><input type="number" min="0" max="100" value="60" onchange="SIMCONSTS.mutsuSpecialRate = +this.value;raiseFleetChange()" />%</td></tr>
+			<tr><td>Colorado Cut-In:</td><td><input type="number" min="0" max="100" value="60" onchange="SIMCONSTS.coloradoSpecialRate = +this.value;raiseFleetChange()" />%</td></tr>
+			<tr><td>Kongou Cut-In:</td><td><input type="number" min="0" max="100" value="60" onchange="SIMCONSTS.kongouSpecialRate = +this.value;raiseFleetChange()" />%</td></tr>
+			</table>
+			<br>
 			<input type="checkbox" id="advCostW6" onchange="SIMCONSTS.airRaidCostW6=this.checked;raiseFleetChange()" /><label for="advCostW6">Use World 6 costs for Air Raid (4% <img src="assets/stats/fuel.png" /> 8% <img src="assets/stats/ammo.png" />)</label><br>
 			<br>
 			<input type="button" value="Show Advanced" onclick="$('#optionsadvanced').toggle()" />
@@ -177,7 +186,7 @@
 				<table>
 				<tr>
 					<td>FBA:</td>
-					<td>Accuracy:</td><td><input type="number" min=".01" max="999" value="1.2" step=".01" style="width:50px" onchange="ARTILLERYSPOTDATA[71].accMod = parseFloat(this.value) || 1.2" /></td>
+					<td>Accuracy:</td><td><input type="number" min=".01" max="999" value="1.25" step=".01" style="width:50px" onchange="ARTILLERYSPOTDATA[71].accMod = parseFloat(this.value) || 1.25" /></td>
 					<td>Chance:</td><td><input type="number" min=".01" max="999" value="1.25" step=".01" style="width:50px" onchange="ARTILLERYSPOTDATA[71].chanceMod = parseFloat(this.value) || 1.25" /></td>
 				</tr>
 				<tr>
@@ -187,7 +196,7 @@
 				</tr>
 				<tr>
 					<td>BA:</td>
-					<td>Accuracy:</td><td><input type="number" min=".01" max="999" value="1.2" step=".01" style="width:50px" onchange="ARTILLERYSPOTDATA[73].accMod = parseFloat(this.value) || 1.2" /></td>
+					<td>Accuracy:</td><td><input type="number" min=".01" max="999" value="1.15" step=".01" style="width:50px" onchange="ARTILLERYSPOTDATA[73].accMod = parseFloat(this.value) || 1.15" /></td>
 					<td>Chance:</td><td><input type="number" min=".01" max="999" value="1.55" step=".01" style="width:50px" onchange="ARTILLERYSPOTDATA[73].chanceMod = parseFloat(this.value) || 1.55" /></td>
 				</tr>
 				</table>
@@ -205,15 +214,6 @@
 				<input type="button" value="TTF" onclick="clickedAdvDefault('acc',50,50,75,75)" />
 				<input type="button" value="Clear" onclick="clickedAdvDefault('acc',null,null,null,null)" />
 				<br>-->
-				<br>
-				<span>Nelson/Nagato Special Activation Rate:</span><br>
-				<table>
-				<tr><td>Nelson Touch:</td><td><input type="number" min="0" max="100" value="60" onchange="SIMCONSTS.nelsonTouchRate = +this.value" />%</td></tr>
-				<tr><td>Nagato Cut-In:</td><td><input type="number" min="0" max="100" value="60" onchange="SIMCONSTS.nagatoSpecialRate = +this.value" />%</td></tr>
-				<tr><td>Mutsu Cut-In:</td><td><input type="number" min="0" max="100" value="60" onchange="SIMCONSTS.mutsuSpecialRate = +this.value" />%</td></tr>
-				<tr><td>Colorado Cut-In:</td><td><input type="number" min="0" max="100" value="60" onchange="SIMCONSTS.coloradoSpecialRate = +this.value" />%</td></tr>
-				<tr><td>Kongou Cut-In:</td><td><input type="number" min="0" max="100" value="60" onchange="SIMCONSTS.kongouSpecialRate = +this.value" />%</td></tr>
-				</table>
 				<br>
 				<input type="checkbox" id="advEAACI" checked onchange="SIMCONSTS.enableEnemyAACI=this.checked;raiseFleetChange()" /><label for="advEAACI">Enable Abyssal AACI on Normal Air Phase</label><br>
 				<input type="checkbox" id="advEAACILB" onchange="SIMCONSTS.enableEnemyAACILBAS=this.checked;raiseFleetChange()" /><label for="advEAACILB">Enable Abyssal AACI on LBAS Phase</label><br>

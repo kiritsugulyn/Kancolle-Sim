@@ -91,9 +91,9 @@ var ARTILLERYSPOTDATA = {
 	4: { dmgMod: 1.2, accMod: 1.5, chanceMod: 1.3, name: 'Radar CI' },
 	5: { dmgMod: 1.3, accMod: 1.3, chanceMod: 1.4, name: 'AP+Sec. CI' },
 	6: { dmgMod: 1.5, accMod: 1.2, chanceMod: 1.5, name: 'AP CI' },
-	71: { dmgMod: 1.25, accMod: 1.2, chanceMod: 1.25, id: 7, name: 'CVCI (FBA)' },
+	71: { dmgMod: 1.25, accMod: 1.25, chanceMod: 1.25, id: 7, name: 'CVCI (FBA)' },   // acc data: https://twitter.com/kankenRJ/status/992626236391239680
 	72: { dmgMod: 1.2, accMod: 1.2, chanceMod: 1.4, id: 7, name: 'CVCI (BBA)' },
-	73: { dmgMod: 1.15, accMod: 1.2, chanceMod: 1.55, id: 7, name: 'CVCI (BA)' },
+	73: { dmgMod: 1.15, accMod: 1.15, chanceMod: 1.55, id: 7, name: 'CVCI (BA)' },
 	200: { dmgMod: 1.35, accMod: 1.2, chanceMod: 1.2, name: 'Zuiun CI' },
 	201: { dmgMod: 1.3, accMod: 1.2, chanceMod: 1.3, name: 'DB CI' },
 }
