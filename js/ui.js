@@ -96,6 +96,7 @@ function transNames(lang) {
 			}
 		}
 	});
+	localStorage.lang = lang;
 }
 
 $('#dialogselclass').dialog({autoOpen:false,width:690,height:600});
@@ -412,7 +413,11 @@ function dSetEquip(eqid) {
 	$('#T'+SELFLEET+'e'+SELSLOT+SELEQ).trigger("chosen:updated");
 	changedEquip(SELFLEET,SELSLOT,SELEQ);
 	if (SELFLEET != 'LB') updateFleetCode(SELFLEET);
-	else raiseFleetChange();
+	else {
+		raiseFleetChange();
+		saveLBAS();
+		showLBASStats();
+	}
 	SELFLEET = SELSLOT = SELEQ = undefined;
 }
 
@@ -2618,6 +2623,18 @@ function loadLocalStorage() {
 		clickedAddLBAS();
 		loadLBAS(localStorage.simulator_lbas);
 	}
+	
+	if (localStorage.lang) {
+		if (localStorage.lang == 'JP') {
+			transNames('JP');
+			$('#radJP').prop('checked', true);
+			$('#radEN').prop('checked', false);
+		}else if (localStorage.lang == 'EN') {
+			transNames('EN');
+			$('#radEN').prop('checked', true);
+			$('#radJP').prop('checked', false);
+		}
+	}
 }
 if (!HASURLDATA) {
 	loadLocalStorage();
@@ -2719,7 +2736,7 @@ function clickedAddLBAS() {
 			let tid = 'TLB';
 			var sel = document.createElement('select');
 			sel.setAttribute('id',tid+'e'+j+i);
-			sel.setAttribute('onChange','changedEquip(\'LB\','+j+','+i+');saveLBAS();showLBASStats()');
+			sel.setAttribute('onChange','changedEquip(\'LB\','+j+','+i+');saveLBAS();showLBASStats();');
 			for (let equiptype in EQSORTED) {
 				var g = document.createElement('optgroup');
 				g.setAttribute('label',equiptype);
