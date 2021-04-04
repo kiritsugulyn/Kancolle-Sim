@@ -2719,7 +2719,7 @@ function clickedAddLBAS() {
 			let tid = 'TLB';
 			var sel = document.createElement('select');
 			sel.setAttribute('id',tid+'e'+j+i);
-			sel.setAttribute('onChange','changedEquip(\'LB\','+j+','+i+');saveLBAS();showLBASAirPower()');
+			sel.setAttribute('onChange','changedEquip(\'LB\','+j+','+i+');saveLBAS();showLBASStats()');
 			for (let equiptype in EQSORTED) {
 				var g = document.createElement('optgroup');
 				g.setAttribute('label',equiptype);
@@ -2741,9 +2741,9 @@ function clickedAddLBAS() {
 			var plid = tid+'plane'+j+i;
 			var imgid = tid+'eqimg'+j+i;
 			$(sp).append('<div style="float:left;width:24px;height:24px"><img src="assets/items/0.png" style="position:absolute;width:24;height:24px"/><img id="'+imgid+'" src="assets/items/empty.png" style="position:absolute;width:24px;height:24px"/></div>');
-			$(sp).append('<input type="number" id="'+plid+'" style="width:35px;float:left" min="0" max="999" value="18" onchange="saveLBAS();showLBASAirPower();"/>');
-			$(sp).append('<select id="'+prid+'" style="width:40px" onchange="changedProficiency(this);saveLBAS();showLBASAirPower();">'+IMPROVEHTMLPLANE+'</select>');
-			$(sp).append('<span style="float:right;font-size:12px;color:#45A9A5">&#9733; <select id="'+nid+'" style="width:40px" onchange="saveLBAS();showLBASAirPower();">'+IMPROVEHTMLAKASHI+'</select></span><br>');
+			$(sp).append('<input type="number" id="'+plid+'" style="width:35px;float:left" min="0" max="999" value="18" onchange="saveLBAS();showLBASStats();"/>');
+			$(sp).append('<select id="'+prid+'" style="width:40px" onchange="changedProficiency(this);saveLBAS();showLBASStats();">'+IMPROVEHTMLPLANE+'</select>');
+			$(sp).append('<span style="float:right;font-size:12px;color:#45A9A5">&#9733; <select id="'+nid+'" style="width:40px" onchange="saveLBAS();showLBASStats();">'+IMPROVEHTMLAKASHI+'</select></span><br>');
 			td.appendChild(sp);
 		}
 	}
@@ -2791,8 +2791,11 @@ function loadLBAS(datastr) {
 	}
 }
 
-function showLBASAirPower() {
-	var output = 'Sortie Air Power: ';
+function showLBASStats() {
+	var ap = 'Sortie Air Power: ';
+	var dist = 'Sortie Distance: ';
+	var deployCost = 'Deploy Cost (Bauxite): ';
+	var sortieCost = 'Sortie Cost (Fuel, Ammo): ';
 	for (var i=0; i<3; i++) {
 		var slots = [], equips = [], imprvs = [], profs = [];
 		for (var j=0; j<4; j++) {
@@ -2804,9 +2807,17 @@ function showLBASAirPower() {
 			profs.push(parseInt($('#TLBprof'+i+j).val()));
 		}
 		var tempLBAS = new LandBase(equips,imprvs,profs);
-		output += 'LBAS ' + (i + 1) + ' - ' + tempLBAS.airPower() + '; ';
+		tempLBAS.PLANESLOTS = slots;
+		tempLBAS.planecount = slots.slice();
+		ap += 'LBAS ' + (i + 1) + ' - ' + tempLBAS.airPower() + '; ';
+		dist += 'LBAS ' + (i + 1) + ' - ' + tempLBAS.getDistance() + '; ';
+		deployCost += 'LBAS ' + (i + 1) + ' - ' + tempLBAS.getDeployCost() + '; ';
+		sortieCost += 'LBAS ' + (i + 1) + ' - (' + tempLBAS.getCost()[0] + ',' + tempLBAS.getCost()[1] + '); ';
 	}
-	$('#lbasAP').text(output);
+	$('#lbasAP').text(ap);
+	$('#lbasDist').text(dist);
+	$('#lbasDeployCost').text(deployCost);
+	$('#lbasSortieCost').text(sortieCost);
 }
 
 function clickedLoadLBAS() {

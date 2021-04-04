@@ -1541,6 +1541,25 @@ LandBase.prototype.getCost = function() {
 	}
 	return cost;
 }
+LandBase.prototype.getDistance = function() {
+    var dist = 99;
+    var scout = 0;
+    this.equips.forEach((eq) => {
+        if (!LBASDATA[eq.mid]) return
+        dist = Math.min(LBASDATA[eq.mid].distance || 0, dist);
+        if ([SEAPLANE, CARRIERSCOUT, CARRIERSCOUT2, LANDSCOUT].indexOf(eq.type) !== -1) scout = Math.max(LBASDATA[eq.mid].distance || 0, scout);
+    });
+    if (scout && scout > dist) dist = Math.round(dist + Math.sqrt(scout - dist));
+    return dist;
+}
+LandBase.prototype.getDeployCost = function() {
+    var cost = 0;
+    this.equips.forEach((eq, i) => {
+        if (!LBASDATA[eq.mid]) return
+        cost += (LBASDATA[eq.mid].cost || 0) * this.PLANESLOTS[i];
+    });
+    return cost;
+}
 LandBase.createJetLandBase = function(landbases) {
 	var equips = [], planecounts = [];
 	for (var i=0; i<landbases.length; i++) {
