@@ -2015,6 +2015,8 @@ function clickedCollapseFleet(fleet) {
 	document.getElementById('T'+fleet+'headpm').innerHTML = '[<b>+</b>]';
 }
 
+var IMPORTRANDFORM = true;
+
 function changedPreset1(fleet) {
 	var s = document.getElementById('T'+fleet+'pre1').value.split('|');
 	if ($('#T'+fleet+'pre1').css('animation')) { $('#T'+fleet+'pre1').css('animation',''); $('#T'+fleet+'pre1').css('border',''); }
@@ -2042,7 +2044,7 @@ function changedPreset2(fleet) {
 		o.appendChild(document.createTextNode(version));
 		preset3.appendChild(o);
 	}
-	if (ENEMYRANDFORMS[world] && ENEMYRANDFORMS[world][level] && ENEMYRANDFORMS[world][level][node]) {
+	if (IMPORTRANDFORM && ENEMYRANDFORMS[world] && ENEMYRANDFORMS[world][level] && ENEMYRANDFORMS[world][level][node]) {
 		$('#randformflag'+fleet).prop('checked',true);
 		$('#randform'+fleet).prop('value', JSON.stringify(ENEMYRANDFORMS[world][level][node]));
 	}else{
