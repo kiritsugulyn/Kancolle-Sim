@@ -1779,6 +1779,9 @@ function updateResults(results) {
 		
 		for(var i=1; i<=node.MVPs.length; i++) resultAddWeight('mvp'+i,node.MVPs[i-1],addnum);
 		if (node.MVPsC) for(var i=1; i<=node.MVPsC.length; i++) resultAddWeight('mvpc'+i,node.MVPsC[i-1],addnum);
+
+		for(var i=1; i<=node.dmgTotals.length; i++) resultAddWeight('avgdmg'+i,node.dmgTotals[i-1],addnum);
+		if (node.dmgTotalsC) for(var i=1; i<=node.dmgTotalsC.length; i++) resultAddWeight('avgdmgc'+i,node.dmgTotalsC[i-1],addnum);
 		
 		let totalsunk = node.flagsunk;
 		for(var i=1; i<=node.sinkFlagships.length; i++) {
@@ -1818,6 +1821,9 @@ function updateResults(results) {
 			
 			for(var i=1; i<=node.MVPs.length; i++) resultAddWeight('mvp'+i+n,node.MVPs[i-1],addnum);
 			if(node.MVPsC) for(var i=1; i<=node.MVPsC.length; i++) resultAddWeight('mvpc'+i+n,node.MVPsC[i-1],addnum);
+
+			for(var i=1; i<=node.dmgTotals.length; i++) resultAddWeight('avgdmg'+i+n,node.dmgTotals[i-1],addnum);
+			if(node.dmgTotalsC) for(var i=1; i<=node.dmgTotalsC.length; i++) resultAddWeight('avgdmgc'+i+n,node.dmgTotalsC[i-1],addnum);
 			
 			resultAddWeight('redany'+n,node.redded,addnum);
 			for(var i=0; i<node.redIndiv.length; i++) resultAddWeight('red'+(i+1)+n,node.redIndiv[i],addnum);
@@ -1952,6 +1958,29 @@ function genStatTableHTML() {
 			tr.append($('<td id="tabAirState'+i+j+'" class="res'+j+'"></td>'));
 		}
 		tabAirState.append(tr);
+	}
+
+	//average damage table
+	var dmgtab = $('#avgdmgtab');
+	var tr = $('<tr><th></th></tr>');
+	dmgtab.append(tr);
+	for (var i=1; i<=NUMNODESDEFAULT; i++) {
+		tr.append($('<th class="res'+i+'">'+i+'</th>'));
+	}
+	for (var i=1; i<=6; i++) {
+		var tr = $('<tr><th><img src="assets/stats/F'+i+'.png" /></th></tr>');
+		for (var j=1; j<=NUMNODESDEFAULT; j++) {
+			tr.append($('<td id="avgdmg'+i+j+'" class="res'+j+'">0.222</td>'));
+		}
+		dmgtab.append(tr);
+	}
+	dmgtab.append('<tr class="rescombined" style="height:20px"></tr>');
+	for (var i=1; i<=6; i++) {
+		var tr = $('<tr class="rescombined"><th><img src="assets/stats/F'+i+'.png" /></th></tr>');
+		for (var j=1; j<=NUMNODESDEFAULT; j++) {
+			tr.append($('<td id="avgdmgc'+i+j+'" class="res'+j+'">0.222</td>'));
+		}
+		dmgtab.append(tr);
 	}
 	
 	//damage lists and table
@@ -2229,7 +2258,7 @@ function loadFleetFromCode(fleet,fcode) {
 		var level = (parseInt(ship.lvl) > 0)? parseInt(ship.lvl) : 99;
 		var stats = [
 			level,
-			getHP(shipd,level),
+			(ship.hp && parseInt(ship.hp) >= 0)? parseInt(ship.hp) : getHP(shipd,level),
 			(parseInt(ship.fp) >= 0)? parseInt(ship.fp) : shipd.FP,
 			(parseInt(ship.tp) >= 0)? parseInt(ship.tp) : shipd.TP,
 			(parseInt(ship.aa) >= 0)? parseInt(ship.aa) : shipd.AA,

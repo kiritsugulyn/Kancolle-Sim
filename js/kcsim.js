@@ -2606,6 +2606,7 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 	}
 	results.MVP = F1.getMVP();
 	results.sinkFlagship = F1.getSinkFlagship();
+	results.dmgTotals = F1.DMGTOTALS;
 	if (didNB) results.didNB = true;
 	
 	//update morale (post battle)
@@ -2933,6 +2934,7 @@ function simStats(numsims,foptions) {
 			undamaged: 0,
 			MVPs: [0,0,0,0,0,0],
 			sinkFlagships: [0,0,0,0,0,0],
+			dmgTotals: [0,0,0,0,0,0],
 			ranks: {S:0,A:0,B:0,C:0,D:0,E:0},
 			flagsunk: 0,
 			airStates: [0,0,0,0,0],
@@ -3019,6 +3021,7 @@ function simStats(numsims,foptions) {
 			totalResult.nodes[j].ranks[res.rank]++;
 			totalResult.nodes[j].MVPs[res.MVP]++;
 			if (res.sinkFlagship > -1) totalResult.nodes[j].sinkFlagships[res.sinkFlagship]++;
+			for (let i = 0; i < res.dmgTotals.length; i++) totalResult.nodes[j].dmgTotals[i] += res.dmgTotals[i];
 			totalResult.nodes[j].airStates[FLEETS1[0].AS+2]++;
 			if (res.didNB){
 				if (res.didNBescort) totalResult.nodes[j].nbStates[2]++;
@@ -3450,6 +3453,7 @@ function simNightFirstCombined(F1,F2,Fsupport,LBASwaves,BAPI) {
 	}
 	results.mvpDay = results.MVP = F1.getMVP();
 	results.sinkFlagship = F1.getSinkFlagship();
+	results.dmgTotals = F1.DMGTOTALS;
 	return results;
 }
 

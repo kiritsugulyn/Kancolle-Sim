@@ -1057,14 +1057,25 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
         pillboxMultDayOnly *= [1, 1.3, 1.56][n];
         isoMultDayOnly *= [1, 1.3, 1.43][n];
         supplyPostMult *= [1, 1.5, 1.65][n];
-        if (installeqids[68] || installeqids[166] || installeqids[167] || installeqids[193] || installeqids[230]) {
-            if (n1 == 1 && n2 == 1) {
-                commonMult *= 1.32;
-                installFlat2 += 15;
-            }
-            else if (n1 == 1 || n2 == 1) {
+
+        let a = Math.min((installeqids[68] || 0) + (installeqids[166] || 0) + (installeqids[193] || 0), 2);
+        let b = Math.min((installeqids[230] || 0) + (installeqids[167] || 0), 2);
+        if (n1 == 1 || n2 == 1) {
+            if (a + b >= 1) {
                 commonMult *= 1.2;
                 installFlat2 += 10;
+            }
+        }
+        if (n1 >= 1 && n2 >= 1) {
+            if (a + b >= 2) {
+                commonMult *= 1.3;
+                installFlat2 += 5;
+            }else if (b >= 1) {
+                commonMult *= 1.2;
+                installFlat2 += 3;
+            }else if (a >= 1) {
+                commonMult *= 1.1;
+                installFlat2 += 2;
             }
         }
     }

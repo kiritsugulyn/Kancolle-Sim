@@ -484,6 +484,8 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	results.MVPC = F1C.getMVP();
 	results.sinkFlagship = F1.getSinkFlagship();
 	results.sinkFlagshipC = F1C.getSinkFlagship();
+	results.dmgTotals = F1.DMGTOTALS;
+	results.dmgTotalsC = F1C.DMGTOTALS;
 	if (didNB) results.didNB = true;
 	
 	//update morale (post battle)
@@ -525,6 +527,8 @@ function simStatsCombined(numsims,type,foptions) {
 			MVPsC: [0,0,0,0,0,0],
 			sinkFlagships: [0,0,0,0,0,0],
 			sinkFlagshipsC: [0,0,0,0,0,0],
+			dmgTotals: [0,0,0,0,0,0],
+			dmgTotalsC: [0,0,0,0,0,0],
 			ranks: {S:0,A:0,B:0,C:0,D:0,E:0},
 			flagsunk: 0,
 			airStates: [0,0,0,0,0],
@@ -630,6 +634,8 @@ function simStatsCombined(numsims,type,foptions) {
 			totalResult.nodes[j].MVPsC[res.MVPC]++;
 			if (res.sinkFlagship > -1) totalResult.nodes[j].sinkFlagships[res.sinkFlagship]++;
 			if (res.sinkFlagshipC > -1) totalResult.nodes[j].sinkFlagshipsC[res.sinkFlagshipC]++;
+			for (let i = 0; i < res.dmgTotals.length; i++) totalResult.nodes[j].dmgTotals[i] += res.dmgTotals[i];
+			for (let i = 0; i < res.dmgTotalsC.length; i++) totalResult.nodes[j].dmgTotalsC[i] += res.dmgTotalsC[i];
 			totalResult.nodes[j].airStates[FLEETS1[0].AS+2]++;
 			if (res.didNB){
 				if (res.didNBescort) totalResult.nodes[j].nbStates[2]++;
@@ -1203,6 +1209,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	}
 	results.MVP = F1.getMVP();
 	results.sinkFlagship = F1.getSinkFlagship();
+	results.dmgTotals = F1.DMGTOTALS;
 	if (didNB) results.didNB = true;
 	
 	//update morale (post battle)
@@ -1779,6 +1786,8 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	results.MVPC = F1C.getMVP();
 	results.sinkFlagship = F1.getSinkFlagship();
 	results.sinkFlagshipC = F1C.getSinkFlagship();
+	results.dmgTotals = F1.DMGTOTALS;
+	results.dmgTotalsC = F1C.DMGTOTALS;
 	if (didNB) results.didNB = true;
 	
 	//update morale (post battle)
