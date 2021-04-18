@@ -107,6 +107,15 @@
 			</div>
 		</div>
 		<br>
+		<div id="fleetspace2Raid"></div>
+		<br>
+		<div style="width:1000px">
+			<div style="width:200px;margin:auto">
+			<input type="button" id="btnAddLBRaid" value="Add LB Raid" onClick="clickedAddLBRaid(true)"/>
+			<input type="button" id="btnDelLBRaid" value="Remove LB Raid" style="display:none" onClick="clickedDelLBRaid()"/>
+			</div>
+		</div>
+		<br>
 		<hr>
 		
 		<h2>Settings</h2>
@@ -350,7 +359,8 @@
 				<div class="resmulti">
 					Air State Rate Per Battle:
 					<table id="tabAirState" class="stattable"></table>
-				</div><br>
+				</div>
+				<br><br>
 				<div class="resmulti">
 					<span>Average Damage Per Battle:</span>
 					<table id="avgdmgtab" class="stattable"></table>

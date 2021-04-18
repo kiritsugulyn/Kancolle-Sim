@@ -118,6 +118,7 @@ var FLEETS1 = [];
 var FLEETS2 = [];
 var FLEETS1S = [null,null];
 var LBAS = [null,null,null];
+var FLEETLBRAID = null;
 var ENGAGEMENT = 1;
 var FIXENAGEMENT = false;
 const CRITMOD = 1.5;
@@ -2818,17 +2819,20 @@ function maelstromLoss(fleet, losses){
 	});
 }
 
-function landBaseLoss(){
-	LBAS.forEach((lb, j) => {
-		if (lb.planecount.length < 1) return;
-		let lossnum = Math.ceil(Math.random()*4);
-		if (C) console.log('LB ' + (j+1) + ' plane loss: '+lossnum);
-		lb.planecount.forEach((num, i) => {
-			if (lossnum <= 0) return;
-			let loss = Math.min(lb.planecount[i] - 1, lossnum);
-			lb.planecount[i] -= loss;
-			lossnum -= loss;
-		})
+function landBaseLoss(alllbas){
+	simLBRaid(alllbas, FLEETLBRAID);
+	alllbas.forEach((lb, j) => {
+		if (lb.HPprev - lb.HP >= 50) {
+			let lossnum = Math.ceil(Math.random()*4);
+			if (C) console.log('LB ' + (j+1) + ' plane loss: '+lossnum);
+			lb.planecount.forEach((num, i) => {
+				if (lossnum <= 0) return;
+				let loss = Math.min(lb.planecount[i] - 1, lossnum);
+				lb.planecount[i] -= loss;
+				lossnum -= loss;
+			})
+		}
+		delete lb.HPprev;
 	})
 }
 
@@ -2971,6 +2975,13 @@ function simStats(numsims,foptions) {
 	C = false;
 	var formdef = FLEETS1[0].formation;
 	var formdef2 = FLEETS2.map(f => f.formation);
+	// get all sortie lbas
+	var alllbas = [];
+	for (var j=0; j<foptions.length; j++) {
+		for (var k=0; k<foptions[j].lbas.length; k++) {
+				if (alllbas.indexOf(foptions[j].lbas[k]) == -1) alllbas.push(LBAS[foptions[j].lbas[k] - 1]);
+		}
+	}
 	for (var i=0; i<numsims; i++) {
 		for (var j=0; j<FLEETS2.length; j++) {
 			var options = foptions[j];
@@ -2991,7 +3002,7 @@ function simStats(numsims,foptions) {
 			var supportNum = 0;
 			let friendFleet = null;
 			if (options.maelstrom) maelstromLoss(FLEETS1[0], options.maelstrom);
-			if (options.lbloss) landBaseLoss();
+			if (options.lbraid && FLEETLBRAID) landBaseLoss(alllbas);
 			if (j == FLEETS2.length - 1) {
 				supportNum = 1;
 				if (options.randfriend) {
@@ -3078,20 +3089,14 @@ function simStats(numsims,foptions) {
 				FLEETS1S[s].reset();
 			}
 		}
-		//lbas
-		var alllbas = [];
-		for (var j=0; j<foptions.length; j++) {
-			for (var k=0; k<foptions[j].lbas.length; k++) {
-				if (alllbas.indexOf(foptions[j].lbas[k]) == -1) alllbas.push(foptions[j].lbas[k]);
-			}
-		}
+		// lbas
 		for (var j=0; j<alllbas.length; j++) {
-			var cost = LBAS[alllbas[j]-1].getCost();
+			var cost = alllbas[j].getCost();
 			totalResult.totalFuelS += cost[0];
 			totalResult.totalAmmoS += cost[1];
 			totalResult.totalBauxS += cost[2];
 			totalResult.totalEmptiedLBAS += cost[3];
-			LBAS[alllbas[j]-1].reset();
+			alllbas[j].reset();
 		}
 		
 		if (CARRYOVERHP || CARRYOVERMORALE) {
@@ -3111,6 +3116,7 @@ function simStats(numsims,foptions) {
 			FLEETS2[j].reset();
 			if (FLEETS2[j].combinedWith) FLEETS2[j].combinedWith.reset();
 		}
+		if (FLEETLBRAID) FLEETLBRAID.reset();
 	}
 	
 	updateResults(totalResult);
@@ -3263,6 +3269,41 @@ function simStats(numsims,foptions) {
 // 		}
 // 	}
 // }
+
+function simLBRaid(lbas,F2) {
+	// quick calculation of LB raid w/o defence
+
+	lbas.forEach((lb) => lb.HPprev = lb.HP);
+
+	// S1
+	F2.AS = 2;
+	AADefenceFighters(F2,false,{});
+	
+	// Contact
+	var contactMod = 1;
+	var contactdata = getContact(F2.ships);
+	if (contactdata) contactMod = contactdata.mod;
+
+	// S3 (assume no S2)
+	for (let ship of F2.ships) {
+		for (let slot=0; slot<ship.equips.length; slot++) {
+			if (ship.planecount[slot] <= 0) continue;
+			let equip = ship.equips[slot];
+			if (!equip.isdivebomber && !equip.istorpbomber) continue;
+			var target = lbas[Math.floor(Math.random()*lbas.length)];
+			var acc = .95;
+			var res = rollHit(accuracyAndCrit(ship,target,acc,1.0,0,.2,false), 1);
+			var dmg = 0, realdmg = 0;
+			var planebase = (equip.isdivebomber)? (equip.DIVEBOMB || 0) : (equip.TP || 0);
+			if (C) console.log('	slot:'+slot+' planecount:'+ship.planecount[slot]+' planebase:'+planebase);
+			var preMod = (equip.isdivebomber)? 1 : ((Math.random() < .5)? .8 : 1.4);
+			var dmgbase = 25 + Math.sqrt(ship.planecount[slot]) * planebase;
+			dmg = damage(ship,target,dmgbase,preMod,{postMod:contactMod,critMod:res},AIRSTRIKEDMGBASE,equip);
+			takeDamage(target,dmg);
+			if (C) console.log(ship.name+' airstrikes '+target.name+' for '+dmg+' damage, '+target.HP+'/'+target.maxHP+' left, CONTACT: '+contactMod);
+		}
+	}
+}
 
 function getNightEquips(alive1,alive2,APIyasen) {
 	APIyasen.api_flare_pos = [-1,-1]; APIyasen.api_touch_plane = [-1,-1];

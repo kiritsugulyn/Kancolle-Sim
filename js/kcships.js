@@ -1473,7 +1473,10 @@ DE.prototype.canOASW = function() {
 function LandBase(equips,levels,profs) {
 	this.side = 0;
 	this.HP = 200;
-	this.AR = 0;
+    this.maxHP = 200;
+	this.AR = 48; // https://twitter.com/dewydrops/status/1288871270881214464
+    this.EV = 41; // https://twitter.com/dewydrops/status/1286900062618914816
+    this.LUK = 0; // dummy number for ev calculation
 	this.PLANESLOTS = [18,18,18,18];
 	this.planecount = this.PLANESLOTS.slice();
 	this.equips = [];
@@ -1482,6 +1485,8 @@ function LandBase(equips,levels,profs) {
 		this.equips[i].rankInit = profs[i];
 	}
 	this.AS = 0;
+    this.protection = true;
+    this.improves = {};
 }
 LandBase.prototype.airState = function() { return this.AS; }
 LandBase.prototype.airPower = function(jetonly) {
@@ -1526,6 +1531,7 @@ LandBase.prototype.airPowerDefend = function() {
 }
 LandBase.prototype.reset = function() {
 	this.planecount = this.PLANESLOTS.slice();
+    this.HP = 200;
 }
 LandBase.prototype.getCost = function() {
 	var cost = [0,0,0,0]; //fuel, ammo, baux, emptied slots
@@ -1550,6 +1556,9 @@ LandBase.prototype.getCost = function() {
         cost[2] += (this.PLANESLOTS[i] - this.planecount[i])*5;
         cost[3] += this.planecount[i] <= 0; 
 	}
+    // LB raid cost
+    if (Math.random() < .5) cost[0] += Math.floor(.9 * (this.maxHP - this.HP) + .1);
+    else cost[2] += Math.floor(.9 * (this.maxHP - this.HP) + .1);
 	return cost;
 }
 LandBase.prototype.getDistance = function() {
@@ -1584,6 +1593,7 @@ LandBase.createJetLandBase = function(landbases) {
 	jetLBAS.PLANESLOTS = planecounts.slice();
 	return jetLBAS;
 }
+LandBase.prototype.moraleModEv = function() { return 1; }
 
 var PLANEDEFAULT = new Ship(0,'PLANEDEFAULT',0, 1,1, 0,0,0,0, 0, 0,0,3, 1);
 PLANEDEFAULT.CVshelltype = true;

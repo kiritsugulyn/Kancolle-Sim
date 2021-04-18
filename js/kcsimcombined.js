@@ -568,6 +568,13 @@ function simStatsCombined(numsims,type,foptions) {
 	C = false;
 	var formdef = FLEETS1[0].formation, formdefc = FLEETS1[1].formation;
 	var formdef2 = FLEETS2.map(f => f.formation);
+	// get all sortie lbas
+	var alllbas = [];
+	for (var j=0; j<foptions.length; j++) {
+		for (var k=0; k<foptions[j].lbas.length; k++) {
+			if (alllbas.indexOf(foptions[j].lbas[k]) == -1) alllbas.push(LBAS[foptions[j].lbas[k] - 1]);
+		}
+	}
 	for (var i=0; i<numsims; i++) {
 		for (var j=0; j<FLEETS2.length; j++) {
 			var options = foptions[j];
@@ -600,7 +607,7 @@ function simStatsCombined(numsims,type,foptions) {
 			var supportNum = 0;
 			let friendFleet = null;
 			if (options.maelstrom) maelstromLoss(FLEETS1[0], options.maelstrom);
-			if (options.lbloss) landBaseLoss();
+			if (options.lbraid && FLEETLBRAID) landBaseLoss(alllbas);
 			if (j == FLEETS2.length - 1) {
 				supportNum = 1;
 				if (options.randfriend) {
@@ -707,19 +714,13 @@ function simStatsCombined(numsims,type,foptions) {
 			}
 		}
 		//lbas
-		var alllbas = [];
-		for (var j=0; j<foptions.length; j++) {
-			for (var k=0; k<foptions[j].lbas.length; k++) {
-				if (alllbas.indexOf(foptions[j].lbas[k]) == -1) alllbas.push(foptions[j].lbas[k]);
-			}
-		}
 		for (var j=0; j<alllbas.length; j++) {
-			var cost = LBAS[alllbas[j]-1].getCost();
+			var cost = alllbas[j].getCost();
 			totalResult.totalFuelS += cost[0];
 			totalResult.totalAmmoS += cost[1];
 			totalResult.totalBauxS += cost[2];
 			totalResult.totalEmptiedLBAS += cost[3];
-			LBAS[alllbas[j]-1].reset();
+			alllbas[j].reset();
 		}
 		if (CARRYOVERHP || CARRYOVERMORALE) {
 			for (var j=0; j<FLEETS1.length; j++) {
@@ -738,6 +739,7 @@ function simStatsCombined(numsims,type,foptions) {
 			FLEETS2[j].reset();
 			if (FLEETS2[j].combinedWith) FLEETS2[j].combinedWith.reset();
 		}
+		if (FLEETLBRAID) FLEETLBRAID.reset();
 	}
 	
 	// totalResult.totalFuelR/=numsims;
