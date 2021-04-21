@@ -508,6 +508,7 @@ function simStatsCombined(numsims,type,foptions) {
 		totalFuelR: 0,
 		totalSteelR: 0,
 		totalBuckets: 0,
+		totalRepairTime: 0,
 		totalRepairCost1: 0,
 		totalRepairCost2: 0,
 		totalEmptiedPlanes: 0,
@@ -686,6 +687,7 @@ function simStatsCombined(numsims,type,foptions) {
 					var r = getRepairCost(ship);
 					totalResult.totalFuelR += r[0];
 					totalResult.totalSteelR += r[1];
+					totalResult.totalRepairTime += getRepairTime(ship);
 				}
 				if (useBucket) totalResult.totalBuckets++;
 				let fuelleft = ship.fuelleft - (ship._fuelUnderway || 0);

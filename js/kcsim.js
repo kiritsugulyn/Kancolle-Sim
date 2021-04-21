@@ -195,19 +195,10 @@ function getRepairCost(ship) {
 
 function getRepairTime(ship) {
 	var mod, base;
-	if (ship.LVL <= 12) base = 10*ship.LVL;
-	else if (ship.LVL < 100) {
-		base = 120;
-		var extra = 0, count = 0, bm = 2;
-		for (var i=13; i<=ship.LVL; i++) {
-			base += 5;
-			if (count++ >= bm) { bm += 2; count = 0; base += 10; }
-		}
-	} else if (ship.LVL <= 128) base = 650 + 5*(ship.LVL-100);
-	else if (ship.LVL < 150) base = 800 + 5*(ship.LVL-128);
-	else base = 915;
+	if (ship.LVL <= 11) base = 10*ship.LVL;
+	else base = 5*ship.LVL + 10*Math.floor(Math.sqrt(ship.LVL - 11)) + 50;
 	switch (SHIPDATA[ship.mid].type) {
-		case 'BB': case 'BBV': case 'CV': case 'AR': mod = 2; break;
+		case 'BB': case 'BBV': case 'CV': case 'CVB': case 'AR': mod = 2; break;
 		case 'CA': case 'CAV': case 'FBB': case 'CVL': case 'AS': mod = 1.5; break;
 		case 'SS': case 'DE': mod = .5; break;
 		default: mod = 1; break;
@@ -2922,6 +2913,7 @@ function simStats(numsims,foptions) {
 		totalFuelR: 0,
 		totalSteelR: 0,
 		totalBuckets: 0,
+		totalRepairTime: 0,
 		totalRepairCost1: 0,
 		totalRepairCost2: 0,
 		totalEmptiedPlanes: 0,
@@ -3063,6 +3055,7 @@ function simStats(numsims,foptions) {
 				var r = getRepairCost(ship);
 				totalResult.totalFuelR += r[0];
 				totalResult.totalSteelR += r[1];
+				totalResult.totalRepairTime += getRepairTime(ship);
 			}
 			if (useBucket) totalResult.totalBuckets++;
 			let fuelleft = ship.fuelleft - (ship._fuelUnderway || 0);

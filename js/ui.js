@@ -1896,6 +1896,7 @@ function updateResults(results) {
 	resultAddWeight('rfrep',results.totalFuelR,results.totalnum);
 	resultAddWeight('rsrep',results.totalSteelR,results.totalnum);
 	resultAddWeight('bucketrep',results.totalBuckets,results.totalnum);
+	resultAddWeight('timerep',results.totalRepairTime/3600,results.totalnum);
 	resultAddWeight('repair1rep',results.totalRepairCost1,results.totalnum);
 	resultAddWeight('repair2rep',results.totalRepairCost2,results.totalnum);
 	
