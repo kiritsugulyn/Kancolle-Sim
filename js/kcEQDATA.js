@@ -2243,6 +2243,7 @@ var EQDATA = {
 		aaResistFleet: .7,
 		DIVEBOMB: 4,
 		AA: 7,
+		ASW: 3,
 		ACC: 1,
 		EV: 2,
 		LOS: 1

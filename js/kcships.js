@@ -1547,6 +1547,9 @@ LandBase.prototype.getCost = function() {
             case HEAVYBOMBER:
                 cost[0] += Math.floor(2*this.PLANESLOTS[i]);
 				cost[1] += Math.floor(2*this.PLANESLOTS[i]);
+            case FLYINGBOAT:
+                cost[0] += Math.floor(3*this.PLANESLOTS[i]);
+				cost[1] += Math.floor(this.PLANESLOTS[i]);
 			default:
 				cost[0] += Math.floor(this.PLANESLOTS[i]);
 				cost[1] += Math.ceil(.6*this.PLANESLOTS[i]);
