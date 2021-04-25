@@ -2165,6 +2165,17 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 			}
 		}
 	}
+	if (!isjetphase && lbas.equips.some((eq, i) => eq.mid == 178 && lbas.planecount[i] >= 3)) {
+		lbas.equips.forEach((eq, i) => {
+			if (eq.mid != 178) {
+				let r = Math.random();
+				if (r < .6) lbas.planecount[i] += 1;
+				else if (r < .9) lbas.planecount[i] += 2;
+				else lbas.planecount[i] += 3;
+				if (lbas.planecount[i] > lbas._currentSlots[i]) lbas.planecount[i] = lbas._currentSlots[i];
+			} 
+		})
+	}
 	
 	if (C) {
 		for (var i=0; i<2; i++)
@@ -3265,7 +3276,6 @@ function simStats(numsims,foptions) {
 
 function simLBRaid(lbas,F2) {
 	// quick calculation of LB raid w/o defence
-
 	lbas.forEach((lb) => lb.HPprev = lb.HP);
 
 	// S1
@@ -3286,7 +3296,7 @@ function simLBRaid(lbas,F2) {
 			var target = lbas[Math.floor(Math.random()*lbas.length)];
 			var acc = .95;
 			var res = rollHit(accuracyAndCrit(ship,target,acc,1.0,0,.2,false), 1);
-			var dmg = 0, realdmg = 0;
+			var dmg = 0;
 			var planebase = (equip.isdivebomber)? (equip.DIVEBOMB || 0) : (equip.TP || 0);
 			if (C) console.log('	slot:'+slot+' planecount:'+ship.planecount[slot]+' planebase:'+planebase);
 			var preMod = (equip.isdivebomber)? 1 : ((Math.random() < .5)? .8 : 1.4);
