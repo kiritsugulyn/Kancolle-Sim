@@ -3781,8 +3781,8 @@ function dmgSpecialTarget(dmg,ship,target,plane){
 
 	if (plane) {
 		if (plane.isdivebomber) dmg *= target.divebombWeak || 1;
-		if (ship.mid >= 1665 && ship.mid <= 1667) dmg *= (1.6 + Math.random() * .6)		// guess
-		else if (ship.mid >= 1668 && ship.mid <= 1672) dmg *= (1.5 + Math.random() * .5);   // Source: https://twitter.com/yukicacoon/status/1355546046026289154
+		if (target.mid >= 1665 && target.mid <= 1667) dmg *= (1.6 + Math.random() * .6)		// guess
+		else if (target.mid >= 1668 && target.mid <= 1672) dmg *= (1.5 + Math.random() * .5);   // Source: https://twitter.com/yukicacoon/status/1355546046026289154
 	}else {
 		if (target.isAnchorage) dmg *= ship.anchoragePostMult || 1;
 		else if (target.isSummerBBHime) dmg *= ship.summerBBHimePostMult || 1;
