@@ -1310,8 +1310,9 @@ CV.prototype.NBPower = function(target,bonus) {
             if (this.planecount[i] <= 0) continue;
 			if ([B_NIGHTFIGHTER, B_NIGHTBOMBER, B_NIGHTBOMBER2].indexOf(equip.btype) === -1) continue;
 			let mod = .3*((equip.FP || 0) + (equip.TP || 0) + (equip.ASW || 0) + (equip.DIVEBOMB || 0));
-			power += (equip.FP || 0) + (equip.DIVEBOMB || 0) + Math.sqrt(equip.level || 0);
-			if (!(target && target.isInstall)) power +=  (equip.TP || 0);
+			power += (equip.FP || 0) + Math.sqrt(equip.level || 0);
+            if (!(target && target.isInstall)) power += (equip.TP || 0);
+            if (equip.type == DIVEBOMBER) power += (equip.DIVEBOMB || 0);
 			if (equip.btype != B_NIGHTBOMBER2) {
 				power += this.planecount[i]*3;
 				mod *= 1.5;
