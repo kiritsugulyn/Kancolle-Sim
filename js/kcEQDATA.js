@@ -65,9 +65,8 @@ const B_SONAR = 6;
 const B_DEPTHCHARGE = 7;
 const B_TORPEDO = 8;
 const B_TYPE3SHELL = 9;
-const B_LC1 = 10;
-const B_LC2 = 11;
-const B_LC3 = 12;
+const B_PICKET = 10;
+const B_DRUM = 11;
 const B_DEPTHCHARGE2 = 13;
 const B_NIGHTFIGHTER = 14;
 const B_NIGHTBOMBER = 15;
@@ -350,7 +349,6 @@ EQTDATA[BULGEL] = {
 EQTDATA[LANDINGCRAFT] = {
 	name: 'Landing Equip',
 	image: 20,
-	btype: B_LC1,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['AV','LHA'],
 	canequipS: [147, 198, 199, 200, 260, 352, 418, 434, 435, 464, 468, 469, 470, 478, 487, 488, 489, 490, 498, 500, 541, 547, 548, 563, 587, 623, 630, 703],
@@ -373,6 +371,8 @@ EQTDATA[SEARCHLIGHTL] = {
 EQTDATA[STARSHELL] = {
 	name: 'Night Equip',
 	image: 27,
+	btype: B_PICKET,
+	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['DD','CL','CLT','CA','CAV','FBB','BB','BBV','AS','AV','AR'],
 	canequipS: [500],
 };
@@ -406,6 +406,7 @@ EQTDATA[FCF] = {
 EQTDATA[DRUM] = {
 	name: 'Misc',
 	image: 25,
+	btype: B_DRUM,
 	canequip: ['DD','CL','CAV','AV','AO','LHA'],
 	canequipS: [530, 539, 605],
 };
@@ -445,7 +446,6 @@ EQTDATA[SEAPLANEFIGHTER] = {
 EQTDATA[LANDINGTANK] = {
 	name: 'Landing Equip',
 	image: 36,
-	btype: B_LC3,
 	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['SS','SSV','AV','LHA'],
 	canequipS: [147, 198, 199, 200, 352, 418, 464, 468, 470, 478, 487, 488, 489, 490, 497, 500, 541, 547, 548, 564, 568, 569, 573, 578, 587, 623, 656],
@@ -1264,7 +1264,6 @@ var EQDATA = {
 		nameJP: '大発動艇',
 		added: '2013-12-24',
 		type: LANDINGCRAFT,
-		btype: B_LC1,
 		improveType: 1,
 	},
 	69: {
@@ -2386,7 +2385,6 @@ var EQDATA = {
 		nameJP: '大発動艇(八九式中戦車&陸戦隊)',
 		added: '2016-03-19',
 		type: LANDINGCRAFT,
-		btype: B_LC2,
 		improveType: 1,
 	},
 	167: {
@@ -2394,7 +2392,6 @@ var EQDATA = {
 		nameJP: '特二式内火艇',
 		added: '2016-03-19',
 		type: LANDINGTANK,
-		btype: B_LC3,
 		improveType: 1,
 	},
 	168: {
@@ -2691,7 +2688,6 @@ var EQDATA = {
 		nameJP: '特大発動艇',
 		added: '2016-10-26',
 		type: LANDINGCRAFT,
-		btype: B_LC1,
 	},
 	194: {
 		name: 'Laté 298B',
@@ -5113,6 +5109,29 @@ var EQDATA = {
 		EV: -1,
 		ACC: 8,
 	},
+	412: {
+		name: 'Destroyer Squadron Skilled Lookouts',
+		nameJP: '水雷戦隊 熟練見張員',
+		added: '2021-04-30',
+		type: PICKET,
+		TP: 3,
+		AA: 1,
+		LOS: 2,
+		EV: 3,
+		ACC: 2,
+		RNG: 2,
+	},
+	414: {
+		name: 'SOC Seagull',
+		nameJP: 'SOC Seagull',
+		added: '2021-04-30',
+		type: SEAPLANE,
+		DIVEBOMB: 1,
+		ASW: 1,
+		ACC: 2,
+		EV: 1,
+		LOS: 4,
+	},
 	501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -6437,6 +6456,7 @@ var LBASDATA = {
 	404: { distance: 5, cost: 14 },
 	405: { distance: 4, cost: 15 },
 	406: { distance: 4, cost: 17 },
+	414: { distance: 3, cost: 3 },
 };
 
 var EXPANSIONSLOTDATA = {
