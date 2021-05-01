@@ -371,14 +371,14 @@ EQTDATA[SEARCHLIGHTL] = {
 EQTDATA[STARSHELL] = {
 	name: 'Night Equip',
 	image: 27,
-	btype: B_PICKET,
-	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['DD','CL','CLT','CA','CAV','FBB','BB','BBV','AS','AV','AR'],
 	canequipS: [500],
 };
 EQTDATA[PICKET] = {
 	name: 'Night Equip',
 	image: 32,
+	btype: B_PICKET,
+	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['DD','CL','CT','CLT','CA','CAV','FBB','BB','BBV','AS','AV','DE'],
 	canequipS: [381, 500, 529, 536, 621, 626],
 };
