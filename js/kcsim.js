@@ -110,10 +110,10 @@ var NBATTACKDATA = {
 	62: { dmgMod: 1.2, accMod: 1.2, chanceMod: 1.15, id: 6, name: 'CVCI (1.2)' },
 	63: { dmgMod: 1.18, accMod: 1.2, chanceMod: 1.25, id: 6, name: 'CVCI (1.18)' },
 	64: { dmgMod: 1.2, accMod: 1.2, chanceMod: 1.15, id: 6, name: 'CVCI (1.2, suisei)' },
-	7: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.3, torpedo: true, numHits: 2, name: 'DDCI (GTR)' },
-	8: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.5, torpedo: true, numHits: 2, name: 'DDCI (LTR)' },
-	81: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.3, id: 8, torpedo: true, numHits: 2, name: 'DDCI (LTT)' },
-	82: { dmgMod: 1.3, accMod: 1.65, chanceMod: 1.3, id: 8, torpedo: true, name: 'DDCI (LTD)' },
+	7: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.3, torpedo: true, name: 'DDCI (GTR)' },
+	8: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.5, torpedo: true, name: 'DDCI (LTR)' },
+	81: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.3, id: 8, torpedo: true, name: 'DDCI (LTT)' },
+	82: { dmgMod: 1.3, accMod: 1.65, chanceMod: 1.3, id: 8, torpedo: true, name: 'DDCI (LTD)' }, // TODO: Add new destroyer cut-ins?
 }
 
 var FLEETS1 = [];
