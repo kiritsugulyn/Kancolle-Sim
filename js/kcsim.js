@@ -112,8 +112,12 @@ var NBATTACKDATA = {
 	64: { dmgMod: 1.2, accMod: 1.2, chanceMod: 1.15, id: 6, name: 'CVCI (1.2, suisei)' },
 	7: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.3, torpedo: true, name: 'DDCI (GTR)' },
 	8: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.5, torpedo: true, name: 'DDCI (LTR)' },
-	81: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.3, id: 8, torpedo: true, name: 'DDCI (LTT)' },
-	82: { dmgMod: 1.3, accMod: 1.65, chanceMod: 1.3, id: 8, torpedo: true, name: 'DDCI (LTD)' }, // TODO: Add new destroyer cut-ins?
+	9: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.3, torpedo: true, name: 'DDCI (LTT)' },
+	10: { dmgMod: 1.3, accMod: 1.65, chanceMod: 1.3, torpedo: true, name: 'DDCI (LTD)' },
+	11: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.3, numHits: 2, torpedo: true, name: 'DDCI (GTR, double)' },
+	12: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.5, numHits: 2, torpedo: true, name: 'DDCI (LTR, double)' },
+	13: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.3, numHits: 2, torpedo: true, name: 'DDCI (LTT, double)' },
+	14: { dmgMod: 1.3, accMod: 1.65, chanceMod: 1.3, numHits: 2, torpedo: true, name: 'DDCI (LTD, double)' },
 }
 
 var FLEETS1 = [];
@@ -446,7 +450,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 				cutin = attackData.id || NBtype;
 				cutinR = NBtype;
 				let dmgMod = attackData.dmgMod;
- 				if (NBtype == 7 || NBtype == 8) { //D-gun bonus
+ 				if ([7,8,11,12].indexOf(NBtype) !== -1) { //D-gun bonus
 					let count = 0, count2 = 0;
 					for (let equip of ship.equips) {
 						if (equip.mid == 267) { count++; }
@@ -558,7 +562,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 	if (C) {
 		if (APIyasen.api_si_list) {
 			let si_list;
-			if (cutinR < 60 || cutinR >= 70) {
+			if (cutinR < 60) {
 				let btypeMap = { 1: [], 2: [], 8: [], 4: [], 10: [], 11: [], 18: [] }, btypeAll = [];
 				for (let eq of ship.equips) {
 					if (btypeMap[eq.btype]) {
@@ -590,15 +594,19 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 						si_list = [btypeMap[B_TORPEDO][0],btypeMap[B_SUBRADAR][0]];
 						break;
 					case 7:
+					case 11:
 						si_list = [btypeMap[B_MAINGUN][0],btypeMap[B_TORPEDO][0],btypeMap[B_RADAR][0]];
 						break;
 					case 8:
+					case 12:
 						si_list = [btypeMap[B_PICKET][0],btypeMap[B_TORPEDO][0],btypeMap[B_RADAR][0]];
 						break;
-					case 81:
+					case 9:
+					case 13:
 						si_list = [btypeMap[B_PICKET][0],btypeMap[B_TORPEDO][0],btypeMap[B_TORPEDO][1]];
 						break;
-					case 82:
+					case 10:
+					case 14:
 						si_list = [btypeMap[B_PICKET][0],btypeMap[B_TORPEDO][0],btypeMap[B_DRUM][0]];
 						break;
 					default:

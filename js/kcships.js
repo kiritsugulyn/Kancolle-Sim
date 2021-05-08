@@ -480,11 +480,11 @@ Ship.prototype.NBtypes = function() {
 			}
 		}
 	}
-	if (MECHANICS.destroyerNBCI && this.type == 'DD') {
-		if (mguns && torps && this.hasLOSRadar) this._nbtypes.push(7);
-		if (this.hasLookout && torps && this.hasLOSRadar) this._nbtypes.push(8);
-        if (this.hasLookout2 && torps >= 2) this._nbtypes.push(81);
-        if (this.hasLookout2 && torps && this.equiptypesB[B_DRUM]) this._nbtypes.push(82);
+	if (MECHANICS.destroyerNBCI && this.type == 'DD') { // DD CI double
+		if (mguns && torps && this.hasLOSRadar) this._nbtypes.push(11);
+		if (this.hasLookout && torps && this.hasLOSRadar) this._nbtypes.push(12);
+        if (this.hasLookout2 && torps >= 2) this._nbtypes.push(13);
+        if (this.hasLookout2 && torps && this.equiptypesB[B_DRUM]) this._nbtypes.push(14);
     }
     
 	if (this.isSub & this.equiptypesB[B_SUBRADAR] && this.numSpecialTorp) this._nbtypes.push(31);
@@ -494,6 +494,14 @@ Ship.prototype.NBtypes = function() {
 	else if (mguns >= 2 && sguns) this._nbtypes.push(4);  //gun cut-in
 	else if (torps && mguns) this._nbtypes.push(2);  //mix cut-in
 	else if (mguns+sguns >= 2) this._nbtypes.push(1);  //double attack
+
+    if (MECHANICS.destroyerNBCI && this.type == 'DD') { // DD CI single
+		if (mguns && torps && this.hasLOSRadar) this._nbtypes.push(7);
+		if (this.hasLookout && torps && this.hasLOSRadar) this._nbtypes.push(8);
+        if (this.hasLookout2 && torps >= 2) this._nbtypes.push(9);
+        if (this.hasLookout2 && torps && this.equiptypesB[B_DRUM]) this._nbtypes.push(10);
+    }
+
 	return this._nbtypes;
 }
 
