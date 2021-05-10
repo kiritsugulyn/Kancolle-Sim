@@ -110,10 +110,10 @@ var NBATTACKDATA = {
 	62: { dmgMod: 1.2, accMod: 1.2, chanceMod: 1.15, id: 6, name: 'CVCI (1.2)' },
 	63: { dmgMod: 1.18, accMod: 1.2, chanceMod: 1.25, id: 6, name: 'CVCI (1.18)' },
 	64: { dmgMod: 1.2, accMod: 1.2, chanceMod: 1.15, id: 6, name: 'CVCI (1.2, suisei)' },
-	7: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.3, torpedo: true, name: 'DDCI (GTR)' },
-	8: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.5, torpedo: true, name: 'DDCI (LTR)' },
-	9: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.3, torpedo: true, name: 'DDCI (LTT)' },
-	10: { dmgMod: 1.3, accMod: 1.65, chanceMod: 1.3, torpedo: true, name: 'DDCI (LTD)' },
+	7: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.3, improve: 11, torpedo: true, name: 'DDCI (GTR)' },
+	8: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.5, improve: 12, torpedo: true, name: 'DDCI (LTR)' },
+	9: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.3, improve: 13, torpedo: true, name: 'DDCI (LTT)' },
+	10: { dmgMod: 1.3, accMod: 1.65, chanceMod: 1.3, improve: 14, torpedo: true, name: 'DDCI (LTD)' },
 	11: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.3, numHits: 2, torpedo: true, name: 'DDCI (GTR, double)' },
 	12: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.5, numHits: 2, torpedo: true, name: 'DDCI (LTR, double)' },
 	13: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.3, numHits: 2, torpedo: true, name: 'DDCI (LTT, double)' },
@@ -446,6 +446,10 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 			let chanceMod = attackData.chanceMod;
 			let chance = (chanceMod == 0)? .99 : NBchance/chanceMod;
 			if (Math.random() < chance) {
+				if (attackData.improve && Math.random() < chance) {
+					NBtype = attackData.improve;
+					attackData = NBATTACKDATA[NBtype];
+				}
 				if (attackData.numHits) da = attackData.numHits;
 				cutin = attackData.id || NBtype;
 				cutinR = NBtype;

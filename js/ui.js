@@ -231,11 +231,20 @@ function showAdditionalStats(fleet) {
 				for (let NBtype of ships[i].NBtypes()) {
 					var name = '', chance = NBchance;
 					var typedata = NBATTACKDATA[NBtype];
-					let chanceMod = typedata.chanceMod;
-					if (chanceMod > 0) chance /= chanceMod;
-					else chance = .99;
-					name = typedata.name;
-					td.append('<div style="margin-left:16px">'+name+': '+Math.floor(100*chance*chanceleft)+'%</div>');
+					if (typedata.improve) {  // for DD CI
+						let chanceMod = typedata.chanceMod;
+						chance /= chanceMod;
+						name = NBATTACKDATA[typedata.improve].name;
+						td.append('<div style="margin-left:16px">'+name+': '+Math.floor(100*chance*chance*chanceleft)+'%</div>');
+						name = typedata.name;
+						td.append('<div style="margin-left:16px">'+name+': '+Math.floor(100*chance*(1-chance)*chanceleft)+'%</div>');
+					}else {
+						let chanceMod = typedata.chanceMod;
+						if (chanceMod > 0) chance /= chanceMod;
+						else chance = .99;
+						name = typedata.name;
+						td.append('<div style="margin-left:16px">'+name+': '+Math.floor(100*chance*chanceleft)+'%</div>');
+					}
 					chanceleft -= chance*chanceleft;
 				}
 			}
