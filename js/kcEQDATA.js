@@ -399,6 +399,7 @@ EQTDATA[SRF] = {
 EQTDATA[FCF] = {
 	name: 'Misc',
 	image: 28,
+	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
 	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','LHA'],
 	canequipS: [464, 497, 498, 500, 542, 543, 567, 587, 628, 629, 651, 656],
 	cannotequipS: [521],
@@ -5110,7 +5111,7 @@ var EQDATA = {
 		ACC: 8,
 	},
 	412: {
-		name: 'Destroyer Squadron Skilled Lookouts',
+		name: 'Torpedo Squadron Skilled Lookouts',
 		nameJP: '水雷戦隊 熟練見張員',
 		added: '2021-04-30',
 		type: PICKET,

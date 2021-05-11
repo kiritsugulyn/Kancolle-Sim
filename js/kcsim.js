@@ -112,11 +112,11 @@ var NBATTACKDATA = {
 	64: { dmgMod: 1.2, accMod: 1.2, chanceMod: 1.15, id: 6, name: 'CVCI (1.2, suisei)' },
 	7: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.3, improve: 11, torpedo: true, name: 'DDCI (GTR)' },
 	8: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.5, improve: 12, torpedo: true, name: 'DDCI (LTR)' },
-	9: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.3, improve: 13, torpedo: true, name: 'DDCI (LTT)' },
+	9: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.2, improve: 13, torpedo: true, name: 'DDCI (LTT)' },
 	10: { dmgMod: 1.3, accMod: 1.65, chanceMod: 1.3, improve: 14, torpedo: true, name: 'DDCI (LTD)' },
 	11: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.3, numHits: 2, torpedo: true, name: 'DDCI (GTR, double)' },
 	12: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.5, numHits: 2, torpedo: true, name: 'DDCI (LTR, double)' },
-	13: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.3, numHits: 2, torpedo: true, name: 'DDCI (LTT, double)' },
+	13: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.2, numHits: 2, torpedo: true, name: 'DDCI (LTT, double)' },
 	14: { dmgMod: 1.3, accMod: 1.65, chanceMod: 1.3, numHits: 2, torpedo: true, name: 'DDCI (LTD, double)' },
 }
 
@@ -157,6 +157,7 @@ var SIMCONSTS = {
 	coloradoSpecialRate: 60,
 	kongouSpecialRate: 60,
 	airRaidCostW6: false,
+	torpSquadronRetreat: false,
 	enableEnemyAACI: true,
 	enableEnemyAACILBAS: false,
 }
@@ -2909,10 +2910,22 @@ function getFCFShips(ships1,ships1C) {
 	return [retreater, escorter];
 }
 
+function getFCFShip(ships1) {
+	var retreater = null;
+	for (var i=1; i<ships1.length; i++) {
+		if (ships1[i].retreated) continue;
+		if (ships1[i].HP/ships1[i].maxHP <= .25 && ships1[i].HP > 0) {
+			if (!retreater) retreater = ships1[i];
+		}
+	}
+	return retreater;
+}
+
 function canContinue(ships1,ships1C) {
 	if (ships1[0].HP/ships1[0].maxHP <= .25) return false;
 	var retreater = null, escorter = null;
-	if (ships1C && ships1[0].hasFCF) { var d = getFCFShips(ships1,ships1C); retreater = d[0]; escorter = d[1]; }
+	if (ships1C && ships1[0].hasCombinedFCF) { var d = getFCFShips(ships1,ships1C); retreater = d[0]; escorter = d[1]; }
+	else if (SIMCONSTS.torpSquadronRetreat && !ships1C && ships1[0].hasTorpFCF && isTorpSquadron(ships1)) retreater = getFCFShip(ships1);
 	if (DORETREAT) {
 		for (var i=1; i<ships1.length; i++) {
 			if (ships1[i].retreated) continue;
@@ -2925,9 +2938,13 @@ function canContinue(ships1,ships1C) {
 			}
 		}
 	}
-	if (retreater && escorter) {
-		retreater.retreated = escorter.retreated = true;
-		retreater.fuelleft = escorter.fuelleft = 0;
+	if (retreater) {
+		retreater.retreated = true;
+		retreater.fuelleft = 0;
+	}
+	if (escorter) {
+		escorter.retreated = true;
+		escorter.fuelleft = 0;
 	}
 	return true;
 }
@@ -3898,4 +3915,17 @@ function calJetCost(fleet1, fleet2) {
 		})
 	}
 	return cost;
+}
+
+function isTorpSquadron(ships) {
+	if (!ships.length) return false;
+	var flag = true;
+	ships.forEach((ship) => {
+		if (ship.isflagship) {
+			if (['DD','CL'].indexOf(ship.type) === -1) flag = false;
+		}else{
+			if (['DD','CLT'].indexOf(ship.type) === -1) flag = false;
+		}
+	})
+	return flag;
 }

@@ -26945,7 +26945,7 @@ var SHIPDATA = {
 		unknownstats: true,
 		RNG: 2,
 		SPD: 10,
-		SLOTS: [4, 4, 4, 4], // Supposedly
+		SLOTS: [0, 0, 0, 4],
 		EQUIPS: [601, 601, 593, 610],
 	},
 	2000: {
@@ -26969,14 +26969,14 @@ var SHIPDATA = {
 		SLOTS: [0, 0, 0, 6],
 		EQUIPS: [601,601,593,610],
 	},
-	2001: { // Guess, someone select Normal please
+	2001: {
 		name: 'Lunga Point Heavy Cruiser Princess 2',
 		nameJP: 'ルンガ沖重巡棲姫',
 		image: 'S2000.jpg',
 		type: 'FBB',
 		HP: 770,
 		FP: 217,
-		TP: 137,
+		TP: 142,
 		AA: 77,
 		AR: 217,
 		EV: 55,
@@ -27032,16 +27032,16 @@ var SHIPDATA = {
 		SLOTS: [0, 0, 0, 6],
 		EQUIPS: [601,601,593,610],
 	},
-	2004: { // Guess, someone select Normal please
+	2004: {
 		name: 'Lunga Point Heavy Cruiser Princess - Damaged 2',
 		nameJP: 'ルンガ沖重巡棲姫-壊',
 		image: 'S2003.jpg',
 		type: 'FBB',
 		HP: 770,
-		FP: 267,
+		FP: 252,
 		TP: 167,
-		AA: 87,
-		AR: 287,
+		AA: 77,
+		AR: 295,
 		EV: 55,
 		ASW: 0,
 		LOS: 55,
