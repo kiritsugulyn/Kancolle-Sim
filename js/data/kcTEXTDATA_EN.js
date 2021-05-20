@@ -297,6 +297,9 @@ var TEXTDATA_EN = {
 				104: "Kongou Special ",
 				200: "Zuiun cut-in ",
 				201: "Suisei cut-in ",
+				300: "Submarine Fleet Special ",
+				301: "Submarine Fleet Special ",
+				302: "Submarine Fleet Special ",
 			}
 		}
 	},
@@ -372,11 +375,20 @@ var TEXTDATA_EN = {
 				6: "carrier cut-in",
 				7: "gun-torpedo-radar cut-in",
 				8: "torpedo-radar-lookout cut-in",
+				9: "torpedo-lookout-torpedo cut-in",
+				10: "torpedo-lookout-drum cut-in",
+				11: "gun-torpedo-radar cut-in",
+				12: "torpedo-radar-lookout cut-in",
+				13: "torpedo-lookout-torpedo cut-in",
+				14: "torpedo-lookout-drum cut-in",
 				100: "Nelson Touch",
 				101: "Nagato Special",
 				102: "Mutsu Special",
 				103: "Colorado Special",
 				104: "Kongou Special",
+				300: "Submarine Fleet Special ",
+				301: "Submarine Fleet Special ",
+				302: "Submarine Fleet Special ",
 			}
 		}
 	},
