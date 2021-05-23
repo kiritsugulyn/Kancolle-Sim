@@ -1576,7 +1576,7 @@ LandBase.prototype.getDistance = function() {
     this.equips.forEach((eq) => {
         if (!LBASDATA[eq.mid]) return
         dist = Math.min(LBASDATA[eq.mid].distance || 0, dist);
-        if ([SEAPLANE, CARRIERSCOUT, CARRIERSCOUT2, LANDSCOUT].indexOf(eq.type) !== -1) scout = Math.max(LBASDATA[eq.mid].distance || 0, scout);
+        if ([SEAPLANE, CARRIERSCOUT, CARRIERSCOUT2, LANDSCOUT, FLYINGBOAT].indexOf(eq.type) !== -1) scout = Math.max(LBASDATA[eq.mid].distance || 0, scout);
     });
     if (scout && scout > dist) dist = Math.round(dist + Math.sqrt(scout - dist));
     return dist;

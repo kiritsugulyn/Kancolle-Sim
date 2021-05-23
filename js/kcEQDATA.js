@@ -5152,6 +5152,36 @@ var EQDATA = {
 		ASW: 2,
 		LOS: 7,
 	},
+	416: {
+		name: 'Type 21 Zero Fighter (Tainan Air Group)',
+		nameJP: '零式艦戦21型(台南空)',
+		added: '2021-05-21',
+		type: INTERCEPTOR,
+		AA: 11,
+		ACC: 1,
+		EV: 3,
+		LOS: 1
+	},
+	417: {
+		name: 'Type 32 Zero Fighter (Tainan Air Group)',
+		nameJP: '零式艦戦32型(台南空)',
+		added: '2021-05-21',
+		type: INTERCEPTOR,
+		AA: 12,
+		ACC: 1,
+		EV: 4,
+		LOS: 1
+	},
+	418: {
+		name: 'Type 22 Zero Fighter (251 Air Group)',
+		nameJP: '零式艦戦22型(251空)',
+		added: '2021-05-21',
+		type: INTERCEPTOR,
+		AA: 12,
+		ACC: 1,
+		EV: 3,
+		LOS: 1
+	},
 	501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -6302,7 +6332,7 @@ var EQDATA = {
 		RNG: 3,
 	},
 	610: {
-		name: 'Abyssal Seamew Reconnaissance Seaplane',
+		name: 'Abyssal Seagull Reconnaissance Seaplane',
 		nameJP: '深海カモメ水偵',
 		added: '2021-05-08',
 		type: SEAPLANE,
@@ -6310,6 +6340,29 @@ var EQDATA = {
 		EV: 3,
 		ASW: 4,
 		LOS: 6,
+	},
+	611: {
+		name: 'Abyssal Seamew Reconnaissance Seaplane',
+		nameJP: '深海海猫水偵',
+		added: '2021-05-21',
+		type: SEAPLANE,
+		FP: 3,
+		AA: 7,
+		ACC: 6,
+		EV: 4,
+		ASW: 6,
+		LOS: 7,
+	},
+	612: {
+		name: 'Abyssal 6inch Triple Gun Mount Mk.16',
+		nameJP: '深海6inch三連装主砲 Mk.16',
+		added: '2021-05-21',
+		type: MAINGUNM,
+		FP: 13,
+		AA: 6,
+		ASW: 3,
+		ACC: 9,
+		RNG: 2,
 	},
 };
 
@@ -6487,6 +6540,10 @@ var LBASDATA = {
 	405: { distance: 4, cost: 15 },
 	406: { distance: 4, cost: 17 },
 	414: { distance: 3, cost: 3 },
+	415: { distance: 4, cost: 5 },
+	416: { distance: 7, cost: 4 },
+	417: { distance: 5, cost: 4 },
+	418: { distance: 7, cost: 4 },
 };
 
 var EXPANSIONSLOTDATA = {
