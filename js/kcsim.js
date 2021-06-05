@@ -117,7 +117,7 @@ var NBATTACKDATA = {
 	11: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.3, numHits: 2, torpedo: true, name: 'DDCI (GTR, double)' },
 	12: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.5, numHits: 2, torpedo: true, name: 'DDCI (LTR, double)' },
 	13: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.2, numHits: 2, torpedo: true, name: 'DDCI (LTT, double)' },
-	14: { dmgMod: 1.3, accMod: 1.65, chanceMod: 1.2, numHits: 2, torpedo: true, name: 'DDCI (LTD, double)' },
+	14: { dmgMod: 1.3, accMod: 1.65, chanceMod: 1.3, numHits: 2, torpedo: true, name: 'DDCI (LTD, double)' },
 }
 
 var FLEETS1 = [];
