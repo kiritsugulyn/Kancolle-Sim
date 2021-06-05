@@ -2840,6 +2840,49 @@ Equip.explicitStatsBonusGears = function(){
                 },
             ],
         },
+        // SBD
+        "195": {
+            count: 0,
+            byClass: {
+                // Following American carriers: Lexington Class
+                "69": {
+                    multiple: { "houg": 1 },
+                },
+                // Casablanca Class
+                "83": "69",
+                // Essex Class
+                "84": "69",
+                // Yorktown Class
+                "105": "69",
+            },
+        },
+        // SBD-5
+        "419": {
+            count: 0,
+            starsDist: [],
+            byClass: {
+                // Following American carriers: Lexington Class
+                "69": [
+                    {
+                        multiple: { "houg": 2 },
+                    },
+                    {
+                        minStars: 2,
+                        multiple: { "houg": 1 },
+                    },
+                    {
+                        minStars: 7,
+                        multiple: { "houg": 1 },
+                    },
+                ],
+                // Casablanca Class
+                "83": "69",
+                // Essex Class
+                "84": "69",
+                // Yorktown Class
+                "105": "69",
+            },
+        },
         // Type 96 Fighter
         "19": {
             count: 0,
@@ -3652,6 +3695,8 @@ Equip.explicitStatsBonusGears = function(){
                 "99": "95",
                 // St. Louis Class
                 "106": "95",
+                // Brooklyn Class
+                "110": "95",
             },
         },
         // SOC Seagull
@@ -3702,6 +3747,8 @@ Equip.explicitStatsBonusGears = function(){
                 "99": "95",
                 // St. Louis Class
                 "106": "95",
+                // Brooklyn Class
+                "110": "95",
             },
         },
         // SO3C Seamew Kai
@@ -3744,6 +3791,8 @@ Equip.explicitStatsBonusGears = function(){
                 "99": "95",
                 // St. Louis Class
                 "106": "95",
+                // Brooklyn Class
+                "110": "95",
             },
         },
         // Ar196 Kai
@@ -4473,6 +4522,8 @@ Equip.explicitStatsBonusGears = function(){
                 "99": "93",
                 // St. Louis
                 "106": "93",
+                // Brooklyn Class
+                "110": "93",
             },
         },
         // 16inch Triple Rapid Fire Gun Mount Mk.16 mod.2
@@ -4501,6 +4552,8 @@ Equip.explicitStatsBonusGears = function(){
                 "99": "93",
                 // St. Louis
                 "106": "93",
+                // Brooklyn Class
+                "110": "93",
             },
         },
         // 6inch Mk.XXIII Triple Gun Mount
@@ -4887,6 +4940,8 @@ Equip.explicitStatsBonusGears = function(){
                 "107": "67",
                 // Town Class
                 "108": "67",
+                // Brooklyn Class
+                "110": "67",
             },
         },
         // 6inch Twin Rapid Fire Gun Mount Mk.XXI
@@ -4962,6 +5017,8 @@ Equip.explicitStatsBonusGears = function(){
                 "95": "93",
                 // St. Louis Class
                 "106": "93",
+                // Brooklyn Class
+                "110": "93",
                 // Agano Class
                 "41": {
                     multiple: { "tyku": -1, "houk": -2 },
@@ -5008,6 +5065,8 @@ Equip.explicitStatsBonusGears = function(){
                 "95": "93",
                 // St. Louis Class
                 "106": "93",
+                // Brooklyn Class
+                "110": "93",
                 // Agano Class
                 "41": {
                     multiple: { "tyku": -1, "houk": -2 },
@@ -5066,6 +5125,8 @@ Equip.explicitStatsBonusGears = function(){
                 "106": "95",
                 // North Carolina Class
                 "107": "95",
+                // Brooklyn Class
+                "110": "95",
                 // Following British: Queen Elizabeth Class
                 "67": {
                     single: { "tyku": 1, "houk": 2 },
@@ -5108,6 +5169,8 @@ Equip.explicitStatsBonusGears = function(){
                 "105": "95",
                 // St. Louis Class
                 "106": "95",
+                // Brooklyn Class
+                "110": "95",
                 // North Carolina Class
                 "107": "95",
                 // Following British: Queen Elizabeth Class
@@ -5236,6 +5299,8 @@ Equip.explicitStatsBonusGears = function(){
                 "99": "87",
                 // St. Louis Class
                 "106": "87",
+                // Brooklyn Class
+                "110": "87",
                 // Jervis Class
                 "82": {
                     multiple: { "houg": 1, "raig": 2 },
@@ -6398,6 +6463,11 @@ Equip.explicitStatsBonusGears = function(){
                         },
                     ],
                 },
+                {
+                    // Takanami K2
+                    ids: [649],
+                    multiple: { "houg": 1 },
+                },
             ]
         },
         // 12.7cm Twin Gun Mount Model D Kai 3
@@ -6517,6 +6587,11 @@ Equip.explicitStatsBonusGears = function(){
                             single: { "houg": 3, "houk": -3 },
                         },
                     ],
+                },
+                {
+                    // Takanami K2
+                    ids: [649],
+                    multiple: { "houg": 1 },
                 },
             ],
         },
@@ -6682,6 +6757,8 @@ Equip.explicitStatsBonusGears = function(){
                 "99": "87",
                 // St. Louis Class
                 "106": "87",
+                // Brooklyn Class
+                "110": "87",
             },
             byShip: [
                 {
@@ -6869,6 +6946,8 @@ Equip.explicitStatsBonusGears = function(){
                 "106": "65",
                 // North Carolina Class
                 "107": "65",
+                // Brooklyn Class
+                "110": "65",
             },
         },
         // SG Radar (Initial Model)
@@ -6899,6 +6978,8 @@ Equip.explicitStatsBonusGears = function(){
                 "106": "65",
                 // North Carolina Class
                 "107": "65",
+                // Brooklyn Class
+                "110": "65",
                 // John C. Butler Class, range from medium to long
                 "87": [
                     {
@@ -7368,6 +7449,8 @@ Equip.explicitStatsBonusGears = function(){
                 "99": "87",
                 // St. Louis Class
                 "106": "87",
+                // Brooklyn Class
+                "110": "87",
                 // Jervis Class
                 "82": {
                     single: { "houk": 1, "tais": 1 },
@@ -7404,6 +7487,8 @@ Equip.explicitStatsBonusGears = function(){
                 "99": "87",
                 // St. Louis Class
                 "106": "87",
+                // Brooklyn Class
+                "110": "87",
                 // Jervis Class
                 "82": {
                     single: { "houk": 1, "tais": 2 },
@@ -7943,12 +8028,12 @@ Equip.explicitStatsBonusGears = function(){
                     //   Almost fast CV: Akagi, Katsuragi, Intrepid, Ark Royal, Aquila, Graf Zeppelin, Saratoga, Hornet
                     //   Almost FBB: Littorio, Roma, Bismarck, Richelieu, South Dakota, Washington
                     //   All fast DD: not here, see next item
-                    //   All fast CL/CLT: Nagara, Isuzu, Yura, Ooi, Kitakami, Tenryuu, Tatsuta, Natori, Sendai, Jintsuu, Naka, Kuma, Tama, Kiso, Kinu, Abukuma, Ooyodo, Gotland, Abruzzi, Garibaldi, Atlanta, De Ruyter, Perth, Helena, Sheffield
-                    //   All fast CA(V): Furutaka, Kako, Aoba, Myoukou, Nachi, Ashigara, Haguro, Takao, Atago, Maya, Choukai, Kinugasa, Prinz Eugen, Zara, Pola, Houston
+                    //   All fast CL/CLT: Nagara, Isuzu, Yura, Ooi, Kitakami, Tenryuu, Tatsuta, Natori, Sendai, Jintsuu, Naka, Kuma, Tama, Kiso, Kinu, Abukuma, Ooyodo, Gotland, Abruzzi, Garibaldi, Atlanta, De Ruyter, Perth, Helena, Sheffield, Honolulu?
+                    //   All fast CA(V): Furutaka, Kako, Aoba, Myoukou, Nachi, Ashigara, Haguro, Takao, Atago, Maya, Choukai, Kinugasa, Prinz Eugen, Zara, Pola, Houston, Northampton
                     //   All fast CVL: Shouhou, Ryuujou, Zuihou, Chitose-Kou, Chiyoda-Kou, Ryuuhou K2
                     origins: [115, 138, 441, 442, 171, 492, 602, 654, 83, 332, 549, 515, 444, 432, 433, 603,
-                            21, 22, 23, 24, 25, 51, 52, 53, 54, 55, 56, 99, 100, 101, 113, 114, 183, 574, 589, 590, 597, 604, 613, 615, 514,
-                            59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 123, 176, 448, 449, 595,
+                            21, 22, 23, 24, 25, 51, 52, 53, 54, 55, 56, 99, 100, 101, 113, 114, 183, 574, 589, 590, 597, 604, 613, 615, 514, 598,
+                            59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 123, 176, 448, 449, 595, 655,
                             74, 76, 116, 102, 103, 184
                         ],
                     excludes: [115, 293, 623, 138, 306, 102, 103, 104, 105, 106, 107, 184, 185, 318, 883],
@@ -8156,9 +8241,9 @@ Equip.explicitStatsBonusGears = function(){
                     ],
                 },
                 {
-                    // Slow Group C: Akashi, Hayasui, Akitsumaru
-                    //   All SS(V): I-168, I-58, I-8, I-19, I-26, I-47, U-511, UIT-25, Maruyu, I-400, I-401, I-13, I-14
-                    origins: [182, 460, 161,  126, 127, 128, 191, 483, 636, 431, 539, 163, 493, 155, 494, 495],
+                    // Slow Group C: Akashi, Hayasui, Akitsumaru, Souya?
+                    //   All SS(V): I-168, I-58, I-8, I-19, I-26, I-13, I-400, I-401, I-14, I-47, U-511, UIT-25, Maruyu, I-203?
+                    origins: [182, 460, 161, 699,  126, 127, 128, 191, 483, 493, 155, 494, 495, 636, 431, 539, 163, 882],
                     synergy: [
                         {
                             flags: [ "enhancedBoiler" ],
