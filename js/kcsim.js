@@ -159,7 +159,7 @@ var SIMCONSTS = {
 	airRaidCostW6: false,
 	torpSquadronRetreat: false,
 	enableEnemyAACI: true,
-	enableEnemyAACILBAS: false,
+	enableEnemyAACILBAS: true,
 }
 function setConst(key, val) {
 	if (val == null) SIMCONSTS[key] = null;
