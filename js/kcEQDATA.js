@@ -6003,6 +6003,8 @@ var EQDATA = {
 		type: TORPBOMBER,
 		image: 46,
 		btype: B_NIGHTBOMBER,
+		aaResistShip: .6,
+		aaResistFleet: .7,
 		FP: 4,
 		TP: 15,
 		AA: 6,
