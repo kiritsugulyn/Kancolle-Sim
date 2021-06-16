@@ -110,11 +110,11 @@ var NBATTACKDATA = {
 	62: { dmgMod: 1.2, accMod: 1.2, chanceMod: 1.15, id: 6, name: 'CVCI (1.2)' },
 	63: { dmgMod: 1.18, accMod: 1.2, chanceMod: 1.25, id: 6, name: 'CVCI (1.18)' },
 	64: { dmgMod: 1.2, accMod: 1.2, chanceMod: 1.15, id: 6, name: 'CVCI (1.2, suisei)' },
-	7: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.3, improve: 11, improveChance: .7, torpedo: true, name: 'DDCI (GTR)' },
+	7: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.15, improve: 11, improveChance: .7, torpedo: true, name: 'DDCI (GTR)' },  // data: https://twitter.com/dewydrops/status/1404966491695378433
 	8: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.5, improve: 12, improveChance: .5, torpedo: true, name: 'DDCI (LTR)' },
 	9: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.2, improve: 13, improveChance: .8, torpedo: true, name: 'DDCI (LTT)' },
-	10: { dmgMod: 1.3, accMod: 1.65, chanceMod: 1.3, improve: 14, improveChance: .7, torpedo: true, name: 'DDCI (LTD)' },
-	11: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.3, numHits: 2, torpedo: true, name: 'DDCI (GTR, double)' },
+	10: { dmgMod: 1.3, accMod: 1.65, chanceMod: 1.3, improve: 14, improveChance: .55, torpedo: true, name: 'DDCI (LTD)' },
+	11: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.15, numHits: 2, torpedo: true, name: 'DDCI (GTR, double)' },
 	12: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.5, numHits: 2, torpedo: true, name: 'DDCI (LTR, double)' },
 	13: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.2, numHits: 2, torpedo: true, name: 'DDCI (LTT, double)' },
 	14: { dmgMod: 1.3, accMod: 1.65, chanceMod: 1.3, numHits: 2, torpedo: true, name: 'DDCI (LTD, double)' },
@@ -430,7 +430,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 	
 	var evMod = target.getFormation().NBev;
 	var evFlat = (target.type == 'CA' || target.type == 'CAV')? 5 : 0;
-	if (target.type == 'DD' && target.hasLOSRadar && target.hasLookout) evFlat += 5; //guess
+	if (target.type == 'DD' && target.hasLOSRadar && target.hasLookout) evFlat += 10; //data: https://twitter.com/Xe_UCH/status/1001252130194444289
 	if (target.hasSearchlight) { evMod *= .2; evFlat *= .2; }
 	
 	if (!attackSpecial) {
