@@ -157,7 +157,7 @@ var SIMCONSTS = {
 	coloradoSpecialRate: 60,
 	kongouSpecialRate: 60,
 	airRaidCostW6: false,
-	torpSquadronRetreat: false,
+	torpSquadronRetreat: true,
 	enableEnemyAACI: true,
 	enableEnemyAACILBAS: true,
 }

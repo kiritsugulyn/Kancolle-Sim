@@ -2165,11 +2165,6 @@ function changedPreset3(fleet) {
 		}else{
 			$('#advCostW6').prop('checked',false);
 		}
-		if (world == 'Spring 2021') {
-			$('#torpSquadronFlag').prop('checked',true);
-		}else{
-			$('#torpSquadronFlag').prop('checked',false);
-		}
 	}
 
 	if (fleet.toString()[0] == '3') {
