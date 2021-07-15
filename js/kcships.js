@@ -2883,6 +2883,93 @@ Equip.explicitStatsBonusGears = function(){
                 "105": "69",
             },
         },
+        // SB2C-3
+        "420": {
+            count: 0,
+            starsDist: [],
+            byClass: {
+                // Following American carriers: Lexington Class
+                "69": [
+                    {
+                        multiple: { "houg": 1 },
+                    },
+                    {
+                        minStars: 3,
+                        multiple: { "houg": 1 },
+                    },
+                ],
+                // Casablanca Class
+                "83": "69",
+                // Yorktown Class
+                "105": "69",
+                // Essex Class
+                "84": [
+                    {
+                        multiple: { "houg": 2 },
+                    },
+                    {
+                        minStars: 3,
+                        multiple: { "houg": 1 },
+                    },
+                ],
+                // Ark Royal Class
+                "78": {
+                    minStars: 3,
+                    multiple: { "houg": 1 },
+                },
+            },
+            byShip: {
+                // All CVL -2 fp, -1 ev, -2 ar
+                stypes: [7],
+                multiple: { "houg": -2, "houk": -1, "souk": -2 },
+            },
+        },
+        // SB2C-5
+        "421": {
+            count: 0,
+            starsDist: [],
+            byClass: {
+                // Following American carriers: Lexington Class
+                "69": [
+                    {
+                        multiple: { "houg": 2 },
+                    },
+                    {
+                        minStars: 5,
+                        multiple: { "houg": 1 },
+                    },
+                ],
+                // Casablanca Class
+                "83": "69",
+                // Yorktown Class
+                "105": "69",
+                // Essex Class
+                "84": [
+                    {
+                        multiple: { "houg": 3 },
+                    },
+                    {
+                        minStars: 5,
+                        multiple: { "houg": 1 },
+                    },
+                ],
+                // Ark Royal Class
+                "78": [
+                    {
+                        multiple: { "houg": 1 },
+                    },
+                    {
+                        minStars: 5,
+                        multiple: { "houg": 1 },
+                    },
+                ],
+            },
+            byShip: {
+                // All CVL -2 fp, -1 ev, -2 ar
+                stypes: [7],
+                multiple: { "houg": -2, "houk": -1, "souk": -2 },
+            },
+        },
         // Type 96 Fighter
         "19": {
             count: 0,
@@ -8154,11 +8241,11 @@ Equip.explicitStatsBonusGears = function(){
                     ],
                 },
                 {
-                    // Slow Group B: Taigei/Ryuuhou, Jingei, Kamoi, Katori, Kashima, Shinshumaru
+                    // Slow Group B: Taigei/Ryuuhou, Jingei, Kamoi, Katori, Kashima, Shinshumaru, Souya (AGS)
                     //   All slow BB(V): Fusou, Yamashiro, Ise, Hyuuga, Nagato, Mutsu, Warspite, Nelson, Colorado, Gangut
                     //   Slow CVL: Hiyou, Houshou, Junyou, Taiyou, Shinyou, Gambier Bay
                     //   Slow AV: Akitsushima, Mizuho, Commandant Teste
-                    origins: [184, 634, 162, 154, 465, 621,
+                    origins: [184, 634, 162, 154, 465, 621, 699,
                             26, 27, 77, 87, 80, 81, 439, 571, 601, 511,
                             75, 89, 92, 521, 534, 544,
                             445, 451, 491
@@ -8241,9 +8328,9 @@ Equip.explicitStatsBonusGears = function(){
                     ],
                 },
                 {
-                    // Slow Group C: Akashi, Hayasui, Akitsumaru, Souya?
+                    // Slow Group C: Akashi, Hayasui, Akitsumaru
                     //   All SS(V): I-168, I-58, I-8, I-19, I-26, I-13, I-400, I-401, I-14, I-47, U-511, UIT-25, Maruyu, I-203?
-                    origins: [182, 460, 161, 699,  126, 127, 128, 191, 483, 493, 155, 494, 495, 636, 431, 539, 163, 882],
+                    origins: [182, 460, 161,  126, 127, 128, 191, 483, 493, 155, 494, 495, 636, 431, 539, 163, 882],
                     synergy: [
                         {
                             flags: [ "enhancedBoiler" ],
