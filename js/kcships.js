@@ -2840,6 +2840,26 @@ Equip.explicitStatsBonusGears = function(){
                 },
             ],
         },
+        // FM-2
+        "277": {
+            count: 0,
+            byClass: {
+                // Following carriers: Lexington Class
+                "69": {
+                    multiple: { "houg": 1, "houk": 1 },
+                },
+                // Essex Class
+                "84": "69",
+                // Yorktown Class
+                "105": "69",
+                // Ark Royal Class
+                "78": "69",
+                // Casablanca Class
+                "83": {
+                    multiple: { "houg": 2, "tyku": 1, "houk": 2 },
+                },
+            },
+        },
         // SBD
         "195": {
             count: 0,
@@ -3179,6 +3199,35 @@ Equip.explicitStatsBonusGears = function(){
                 "3": {
                     multiple: { "houg": 1, "tyku": 1, "tais": 1, "houk": 1 },
                 },
+            },
+        },
+        // FR-1 Fireball
+        "422": {
+            count: 0,
+            byClass: {
+                // Following carriers: Lexington Class
+                "69": {
+                    multiple: { "houg": 1, "houk": 1 },
+                },
+                // Yorktown Class
+                "105": "69",
+                // Ark Royal Class
+                "78": "69",
+                // Essex Class
+                "84": {
+                    multiple: { "houg": 2, "tyku": 1, "houk": 2 },
+                },
+                // Casablanca Class
+                "83": [
+                    {
+                        multiple: { "houg": 1, "houk": 1 },
+                    },
+                    {
+                        // Gambier Bay Mk.II
+                        remodel: 2,
+                        multiple: { "houg": 2, "tyku": 2, "houk": 2 },
+                    },
+                ],
             },
         },
         // All carrier-based improved recon planes on all ships can equip, current implemented:
@@ -7697,6 +7746,10 @@ Equip.explicitStatsBonusGears = function(){
                         single: { "houg": 1 },
                     },
                 ],
+                // I-203 Class, 1 boiler without Turbine: Slow -> Fast 
+                "109": {
+                    single: { "soku": 5, },
+                },
             },
         },
         // Skilled Lookouts
@@ -8329,7 +8382,7 @@ Equip.explicitStatsBonusGears = function(){
                 },
                 {
                     // Slow Group C: Akashi, Hayasui, Akitsumaru
-                    //   All SS(V): I-168, I-58, I-8, I-19, I-26, I-13, I-400, I-401, I-14, I-47, U-511, UIT-25, Maruyu, I-203?
+                    //   All SS(V): I-168, I-58, I-8, I-19, I-26, I-13, I-400, I-401, I-14, I-47, U-511, UIT-25, Maruyu, I-203
                     origins: [182, 460, 161,  126, 127, 128, 191, 483, 493, 155, 494, 495, 636, 431, 539, 163, 882],
                     synergy: [
                         {
