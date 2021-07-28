@@ -2212,7 +2212,7 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 function airstrikeLBAS(lbas,target,slot,contactMod,isjetphase) {
 	if (!contactMod) contactMod = 1;
 	var equip = lbas.equips[slot];
-	var acc = target.isSub? .88: .95;
+	var acc = .95;
 	if (target.isPT) acc *= .8;
 	var critdmgbonus = 1, critratebonus = 0, ACCplane = 0;
 	if (equip.type != LANDBOMBER || MECHANICS.LBASBuff) {
@@ -2232,7 +2232,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod,isjetphase) {
 		critratebonus = critval*.6;
 	}
 	if (MECHANICS.LBASBuff) {
-		ACCplane += 8*Math.sqrt(equip.ACC || 0);
+		ACCplane += 7*(equip.ACC || 0);
 	}
 	lbas.critratebonus = critratebonus; lbas.ACCplane = ACCplane;
 	var res = rollHit(accuracyAndCrit(lbas,target,acc,1.0,0,.2,true),critdmgbonus);  // No evMod for airstrike
