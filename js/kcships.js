@@ -15,6 +15,8 @@ function Fleet(id,isescortfor) {
 	this.AS = 0;  //air superiority
     this.DMGTOTALS = [0,0,0,0,0,0];
     this.SINKFLAGSHIP = [false, false, false, false, false, false];
+    this.didSpecial = 0;
+    this.didSpecialNB = [0,0];
 }
 Fleet.prototype.loadShips = function(ships) {
 	this.AP = 0; this.noRedT = false;
@@ -117,7 +119,8 @@ Fleet.prototype.reset = function(notShips) {
     this.SINKFLAGSHIP = [false, false, false, false, false, false];
 	this._baseFAA = undefined;
     this._fLoS = undefined;
-    delete this.didSpecial;
+    this.didSpecial = 0;
+    this.didSpecialNB = [0,0];
 }
 Fleet.prototype.giveCredit = function(ship,target,damage) {
     var i = this.ships.indexOf(ship);
@@ -3313,6 +3316,80 @@ Equip.explicitStatsBonusGears = function(){
                     single: { "houg": 1, "saku": 1 },
                 },
             ],
+        },
+        // Fulmar (Combat Reconnaissance / Skilled)
+        "423": {
+            count: 0,
+            byClass: {
+                // Ark Royal Class
+                "78": {
+                    multiple: { "houg": 4, "tyku": 4, "houk": 4, "saku": 4 },
+                },
+                // Lexington Class
+                "69": {
+                    multiple: { "houg": 1, "tyku": 1, "houk": 1, "saku": 1 },
+                },
+                // Casablanca Class
+                "83": "69",
+                // Essex Class
+                "84": "69",
+                // Yorktown Class
+                "105": "69",
+            },
+        },
+        // Barracuda Mk.II
+        "424": {
+            count: 0,
+            starsDist: [],
+            byClass: {
+                // Ark Royal Class
+                "78": [
+                    {
+                        multiple: { "houg": 2, "raig": 3 },
+                    },
+                    {
+                        minStars: 2,
+                        multiple: { "houg": 1 },
+                    },
+                    {
+                        minStars: 6,
+                        multiple: { "houg": 1 },
+                    },
+                ],
+            },
+        },
+        // Barracuda Mk.III
+        "425": {
+            count: 0,
+            starsDist: [],
+            byClass: {
+                // Ark Royal Class
+                "78": [
+                    {
+                        multiple: { "houg": 2, "tais": 2, "raig": 1, "saku": 1 },
+                    },
+                    {
+                        minStars: 2,
+                        multiple: { "tais": 1 },
+                    },
+                    {
+                        minStars: 4,
+                        multiple: { "houg": 1 },
+                    },
+                    {
+                        minStars: 6,
+                        multiple: { "tais": 1 },
+                    },
+                    {
+                        minStars: 8,
+                        multiple: { "raig": 1 },
+                    },
+                    {
+                        minStars: 10,
+                        multiple: { "tais": 1 },
+                    },
+                ],
+            },
         },
         // Zuiun
         "26": {

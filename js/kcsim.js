@@ -794,7 +794,7 @@ function shellPhaseAttack(ship,targetData,APIhou,isOASW,attackSpecial) {
 	}
 }
 
-function canSpecialAttack(ship,isNB) {
+function canSpecialAttack(ship) {
 	if (ship.fleet.didSpecial) return false;
 	if (ship.fleet.combinedWith && ship.fleet.combinedWith.didSpecial) return false;
 	if (ship.attackSpecial == 100) {
@@ -825,8 +825,13 @@ function canSpecialAttack(ship,isNB) {
 		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[2].type) == -1) return false;
 		let rate = SIMCONSTS.coloradoSpecialRate;
 		return Math.random() < rate/100;
-	} else if (ship.attackSpecial == 104) {
-		if (!isNB) return false;
+	}
+	return false;
+}
+
+function canSpecialAttackNB(ship) {
+	if (ship.fleet.didSpecialNB[0] && ship.fleet.didSpecialNB[1]) return false;
+	if (ship.attackSpecial == 104) {
 		if (ship.fleet.ships[0] != ship) return false;
 		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 5) return false;
 		if (ship.fleet.formation.id != 1 && ship.fleet.formation.id != 14) return false;
@@ -1064,7 +1069,7 @@ function nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,API
 	let numRounds = Math.max(order1.length,order2.length);
 	for (var i=0; i<numRounds; i++) {
 		if (i < order1.length && order1[i].canNB()) {
-			if (canSpecialAttack(order1[i],true)) {
+			if (canSpecialAttackNB(order1[i])) {
 				let ships = getSpecialAttackShips(order1[i].fleet.ships,order1[i].attackSpecial);
 				let k=0;
 				for (; k<ships.length; k++) {
@@ -1072,7 +1077,8 @@ function nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,API
 					var target = choiceWProtect(alive2,slrerolls2,true);
 					if (NBattack(ships[k],target,NBonly,[[star1,star2],[light1,light2],[scout1,scout2]],APIhou,order1[i].attackSpecial)) alive2.splice(alive2.indexOf(target),1);
 				}
-				order1[i].fleet.didSpecial = 1;
+				if (order1[i].fleet.didSpecialNB[0]) order1[i].fleet.didSpecialNB[1] = 1;
+				else order1[i].fleet.didSpecialNB[0] = 1;
 				if (C) {
 					apiAdjustHougekiSpecial(APIhou,k);
 				}
@@ -2704,9 +2710,18 @@ function updateSupply(ships,didNB,NBonly,bombing,noammo,isECombined) {
 	let costSpecial = null, shipsSpecial = null;
 	if (ships[0].fleet.didSpecial == 1) {
 		if (ships[0].attackSpecial == 101 || ships[0].attackSpecial == 102 || ships[0].attackSpecial == 103) costSpecial = 1.5;
-		else if (ships[0].attackSpecial == 104) costSpecial = 1.3;
 		if (costSpecial) shipsSpecial = getSpecialAttackShips(ships,ships[0].attackSpecial);
 		ships[0].fleet.didSpecial = 2;
+	}
+	if (ships[0].fleet.didSpecialNB[0] == 1) {
+		if (ships[0].attackSpecial == 104) costSpecial = 1.2;
+		if (costSpecial) shipsSpecial = getSpecialAttackShips(ships,ships[0].attackSpecial);
+		ships[0].fleet.didSpecialNB[0] = 2;
+	}
+	if (ships[0].fleet.didSpecialNB[1] == 1) {
+		if (ships[0].attackSpecial == 104) costSpecial = 1.2;
+		if (costSpecial) shipsSpecial = getSpecialAttackShips(ships,ships[0].attackSpecial);
+		ships[0].fleet.didSpecialNB[1] = 2;
 	}
 	let costFuel = 0, costAmmo = 0;
 	if (MECHANICS.newSupply) {
