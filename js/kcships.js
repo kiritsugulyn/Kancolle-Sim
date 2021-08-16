@@ -1025,7 +1025,7 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
         let w = installeqids[126] || 0;
         let r1 = installeqids[348] || 0;
         let r2 = installeqids[349] || 0;
-        installFlat2 += [0, 75, 110, 140, 160][w] + [0, 55, 115, 160, 190][r1] + [0, 80, 170, 170, 170][r2];
+        installFlat2 += [0, 75, 110, 140, 160][w] + [0, 55, 115, 160, 190][r1] + [0, 80, 170, 230, 260][r2];
         let r = r1 + r2;
         if (w > 0) {
             let i = Math.min(w, 2) - 1;
