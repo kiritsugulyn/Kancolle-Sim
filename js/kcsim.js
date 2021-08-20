@@ -834,7 +834,7 @@ function canSpecialAttackNB(ship) {
 	if (ship.attackSpecial == 104) {
 		if (ship.fleet.ships[0] != ship) return false;
 		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 5) return false;
-		if (ship.fleet.formation.id != 1 && ship.fleet.formation.id != 14) return false;
+		if (ship.fleet.formation.id != 1 && ship.fleet.formation.id != 4 && ship.fleet.formation.id != 12 && ship.fleet.formation.id != 14) return false;
 		for (let i=0; i<=1; i++) {
 			let s = ship.fleet.ships[i];
 			if (s.HP/s.maxHP <= .5) return false;
