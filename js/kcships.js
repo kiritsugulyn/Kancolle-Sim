@@ -943,6 +943,7 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
         isoMult *= 1.8 * LCbonus;
         harbourSummerMult *= 1.7 * LCbonus;
         supplyPostMult *= 1.7 * LCbonus;
+        anchoragePostMult *= 1.6 * LCbonus;
     }
 
     if (installeqtypes.LT) {  // only one landing tank currently, put under eq type
@@ -952,7 +953,7 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
         isoMult *= [2.4, 3.24][i] * LTbonus;
         harbourSummerMult *= [2.8, 4.2][i] * LTbonus;
         supplyPostMult *= [1.7, 2.55][i] * LTbonus;
-        anchoragePostMult *= [2.4, 2.4][i] * LTbonus;   // guess
+        anchoragePostMult *= [2.4, 3.24][i] * LTbonus;   // guess
     }
 
     if (installeqtypes.AP) {
@@ -988,7 +989,6 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
         isoMult *= [1.2, 1.68][i];
         harbourSummerMult *= [1.6, 2.4][i];
         supplyPostMult *= [1.3, 2.08][i] * LCbonus;
-        anchoragePostMult *= [1.75, 1.75][i] * LCbonus;  // guess
     }
 
     if (installeqids[193]) {
@@ -1005,7 +1005,6 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
         pillboxMult *= 1.8;
         isoMult *= 1.8;
         harbourSummerMult *= 1.8;
-        anchoragePostMult *= 1.5;   // guess
     }
 
     if (installeqids[346] || installeqids[347]) {
@@ -1055,7 +1054,7 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
         harbourSummerMult *= 2;
         commonMult *= 1.4;
         supplyPostMult *= 1.2;
-        anchoragePostMult *= 2.5;   // guess
+        anchoragePostMult *= 1.6;   // guess
     }
 
     if (installeqids[408] || installeqids[409]){
