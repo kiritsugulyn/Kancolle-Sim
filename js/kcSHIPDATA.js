@@ -27373,7 +27373,7 @@ var SHIPDATA = {
 		unknownstats: true,
 		RNG: 2,
 		SPD: 10,
-		SLOTS: [0, 0, 0, 4],
+		SLOTS: [0, 0, 0, 3],
 		EQUIPS: [550, 550, 603, 611],
 		fuel: 0,
 		ammo: 0
@@ -27581,7 +27581,7 @@ var SHIPDATA = {
 		unknownstats: true,
 		RNG: 2,
 		SPD: 10,
-		SLOTS: [0, 0, 0, 4],
+		SLOTS: [0, 0, 0, 6],
 		EQUIPS: [612,612,603,610],
 	},
 	2011: {
@@ -27601,7 +27601,7 @@ var SHIPDATA = {
 		unknownstats: true,
 		RNG: 2,
 		SPD: 10,
-		SLOTS: [0, 0, 0, 4],
+		SLOTS: [0, 0, 0, 8],
 		EQUIPS: [612,612,603,611],
 	},
 	2012: {
@@ -27621,7 +27621,7 @@ var SHIPDATA = {
 		unknownstats: true,
 		RNG: 2,
 		SPD: 10,
-		SLOTS: [0, 0, 0, 4],
+		SLOTS: [0, 0, 0, 2],
 		EQUIPS: [550, 550, 603, 610],
 		fuel: 0,
 		ammo: 0
@@ -27642,7 +27642,7 @@ var SHIPDATA = {
 		LUK: 40,
 		RNG: 2,
 		SPD: 5,
-		SLOTS: [0, 0, 0, 4],
+		SLOTS: [0, 0, 0, 3],
 		EQUIPS: [591, 591, 603, 610],
 		fuel: 0,
 		ammo: 0
@@ -27687,7 +27687,7 @@ var SHIPDATA = {
 		unknownstats: true,
 		RNG: 2,
 		SPD: 0,
-		SLOTS: [0, 0, 0, 64], // guess
+		SLOTS: [0, 0, 0, 32],
 		EQUIPS: [565,565,580,561],
 	},
 	2016: {
@@ -27731,7 +27731,7 @@ var SHIPDATA = {
 		unknownstats: true,
 		RNG: 2,
 		SPD: 0,
-		SLOTS: [0, 0, 0, 81],
+		SLOTS: [0, 0, 0, 88],
 		EQUIPS: [565,565,580,562],
 	},
 	2018: {
@@ -27753,7 +27753,7 @@ var SHIPDATA = {
 		unknownstats: true,
 		RNG: 2,
 		SPD: 0,
-		SLOTS: [0, 0, 0, 96],
+		SLOTS: [0, 0, 0, 98],
 		EQUIPS: [565,565,580,562],
 	},
 	2019: { // guess
