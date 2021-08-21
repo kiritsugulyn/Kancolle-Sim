@@ -48,5 +48,17 @@ var EQUIPBONUS = {
                 eqtypes: [APSHELL]
             }
         ]
+    },
+    'Summer 2021': {
+        'Overseas Planes': [
+            {
+                mod: 1.15,
+                eqids: [64, 188, 233, 242, 248, 256, 257, 277, 306, 307, 316]
+            },
+            {
+                mod: 1.2,
+                eqids: [243, 244, 424, 425]
+            }
+        ]
     }
 }
