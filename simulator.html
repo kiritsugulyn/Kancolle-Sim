@@ -159,6 +159,7 @@
 			</table>
 			<br>
 			<input type="checkbox" id="advCostW6" onchange="SIMCONSTS.airRaidCostW6=this.checked;raiseFleetChange()" /><label for="advCostW6">Use World 6 costs for Air Raid (4% <img src="assets/stats/fuel.png" /> 8% <img src="assets/stats/ammo.png" />)</label><br>
+			<input type="checkbox" checked id="strikingForceFlag" onchange="SIMCONSTS.strikingForceRetreat=this.checked;raiseFleetChange()" /><label for="strikingForceFlag">Enable striking force retreat</label><br>
 			<input type="checkbox" checked id="torpSquadronFlag" onchange="SIMCONSTS.torpSquadronRetreat=this.checked;raiseFleetChange()" /><label for="torpSquadronFlag">Enable torpedo squadron retreat</label><br>
 			<br>
 			<input type="button" value="Show Advanced" onclick="$('#optionsadvanced').toggle()" />

@@ -157,6 +157,7 @@ var SIMCONSTS = {
 	coloradoSpecialRate: 60,
 	kongouSpecialRate: 60,
 	airRaidCostW6: false,
+	strikingForceRetreat: true,
 	torpSquadronRetreat: true,
 	enableEnemyAACI: true,
 	enableEnemyAACILBAS: true,
@@ -2940,7 +2941,7 @@ function canContinue(ships1,ships1C) {
 	if (ships1[0].HP/ships1[0].maxHP <= .25) return false;
 	var retreater = null, escorter = null;
 	if (ships1C && ships1[0].hasCombinedFCF) { var d = getFCFShips(ships1,ships1C); retreater = d[0]; escorter = d[1]; }
-	else if (SIMCONSTS.torpSquadronRetreat && !ships1C && ships1[0].hasTorpFCF && isTorpSquadron(ships1)) retreater = getFCFShip(ships1);
+	else if (!ships1C && (SIMCONSTS.strikingForceRetreat && ships1[0].hasStrikeFCF) || (SIMCONSTS.torpSquadronRetreat && ships1[0].hasTorpFCF && isTorpSquadron(ships1))) retreater = getFCFShip(ships1);
 	if (DORETREAT) {
 		for (var i=1; i<ships1.length; i++) {
 			if (ships1[i].retreated) continue;
