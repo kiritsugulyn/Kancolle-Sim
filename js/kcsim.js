@@ -1470,36 +1470,41 @@ function compareAP(fleet1,fleet2,isjetphase,includeEscort,includeScout,isSupport
 function choiceWProtect(targets,searchlightRerolls,isNightPhase) {
 	DIDPROTECT = false; //disgusting hack, rework later?
 	var target = targets[Math.floor(Math.random()*targets.length)];
-	if (searchlightRerolls) {
-		for (var i=0; i<searchlightRerolls; i++) {
-			if (target.hasSearchlight) break;
-			target = targets[Math.floor(Math.random()*targets.length)];
-		}
-	}
 	if (target.getFormation() == VANGUARD1) {
 		target = targets[Math.floor(Math.random()*targets.length)];
 	}
-	if (!target.isflagship || target.isInstall || (target.isescort && !isNightPhase) || !MECHANICS.flagProtect) return target;
-	
-	//flagship protection
-	var rate = [0,.45,.6,.75,.6,.6,.75][target.fleet.formation.id];
-	if (!rate) rate = .6; // Combined fleet
-	if (Math.random() < rate) {
-		var defenders = [];
-		for (var i=0; i<targets.length; i++) {
-			if (targets[i].isInstall) continue;
-			if (targets[i].HP/targets[i].maxHP <= .75) continue;
-			if (targets[i].isflagship && (!targets[i].isescort || isNightPhase)) continue;
-			defenders.push(targets[i]);
+	if (MECHANICS.flagProtect && target.isflagship && !target.isInstall && (!target.isescort || isNightPhase)) {
+		target = selectProtect(target,targets,isNightPhase);
+	}
+	if (!searchlightRerolls) return target;
+	for (var i=0; i<searchlightRerolls; i++) {
+		if (!target.hasSearchlight) {
+			target = targets[Math.floor(Math.random()*targets.length)];
 		}
-		if (C) { console.log('***FLAGSHIP PROTECT '+rate+' '+defenders.length); console.log(defenders); }
-		if (defenders.length <= 0) return target;
-		DIDPROTECT = true;
-		let defender = defenders[Math.floor(Math.random()*(defenders.length))];
-		// if (defender.side == 1 && defender.fleet != target.fleet) DIDPROTECT = false; //no animation for enemy combined?
-		return defender;
+		if (MECHANICS.flagProtect && target.isflagship && !target.isInstall && (!target.isescort || isNightPhase)) {
+			target = selectProtect(target,targets,isNightPhase);
+		}
 	}
 	return target;
+}
+
+function selectProtect(target,targets,isNightPhase) {
+	var rate = [0,.45,.6,.75,.6,.6,.75][target.fleet.formation.id];
+	if (!rate) rate = .6; // Combined fleet
+	if (Math.random() > rate) return target;
+	var defenders = [];
+	for (var i=0; i<targets.length; i++) {
+		if (targets[i].isInstall) continue;
+		if (targets[i].HP/targets[i].maxHP <= .75) continue;
+		if (targets[i].isflagship && (!targets[i].isescort || isNightPhase)) continue;
+		defenders.push(targets[i]);
+	}
+	if (C) { console.log('***FLAGSHIP PROTECT '+rate+' '+defenders.length); console.log(defenders); }
+	if (defenders.length <= 0) return target;
+	DIDPROTECT = true;
+	let defender = defenders[Math.floor(Math.random()*(defenders.length))];
+	// if (defender.side == 1 && defender.fleet != target.fleet) DIDPROTECT = false; //no animation for enemy combined?
+	return defender;
 }
 
 function AADefenceFighters(carriers,showplanes,APIkouku,isjetphase) {
