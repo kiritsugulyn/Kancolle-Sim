@@ -1789,6 +1789,10 @@ Equip.explicitStatsBonusGears = function(){
             tripleLargeGunMountK2: 0,
             tripleLargeGunMountK2Nonexist: 1,
             tripleLargeGunMountK2Ids: [290],
+            triple305mm46LargeGunMount: 0,
+            triple305mm46LargeGunMountIds: [427],
+            triple320mm44LargeGunMount: 0,
+            triple320mm44LargeGunMountIds: [429],
             twin203MediumGunMountNo2: 0,
             twin203MediumGunMountNo2Nonexist: 1,
             twin203MediumGunMountNo2Ids: [90],
@@ -2858,6 +2862,8 @@ Equip.explicitStatsBonusGears = function(){
                 "105": "69",
                 // Ark Royal Class
                 "78": "69",
+                // Illustrious Class
+                "112": "69",
                 // Casablanca Class
                 "83": {
                     multiple: { "houg": 2, "tyku": 1, "houk": 2 },
@@ -2926,6 +2932,8 @@ Equip.explicitStatsBonusGears = function(){
                 "83": "69",
                 // Yorktown Class
                 "105": "69",
+                // Illustrious Class
+                "112": "69",
                 // Essex Class
                 "84": [
                     {
@@ -2967,6 +2975,8 @@ Equip.explicitStatsBonusGears = function(){
                 "83": "69",
                 // Yorktown Class
                 "105": "69",
+                // Illustrious Class
+                "112": "69",
                 // Essex Class
                 "84": [
                     {
@@ -3217,6 +3227,8 @@ Equip.explicitStatsBonusGears = function(){
                 "105": "69",
                 // Ark Royal Class
                 "78": "69",
+                // Illustrious Class
+                "112": "69",
                 // Essex Class
                 "84": {
                     multiple: { "houg": 2, "tyku": 1, "houk": 2 },
@@ -3233,6 +3245,80 @@ Equip.explicitStatsBonusGears = function(){
                     },
                 ],
             },
+        },
+        // Corsair Mk.II
+        "434": {
+            count: 0,
+            byClass: {
+                // Illustrious Class
+                "112": {
+                    multiple: { "houg": 2, "tyku": 3, "houk": 5 },
+                },
+                // Ark Royal Class
+                "78": {
+                    multiple: { "houg": 1, "tyku": 2, "houk": 3 },
+                },
+                // Lexington Class
+                "69": {
+                    multiple: { "houg": 1, "tyku": 1, "houk": 2 },
+                },
+                // Casablanca Class
+                "83": "69",
+                // Essex Class
+                "84": "69",
+                // Yorktown Class
+                "105": "69",
+            },
+        },
+        // Corsair Mk.II (Ace)
+        "435": {
+            count: 0,
+            byClass: {
+                // Illustrious Class
+                "112": {
+                    multiple: { "houg": 2, "tyku": 3, "houk": 5 },
+                },
+                // Ark Royal Class
+                "78": {
+                    multiple: { "houg": 1, "tyku": 2, "houk": 3 },
+                },
+                // Lexington Class
+                "69": {
+                    multiple: { "houg": 1, "tyku": 1, "houk": 2 },
+                },
+                // Casablanca Class
+                "83": "69",
+                // Essex Class
+                "84": "69",
+                // Yorktown Class
+                "105": "69",
+            },
+        },
+        // Prototype Jinpuu
+        "437": {
+            count: 0,
+            byShip: [
+                {
+                    // Hiryuu/Souryuu Kai Ni
+                    ids: [196, 197],
+                    multiple: { "houg": 2, "tyku": 2, "houk": 3 },
+                },
+                {
+                    // Houshou Kai
+                    ids: [285],
+                    multiple: { "houg": 3, "tyku": 3, "houk": 4 },
+                },
+                {
+                    // Suzuya/Kumano-Kou Kai Ni, Kaga Kai Ni Go
+                    ids: [508, 509, 646],
+                    multiple: { "houg": 2, "tyku": 2, "houk": 2 },
+                },
+                {
+                    // Ise/Hyuuga Kai Ni, Ryuuhou Kai Ni+,
+                    ids: [553, 554, 883, 888],
+                    multiple: { "houg": 1, "tyku": 2, "houk": 2 },
+                },
+            ],
         },
         // All carrier-based improved recon planes on all ships can equip, current implemented:
         // Saiun, Type 2 Reconnaissance Aircraft, Prototype Keiun (Carrier-based Reconnaissance Model)
@@ -3326,6 +3412,8 @@ Equip.explicitStatsBonusGears = function(){
                 "78": {
                     multiple: { "houg": 4, "tyku": 4, "houk": 4, "saku": 4 },
                 },
+                // Illustrious Class
+                "112": "78",
                 // Lexington Class
                 "69": {
                     multiple: { "houg": 1, "tyku": 1, "houk": 1, "saku": 1 },
@@ -3357,6 +3445,8 @@ Equip.explicitStatsBonusGears = function(){
                         multiple: { "houg": 1 },
                     },
                 ],
+                // Illustrious Class
+                "112": "78",
             },
         },
         // Barracuda Mk.III
@@ -3390,6 +3480,8 @@ Equip.explicitStatsBonusGears = function(){
                         multiple: { "tais": 1 },
                     },
                 ],
+                // Illustrious Class
+                "112": "78",
             },
         },
         // Zuiun
@@ -4791,6 +4883,136 @@ Equip.explicitStatsBonusGears = function(){
                 ],
             },
         },
+        // 305mm/46 Twin Gun Mount
+        "426": {
+            count: 0,
+            byClass: {
+                // Conte di Cavour Class
+                "113": [
+                    {
+                        multiple: { "houg": 3, "houk": 1 },
+                        synergy: {
+                            flags: [ "triple305mm46LargeGunMount" ],
+                            single: { "houg": 1, "houk": 1 },
+                        },
+                    },
+                    {
+                        minCount: 2,
+                        single: { "houg": 1, "houk": 1 },
+                        synergy: {
+                            flags: [ "triple305mm46LargeGunMount" ],
+                            single: { "houg": -1, "houk": -1 },
+                        },
+                    },
+                ],
+                // Gangut Class
+                "73": [
+                    {
+                        multiple: { "houg": 2, "houk": 1 },
+                        synergy: {
+                            flags: [ "triple305mm46LargeGunMount" ],
+                            single: { "houg": 1 },
+                        },
+                    },
+                    {
+                        minCount: 2,
+                        single: { "houg": 1 },
+                        synergy: {
+                            flags: [ "triple305mm46LargeGunMount" ],
+                            single: { "houg": -1 },
+                        },
+                    },
+                ],
+            },
+        },
+        // 305mm/46 Triple Gun Mount
+        "427": {
+            count: 0,
+            byClass: {
+                // Conte di Cavour Class
+                "113": {
+                    multiple: { "houg": 2 },
+                },
+                // Gangut Class
+                "73": {
+                    multiple: { "houg": 1 },
+                },
+            },
+        },
+        // 320mm/44 Twin Gun Mount
+        "428": {
+            count: 0,
+            byClass: {
+                // Conte di Cavour Class
+                "113": [
+                    {
+                        multiple: { "houg": 3, "houk": 1 },
+                        synergy: {
+                            flags: [ "triple320mm44LargeGunMount" ],
+                            single: { "houg": 2, "houk": 1 },
+                        },
+                    },
+                    {
+                        minCount: 2,
+                        single: { "houg": 2, "houk": 1 },
+                        synergy: {
+                            flags: [ "triple320mm44LargeGunMount" ],
+                            single: { "houg": -2, "houk": -1 },
+                        },
+                    },
+                ],
+                // Gangut Class
+                "73": [
+                    {
+                        multiple: { "houg": 2, "houk": 1 },
+                        synergy: {
+                            flags: [ "triple320mm44LargeGunMount" ],
+                            single: { "houg": 1 },
+                        },
+                    },
+                    {
+                        minCount: 2,
+                        single: { "houg": 1 },
+                        synergy: {
+                            flags: [ "triple320mm44LargeGunMount" ],
+                            single: { "houg": -1 },
+                        },
+                    },
+                ],
+                // V.Veneto Class
+                "58": [
+                    {
+                        multiple: { "houg": 1, "houk": 2 },
+                        synergy: {
+                            flags: [ "triple320mm44LargeGunMount" ],
+                            single: { "houg": 2, "houk": 1 },
+                        },
+                    },
+                    {
+                        minCount: 2,
+                        single: { "houg": 2, "houk": 1 },
+                        synergy: {
+                            flags: [ "triple320mm44LargeGunMount" ],
+                            single: { "houg": -2, "houk": -1 },
+                        },
+                    },
+                ],
+            },
+        },
+        // 320mm/44 Triple Gun Mount
+        "429": {
+            count: 0,
+            byClass: {
+                // Conte di Cavour Class
+                "113": {
+                    multiple: { "houg": 2 },
+                },
+                // Gangut Class
+                "73": {
+                    multiple: { "houg": 1 },
+                },
+            },
+        },
         // 14cm Twin Gun Mount
         "119": {
             count: 0,
@@ -5068,6 +5290,63 @@ Equip.explicitStatsBonusGears = function(){
                 },
             },
         },
+        // 65mm/64 Single Rapid Fire Gun Mount Kai
+        "430": {
+            count: 0,
+            starsDist: [],
+            byClass: {
+                // Conte di Cavour Class
+                "113": [
+                    {
+                        multiple: { "tyku": 3, "houk": 2 },
+                    },
+                    {
+                        minStars: 2,
+                        multiple: { "houk": 1 },
+                    },
+                    {
+                        minStars: 4,
+                        multiple: { "tyku": 1 },
+                    },
+                    {
+                        minStars: 7,
+                        multiple: { "houk": 1 },
+                    },
+                    {
+                        minStars: 10,
+                        multiple: { "tyku": 1 },
+                    },
+                ],
+                // V.Veneto Class
+                "58": [
+                    {
+                        multiple: { "tyku": 2, "houk": 1 },
+                    },
+                    {
+                        minStars: 2,
+                        multiple: { "houk": 1 },
+                    },
+                    {
+                        minStars: 4,
+                        multiple: { "tyku": 1 },
+                    },
+                    {
+                        minStars: 7,
+                        multiple: { "houk": 1 },
+                    },
+                    {
+                        minStars: 10,
+                        multiple: { "tyku": 1 },
+                    },
+                ],
+                // Zara Class
+                "64": "58",
+                // Aquila Class
+                "68": "58",
+                // L.d.S.D.d.Abruzzi Class
+                "92": "58",
+            },
+        },
         // Bofors 15.2cm Twin Gun Mount Model 1930
         "303": {
             count: 0,
@@ -5156,6 +5435,8 @@ Equip.explicitStatsBonusGears = function(){
                 "108": "67",
                 // Brooklyn Class
                 "110": "67",
+                // Illustrious Class
+                "112": "67",
             },
         },
         // 6inch Twin Rapid Fire Gun Mount Mk.XXI
@@ -5351,6 +5632,8 @@ Equip.explicitStatsBonusGears = function(){
                 "88": "67",
                 // Town Class
                 "108": "67",
+                // Illustrious Class
+                "112": "67",
                 // Perth Class
                 "96": {
                     single: { "tyku": 1, "houk": 1 },
@@ -5397,6 +5680,8 @@ Equip.explicitStatsBonusGears = function(){
                 "88": "67",
                 // Town Class
                 "108": "67",
+                // Illustrious Class
+                "112": "67",
                 // Perth Class
                 "96": {
                     single: { "houg": 1, "tyku": 1, "houk": 1 },
@@ -7505,6 +7790,8 @@ Equip.explicitStatsBonusGears = function(){
                 "88": "67",
                 // Town Class
                 "108": "67",
+                // Illustrious Class
+                "112": "67",
             },
         },
         // Type 93 Passive Sonar
@@ -8207,8 +8494,8 @@ Equip.explicitStatsBonusGears = function(){
             count: 0,
             byShip: [
                 {
-                    // Fast Group A: Shimakaze, Tashkent, Taihou, Shoukaku, Zuikaku, Mogami, Mikuma, Suzuya, Kumano, Tone, Chikuma
-                    origins: [50, 516, 153, 110, 111, 70, 120, 124, 125, 71, 72],
+                    // Fast Group A: Shimakaze, Tashkent, Taihou, Shoukaku, Zuikaku, Mogami, Mikuma, Suzuya, Kumano, Tone, Chikuma, Victorious?
+                    origins: [50, 516, 153, 110, 111, 70, 120, 124, 125, 71, 72, 885],
                     synergy: [
                         {
                             flags: [ "enhancedBoiler" ],
@@ -8372,11 +8659,11 @@ Equip.explicitStatsBonusGears = function(){
                     ],
                 },
                 {
-                    // Slow Group B: Taigei/Ryuuhou, Jingei, Kamoi, Katori, Kashima, Shinshumaru, Souya (AGS)
+                    // Slow Group B: Taigei/Ryuuhou, Jingei, Chougei?, Kamoi, Katori, Kashima, Shinshumaru, Souya (AGS)
                     //   All slow BB(V): Fusou, Yamashiro, Ise, Hyuuga, Nagato, Mutsu, Warspite, Nelson, Colorado, Gangut
                     //   Slow CVL: Hiyou, Houshou, Junyou, Taiyou, Shinyou, Gambier Bay
                     //   Slow AV: Akitsushima, Mizuho, Commandant Teste
-                    origins: [184, 634, 162, 154, 465, 621, 699,
+                    origins: [184, 634, 635, 162, 154, 465, 621, 699,
                             26, 27, 77, 87, 80, 81, 439, 571, 601, 511,
                             75, 89, 92, 521, 534, 544,
                             445, 451, 491
@@ -8512,6 +8799,8 @@ Equip.accumulateShipBonusGear = function(bonusGears, equip){
         if(synergyGears.searchlightSmallIds.includes(equip.mid)) synergyGears.searchlightSmall += 1;
         if(synergyGears.type21AirRadarIds.includes(equip.mid)) synergyGears.type21AirRadar += 1;
         if(synergyGears.type21AirRadarK2Ids.includes(equip.mid)) synergyGears.type21AirRadarK2 += 1;
+        if(synergyGears.triple305mm46LargeGunMountIds.includes(equip.mid)) synergyGears.triple305mm46LargeGunMount += 1;
+        if(synergyGears.triple320mm44LargeGunMountIds.includes(equip.mid)) synergyGears.triple320mm44LargeGunMount += 1;
         if(equip.btype == B_RADAR && equip.LOS >= 5) synergyGears.surfaceRadar += 1;
         if(equip.atype == A_AIRRADAR) synergyGears.airRadar += 1;
         if(equip.type == AAGUN) synergyGears.aaMachineGun += 1;
