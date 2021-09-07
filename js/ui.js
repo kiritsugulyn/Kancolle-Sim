@@ -1101,6 +1101,8 @@ function genOptions(fleetnum) {
 	div.append(sel2);
 	var o = document.createElement('option');
 	sel2.appendChild(o);
+	div.append('<span class="option2 line"><input type="checkbox" id="evbonuscheck'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="evbonuscheck'+fleetnum+'">Evasion modifier:</label></span>');
+	div.append('<span class="option2"><input type="number" id="evbonus'+fleetnum+'" min="1" max="1.5" value="1" style="width:50px" onchange="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/></span>');
 	td.append(div);
 	div = $('<div></div>');
 	div.append('<span class="option2"><label>Enemy Settings: </label></span>');
@@ -1170,6 +1172,9 @@ function extractOptions(num) {
 			if (options.randfriend) delete options.randfriend;
 		}
 	}
+	if ($('#evbonuscheck'+num).prop('checked')) {
+		options.evbonus = Number($('#evbonus'+num).prop('value'));
+	}
 	return options;
 }
 
@@ -1226,6 +1231,13 @@ function loadOptions(num,options) {
 		$('#randfriend'+num).prop('value', JSON.stringify(options.randfriend));
 	}else{
 		$('#randfriendflag'+num).prop('checked', false);
+	}
+
+	if (options.evbonus) {
+		$('#evbonuscheck'+num).prop('checked', true);
+		$('#evbonus'+num).prop('value', options.evbonus);
+	}else{
+		$('#evbonuscheck'+num).prop('checked', false);
 	}
 	
 }
@@ -2630,6 +2642,7 @@ function clickedWatchBattle() {
 				if (options.bonusA) ship.bonusSpecial = ship.bonusA || 1;
 				else if (options.bonusB) ship.bonusSpecial = ship.bonusB || 1;
 				else if (options.bonusC) ship.bonusSpecial = ship.bonusC || 1;
+				ship.evbonusSpecial = options.evbonus || 1;
 			}
 		}
 		

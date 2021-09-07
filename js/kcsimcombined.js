@@ -584,6 +584,7 @@ function simStatsCombined(numsims,type,foptions) {
 					if (options.bonusA) ship.bonusSpecial = ship.bonusA || 1;
 					else if (options.bonusB) ship.bonusSpecial = ship.bonusB || 1;
 					else if (options.bonusC) ship.bonusSpecial = ship.bonusC || 1;
+					ship.evbonusSpecial = options.evbonus || 1;
 				}
 			}
 			if (options.formation != '0') {
