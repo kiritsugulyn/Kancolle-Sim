@@ -1317,7 +1317,7 @@ function accuracyAndCrit(ship,target,hit,evMod,evFlat,critrateMod,isPlanes,critB
 
 	if (!(ship instanceof LandBase) && !ship.fleet.supportType){
 		var specialMod = 1; //e.g. equipment and historical bonus
-		if (target.equipWeak && ship.equips) specialMod *= getSpecialEquipBonus(ship,target);
+		if (target.equipWeak && ship.equips) specialMod *= getSpecialEquipBonus(ship,target,undefined,true);
 		specialMod *= ship.bonusSpecial || 1;
 		hit *= specialMod;
 	}
@@ -3777,7 +3777,7 @@ function getDetection(shipsF,shipsE) {
 	return (shotdownVal <= 0)? DetectionResult.Failure : DetectionResult.FailureLost;
 }
 
-function getSpecialEquipBonus(ship,target,plane){
+function getSpecialEquipBonus(ship,target,plane,isAcc){
 	var specialMod = 1;
 	var bonuses = target.equipWeak;
 
@@ -3797,6 +3797,7 @@ function getSpecialEquipBonus(ship,target,plane){
 	}
 
 	bonuses.forEach((bonus) => {
+		if (isAcc && bonus.noAccBonus) return;
 		let count = 0;
 		if (bonus.eqtypes) {
 			if (bonus.distinct){
