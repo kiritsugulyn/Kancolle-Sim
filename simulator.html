@@ -161,6 +161,7 @@
 			<input type="checkbox" id="advCostW6" onchange="SIMCONSTS.airRaidCostW6=this.checked;raiseFleetChange()" /><label for="advCostW6">Use World 6 costs for Air Raid (4% <img src="assets/stats/fuel.png" /> 8% <img src="assets/stats/ammo.png" />)</label><br>
 			<input type="checkbox" checked id="strikingForceFlag" onchange="SIMCONSTS.strikingForceRetreat=this.checked;raiseFleetChange()" /><label for="strikingForceFlag">Enable striking force retreat</label><br>
 			<input type="checkbox" checked id="torpSquadronFlag" onchange="SIMCONSTS.torpSquadronRetreat=this.checked;raiseFleetChange()" /><label for="torpSquadronFlag">Enable torpedo squadron retreat</label><br>
+			<input type="checkbox" id="transportFlag" onchange="TRANSPORTOPERATION=this.checked;raiseFleetChange()" /><label for="transportFlag">Is transport operation?</label><br>
 			<br>
 			<input type="button" value="Show Advanced" onclick="$('#optionsadvanced').toggle()" />
 			<div id="optionsadvanced" style="display:none">
@@ -276,6 +277,10 @@
 				<img src="assets/stats/flagsunk.png"></img> <span id="rsunkfs" style="font-weight:bold">0</span><br>
 				 (Avg <span style="font-weight:bold">-<span id="rsunkfsHP"></span></span> HP per run)<br>
 				 (Avg <span style="font-weight:bold">-<span id="rsunkfsHPB"></span></span> HP per boss)<br>
+				 <div class="restransport">
+					(Avg <span style="font-weight:bold">-<span id="rtransport"></span></span> TP per run)<br>
+					(Avg <span style="font-weight:bold">-<span id="rtrasnportB"></span></span> TP per boss)<br>
+				</div>
 				<br>Enemy Flagship Sunk by:<br>
 				<img src="assets/stats/F1.png"></img> <span id="sinkfs1">0</span><br>
 				<img src="assets/stats/F2.png"></img> <span id="sinkfs2">0</span><br>

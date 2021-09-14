@@ -1814,6 +1814,9 @@ function updateResults(results) {
 
 	if (FLEETS2[FLEETS2.length - 1].combinedWith) $('.bosscombined').each(function() { $(this).show(); });
 	else $('.bosscombined').each(function() { $(this).hide(); });
+
+	if (TRANSPORTOPERATION) $('.restransport').each(function() { $(this).show(); });
+	else $('.restransport').each(function() { $(this).hide(); });
 	
 	if (results.nodes.length == 1) {
 		var node = results.nodes[0];
@@ -1940,6 +1943,8 @@ function updateResults(results) {
 	resultAddWeight('rEmptiedPlanesLB',results.totalEmptiedLBAS,results.totalnum);
 	resultAddWeight('rsunkfsHP',results.totalGaugeDamage,results.totalnum);
 	resultAddWeight('rsunkfsHPB',results.totalGaugeDamage,results.nodes[results.nodes.length-1].num);
+	resultAddWeight('rtransport',results.totalTransportGauge,results.totalnum);
+	resultAddWeight('rtrasnportB',results.totalTransportGauge,results.nodes[results.nodes.length-1].num);
 	
 	document.getElementById('rnumruns').innerHTML = prevnum + results.totalnum;
 	

@@ -150,6 +150,12 @@ Fleet.prototype.setFormation = function(formNum,combineType) {
 		this.formation = ALLFORMATIONS[formNum];
 	}
 }
+Fleet.prototype.getTransportPoints = function () {
+    return this.ships.reduce((i, ship) => {
+        if (ship.HPprev/ship.maxHP <= .25 || ship.retreated) return i;
+        return i + (ship.transportPoint || 0);
+    }, 0);
+}
 //----------
 
 function Ship(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
@@ -193,7 +199,8 @@ function Ship(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	this.LOSeq = 0;
 	this.APtype = false;
 	this.morale = 49;
-	this.moraleDefault = 49;
+    this.moraleDefault = 49;
+    this.transportPoint = 0;
 	
 	this._nbtypes = false;
 	this._astype = false;
@@ -292,7 +299,12 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (eq.type == ENGINE) {
 			if (!this.evimprove) this.evimprove = eq.level || 0;
 			else this.evimprove += eq.level || 0;
-		}
+        }
+        
+        if (eq.type == DRUM) this.transportPoint += 5;
+        else if (eq.type == LANDINGCRAFT) this.transportPoint += 8;
+        else if (eq.type == LANDINGCRAFT) this.transportPoint += 2;
+        else if (eq.type == RATION) this.transportPoint += 1;
 		
 		this.equips.push(eq);
     }
@@ -1150,14 +1162,16 @@ Ship.prototype.ptMod = function() {
 //------------------
 
 function DD(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
-	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
+    Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
+    this.transportPoint = 5;
 }
 DD.prototype = Object.create(Ship.prototype);
 DD.prototype.canASW = function() { return true; }
 
 function CL(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
-	this.fitclass = 100;
+    this.fitclass = 100;
+    this.transportPoint = this.mid == 487? 10 : 2;
 }
 CL.prototype = Object.create(Ship.prototype);
 CL.prototype.canASW = function() { return true; }
@@ -1190,7 +1204,8 @@ FBB.prototype = Object.create(BB.prototype);
 
 function CAV(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
-	this.planeasw = true;
+    this.planeasw = true;
+    this.transportPoint = 4;
 }
 CAV.prototype = Object.create(Ship.prototype);
 CAV.prototype.APweak = true;
@@ -1214,7 +1229,8 @@ CAV.prototype.rocketBarrageChance = function() {
 
 function BBV(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
-	this.planeasw = true;
+    this.planeasw = true;
+    this.transportPoint = 7;
 }
 BBV.prototype = Object.create(Ship.prototype);
 BBV.prototype.APweak = true;
@@ -1400,20 +1416,23 @@ SS.prototype.canShell = function() { return this.HP > 0 && (this.numWG || this.h
 SS.prototype.canOpTorp = function() { return (this.HP > 0 && (this.LVL >= 10 || this.hasMidgetSub)); }
 
 function SSV(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
-	SS.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
+    SS.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
+    this.transportPoint = 1;
 }
 SSV.prototype = Object.create(SS.prototype);
 
 function AV(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
-	this.fitclass = 200;
+    this.fitclass = 200;
+    this.transportPoint = 9;
 };
 AV.prototype = Object.create(Ship.prototype);
 AV.prototype.canASW = CAV.prototype.canASW;
 AV.prototype.rocketBarrageChance = CAV.prototype.rocketBarrageChance;
 
 function AO(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
-	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
+    Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
+    this.transportPoint = 15;
 };
 AO.prototype = Object.create(Ship.prototype);
 AO.prototype.loadEquips = function(equips,levels,profs,addstats) {
@@ -1447,7 +1466,8 @@ Installation.prototype.canShell = CV.prototype.canShell;
 Installation.prototype.canStillShell = CV.prototype.canStillShell;
 
 function AS(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
-	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
+    Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
+    this.transportPoint = 7;
 };
 AS.prototype = Object.create(Ship.prototype);
 
@@ -1458,13 +1478,15 @@ AR.prototype = Object.create(Ship.prototype);
 
 function CT(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
-	this.fitclass = 100;
+    this.fitclass = 100;
+    this.transportPoint = 6;
 };
 CT.prototype = Object.create(Ship.prototype);
 CT.prototype.canASW = function() { return true; }
 
 function LHA(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
-	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
+    Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
+    this.transportPoint = 12;
 };
 LHA.prototype = Object.create(Ship.prototype);
 

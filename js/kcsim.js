@@ -172,6 +172,8 @@ var BUCKETTIME = 99*3600;
 var CARRYOVERHP = false;
 var CARRYOVERMORALE = false;
 
+var TRANSPORTOPERATION = false;
+
 var C = true;
 var NEWFORMAT = true;
 var DIDPROTECT = false;
@@ -2989,6 +2991,7 @@ function simStats(numsims,foptions) {
 		totalEmptiedPlanes: 0,
 		totalEmptiedLBAS: 0,
 		totalGaugeDamage: 0,
+		totalTransportGauge: 0,
 		nodes: []
 	};
 	for (var i=0; i<FLEETS2.length; i++) {
@@ -3115,6 +3118,13 @@ function simStats(numsims,foptions) {
 			if (res.jetCost) totalResult.totalSteelS += res.jetCost;
 			if (res.repairCost1) totalResult.totalRepairCost1 += res.repairCost1;
 			if (res.repairCost2) totalResult.totalRepairCost2 += res.repairCost2;
+			if (TRANSPORTOPERATION && j == FLEETS2.length - 1) {
+				if (res.rank == 'S'){
+					totalResult.totalTransportGauge += Math.floor(FLEETS1[0].getTransportPoints());
+				}else if (res.rank == 'A') {
+					totalResult.totalTransportGauge += Math.floor(.7*FLEETS1[0].getTransportPoints());
+				}
+			}
 			if (!canContinue(FLEETS1[0].ships)) break;
 		}
 		let flagshipFinal = FLEETS2[FLEETS2.length-1].ships[0];

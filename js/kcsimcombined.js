@@ -514,6 +514,7 @@ function simStatsCombined(numsims,type,foptions) {
 		totalEmptiedPlanes: 0,
 		totalEmptiedLBAS: 0,
 		totalGaugeDamage: 0,
+		totalTransportGauge: 0,
 		nodes: []
 	};
 	for (var i=0; i<FLEETS2.length; i++) {
@@ -675,6 +676,15 @@ function simStatsCombined(numsims,type,foptions) {
 			if (res.jetCost) totalResult.totalSteelS += res.jetCost;
 			if (res.repairCost1) totalResult.totalRepairCost1 += res.repairCost1;
 			if (res.repairCost2) totalResult.totalRepairCost2 += res.repairCost2;
+			if (TRANSPORTOPERATION && j == FLEETS2.length - 1) {
+				if (res.rank == 'S'){
+					totalResult.totalTransportGauge += Math.floor(FLEETS1[0].getTransportPoints());
+					totalResult.totalTransportGauge += Math.floor(FLEETS1[1].getTransportPoints());
+				}else if (res.rank == 'A') {
+					totalResult.totalTransportGauge += Math.floor(.7*FLEETS1[0].getTransportPoints());
+					totalResult.totalTransportGauge += Math.floor(.7*FLEETS1[1].getTransportPoints());
+				}
+			}
 			//if ((res.redded && DORETREAT)||res.flagredded) break;
 			if (!canContinue(FLEETS1[0].ships,FLEETS1[1].ships)) break;
 		}
