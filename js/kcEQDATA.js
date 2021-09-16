@@ -6679,8 +6679,8 @@ var EQDATA = {
 
 	// Custom Equipments
 	5001: {
-		name: 'Blemheim Mk.IF',
-		nameJP: 'Blenheim Mk.IF',
+		name: '1. Blemheim Mk.IF',
+		nameJP: '1. Blenheim Mk.IF',
 		added: '2021-09-16',
 		b_image: 13,
 		type: LANDBOMBER,
@@ -6692,8 +6692,8 @@ var EQDATA = {
 		LOS: 5,
 	},
 	5002: {
-		name: 'Blemheim Mk.IV',
-		nameJP: 'Blenheim Mk.IV',
+		name: '2. Blemheim Mk.IV',
+		nameJP: '2. Blenheim Mk.IV',
 		added: '2021-09-16',
 		type: LANDBOMBER,
 		b_image: 13,
@@ -6704,8 +6704,8 @@ var EQDATA = {
 		LOS: 5,
 	},
 	5003: {
-		name: 'Wellington Mk.I',
-		nameJP: 'Wellington Mk.I',
+		name: '3. Wellington Mk.I',
+		nameJP: '3. Wellington Mk.I',
 		added: '2021-09-16',
 		b_image: 13,
 		type: LANDBOMBER,
@@ -6716,8 +6716,8 @@ var EQDATA = {
 		LOS: 3,
 	},
 	5004: {
-		name: 'Wellington Mk.I (Ace)',
-		nameJP: 'Wellington Mk.III (Ace)',
+		name: '4. Wellington Mk.I (Ace)',
+		nameJP: '4. Wellington Mk.III (Ace)',
 		added: '2021-09-16',
 		b_image: 13,
 		type: LANDBOMBER,
@@ -6728,8 +6728,8 @@ var EQDATA = {
 		LOS: 3,
 	},
 	5005: {
-		name: 'Pe-3 bis',
-		nameJP: 'Pe-3 bis',
+		name: '5. Pe-3 bis',
+		nameJP: '5. Pe-3 bis',
 		added: '2021-09-16',
 		b_image: 13,
 		type: LANDBOMBER,
@@ -6741,8 +6741,8 @@ var EQDATA = {
 		LOS: 3,
 	},
 	5006: {
-		name: 'Ил-4 (ДБ-3Ф) / PLeLv.48',
-		nameJP: 'Il-4 (DB-3F) / PLeLv.48',
+		nameJP: '6. Ил-4 (ДБ-3Ф) / PLeLv.48',
+		name: '6. Il-4 (DB-3F) / PLeLv.48',
 		added: '2021-09-16',
 		b_image: 13,
 		type: LANDBOMBER,
