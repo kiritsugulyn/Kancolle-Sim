@@ -491,6 +491,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 	if (MECHANICS.fitGun && ship.ACCfitN) acc += ship.ACCfitN*.01;
 	if (searchlights[0]) acc += .07;
 	if (ship.ACCnbca) acc += ship.ACCnbca*.01;
+	if (MECHANICS.newVanguardMod && ship.fleet.formation.id == 6) acc += vanguardAccFlat(ship,target) * .01;
 	acc *= accMod2;
 	
 	var critrateMod = 1.5;
@@ -2962,13 +2963,13 @@ function canContinue(ships1,ships1C) {
 			}
 		}
 	}
-	if (retreater) {
+	if (retreater && (!retreater.repairs||!retreater.repairs.length)) {
 		retreater.retreated = true;
 		retreater.fuelleft = 0;
-	}
-	if (escorter) {
-		escorter.retreated = true;
-		escorter.fuelleft = 0;
+		if (escorter) {
+			escorter.retreated = true;
+			escorter.fuelleft = 0;
+		}
 	}
 	return true;
 }
@@ -3907,15 +3908,15 @@ function vanguardEvFlat(ship, isTorpedo) {
 }
 
 function vanguardAccFlat(ship,target) {
-	// Source: https://twitter.com/Xe_UCH/status/1332267790686769159
+	// Source: https://twitter.com/Xe_UCH/status/1438380229425205250
 	var accFlat = 0;
 	if (ship.getFormation() == VANGUARD1) {
 		accFlat -= 20;
 	}else{
 		accFlat += 20;
 	}
-	if (ship.type == 'DD' && target.type == 'DD') accFlat += 12;
-	if (ship.type != 'DD' && target.type != 'DD') accFlat -= 12;
+	if (ship.type != 'DD') accFlat -= 15;
+	if (target.type == 'DD') accFlat += 12;
 	return accFlat;
 }
 
