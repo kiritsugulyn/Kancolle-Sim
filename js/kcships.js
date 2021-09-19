@@ -1101,6 +1101,15 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
         }
     }
 
+    if (installeqids[436]) {
+        let i = Math.min(installeqids[436], 2) - 1;
+        softSkinMult *= [1.5, 1.95][i];
+        pillboxMult *= [1.5, 2.1][i];
+        isoMult *= [1.2, 1.68][i];
+        harbourSummerMult *= [1.6, 2.4][i];
+        supplyPostMult *= [1.3, 2.08][i] * LCbonus;
+    }
+
     return [installFlat1, installFlat2, 
             softSkinMult, softSkinMultDayOnly, 
             pillboxMult, pillboxMultDayOnly, 
