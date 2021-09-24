@@ -1947,7 +1947,8 @@ function updateResults(results) {
 	resultAddWeight('rtrasnportB',results.totalTransportGauge,results.nodes[results.nodes.length-1].num);
 	
 	document.getElementById('rnumruns').innerHTML = prevnum + results.totalnum;
-	
+	document.getElementById('rsunkfsstd95').innerHTML = Math.round(2*1000*Math.sqrt(RESVALUES['rsunkfs'][0]*(RESVALUES['rsunkfs'][1]-RESVALUES['rsunkfs'][0])/RESVALUES['rsunkfs'][1])/RESVALUES['rsunkfs'][1])/1000;
+
 	WROTESTATS = true;
 }
 

@@ -639,7 +639,7 @@ Ship.prototype.ASWPower = function() {
 	if (this._aswpower) return this._aswpower;
     var equipASW = 0, effEquipASW = 0, hassonar = false, hassonars = false, hasdc = false, hasdc1 = false, hasdc2 = false;
     if (this.equips) this.equips.forEach((eq) => {
-        equipASW = (eq.ASW || 0);
+        equipASW += (eq.ASW || 0);
         if (eqtypes.indexOf(eq.type) !== -1) effEquipASW += (eq.ASW || 0);
         if (eq.btype == B_SONAR) hassonar = true;
         if (eq.type == SONARS) hassonars = true;
