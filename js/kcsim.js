@@ -433,7 +433,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 	
 	var evMod = target.getFormation().NBev;
 	var evFlat = (target.type == 'CA' || target.type == 'CAV')? 5 : 0;
-	if (target.type == 'DD' && target.hasLOSRadar && target.hasLookout) evFlat += 10; //data: https://twitter.com/Xe_UCH/status/1001252130194444289
+	if (target.type == 'DD' && target.equiptypesB[B_RADAR] && target.hasLookout) evFlat += 10; //data: https://twitter.com/Xe_UCH/status/1001252130194444289
 	if (target.hasSearchlight) { evMod *= .2; evFlat *= .2; }
 	
 	if (!attackSpecial) {
@@ -2845,7 +2845,7 @@ function maelstromLoss(fleet, losses){
 
 	var num = 0;
 	num = ships.reduce((acc, ship) => {
-		if (Object.keys(ship.equiptypesB).indexOf(B_RADAR.toString()) !== -1) return acc + 1;
+		if (ship.equiptypesB[B_RADAR]) return acc + 1;
 		return acc;
 	}, num);
 	num = num > 6? 6: Math.floor(num);
