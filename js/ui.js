@@ -979,6 +979,12 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
 			f.appendChild(label);
 		}
 		d.appendChild(f);
+		if (fleetnum >= 14 && fleetnum < 18) {
+			var f = $('<div></div>');
+			f.append('<input type="radio" id="T'+fleetnum+'t1" name="T'+fleetnum+'type" value="1" onchange="updateFleetCode('+fleetnum+')" checked/><label for="T'+fleetnum+'t1">Night battle</label>');
+			f.append('<input type="radio" id="T'+fleetnum+'t2" name="T'+fleetnum+'type" value="2" onchange="updateFleetCode('+fleetnum+')"/><label for="T'+fleetnum+'t2">Air strike</label>');
+			$(d).append(f);
+		}
 	}
     d.appendChild(document.createElement('br'));
      
@@ -1110,8 +1116,8 @@ function genOptions(fleetnum) {
 	div.append('<span class="option2"><textarea id="randform'+fleetnum+'" cols="30" rows="1" autocomplete="off" ></textarea></span>')
 	td.append(div);
 	div = $('<div></div>');
-	div.append('<span class="option2"><label>Friend Fleet Settings (only boss node): </label></span>');
-	div.append('<span class="option2"><input type="checkbox" id="randfriendflag'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="randform'+fleetnum+'">Random friend fleet</label></span>');
+	div.append('<span class="option2"><label>Friend Fleet Settings: </label></span>');
+	div.append('<span class="option2"><input type="checkbox" id="randfriendflag'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="randfriend'+fleetnum+'">Random friend fleet</label></span>');
 	div.append('<span class="option2"><textarea id="randfriend'+fleetnum+'" cols="30" rows="1" autocomplete="off" onchange="updateOptionsCookies('+fleetnum+');raiseFleetChange()"></textarea></span>')
 	td.append(div);
 	html.append(td);
@@ -2212,7 +2218,7 @@ function updateFleetCode(fleet) {
 	var fdata = data.f1 = {};
 	var formation = $('input[name=T'+fleet+'formation]:checked').val();
 	fdata.form = (formation||0);
-	if (fleet==11||fleet==12||fleet==13) {
+	if (fleet >= 11 && fleet <= 17) {
 		var type = $('input[name=T'+fleet+'type]:checked').val();
 		fdata.type = (type||0);
 	}
@@ -2485,6 +2491,7 @@ function extractForSim() {
 				FLEETS1S[i+2] = new Fleet(0);
 				FLEETS1S[i+2].loadShips(d[0]);
 				FLEETS1S[i+2].formation = ALLFORMATIONS[d[1]];
+				FLEETS1S[i+2].friendType = parseInt($('input[name="T'+(14+i)+'type"]:checked').val());
 			}
 		}
 	}
@@ -2622,13 +2629,16 @@ function clickedWatchBattle() {
 		var friendFleetF = null;
 		if (j==FLEETS2.length-1) {
 			if (options.randfriend) {
-				let temp = randFriendFleet(options.randfriend);
-				let tempFriendFleet = FLEETS1S[temp];
-				if (tempFriendFleet !== null) friendFleetF = tempFriendFleet; 
-				else friendFleetF = friendFleet;
+				let idx = randFriendFleet(options.randfriend);
+				if (idx && FLEETS1S[idx]) friendFleetF = FLEETS1S[idx]; 
+				else friendFleetF = null;
 			}else{
 				friendFleetF = friendFleet;
 			}
+		}else if (options.randfriend) {
+			let idx = randFriendFleet(options.randfriend);
+			if (idx && FLEETS1S[idx]) friendFleetF = FLEETS1S[idx]; 
+			else friendFleetF = null;
 		}
 		if (options.maelstrom) maelstromLoss(FLEETS1[0], options.maelstrom);
 		if (options.lbraid && FLEETLBRAID) landBaseLoss(alllbas);
@@ -2943,6 +2953,7 @@ function showLBASStats() {
 
 function clickedLoadLBAS() {
 	loadLBAS($('#lbasJSON').prop('value'));
+	saveLBAS();
 }
 
 
@@ -3480,7 +3491,7 @@ function checkRandFriend(obj) {
 		if ([1,2,3,4].indexOf(Number(key)) === -1) return false;
 		chance += Number(obj[key]);
 	}
-	if (chance !== 100) return false;
+	if (chance > 100) return false;
 	return true;
 
 }

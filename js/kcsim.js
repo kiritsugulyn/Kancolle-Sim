@@ -2453,6 +2453,22 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 		}
 		F2.AS = 0;
 	}
+
+	// AS friend fleet
+	if (!NBonly && friendFleet && friendFleet.friendType == 2 && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
+		if (C) logFriendFleetInfo(friendFleet,BAPI.data);
+		if (C) BAPI.data.api_friendly_kouku = {api_stage_flag: [1,1,1], api_plane_from:[[-1],[-1]],api_stage1:null,api_stage2:null,api_stage3:null};
+		compareAP(friendFleet,F2);
+		airPhase(friendFleet.ships,[],alive2,subsalive2,(C)? BAPI.data.api_friendly_kouku:undefined);
+		if (C) {
+			if (BAPI.data.api_friendly_kouku.api_stage1) BAPI.data.api_friendly_kouku.api_stage1.api_disp_seiku = {4:1,3:2,2:0,1:3,0:4}[F1.AS+2];
+			else BAPI.data.api_friendly_kouku = null;
+			if (BAPI.api_friendly_kouku) delete BAPI.data.api_friendly_kouku.api_stage3_combined;
+		}
+		
+		removeSunk(alive2);
+		F2.AS = 0;
+	}
 	
 	//opening airstrike
 	if (!NBonly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
@@ -2573,7 +2589,7 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 	}
 	
 	//friend fleet
-	if ((doNB||NBonly) && friendFleet && alive2.length+subsalive2.length > 0) {
+	if ((doNB||NBonly) && friendFleet && friendFleet.friendType == 1 && alive2.length+subsalive2.length > 0) {
 		friendFleetPhase(friendFleet,F2,alive2,subsalive2,BAPI);
 		removeSunk(alive2); removeSunk(subsalive2);
 	}
@@ -3073,14 +3089,17 @@ function simStats(numsims,foptions) {
 			if (j == FLEETS2.length - 1) {
 				supportNum = 1;
 				if (options.randfriend) {
-					let temp = randFriendFleet(options.randfriend);
-					let tempFriendFleet = FLEETS1S[temp];
-					if (tempFriendFleet !== null) friendFleet = tempFriendFleet; 
-					else friendFleet = FLEETS1S[2];
+					let idx = randFriendFleet(options.randfriend);
+					if (idx && FLEETS1S[idx]) friendFleet = FLEETS1S[idx]; 
+					else friendFleet = null;
 				}else{
 					friendFleet = FLEETS1S[2];
 				}
 				underwaySupply(FLEETS1[0]);
+			}else if (options.randfriend) {
+				let idx = randFriendFleet(options.randfriend);
+				if (idx && FLEETS1S[idx]) friendFleet = FLEETS1S[idx]; 
+				else friendFleet = null;
 			}
 			var LBASwaves = [];
 			for (var k=0; k<options.lbas.length; k++) LBASwaves.push(LBAS[options.lbas[k]-1]);
@@ -3937,7 +3956,7 @@ function randFriendFleet(obj) {
 		acc += obj[key];
 		if (rand < acc) return 1 + Number(key);
 	}
-	return 2;
+	return null;
 }
 
 function calJetCost(fleet1, fleet2) {
@@ -3963,4 +3982,34 @@ function isTorpSquadron(ships) {
 		}
 	})
 	return flag;
+}
+
+function logFriendFleetInfo(fleet,api) {
+	if (!api) return;
+	api.api_friendly_info = {
+		api_production_type: 1,
+		api_ship_id: [],
+		api_ship_lv: [],
+		api_nowhps: [],
+		api_maxhps: [],
+		api_Slot: [],
+		api_voice_id: [],
+		api_voice_p_no: [],
+	};
+	for (let ship of fleet.ships) {
+		api.api_friendly_info.api_ship_id.push(ship.mid);
+		api.api_friendly_info.api_ship_lv.push(ship.LVL);
+		api.api_friendly_info.api_nowhps.push(ship.HP);
+		api.api_friendly_info.api_maxhps.push(ship.maxHP);
+		let equips = [];
+		for (let equip of ship.equips) equips.push(equip.mid);
+		api.api_friendly_info.api_Slot.push(equips);
+		if (ship.voiceFriend) {
+			api.api_friendly_info.api_voice_id.push(ship.voiceFriend[0]);
+			api.api_friendly_info.api_voice_p_no.push(ship.voiceFriend[1]);
+		} else {
+			api.api_friendly_info.api_voice_id.push(141);
+			api.api_friendly_info.api_voice_p_no.push(0);
+		}
+	}
 }

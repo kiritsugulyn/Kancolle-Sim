@@ -340,6 +340,9 @@ var BATTLE = (function() {
 					attacker['is_enemy'] = true;
 				} else {
 					attacker = (hou.api_at_list[j] >= 6 && playerFleet.mainFleet.length <= 6) ? playerFleet.escortFleet[hou.api_at_list[j] - 6] : playerFleet.mainFleet[hou.api_at_list[j]];
+					if (hou.api_sp_list[j] >= 100 && playerFleet.escortFleet) {
+						attacker = playerFleet.escortFleet[0];
+					}
 				}
 			}
 			
@@ -465,7 +468,7 @@ var BATTLE = (function() {
 		table.append(getTextRow("", []));
 
 		if (stage2 && stage2.api_air_fire) {
-			var AAShip = (stage2.api_air_fire.api_idx > 5) ? player.escortFleet[stage2.api_air_fire.api_idx - 6] : player.mainFleet[stage2.api_air_fire.api_idx];
+			var AAShip = (stage2.api_air_fire.api_idx > 5 && player.mainFleet.length <= 6) ? player.escortFleet[stage2.api_air_fire.api_idx - 6] : player.mainFleet[stage2.api_air_fire.api_idx];
 			table.append(getTextRow("AIR_AACI", [AAShip.name, stage2.api_air_fire.api_kind]));
 		}
 
@@ -817,6 +820,14 @@ var BATTLE = (function() {
 			jetAttack();
 		if (dbattle.api_air_base_attack)
 			lbas();
+		if (dbattle.api_friendly_kouku) {
+			let friendFleet = new FLEET();
+			friendFleet.addFleet(dbattle.api_friendly_info.api_ship_id, dbattle.api_friendly_info.api_nowhps, dbattle.api_friendly_info.api_maxhps);
+			let temp = player;
+			player = friendFleet;
+			airAttack(dbattle.api_friendly_kouku);
+			player = temp;
+		}
 		if (nightFirst && dbattle.api_support_flag && dbattle.api_support_flag > 0)
 			support(dbattle.api_support_flag, dbattle.api_support_info);
 		if (dbattle.api_stage_flag)
