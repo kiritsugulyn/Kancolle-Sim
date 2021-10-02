@@ -5398,6 +5398,17 @@ var EQDATA = {
 		ACC: 1,
 		EV: 1,
 	},
+	438: {
+		name: 'Type 3 SONAR Kai',
+		nameJP: '三式水中探信儀改',
+		added: '2021-09-28',
+		type: SONARS,
+		btype: B_SONAR,
+		AR: 1,
+		ASW: 11,
+		ACC: 2,
+		EV: 1,
+	},
 	501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',

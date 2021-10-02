@@ -80,6 +80,7 @@ var AACIDATA = {
 	35:{num:6,rate:.5,mod:1.55,equip:'BH',rollIndiv:true},
 	36:{num:6,rate:.5,mod:1.55,equip:'HHR',rollIndiv:true},
 	37:{num:4,rate:.4,mod:1.45,equip:'HH',rollIndiv:true},
+	38:{num:10,rate:.6,mod:1.85,equip:'BB',rollIndiv:true},
 	39:{num:10,rate:.6,mod:1.7,equip:'BB',rollIndiv:true},
 	40:{num:10,rate:.6,mod:1.7,equip:'BBR',rollIndiv:true},
 	41:{num:9,rate:.6,mod:1.65,equip:'BB',rollIndiv:true},

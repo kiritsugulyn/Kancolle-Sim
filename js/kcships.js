@@ -70,9 +70,9 @@ Fleet.prototype.fleetAntiAir = function(alreadyCombined) {
             if (this.ships[i].improves.AAfleet) baseFAA += this.ships[i].improves.AAfleet;
             this._baseFAA += Math.floor(baseFAA);
 		}
-		if (this.side == 0) this._baseFAA /= 1.3; //player side fleetAA is lower?
 	}
-	var FAA = this._baseFAA*2*this.formation.AAmod;
+    var FAA = 2*Math.floor(this._baseFAA*this.formation.AAmod);
+    if (this.side == 0) FAA /= 1.3;
 	if (alreadyCombined) return FAA;
 	if (this.combinedWith) {
 		FAA += this.combinedWith.fleetAntiAir(true);
@@ -655,7 +655,7 @@ Ship.prototype.ASWPower = function() {
             else if (hasdc1) synergyMod2 = 1.1;
         }
 	}
-	this._aswpower = (2*Math.sqrt(this.ASW-equipASW)+1.5*effEquipASW+((this.planeasw)? 8 : 13)+(this.improves.Pasw||0)) * synergyMod * synergyMod2;
+	this._aswpower = (2*Math.sqrt(this.ASW-equipASW)+1.5*(effEquipASW+(this.ASWBonus||0))+((this.planeasw)? 8 : 13)+(this.improves.Pasw||0)) * synergyMod * synergyMod2;
 	return this._aswpower;
 }
 
@@ -671,10 +671,12 @@ Ship.prototype.damageMod = function(isTorp) {
 }
 Ship.prototype.weightedAntiAir = function() {
 	if (this._wAA === undefined) {
-		this._wAA = this.AA;
-		for (var i=0; i<this.equips.length; i++) if (this.equips[i].AA) this._wAA -= this.equips[i].AA; //get base AA
-		if (this.side==1) this._wAA = 2*Math.sqrt(this.AA);
-		for (var i=0; i<this.equips.length; i++) {
+        if (this.side == 0) {
+            this._wAA = this.AA;
+            for (var i = 0; i < this.equips.length; i++) this._wAA -= (this.equips[i].AA || 0); //get base AA
+        } 
+        else this._wAA = 2 * Math.floor(Math.sqrt(this.AA));
+		for (var i = 0; i < this.equips.length; i++) {
 			var mod = 0;
 			switch (this.equips[i].atype) {
 				case A_HAGUN:
@@ -690,7 +692,11 @@ Ship.prototype.weightedAntiAir = function() {
 			}
 			this._wAA += this.equips[i].AA * mod;
 		}
-		this._wAA += (this.improves.AAself)? 2*this.improves.AAself : 0;
+        this._wAA += 2 * (this.improves.AAself || 0);
+        if (this.side == 0) {
+            if (this.equips.length) this._wAA = 2 * Math.floor(this._wAA / 2);
+            else this._wAA = Math.floor(this._wAA);
+        }
 	}
 	return this._wAA;
 }
@@ -716,7 +722,8 @@ Ship.prototype.getAACItype = function(atypes) {
             if ((hasID[284] || 0) + (hasID[313] || 0) >= 2) types.push(37);
         }
         if (this.sclass == 99) { //Atlanta class
-            if (hasID[363] && (hasID[363] || 0) + (hasID[362] || 0) >= 2) types.push(39);
+            if ((hasID[363] || 0) >= 2) types.push(38);
+            if (hasID[363] && hasID[362]) types.push(39);
             if (hasID[307] && (hasID[363] || 0) + (hasID[362] || 0) >= 2) types.push(40);
             if ((hasID[363] || 0) + (hasID[362] || 0) >= 2) types.push(41);
         }
@@ -762,7 +769,7 @@ Ship.prototype.getAACItype = function(atypes) {
             if (atypes[A_HAGUN] >= 3) types.push(30);
             if (atypes[A_HAGUN] >= 2) types.push(31);
         }
-        if (([67,78,82,88,108].indexOf(this.sclass) !== -1 || (this.sclass == 6 && this.findRemodelLvl() >= 2)) && ((hasID[191] && hasID[300]) || (hasID[301] && hasID[191]) || (hasID[301] >= 2))) types.push(32); //royal navy + Kongou-class
+        if (([67,78,82,88,108,112].indexOf(this.sclass) !== -1 || (this.sclass == 6 && this.findRemodelLvl() >= 2)) && ((hasID[191] && hasID[300]) || (hasID[301] && hasID[191]) || (hasID[301] >= 2))) types.push(32); //royal navy + Kongou-class
     }
 	
 	return types;
@@ -1400,7 +1407,7 @@ CVL.prototype.canOASW = function() {
     let found = this.equips.some((eq) => eq.ASW >= 7 && [TORPBOMBER, AUTOGYRO, ASWPLANE].indexOf(eq.type) !== -1);
     if (!found) return this.ASW + (this.ASWBonus || 0) >= this.OASWstat && this.equiptypesB[B_SONAR] && isPlayable(this.mid);
     let threshold = (this.equiptypesB[B_SONAR])? 50 : 65;
-    return this.ASW >= threshold;
+    return this.ASW + (this.ASWBonus || 0) >= threshold;
 }
 CVL.prototype.APweak = false;
 
@@ -1444,6 +1451,7 @@ function AO(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
     this.transportPoint = 15;
 };
 AO.prototype = Object.create(Ship.prototype);
+AO.prototype.canASW = function() { return this.mid < 1500; }
 AO.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	Ship.prototype.loadEquips.call(this,equips,levels,profs,addstats);
 	for (var i=0; i<equips.length; i++) {
@@ -1505,8 +1513,8 @@ function DE(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 DE.prototype = Object.create(Ship.prototype);
 DE.prototype.canASW = function() { return true; }
 DE.prototype.canOASW = function() {
-    if (this.ASW >= 60 && this.equiptypesB[B_SONAR]) return true;
-    if (this.equips.reduce((acc, eq) => acc + (eq.ASW || 0), 0) >= 4) return this.ASW >= 75;
+    if (this.ASW + (this.ASWBonus || 0) >= 60 && this.equiptypesB[B_SONAR]) return true;
+    if (this.equips.reduce((acc, eq) => acc + (eq.ASW || 0), 0) >= 4) return this.ASW + (this.ASWBonus || 0) >= 75;
 }
 
 
@@ -1801,6 +1809,8 @@ Equip.explicitStatsBonusGears = function(){
             airRadarIds: [27, 30, 32, 89, 106, 124, 142, 278, 279, 307, 315, 410, 411],
             aaMachineGun: 0,
             aaMachineGunIds: [37, 38, 39, 40, 49, 51, 84, 85, 92, 131, 173, 191, 274, 301],
+            domesticSonar: 0,
+            domesticSonarIds: [46, 47, 132, 149, 438],
             enhancedBoiler: 0,
             enhancedBoilerIds: [34],
             newModelBoiler: 0,
@@ -3077,6 +3087,37 @@ Equip.explicitStatsBonusGears = function(){
                 multiple: { "tyku": 1, "tais": 2, "houk": 1 },
             },
         },
+        // Shiden Kai 4
+        "271": {
+            count: 0,
+            starsDist: [],
+            byShip: [
+                {
+                    // Suzuya/Kumano-Kou Kai Ni, Ryuuhou Kai Ni+
+                    ids: [508, 509, 883, 888],
+                    minStars: 4,
+                    multiple: { "houg": 1 },
+                },
+                {
+                    // Suzuya/Kumano-Kou Kai Ni, Ryuuhou Kai Ni+
+                    ids: [508, 509, 883, 888],
+                    minStars: 6,
+                    multiple: { "tyku": 2 },
+                },
+                {
+                    // Suzuya/Kumano-Kou Kai Ni, Ryuuhou Kai Ni+
+                    ids: [508, 509, 883, 888],
+                    minStars: 8,
+                    multiple: { "houk": 2 },
+                },
+                {
+                    // Suzuya/Kumano-Kou Kai Ni, Ryuuhou Kai Ni+
+                    ids: [508, 509, 883, 888],
+                    minStars: 10,
+                    multiple: { "houg": 1 },
+                },
+            ],
+        },
         // Reppuu Kai (Prototype Carrier-based Model)
         "335": {
             count: 0,
@@ -3435,7 +3476,7 @@ Equip.explicitStatsBonusGears = function(){
                 },
             ],
         },
-        // Fulmar (Combat Reconnaissance / Skilled)
+        // Fulmar (Reconnaissance Fighter / Skilled)
         "423": {
             count: 0,
             byClass: {
@@ -4113,7 +4154,7 @@ Equip.explicitStatsBonusGears = function(){
                 // Northampton Class
                 "95": [
                     {
-                        single: { "houg": 1 },
+                        single: { "houg": 1, "saku": 1, "tais": 1 },
                     },
                     {
                         minStars: 3,
@@ -7245,8 +7286,8 @@ Equip.explicitStatsBonusGears = function(){
                     multiple: { "tyku": 1, "houk": 1 },
                 },
                 {
-                    // Kawakaze/Umikaze K2, Shiratsuyu/Murasame Kai
-                    ids: [469, 587, 242, 244],
+                    // Kawakaze/Umikaze K2, Shiratsuyu/Murasame Kai, Yamakaze K2+
+                    ids: [469, 587, 242, 244, 588, 667],
                     multiple: { "houk": 1 },
                 },
                 {
@@ -7831,17 +7872,24 @@ Equip.explicitStatsBonusGears = function(){
             byClass: {
                 // Katori Class
                 "56": {
-                    single: { "houk": 3, "tais": 2 },
+                    synergy: {
+                        flags: [ "domesticSonar" ],
+                        distinct: { "houk": 3, "tais": 2 },
+                    },
                 },
             },
         },
         // Type 3 Active Sonar
         "47": {
             count: 0,
+            starsDist: [],
             byClass: {
                 // Katori Class
                 "56": {
-                    single: { "houk": 3, "tais": 2 },
+                    synergy: {
+                        flags: [ "domesticSonar" ],
+                        distinct: { "houk": 3, "tais": 2 },
+                    },
                 },
             },
             byShip: [
@@ -7857,13 +7905,108 @@ Equip.explicitStatsBonusGears = function(){
                 },
             ],
         },
+        // Type 3 Active Sonar Kai
+        "438": {
+            count: 0,
+            byClass: {
+                // Ayanami Class
+                "1": {
+                    single: { "houk": 1, "tais": 1 },
+                },
+                // Akatsuki Class
+                "5": "1",
+                // Hatsuharu Class
+                "10": "1",
+                // Fubuki Class
+                "12": "1",
+                // Asashio Class
+                "18": "1",
+                // Shimakaze Class
+                "22": "1",
+                // Shiratsuyu Class
+                "23": "1",
+                // Mutsuki Class
+                "28": "1",
+                // Kagerou Class
+                "30": "1",
+                // Yuugumo Class
+                "38": "1",
+                // Akizuki Class
+                "54": "1",
+                // Kamikaze Class
+                "66": "1",
+                // Matsu Class
+                "101": "1",
+                // Katori Class
+                "56": {
+                    synergy: {
+                        flags: [ "domesticSonar" ],
+                        distinct: { "houk": 3, "tais": 2 },
+                    },
+                },
+            },
+            byShip: [
+                {
+                    // All remodels of: Kamikaze, Harukaze, Shigure, Yamakaze, Maikaze, Asashimo
+                    origins: [471, 473, 43, 457, 122, 425],
+                    multiple: { "houg": 1, "houk": 2, "tais": 3 },
+                },
+                {
+                    // All remodels of: Ushio, Ikazuchi, Yamagumo, Isokaze, Hamakaze, Kishinami
+                    origins: [16, 36, 414, 167, 170, 527],
+                    multiple: { "houk": 2, "tais": 2 },
+                },
+                {
+                    // All remodels of: Ushio, Maikaze, Isokaze, Hamakaze, Ikazuchi, Yamagumo, Umikaze, Kawakaze, Suzukaze
+                    origins: [16, 122, 167, 170, 36, 414, 458, 459, 47],
+                    single: { "tais": 1 },
+                },
+                {
+                    // All remodels of: Shigure, Yamakaze, Kamikaze, Harukaze, Mikura, Ishigaki
+                    origins: [43, 457, 473, 611, 585],
+                    single: { "houk": 1, "tais": 1 },
+                },
+                {
+                    // Naka K2, Yura K2, Isuzu K2
+                    ids: [160, 488, 141],
+                    single: { "houk": 1, "tais": 1 },
+                },
+                {
+                    // Shigure K2, Harukaze Kai, Kamikaze Kai, Asashimo K2, Yamakaze K2+
+                    ids: [145, 363, 476, 578, 588, 667],
+                    minStars: 4,
+                    single: { "tais": 1 },
+                },
+                {
+                    // Shigure K2, Harukaze Kai, Kamikaze Kai, Asashimo K2, Yamakaze K2+
+                    ids: [145, 363, 476, 578, 588, 667],
+                    minStars: 6,
+                    single: { "houk": 1 },
+                },
+                {
+                    // Shigure K2, Harukaze Kai, Kamikaze Kai, Asashimo K2, Yamakaze K2+
+                    ids: [145, 363, 476, 578, 588, 667],
+                    minStars: 8,
+                    single: { "tais": 1 },
+                },
+                {
+                    // Shigure K2, Harukaze Kai, Kamikaze Kai, Asashimo K2, Yamakaze K2+
+                    ids: [145, 363, 476, 578, 588, 667],
+                    minStars: 10,
+                    single: { "houk": 1 },
+                },
+            ],
+        },
         // Type 0 Passive Sonar
         "132": {
             count: 0,
             byClass: {
                 // Katori Class
                 "56": {
-                    single: { "houk": 3, "tais": 2 },
+                    synergy: {
+                        flags: [ "domesticSonar" ],
+                        distinct: { "houk": 3, "tais": 2 },
+                    },
                 },
             },
         },
@@ -7877,7 +8020,10 @@ Equip.explicitStatsBonusGears = function(){
                 },
                 // Katori Class
                 "56": {
-                    single: { "houk": 3, "tais": 2 },
+                    synergy: {
+                        flags: [ "domesticSonar" ],
+                        distinct: { "houk": 3, "tais": 2 },
+                    },
                 },
             },
             byShip: [
@@ -8146,6 +8292,40 @@ Equip.explicitStatsBonusGears = function(){
                 "109": {
                     single: { "soku": 5, },
                 },
+            },
+        },
+        // Pugliese Underwater Protection Bulkhead
+        "136": {
+            count: 0,
+            starsDist: [],
+            byClass: {
+                // Italian large ships: V.Veneto Class
+                "58": [
+                    {
+                        single: { "souk": 2, "houk": 1 },
+                    },
+                    {
+                        minStars: 3,
+                        multiple: { "souk": 1 },
+                    },
+                    {
+                        minStars: 6,
+                        multiple: { "souk": 1 },
+                    },
+                    {
+                        minStars: 10,
+                        multiple: { "souk": 1 },
+                    },
+                ],
+                // Aquila Class
+                "68": "58",
+                // Conte di Cavour Class
+                "113": "58",
+            },
+            byShip: {
+                    // Conte di Cavour Nuovo
+                    ids: [879],
+                    single: { "souk": 1, "houk": 1 },
             },
         },
         // Skilled Lookouts
@@ -8536,6 +8716,7 @@ Equip.explicitStatsBonusGears = function(){
                                 "2": { "soku": 10 },
                                 "3": { "soku": 10 },
                                 "4": { "soku": 10 },
+                                "5": { "soku": 10 },
                             },
                         },
                         {
@@ -8555,24 +8736,40 @@ Equip.explicitStatsBonusGears = function(){
                         },
                         {
                             flags: [ "newModelBoiler" ],
-                            single: { "soku": 10 },
+                            byCount: {
+                                gear: "enhancedBoiler",
+                                "1": { "soku": 5 },
+                                "2": { "soku": 10 },
+                                "3": { "soku": 10 },
+                                "4": { "soku": 10 },
+                                "5": { "soku": 10 },
+                            },
+                        },
+                        {
+                            flags: [ "newModelBoiler", "enhancedBoiler" ],
+                            byCount: {
+                                gear: "enhancedBoiler",
+                                "2": { "soku": -5 },
+                                "3": { "soku": -5 },
+                                "4": { "soku": -5 },
+                            },
                         },
                     ],
                 },
                 {
                     // Fast Group B2: Yuubari Kai Ni/K2D, Noshiro K2
                     //   Almost fast CV: Akagi, Katsuragi, Intrepid, Ark Royal, Aquila, Graf Zeppelin, Saratoga, Hornet
-                    //   Almost FBB: Littorio, Roma, Bismarck, Richelieu, South Dakota, Washington
+                    //   Almost FBB: Littorio, Roma, Bismarck, Richelieu, South Dakota, Washington, Conte di Cavour Kai+
                     //   All fast DD: not here, see next item
                     //   All fast CL/CLT: Nagara, Isuzu, Yura, Ooi, Kitakami, Tenryuu, Tatsuta, Natori, Sendai, Jintsuu, Naka, Kuma, Tama, Kiso, Kinu, Abukuma, Ooyodo, Gotland, Abruzzi, Garibaldi, Atlanta, De Ruyter, Perth, Helena, Sheffield, Honolulu?
                     //   All fast CA(V): Furutaka, Kako, Aoba, Myoukou, Nachi, Ashigara, Haguro, Takao, Atago, Maya, Choukai, Kinugasa, Prinz Eugen, Zara, Pola, Houston, Northampton
                     //   All fast CVL: Shouhou, Ryuujou, Zuihou, Chitose-Kou, Chiyoda-Kou, Ryuuhou K2
                     origins: [115, 138, 441, 442, 171, 492, 602, 654, 83, 332, 549, 515, 444, 432, 433, 603,
-                            21, 22, 23, 24, 25, 51, 52, 53, 54, 55, 56, 99, 100, 101, 113, 114, 183, 574, 589, 590, 597, 604, 613, 615, 514, 598,
+                            21, 22, 23, 24, 25, 51, 52, 53, 54, 55, 56, 99, 100, 101, 113, 114, 183, 574, 589, 590, 597, 604, 613, 615, 514, 598, 877,
                             59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 123, 176, 448, 449, 595, 655,
                             74, 76, 116, 102, 103, 184
                         ],
-                    excludes: [115, 293, 623, 138, 306, 102, 103, 104, 105, 106, 107, 184, 185, 318, 883],
+                    excludes: [115, 293, 623, 138, 306, 102, 103, 104, 105, 106, 107, 184, 185, 318, 883, 877],
                     synergy: [
                         {
                             flags: [ "enhancedBoiler" ],
@@ -8601,6 +8798,9 @@ Equip.explicitStatsBonusGears = function(){
                             byCount: {
                                 gear: "enhancedBoiler",
                                 "1": { "soku": -5 },
+                                "2": { "soku": -5 },
+                                "3": { "soku": -5 },
+                                "4": { "soku": -5 },
                             },
                         },
                     ],
@@ -8637,6 +8837,8 @@ Equip.explicitStatsBonusGears = function(){
                             byCount: {
                                 gear: "enhancedBoiler",
                                 "1": { "soku": -5 },
+                                "2": { "soku": -5 },
+                                "3": { "soku": -5 },
                             },
                         },
                     ],
@@ -8677,6 +8879,7 @@ Equip.explicitStatsBonusGears = function(){
                                 "2": { "soku": 10 },
                                 "3": { "soku": 15 },
                                 "4": { "soku": 15 },
+                                "5": { "soku": 15 },
                             },
                         },
                         {
@@ -8685,21 +8888,22 @@ Equip.explicitStatsBonusGears = function(){
                                 gear: "enhancedBoiler",
                                 "2": { "soku": 5 },
                                 "3": { "soku": 5 },
+                                "4": { "soku": 5 },
                             },
                         },
                     ],
                 },
                 {
-                    // Slow Group B: Taigei/Ryuuhou, Jingei, Chougei?, Kamoi, Katori, Kashima, Shinshumaru, Souya (AGS)
-                    //   All slow BB(V): Fusou, Yamashiro, Ise, Hyuuga, Nagato, Mutsu, Warspite, Nelson, Colorado, Gangut
+                    // Slow Group B: Taigei/Ryuuhou, Jingei, Chougei, Kamoi, Katori, Kashima, Shinshumaru, Souya (AGS)
+                    //   All slow BB(V): Fusou, Yamashiro, Ise, Hyuuga, Nagato, Mutsu, Warspite, Nelson, Colorado, Gangut, Conte di Cavour (base remodel)
                     //   Slow CVL: Hiyou, Houshou, Junyou, Taiyou, Shinyou, Gambier Bay
                     //   Slow AV: Akitsushima, Mizuho, Commandant Teste
                     origins: [184, 634, 635, 162, 154, 465, 621, 699,
-                            26, 27, 77, 87, 80, 81, 439, 571, 601, 511,
+                            26, 27, 77, 87, 80, 81, 439, 571, 601, 511, 877,
                             75, 89, 92, 521, 534, 544,
                             445, 451, 491
                         ],
-                    excludes: [541, 573, 888],
+                    excludes: [541, 573, 888, 878, 879],
                     synergy: [
                         {
                             flags: [ "enhancedBoiler" ],
@@ -8832,6 +9036,7 @@ Equip.accumulateShipBonusGear = function(bonusGears, equip){
         if(synergyGears.type21AirRadarK2Ids.includes(equip.mid)) synergyGears.type21AirRadarK2 += 1;
         if(synergyGears.triple305mm46LargeGunMountIds.includes(equip.mid)) synergyGears.triple305mm46LargeGunMount += 1;
         if(synergyGears.triple320mm44LargeGunMountIds.includes(equip.mid)) synergyGears.triple320mm44LargeGunMount += 1;
+        if(synergyGears.domesticSonarIds.includes(equip.mid)) synergyGears.domesticSonar += 1;
         if(equip.btype == B_RADAR && equip.LOS >= 5) synergyGears.surfaceRadar += 1;
         if(equip.atype == A_AIRRADAR) synergyGears.airRadar += 1;
         if(equip.type == AAGUN) synergyGears.aaMachineGun += 1;
