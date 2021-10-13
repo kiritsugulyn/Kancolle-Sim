@@ -133,11 +133,6 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		if (ships2[i].enableSecondShelling) doShell2 = true;
 	}
 
-	// update morale (day battle)
-	if (MECHANICS.morale && !noupdate && !NBonly) {
-		updateMoraleStart(ships1);
-		updateMoraleStart(ships1C);
-	}
 	
 	//jet lbas
 	if (LBASwaves && LBASwaves.length && !NBonly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
@@ -389,6 +384,12 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		if (C) BAPI.data.api_raigeki = {api_edam:[-1,0,0,0,0,0,0],api_erai:[-1,0,0,0,0,0,0],api_eydam:[-1,0,0,0,0,0,0],api_fdam:[-1,0,0,0,0,0,0,0,0,0,0,0,0],api_frai:[-1,0,0,0,0,0,0,0,0,0,0,0,0],api_fydam:[-1,0,0,0,0,0,0,0,0,0,0,0,0],api_ecl:[-1,0,0,0,0,0,0],api_fcl:[-1,0,0,0,0,0,0,0,0,0,0,0,0]};
 		torpedoPhase(alive1C,subsalive1C,alive2,subsalive2,false,(C)? BAPI.data.api_raigeki:undefined);
 	}
+
+	// update morale (day battle) https://twitter.com/Divinity__123/status/1447941762966867972
+	if (MECHANICS.morale && !noupdate && !NBonly) {
+		updateMoraleStart(ships1);
+		updateMoraleStart(ships1C);
+	}
 	
 	if (noupdate) {
 		results.rankDay = getRank(ships1,ships2,ships1C);
@@ -439,13 +440,13 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 			}
 		}
 
-		// update morale (night battle)
+		nightPhase(order1,order2,alive1C,subsalive1C,alive2,subsalive2,NBonly,(C)? BAPI.yasen:undefined);
+
+		// update morale (night battle) https://twitter.com/Divinity__123/status/1447941762966867972
 		if (MECHANICS.morale && !noupdate) {
 			updateMoraleStart(ships1,true);
 			updateMoraleStart(ships1C,true)
 		}
-
-		nightPhase(order1,order2,alive1C,subsalive1C,alive2,subsalive2,NBonly,(C)? BAPI.yasen:undefined);
 	}
 	
 	//results
@@ -930,10 +931,6 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 		if (ships2[i].enableSecondShelling) doShell2 = true;
 	}
 	
-	// update morale (day battle)
-	if (MECHANICS.morale && !noupdate && !NBonly) {
-		updateMoraleStart(ships1);
-	}
 
 	//jet lbas
 	if (LBASwaves && LBASwaves.length && !NBonly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length+alive2C.length+subsalive2C.length > 0) {
@@ -1099,7 +1096,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	if (C && !NBonly) BAPI.data.api_hougeki1 = null;
 	if (!NBonly && !aironly && alive1.length+subsalive1.length > 0 && alive2C.length+subsalive2C.length > 0) {
 		F1.basepowshell = 5; F2C.basepowshell = -5;
-		F1.baseaccshell = 90; F2C.baseaccshell = 90;
+		F1.baseaccshell = 80; F2C.baseaccshell = 90;
 		var order1 = [], order2 = [];
 		orderByRange(ships1,order1,hasInstall2C);
 		orderByRange(ships2C,order2,hasInstall1);
@@ -1119,7 +1116,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	//shelling 2
 	if (!NBonly && !aironly && alive1.length+subsalive1.length > 0 && alive2.length+subsalive2.length > 0) {
 		F1.basepowshell = 5; F2.basepowshell = 10;
-		F1.baseaccshell = 90; F2.baseaccshell = 90;
+		F1.baseaccshell = 80; F2.baseaccshell = 90;
 		
 		var order1 = [], order2 = [];
 		orderByRange(ships1,order1,hasInstall2);
@@ -1132,7 +1129,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	//shelling 3
 	if (doShell2 && !NBonly && !aironly && alive1.length+subsalive1.length > 0 && (alive2.length+subsalive2.length > 0 || alive2C.length+subsalive2C.length > 0)) {
 		F1.basepowshell = 5; F2.basepowshell = 10;
-		F1.baseaccshell = 90; F2.baseaccshell = 90;
+		F1.baseaccshell = 80; F2.baseaccshell = 90;
 		
 		var order1 = [], order2 = [];
 		for (var i=0; i<ships1.length; i++) {
@@ -1152,6 +1149,11 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	
 		removeSunk(alive2); removeSunk(subsalive2);
 		removeSunk(alive2C); removeSunk(subsalive2C);
+	}
+
+	// update morale (day battle) https://twitter.com/Divinity__123/status/1447941762966867972
+	if (MECHANICS.morale && !noupdate && !NBonly) {
+		updateMoraleStart(ships1);
 	}
 	
 	if (noupdate) {
@@ -1218,14 +1220,14 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 			BAPI.yasen.api_active_deck = [1,n];
 			if (!NBonly) BAPI.yasen.api_ship_ke_combined = [];
 		}
-		
-		// update morale (night battle)
-		if (MECHANICS.morale && !noupdate) {
-			updateMoraleStart(ships1,true);
-		}
 
 		if (fightescort) nightPhase(order1,order2,alive1,subsalive1,alive2C,subsalive2C,NBonly,(C)? BAPI.yasen:undefined);
 		else nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,(C)? BAPI.yasen:undefined);
+
+		// update morale (night battle) https://twitter.com/Divinity__123/status/1447941762966867972
+		if (MECHANICS.morale && !noupdate) {
+			updateMoraleStart(ships1,true);
+		}
 	}
 	
 	//results
@@ -1426,12 +1428,6 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 	}
 	for (var i=0; i<ships2.length; i++) {
 		if (ships2[i].enableSecondShelling) doShell2 = true;
-	}
-
-	// update morale (day battle)
-	if (MECHANICS.morale && !noupdate && !NBonly) {
-		updateMoraleStart(ships1);
-		updateMoraleStart(ships1C);
 	}
 	
 	//jet lbas
@@ -1642,12 +1638,8 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		// F1.basepowshell = F1.formation.shellbonus;
 		// F2.basepowshell = F1.formation.shellbonus;
 		F1.basepowshell = SIMCONSTS.shellEcMF || ((type==3)? -5 : 2); F2.basepowshell = SIMCONSTS.shellEcME || 10;
-		F1.baseaccshell = SIMCONSTS.accEcMF || 90; F2.baseaccshell = SIMCONSTS.accEcME || 90;
-		if (type==2) {
-			shellRange(d1M, d2M, (C)? BAPI.data.api_hougeki1 : undefined);
-		} else {
-			shellRange(d1M, d2M, (C)? BAPI.data.api_hougeki1 : undefined);
-		}
+		F1.baseaccshell = SIMCONSTS.accEcMF || ((type==3)? 54 : 78); F2.baseaccshell = SIMCONSTS.accEcME || 90;
+		shellRange(d1M, d2M, (C)? BAPI.data.api_hougeki1 : undefined);
 		removeSunk(alive1); removeSunk(alive1C);
 		removeSunk(subsalive1); removeSunk(subsalive1C);
 		removeSunk(alive2); removeSunk(alive2C);
@@ -1662,14 +1654,14 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		if (type==2) {
 			// F1.basepowshell = F1.formation.shellbonus;
 			// F2.basepowshell = F1.formation.shellbonus;
-			F1.basepowshell = SIMCONSTS.shellEcMF || ((type==3)? -5 : 2); F2.basepowshell = SIMCONSTS.shellEcME || 10;
-			F1.baseaccshell = SIMCONSTS.accEcMF || 90; F2.baseaccshell = SIMCONSTS.accEcME || 90;
+			F1.basepowshell = SIMCONSTS.shellEcMF || 2; F2.basepowshell = SIMCONSTS.shellEcME || 10;
+			F1.baseaccshell = SIMCONSTS.accEcMF || 78; F2.baseaccshell = SIMCONSTS.accEcME || 90;
 			if (doShell2) shellOrder(d1A, d2A, (C)? BAPI.data.api_hougeki2 : undefined);
 		} else {
 			// F1C.basepowshell = F1C.formation.shellbonus;
 			// F2.basepowshell = F1C.formation.shellbonus;
 			F1C.basepowshell = SIMCONSTS.shellEcEF || -5; F2C.basepowshell = SIMCONSTS.shellEcEE || -5;
-			F1C.baseaccshell = SIMCONSTS.accEcEF || 75; F2C.baseaccshell = SIMCONSTS.accEcEE || 75;
+			F1C.baseaccshell = SIMCONSTS.accEcEF || 67; F2C.baseaccshell = SIMCONSTS.accEcEE || 80;
 			shellRange(d1E, d2E, (C)? BAPI.data.api_hougeki2 : undefined);
 		}
 		removeSunk(alive1); removeSunk(alive1C);
@@ -1697,13 +1689,13 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 			// F1C.basepowshell = F1C.formation.shellbonus;
 			// F2.basepowshell = F1C.formation.shellbonus;
 			F1C.basepowshell = SIMCONSTS.shellEcEF || -5; F2C.basepowshell = SIMCONSTS.shellEcEE || -5;
-			F1C.baseaccshell = SIMCONSTS.accEcEF || 75; F2C.baseaccshell = SIMCONSTS.accEcEE || 75;
+			F1C.baseaccshell = SIMCONSTS.accEcEF || 67; F2C.baseaccshell = SIMCONSTS.accEcEE || 80;
 			shellRange(d1E, d2E, (C)? BAPI.data.api_hougeki3 : undefined);
 		} else if (doShell2) {
 			// F1.basepowshell = F1.formation.shellbonus;
 			// F2.basepowshell = F1.formation.shellbonus;
 			F1.basepowshell = SIMCONSTS.shellEcMF || ((type==3)? -5 : 2); F2.basepowshell = SIMCONSTS.shellEcME || 10;
-			F1.baseaccshell = SIMCONSTS.accEcMF || 90; F2.baseaccshell = SIMCONSTS.accEcME || 90;
+			F1.baseaccshell = SIMCONSTS.accEcMF || ((type==3)? 54 : 78); F2.baseaccshell = SIMCONSTS.accEcME || 90;
 			shellOrder(d1A, d2A, (C)? BAPI.data.api_hougeki3 : undefined);
 		}
 		removeSunk(alive1); removeSunk(alive1C);
@@ -1720,6 +1712,12 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 		removeSunk(subsalive1); removeSunk(subsalive1C);
 		removeSunk(alive2); removeSunk(alive2C);
 		removeSunk(subsalive2); removeSunk(subsalive2C);
+	}
+
+	// update morale (day battle) https://twitter.com/Divinity__123/status/1447941762966867972
+	if (MECHANICS.morale && !noupdate && !NBonly) {
+		updateMoraleStart(ships1);
+		updateMoraleStart(ships1C);
 	}
 	
 	if (noupdate) {
@@ -1792,14 +1790,14 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 			if (!NBonly) BAPI.yasen.api_ship_ke_combined = [];
 		}
 
-		// update morale (night battle)
+		if (fightescort) nightPhase(order1,order2,alive1C,subsalive1C,alive2C,subsalive2C,NBonly,(C)? BAPI.yasen:undefined);
+		else nightPhase(order1,order2,alive1C,subsalive1C,alive2,subsalive2,NBonly,(C)? BAPI.yasen:undefined);
+
+		// update morale (night battle) https://twitter.com/Divinity__123/status/1447941762966867972
 		if (MECHANICS.morale && !noupdate) {
 			updateMoraleStart(ships1,true);
 			updateMoraleStart(ships1C,true)
 		}
-
-		if (fightescort) nightPhase(order1,order2,alive1C,subsalive1C,alive2C,subsalive2C,NBonly,(C)? BAPI.yasen:undefined);
-		else nightPhase(order1,order2,alive1C,subsalive1C,alive2,subsalive2,NBonly,(C)? BAPI.yasen:undefined);
 	}
 	
 	//results
