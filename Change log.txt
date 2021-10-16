@@ -23,9 +23,8 @@
     1. Protection rate = 0.6
 
 2. Combined fleet acc tuning
-    12v12 shell acc Base: Main 90 Escort 75
-    6v12 shell acc Base: 90
-    Combined fleet air battle acc base: CTF/STF: Main as target 105, Escort as target 75; TCF: Main as target 85, Escort as target 75
+    shell acc base: https://twitter.com/Divinity__123/status/1447941755182227458
+    air battle acc base: CTF/STF: Main as target 110, Escort as target 80; TCF: Main as target 80, Escort as target 80
     3rd formation shell acc mod = 0.7
     Based on above, for all combined formations, now Shell/Torp/ASW acc mod = Shell/Torp/ASW damage mod
 
