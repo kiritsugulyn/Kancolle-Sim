@@ -3458,17 +3458,6 @@ function getELoS(ships,hq=120) {
 	return results;
 }
 
-function updateVanguardMod() {
-
-	if (document.getElementById('mech102').checked){
-		VANGUARD1.shellacc = 1;
-		VANGUARD2.shellacc = 1;
-	}else{
-		VANGUARD1.shellacc = 0.8;
-		VANGUARD2.shellacc = 1.2;
-	}
-
-}
 
 function checkRandForm(obj) {
 
