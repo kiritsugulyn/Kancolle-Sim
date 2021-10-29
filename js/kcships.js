@@ -431,6 +431,10 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
     }
     if ([392,492].indexOf(this.mid) !== -1)  this.FrenchBBHimePostMult *= 1.17;
     if (this.equips.some((eq) => eq.mid == 194)) this.FrenchBBHimePostMult *= 1.2;
+
+    this.GermanCVEHimePostMult = 1;
+    if (this.equiptypes[SEAPLANEBOMBER] || this.equiptypes[SEAPLANEFIGHTER]) this.GermanCVEHimePostMult *= 1.3;
+    if (this.equiptypes[TYPE3SHELL]) this.GermanCVEHimePostMult *= 1.35;
 	
 	if (this.repairs) this.repairsOrig = this.repairs.slice();
 	
@@ -8187,6 +8191,46 @@ Equip.explicitStatsBonusGears = function(){
                 {
                     // Tan Yang/Yukikaze K2
                     ids: [651, 656],
+                    single: { "houk": 1, "tais": 1 },
+                },
+            ],
+        },
+        // Hedgehog (Initial Model)
+        "439": {
+            count: 0,
+            // Country by ctype implemented in main.js, see #SlotItemEffectParamModel.prototype.getCountryNameList
+            // Following classes should be applied to all of `アメリカ` and `イギリス`
+            byClass: {
+                // Jervis Class
+                "82": {
+                    single: { "tais": 2 },
+                },
+                // John C. Butler Class
+                "87": "82",
+                // Fletcher Class
+                "91": "82",
+                // Atlanta Class
+                "99": "82",
+                // St. Louis Class
+                "106": "82",
+                // Town Class
+                "108": "82",
+                // Brooklyn Class
+                "110": "82",
+                // Matsu Class
+                "101": {
+                    single: { "tais": 1 },
+                },
+            },
+            byShip: [
+                {
+                    // All DE
+                    stypes: [1],
+                    single: { "houk": 1, "tais": 2 },
+                },
+                {
+                    // All DD/CL/CT
+                    stypes: [2, 3, 21],
                     single: { "houk": 1, "tais": 1 },
                 },
             ],

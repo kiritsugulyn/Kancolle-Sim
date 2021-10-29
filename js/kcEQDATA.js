@@ -5409,6 +5409,15 @@ var EQDATA = {
 		ACC: 2,
 		EV: 1,
 	},
+	439: {
+		name: 'Hedgehog (Initial Model)',
+		nameJP: 'Hedgehog(初期型)',
+		added: '2021-10-29',
+		type: DEPTHCHARGE,
+		AR: -1,
+		ASW: 18,
+		ACC: 3,
+	},
 	501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',

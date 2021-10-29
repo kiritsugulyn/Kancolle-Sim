@@ -2,10 +2,10 @@ var LINEAHEAD = {shellmod:1,torpmod:1,ASWmod:.6,AAmod:1, shellacc:1,torpacc:1,NB
 var DOUBLELINE = {shellmod:.8,torpmod:.8,ASWmod:.8,AAmod:1.2, shellacc:1.2,torpacc:.8,NBacc:.9, shellev:1,torpev:1,NBev:1,ASWev:1, id:2};
 var DIAMOND = {shellmod:.7,torpmod:.7,ASWmod:1.2,AAmod:1.6, shellacc:1,torpacc:.4,NBacc:.7, shellev:1.1,torpev:1.1,NBev:1,ASWev:1, id:3};
 var ECHELONOLD = {shellmod:.6,torpmod:.6,ASWmod:1,AAmod:1, shellacc:1.2,torpacc:.6,NBacc:.8, shellev:1.2,torpev:1.3,NBev:1.1,ASWev:1.3, id:4};
-var ECHELON = {shellmod:.75,torpmod:.6,ASWmod:1.1,AAmod:1, shellacc:1.2,torpacc:.75,NBacc:.9, shellev:1.45,torpev:1.3,NBev:1.3,ASWev:1.3, id:4};
+var ECHELON = {shellmod:.75,torpmod:.6,ASWmod:1.1,AAmod:1, shellacc:1.2,torpacc:.75,NBacc:.9, shellev:1.45,torpev:1.3,NBev:1.3,ASWev:1.4, id:4};
 var LINEABREAST = {shellmod:.6,torpmod:.6,ASWmod:1.3,AAmod:1, shellacc:1.2,torpacc:.3,NBacc:.8, shellev:1.3,torpev:1.4,NBev:1.2,ASWev:1.1, id:5};
-var VANGUARD1 = {shellmod:0.5,torpmod:1,ASWmod:1,AAmod:1.1, shellacc:0.8,torpacc:1,NBacc:0.8, shellev:1,torpev:1,NBev:1,ASWev:1, id:6};
-var VANGUARD2 = {shellmod:1,torpmod:1,ASWmod:.6,AAmod:1.1, shellacc:1.2,torpacc:1,NBacc:1.2, shellev:1,torpev:1,NBev:1,ASWev:1, id:6};
+var VANGUARD1 = {shellmod:0.5,torpmod:1,ASWmod:1,AAmod:1.1, shellacc:0.8,torpacc:1,aswacc:1,NBacc:0.8, shellev:1,torpev:1,NBev:1,ASWev:1, id:6};
+var VANGUARD2 = {shellmod:1,torpmod:1,ASWmod:.6,AAmod:1.1, shellacc:1.2,torpacc:1,aswacc:1.1,NBacc:1.2, shellev:1,torpev:1,NBev:1,ASWev:1, id:6};
 
 // Acc Base source: https://twitter.com/Xe_UCH/status/1172380690207215616
 // Acc Base source 2: https://twitter.com/Divinity__123/status/1447941755182227458
@@ -665,7 +665,7 @@ function ASW(ship,target,isnight,APIhou,isOASW) {
 	var accMod = ship.moraleMod();
 	// Combined fleet ASW acc data: https://twitter.com/kankenRJ/status/813545025770401792
 	if (ship.getFormation().id > 10) accMod *= ship.getFormation().ASWmod;
-	else if (!formationCountered(ship.fleet.formation.id,target.fleet.formation.id)) accMod *= ship.getFormation().shellacc;
+	else if (!formationCountered(ship.fleet.formation.id,target.fleet.formation.id)) accMod *= (ship.getFormation().aswacc || ship.getFormation().shellacc);
 	var evMod = target.getFormation().ASWev;
 	var evFlat = 0;
 	if (target.fleet.formation.id == 6) {
@@ -3860,6 +3860,7 @@ function dmgSpecialTarget(dmg,ship,target,plane){
 		else if (target.isSummerBBHime) dmg *= ship.summerBBHimePostMult || 1;
 		else if (target.isSummerCAHime) dmg *= ship.summerCAHimePostMult || 1;
 		else if (target.isFrenchBBHime) dmg *= ship.FrenchBBHimePostMult || 1;
+		else if (target.isGermanCVEHime) dmg *= ship.GermanCVEHimePostMult || 1;
 	}
 	return Math.floor(dmg);
 }
