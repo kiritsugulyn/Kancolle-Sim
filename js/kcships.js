@@ -434,7 +434,11 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 
     this.GermanCVEHimePostMult = 1;
     if (this.equiptypes[SEAPLANEBOMBER] || this.equiptypes[SEAPLANEFIGHTER]) this.GermanCVEHimePostMult *= 1.3;
-    if (this.equiptypes[TYPE3SHELL]) this.GermanCVEHimePostMult *= 1.35;
+    if (this.equiptypes[TYPE3SHELL]) this.GermanCVEHimePostMult *= 1.4;
+    if (this.equiptypes[DIVEBOMBER]) {
+        this.GermanCVEHimePostMult *= 1.5;
+        if (this.equiptypes[DIVEBOMBER] >= 2) this.GermanCVEHimePostMult *= 1.5;
+    }
 	
 	if (this.repairs) this.repairsOrig = this.repairs.slice();
 	
@@ -648,8 +652,8 @@ Ship.prototype.ASWPower = function() {
         if (eq.btype == B_SONAR) hassonar = true;
         if (eq.type == SONARS) hassonars = true;
         if (eq.type == DEPTHCHARGE) hasdc = true;
-        if (eq.mid == 44 || eq.mid == 45) hasdc1 = true;
-        if (eq.mid == 226 || eq.mid == 227) hasdc2 = true;
+        if ([44,45,287,288,377].indexOf(eq.mid) !== -1) hasdc1 = true;
+        if ([226,227,378,439].indexOf(eq.mid) !== -1) hasdc2 = true;
     });
 	var synergyMod = 1, synergyMod2 = 1;
 	if (MECHANICS.aswSynergy) {
