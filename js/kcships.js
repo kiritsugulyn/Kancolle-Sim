@@ -433,12 +433,17 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
     if (this.equips.some((eq) => eq.mid == 194)) this.FrenchBBHimePostMult *= 1.2;
 
     this.GermanCVEHimePostMult = 1;
-    if (this.equiptypes[SEAPLANEBOMBER] || this.equiptypes[SEAPLANEFIGHTER]) this.GermanCVEHimePostMult *= 1.3;
-    if (this.equiptypes[TYPE3SHELL]) this.GermanCVEHimePostMult *= 1.4;
-    if (this.equiptypes[DIVEBOMBER]) {
-        this.GermanCVEHimePostMult *= 1.5;
-        if (this.equiptypes[DIVEBOMBER] >= 2) this.GermanCVEHimePostMult *= 1.5;
+    if (this.equiptypes[SEAPLANEBOMBER] || this.equiptypes[SEAPLANEFIGHTER]) {
+        if ((this.equiptypes[SEAPLANEBOMBER] || 0) + (this.equiptypes[SEAPLANEFIGHTER] || 0) >= 2) this.GermanCVEHimePostMult *= 1.45;
+        else this.GermanCVEHimePostMult *= 1.3;
     }
+    if (this.equiptypes[TYPE3SHELL]) this.GermanCVEHimePostMult *= 1.38;
+    if (this.equiptypes[DIVEBOMBER]) {
+        if (this.equiptypes[DIVEBOMBER] >= 2) this.GermanCVEHimePostMult *= 2.25;
+        else this.GermanCVEHimePostMult *= 1.4;
+    }
+    if (this.sclass == 6) this.GermanCVEHimePostMult *= 1.15;
+    if ([14,33].indexOf(this.sclass) !== -1) this.GermanCVEHimePostMult *= 1.2;
 	
 	if (this.repairs) this.repairsOrig = this.repairs.slice();
 	
