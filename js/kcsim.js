@@ -4,8 +4,8 @@ var DIAMOND = {shellmod:.7,torpmod:.7,ASWmod:1.2,AAmod:1.6, shellacc:1,torpacc:.
 var ECHELONOLD = {shellmod:.6,torpmod:.6,ASWmod:1,AAmod:1, shellacc:1.2,torpacc:.6,NBacc:.8, shellev:1.2,torpev:1.3,NBev:1.1,ASWev:1.3, id:4};
 var ECHELON = {shellmod:.75,torpmod:.6,ASWmod:1.1,AAmod:1, shellacc:1.2,torpacc:.75,NBacc:.9, shellev:1.45,torpev:1.3,NBev:1.3,ASWev:1.4, id:4};
 var LINEABREAST = {shellmod:.6,torpmod:.6,ASWmod:1.3,AAmod:1, shellacc:1.2,torpacc:.3,NBacc:.8, shellev:1.3,torpev:1.4,NBev:1.2,ASWev:1.1, id:5};
-var VANGUARD1 = {shellmod:0.5,torpmod:1,ASWmod:1,AAmod:1.1, shellacc:0.8,torpacc:1,aswacc:1,NBacc:0.8, shellev:1,torpev:1,NBev:1,ASWev:1, id:6};
-var VANGUARD2 = {shellmod:1,torpmod:1,ASWmod:.6,AAmod:1.1, shellacc:1.2,torpacc:1,aswacc:1.1,NBacc:1.2, shellev:1,torpev:1,NBev:1,ASWev:1, id:6};
+var VANGUARD1 = {shellmod:0.5,torpmod:1,ASWmod:1,AAmod:1.1, shellacc:0.8,torpacc:0.7,aswacc:1,NBacc:0.8, shellev:1,torpev:1,NBev:1,ASWev:1, id:6};
+var VANGUARD2 = {shellmod:1,torpmod:1,ASWmod:.6,AAmod:1.1, shellacc:1.2,torpacc:0.9,aswacc:1.1,NBacc:1.2, shellev:1,torpev:1,NBev:1,ASWev:1, id:6};
 
 // Acc Base source: https://twitter.com/Xe_UCH/status/1172380690207215616
 // Acc Base source 2: https://twitter.com/Divinity__123/status/1447941755182227458
@@ -289,7 +289,7 @@ function shell(ship,target,APIhou,attackSpecial) {
 	
 	var acc = hitRate(ship,(ship.fleet.baseaccshell||90),accflat,accMod); //use global hit acc
 	if (MECHANICS.fitGun && ship.ACCfit) acc += ship.ACCfit*.01;
-	if (MECHANICS.newVanguardMod && ship.fleet.formation.id == 6 && target.type == 'DD') acc *= 1.1;
+	if (ship.fleet.formation.id == 6 && target.type == 'DD') acc *= 1.1;
 	if (ship.type == 'DE') acc -= .15;
 	acc *= accMod2;
 	
@@ -494,7 +494,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 	if (MECHANICS.fitGun && ship.ACCfitN) acc += ship.ACCfitN*.01;
 	if (searchlights[0]) acc += .07;
 	if (ship.ACCnbca) acc += ship.ACCnbca*.01;
-	if (MECHANICS.newVanguardMod && ship.fleet.formation.id == 6 && target.type == 'DD') acc *= 1.1;
+	if (ship.fleet.formation.id == 6 && target.type == 'DD') acc *= 1.1;
 	if (ship.type == 'DE') acc -= .15;
 	acc *= accMod2;
 	
@@ -1181,6 +1181,7 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 		if (ship.TACC) accflat += ship.TACC;
 		var ptMod = (target.isPT)? .4 : 1;
 		var acc = hitRate(ship,accbase,accflat,ship.getFormation().torpacc*ship.moraleMod(true)*ptMod);
+		if (ship.fleet.formation.id == 6 && target.type == 'DD') acc *= 1.2;
 		
 		var evFlat = (target.improves.EVtorp)? ship.improves.EVtorp : 0;
 		if (target.fleet.formation.id == 6) {
