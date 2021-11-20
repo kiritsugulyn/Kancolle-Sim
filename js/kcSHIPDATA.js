@@ -28797,7 +28797,7 @@ var SHIPDATA = {
 	2058: {
 		name: 'Submarine Shark Water Demon Flagship - Damaged 3',
 		nameJP: '潜水鮫水鬼-壊',
-		image: 'S1918.jpg',
+		image: 'S2058.jpg',
 		type: 'SS',
 		HP: 577,
 		FP: 89,
