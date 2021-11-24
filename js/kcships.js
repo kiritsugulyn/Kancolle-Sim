@@ -249,7 +249,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
         if (eq.mid == 107) this.hasCombinedFCF = true;
         if (eq.mid == 272) this.hasStrikeFCF = true;
         if (eq.mid == 413) this.hasTorpFCF = true;
-		if ([213,214,383].indexOf(eq.mid) !== -1) this.numSpecialTorp = this.numSpecialTorp + 1 || 1;
+		if ([213,214,383,441,443].indexOf(eq.mid) !== -1) this.numSpecialTorp = this.numSpecialTorp + 1 || 1;
 		if (eq.type == REPAIR) {
 			if (this.repairs) this.repairs.push(equips[i]);
 			else this.repairs = [equips[i]];

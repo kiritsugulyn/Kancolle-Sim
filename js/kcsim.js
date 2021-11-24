@@ -1297,12 +1297,12 @@ function accuracyAndCrit(ship,target,hit,evMod,evFlat,critrateMod,isPlanes,critB
 	if (target.fuelleft < 7.5) dodge -= (7.5-target.fuelleft)/10;
 	if (evFlat) dodge += evFlat*.01;
 	if (target.evimprove) dodge += target.evimprove*.01;
-	dodge *= target.evbonusSpecial || 1;
+	dodge *= target.bonusEva || 1;
 
 	if (!(ship instanceof LandBase) && !ship.fleet.supportType){
 		var specialMod = 1; //e.g. equipment and historical bonus
 		if (target.equipWeak && ship.equips) specialMod *= getSpecialEquipBonus(ship,target,undefined,true);
-		specialMod *= ship.bonusSpecial || 1;
+		specialMod *= ship.bonusAcc || ship.bonusSpecial || 1;
 		hit *= specialMod;
 	}
 	hit = Math.floor(hit*100)*.01;
@@ -3052,7 +3052,6 @@ function simStats(numsims,foptions) {
 				if (options.bonusA) ship.bonusSpecial = ship.bonusA || 1;
 				else if (options.bonusB) ship.bonusSpecial = ship.bonusB || 1;
 				else if (options.bonusC) ship.bonusSpecial = ship.bonusC || 1;
-				ship.evbonusSpecial = options.evbonus || 1;
 			}
 			FLEETS1[0].DMGTOTALS = [0,0,0,0,0,0];
 			FLEETS1[0].SINKFLAGSHIP = [false, false, false, false, false, false];

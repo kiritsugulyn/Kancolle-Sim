@@ -42,7 +42,7 @@ if (!HASURLDATA || HASURLDATA_CONFIG) {
 	$('#dialogselequiptype').append(table);
 }
 
-var STATNAMES = ['lvl','hp','fp','tp','aa','ar','ev','asw','los','luk','rng','spd','tacc','bonusA','bonusB','bonusC','debuff'];
+var STATNAMES = ['lvl','hp','fp','tp','aa','ar','ev','asw','los','luk','rng','spd','tacc','bonusA','bonusB','bonusC','bonusAcc','bonusEva','debuff'];
 var PREVEQS = {};
 var WROTESTATS = false;
 var TUTORIAL = false;
@@ -820,6 +820,42 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
 			tr.appendChild(td);
 		}
 		t.appendChild(tr);
+		var tr = document.createElement('tr');
+		for (var j=0; j<6; j++) {
+			var td = document.createElement('td');
+			td.setAttribute('colspan','2');
+			var desc = 'Accuracy Bonus Multiplier';
+			var text = document.createElement('div'); text.setAttribute('title',desc);
+			text.setAttribute('style','float:left');
+			text.appendChild(document.createTextNode('Bonus Acc: '));
+			td.appendChild(text);
+			var input = document.createElement('input');
+			input.setAttribute('type','number'); input.setAttribute('id',tid+'bonusAcc'+j);
+			input.setAttribute('min','0'); input.setAttribute('max','99'); input.setAttribute('step','.1'); input.setAttribute('title',desc);
+			input.setAttribute('onchange','updateFleetCode('+fleetnum+')');
+			input.setAttribute('style','width:65px');
+			td.appendChild(input);
+			tr.appendChild(td);
+		}
+		t.appendChild(tr);
+		var tr = document.createElement('tr');
+		for (var j=0; j<6; j++) {
+			var td = document.createElement('td');
+			td.setAttribute('colspan','2');
+			var desc = 'Evasion Bonus Multiplier';
+			var text = document.createElement('div'); text.setAttribute('title',desc);
+			text.setAttribute('style','float:left');
+			text.appendChild(document.createTextNode('Bonus Eva: '));
+			td.appendChild(text);
+			var input = document.createElement('input');
+			input.setAttribute('type','number'); input.setAttribute('id',tid+'bonusEva'+j);
+			input.setAttribute('min','0'); input.setAttribute('max','99'); input.setAttribute('step','.1'); input.setAttribute('title',desc);
+			input.setAttribute('onchange','updateFleetCode('+fleetnum+')');
+			input.setAttribute('style','width:65px');
+			td.appendChild(input);
+			tr.appendChild(td);
+		}
+		t.appendChild(tr);
 	}
 	else if (fleetnum >= 20 || fleetnum == 2 || fleetnum == 3) {
 		var tr = document.createElement('tr');
@@ -1107,8 +1143,6 @@ function genOptions(fleetnum) {
 	div.append(sel2);
 	var o = document.createElement('option');
 	sel2.appendChild(o);
-	div.append('<span class="option2 line"><input type="checkbox" id="evbonuscheck'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="evbonuscheck'+fleetnum+'">Evasion modifier:</label></span>');
-	div.append('<span class="option2"><input type="number" id="evbonus'+fleetnum+'" min="1" max="1.5" value="1" style="width:50px" onchange="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/></span>');
 	td.append(div);
 	div = $('<div></div>');
 	div.append('<span class="option2"><label>Enemy Settings: </label></span>');
@@ -1178,9 +1212,6 @@ function extractOptions(num) {
 			if (options.randfriend) delete options.randfriend;
 		}
 	}
-	if ($('#evbonuscheck'+num).prop('checked')) {
-		options.evbonus = Number($('#evbonus'+num).prop('value'));
-	}
 	return options;
 }
 
@@ -1239,12 +1270,6 @@ function loadOptions(num,options) {
 		$('#randfriendflag'+num).prop('checked', false);
 	}
 
-	if (options.evbonus) {
-		$('#evbonuscheck'+num).prop('checked', true);
-		$('#evbonus'+num).prop('value', options.evbonus);
-	}else{
-		$('#evbonuscheck'+num).prop('checked', false);
-	}
 	
 }
 
@@ -1555,6 +1580,12 @@ function loadIntoSim(fleet,side,isescort) {
 			if (document.getElementById('T'+fleet+'bonusC'+i)) {
 				s.bonusC = parseFloat(document.getElementById('T'+fleet+'bonusC'+i).value) || 0;
 			}
+			if (document.getElementById('T'+fleet+'bonusAcc'+i)) {
+				s.bonusAcc = parseFloat(document.getElementById('T'+fleet+'bonusAcc'+i).value) || 0;
+			}
+			if (document.getElementById('T'+fleet+'bonusEva'+i)) {
+				s.bonusEva = parseFloat(document.getElementById('T'+fleet+'bonusEva'+i).value) || 0;
+			}
 			if (document.getElementById('T'+fleet+'debuff'+i)) {
 				s.debuff = parseFloat(document.getElementById('T'+fleet+'debuff'+i).value) || 0;
 			}
@@ -1574,6 +1605,8 @@ function loadIntoSim(fleet,side,isescort) {
 			if (s.bonusA > 0) ship.bonusA = s.bonusA;
 			if (s.bonusB > 0) ship.bonusB = s.bonusB;
 			if (s.bonusC > 0) ship.bonusC = s.bonusC;
+			if (s.bonusAcc > 0) ship.bonusAcc = s.bonusAcc;
+			if (s.bonusEva > 0) ship.bonusEva = s.bonusEva;
 			if (s.debuff > 0) ship.debuff = s.debuff;
 			ship.loadEquips(equips,levels,profs);
 			if (SHIPDATA[mid].isInstall) ship.isInstall = true;
@@ -2330,6 +2363,8 @@ function loadFleetFromCode(fleet,fcode) {
 			(parseFloat(ship.bonusA) >= 0)? parseFloat(ship.bonusA) : null,
 			(parseFloat(ship.bonusB) >= 0)? parseFloat(ship.bonusB) : null,
 			(parseFloat(ship.bonusC) >= 0)? parseFloat(ship.bonusC) : null,
+			(parseFloat(ship.bonusAcc) >= 0)? parseFloat(ship.bonusAcc) : null,
+			(parseFloat(ship.bonusEva) >= 0)? parseFloat(ship.bonusEva) : null,
 			(parseFloat(ship.debuff) >= 0)? parseFloat(ship.debuff) : null];
 		var equips = [0,0,0,0], improvs = [0,0,0,0], profs = [0,0,0,0], planes = [0,0,0,0];
 		for (var item in ship.items) {
@@ -2658,7 +2693,6 @@ function clickedWatchBattle() {
 				if (options.bonusA) ship.bonusSpecial = ship.bonusA || 1;
 				else if (options.bonusB) ship.bonusSpecial = ship.bonusB || 1;
 				else if (options.bonusC) ship.bonusSpecial = ship.bonusC || 1;
-				ship.evbonusSpecial = options.evbonus || 1;
 			}
 		}
 		
