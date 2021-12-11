@@ -2240,6 +2240,9 @@ function airstrikeLBAS(lbas,target,slot,contactMod,isjetphase) {
 	else planebase = (equip.isdivebomber)? equip.DIVEBOMB : (target.isInstall)? 0 : equip.TP;
 	if (target.isSub) planebase = equip.ASW;
 	if (equip.mid == 224 && target.type == 'DD') planebase = 25;
+	else if (equip.mid == 405 && target.type == 'DD') planebase *= 1.1;
+	else if (equip.mid == 406 && ['FBB','BB','BBV'].indexOf(target.type) !== -1) planebase *= 1.35;
+	else if (equip.mid == 444 && ['DD','CL','CLT','CA','CAV','FBB','BB','BBV'].indexOf(target.type) !== -1) planebase *= 1.15;
 	if (planebase) planebase += equip.ASImprove || 0;
 	else planebase = 0;
 	if (res) {
@@ -2250,8 +2253,6 @@ function airstrikeLBAS(lbas,target,slot,contactMod,isjetphase) {
 		if (target.isSub) {
 			preMod = (equip.ASW >= 10)? .7 + Math.random()*.3 : .35 + Math.random()*.45;
 		}
-		if (equip.mid == 405 && target.type == 'DD') preMod *= 1.08;
-		else if (equip.mid == 406 && ['FBB','BB','BBV'].indexOf(target.type) !== -1) preMod *= 1.35;
 		preMod *= (target.LBWeak || 1);
 		var postMod = (equip.type == LANDBOMBER)? 1.8 : 1;
 		postMod *= contactMod;
@@ -3852,9 +3853,10 @@ function dmgSpecialTarget(dmg,ship,target,plane){
 
 	if (plane) {
 		if (plane.isdivebomber) dmg *= target.divebombWeak || 1;
-		if (target.mid >= 1665 && target.mid <= 1667) dmg *= (1.6 + Math.random() * .9)		// Source: https://nga.178.com/read.php?tid=16936146
-		else if (target.mid >= 1668 && target.mid <= 1672) dmg *= (1.5 + Math.random() * .5);   // Source: https://twitter.com/yukicacoon/status/1355546046026289154
+		if (target.mid >= 1665 && target.mid <= 1667) dmg *= (Math.random() < .5? 1.6 : 2.5);		// Source: https://nga.178.com/read.php?tid=16936146
+		else if (target.mid >= 1668 && target.mid <= 1672) dmg *= (Math.random() < .5? 1.5 : 2);   // Source: https://nga.178.com/read.php?tid=16936146
 		else if (target.mid >= 1679 && target.mid <= 1683) dmg *= 2;  // Source: https://nga.178.com/read.php?tid=16936146
+		else if ([1557,1586,1620].indexOf(target.mid) !== -1) dmg *= (Math.random() < .5? 1.8 : 3.06);  // Source: https://twitter.com/myteaGuard/status/1467502506377097218
 	}else {
 		if (target.isAnchorage) dmg *= ship.anchoragePostMult || 1;
 		else if (target.isSummerBBHime) dmg *= ship.summerBBHimePostMult || 1;

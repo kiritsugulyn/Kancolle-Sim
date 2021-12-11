@@ -5885,6 +5885,8 @@ Equip.explicitStatsBonusGears = function(){
                 "106": "87",
                 // Brooklyn Class
                 "110": "87",
+                // Gato Class
+                "114": "87",
                 // Jervis Class
                 "82": {
                     multiple: { "houg": 1, "raig": 2 },
@@ -6064,6 +6066,46 @@ Equip.explicitStatsBonusGears = function(){
                 // I-47 Kai
                 ids: [607],
                 multiple: { "raig": 1 },
+            },
+        },
+        // 21inch 6-tube Bow Torpedo Launcher (Initial Model)
+        "440": {
+            count: 0,
+            byClass: {
+                // Gato Class
+                "114": {
+                    single: { "raig": 2 },
+                },
+            },
+        },
+        // 21inch 6-tube Bow Torpedo Launcher (Late Model)
+        "441": {
+            count: 0,
+            byClass: {
+                // Gato Class
+                "114": {
+                    single: { "raig": 2 },
+                },
+            },
+        },
+        // Submarine 4-tube Stern Torpedo Launcher (Initial Model)
+        "442": {
+            count: 0,
+            byClass: {
+                // Gato Class
+                "114": {
+                    single: { "raig": 2 },
+                },
+            },
+        },
+        // Submarine 4-tube Stern Torpedo Launcher (Late Model)
+        "443": {
+            count: 0,
+            byClass: {
+                // Gato Class
+                "114": {
+                    single: { "raig": 2 },
+                },
             },
         },
         // Late Model Submarine Radar & Passive Radiolocator
@@ -8226,6 +8268,8 @@ Equip.explicitStatsBonusGears = function(){
                 "108": "82",
                 // Brooklyn Class
                 "110": "82",
+                // Gato Class
+                "114": "82",
                 // Matsu Class
                 "101": {
                     single: { "tais": 1 },
@@ -9035,8 +9079,8 @@ Equip.explicitStatsBonusGears = function(){
                 },
                 {
                     // Slow Group C: Akashi, Hayasui, Akitsumaru
-                    //   All SS(V): I-168, I-58, I-8, I-19, I-26, I-13, I-400, I-401, I-14, I-47, U-511, UIT-25, Maruyu, I-203
-                    origins: [182, 460, 161,  126, 127, 128, 191, 483, 493, 155, 494, 495, 636, 431, 539, 163, 882],
+                    //   All SS(V): I-168, I-58, I-8, I-19, I-26, I-13, I-400, I-401, I-14, I-47, U-511, UIT-25, Maruyu, I-203, Scamp
+                    origins: [182, 460, 161,  126, 127, 128, 191, 483, 493, 155, 494, 495, 636, 431, 539, 163, 882, 299],
                     synergy: [
                         {
                             flags: [ "enhancedBoiler" ],
