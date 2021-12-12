@@ -337,11 +337,11 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		if (C) BAPI.data.api_hougeki1 = {api_at_list:[-1],api_at_type:[-1],api_damage:[-1],api_df_list:[-1],api_cl_list:[-1],api_si_list:[-1]};
 		if (type==2) {
 			F1.basepowshell = F1.formation.shellbonus; F1.baseaccshell = F1.formation.accbase;
-			F2.basepowshell = F1.formation.shellbonusE; F2.baseaccshell = 65; // source: https://bbs.nga.cn/read.php?pid=359696724
+			F2.basepowshell = F1.formation.shellbonusE; F2.baseaccshell = 65;
 			shellRange(false,(C)? BAPI.data.api_hougeki1 : undefined);
 		} else {
 			F1C.basepowshell = F1C.formation.shellbonus; F1C.baseaccshell = F1C.formation.accbase;
-			F2.basepowshell = F1C.formation.shellbonusE; F2.baseaccshell = 65; // source: https://bbs.nga.cn/read.php?pid=359696724
+			F2.basepowshell = F1C.formation.shellbonusE; F2.baseaccshell = 65;
 			shellRange(true,(C)? BAPI.data.api_hougeki1 : undefined);
 		}
 	}
@@ -356,9 +356,9 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 	if (!NBonly) {
 		if (C) BAPI.data.api_hougeki2 = {api_at_list:[-1],api_at_type:[-1],api_damage:[-1],api_df_list:[-1],api_cl_list:[-1],api_si_list:[-1]};
 		F1.basepowshell = F1.formation.shellbonus; F1.baseaccshell = F1.formation.accbase;
-		F2.basepowshell = F1.formation.shellbonusE; F2.baseaccshell = 80; // source: https://bbs.nga.cn/read.php?pid=359696724
+		F2.basepowshell = F1.formation.shellbonusE; F2.baseaccshell = 90;
 		if (type==2) {
-			F2.baseaccshell = 65; // source: https://bbs.nga.cn/read.php?pid=359696724
+			F2.baseaccshell = 65;
 			if (doShell2) shellOrder(false,(C)? BAPI.data.api_hougeki2 : undefined);
 		} else {
 			shellRange(false,(C)? BAPI.data.api_hougeki2 : undefined);
@@ -370,11 +370,11 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		if (C) BAPI.data.api_hougeki3 = {api_at_list:[-1],api_at_type:[-1],api_damage:[-1],api_df_list:[-1],api_cl_list:[-1],api_si_list:[-1]};
 		if (type==2) {
 			F1C.basepowshell = F1C.formation.shellbonus; F1C.baseaccshell = F1C.formation.accbase;
-			F2.basepowshell = F1C.formation.shellbonusE; F2.baseaccshell = 80; // source: https://bbs.nga.cn/read.php?pid=359696724
+			F2.basepowshell = F1C.formation.shellbonusE; F2.baseaccshell = 80;
 			shellRange(true,(C)? BAPI.data.api_hougeki3 : undefined);
 		} else if (doShell2) {
 			F1.basepowshell = F1.formation.shellbonus; F1.baseaccshell = F1.formation.accbase;
-			F2.basepowshell = F1.formation.shellbonusE; F2.baseaccshell = 80; // source: https://bbs.nga.cn/read.php?pid=359696724
+			F2.basepowshell = F1.formation.shellbonusE; F2.baseaccshell = 90;
 			shellOrder(false,(C)? BAPI.data.api_hougeki3 : undefined);
 		}
 	}
@@ -1095,7 +1095,7 @@ function sim6vs12(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BA
 	if (C && !NBonly) BAPI.data.api_hougeki1 = null;
 	if (!NBonly && !aironly && alive1.length+subsalive1.length > 0 && alive2C.length+subsalive2C.length > 0) {
 		F1.basepowshell = 5; F2C.basepowshell = -5;
-		F1.baseaccshell = 80; F2C.baseaccshell = 90;
+		F1.baseaccshell = 80; F2C.baseaccshell = 75;
 		var order1 = [], order2 = [];
 		orderByRange(ships1,order1,hasInstall2C);
 		orderByRange(ships2C,order2,hasInstall1);
@@ -1660,7 +1660,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 			// F1C.basepowshell = F1C.formation.shellbonus;
 			// F2.basepowshell = F1C.formation.shellbonus;
 			F1C.basepowshell = SIMCONSTS.shellEcEF || -5; F2C.basepowshell = SIMCONSTS.shellEcEE || -5;
-			F1C.baseaccshell = SIMCONSTS.accEcEF || 67; F2C.baseaccshell = SIMCONSTS.accEcEE || 80;
+			F1C.baseaccshell = SIMCONSTS.accEcEF || 67; F2C.baseaccshell = SIMCONSTS.accEcEE || 75;
 			shellRange(d1E, d2E, (C)? BAPI.data.api_hougeki2 : undefined);
 		}
 		removeSunk(alive1); removeSunk(alive1C);
@@ -1688,7 +1688,7 @@ function sim12vs12(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing
 			// F1C.basepowshell = F1C.formation.shellbonus;
 			// F2.basepowshell = F1C.formation.shellbonus;
 			F1C.basepowshell = SIMCONSTS.shellEcEF || -5; F2C.basepowshell = SIMCONSTS.shellEcEE || -5;
-			F1C.baseaccshell = SIMCONSTS.accEcEF || 67; F2C.baseaccshell = SIMCONSTS.accEcEE || 80;
+			F1C.baseaccshell = SIMCONSTS.accEcEF || 67; F2C.baseaccshell = SIMCONSTS.accEcEE || 75;
 			shellRange(d1E, d2E, (C)? BAPI.data.api_hougeki3 : undefined);
 		} else if (doShell2) {
 			// F1.basepowshell = F1.formation.shellbonus;
