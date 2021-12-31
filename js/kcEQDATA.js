@@ -5492,6 +5492,23 @@ var EQDATA = {
 		ACC: 6,
 		EV: 2,
 	},
+	447: {
+		name: 'Type 0 Fighter Model 64 (Twin-seated KMX Carrier)',
+		nameJP: '零式艦戦64型(複座KMX搭載機)',
+		added: '2021-12-28',
+		type: DIVEBOMBER,
+		DIVEBOMB: 3,
+		AA: 4,
+		ASW: 8,
+		LOS: 3,
+	},
+	449: {
+		name: 'Toku Daihatsu Landing Craft + Type 1 SPG',
+		nameJP: '特大発動艇+一式砲戦車',
+		added: '2021-12-31',
+		type: LANDINGCRAFT,
+		FP: 2,
+	},
 	501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
