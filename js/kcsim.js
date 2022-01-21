@@ -10,7 +10,6 @@ var VANGUARD2 = {shellmod:1,torpmod:1,ASWmod:.6,AAmod:1.1, shellacc:1.2,torpacc:
 // Acc Base source: https://twitter.com/Xe_UCH/status/1172380690207215616
 // Acc Base source 2: https://twitter.com/Divinity__123/status/1447941755182227458
 // Acc Base source 3: https://docs.google.com/spreadsheets/d/13OKlMlEpBl744nHzcotBTRC9boHpafwA2VfT7kVmJcM/edit#gid=1816093406
-// Based on past 6-5 data, acc mod for 3rd formation is likely 0.7
 // Guess: shellmod = shellaccmod, torpmod = torpaccmod, ASWmod = ASWaccmod
 var CTFCOMBINED1M = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:2,shellbonusE:10,accbase:78, shellacc:.8,torpacc:.7,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:11};
 var CTFCOMBINED1E = {shellmod:.8,torpmod:.7,ASWmod:1.3,AAmod:1.1, shellbonus:10,shellbonusE:5,accbase:45, shellacc:.8,torpacc:.7,NBacc:1, shellev:1,torpev:1,NBev:1,ASWev:1, id:11};
@@ -46,46 +45,46 @@ var ALLFORMATIONS = {1:LINEAHEAD,2:DOUBLELINE,3:DIAMOND,4:ECHELON,5:LINEABREAST,
 };
 
 var AACIDATA = {
-	1:{num:7,rate:.65,mod:1.75,equip:'HHR'},
-	2:{num:6,rate:.58,mod:1.7,equip:'HR'},
-	3:{num:4,rate:.5,mod:1.6,equip:'HH'},
-	4:{num:6,rate:.52,mod:1.5,equip:'MSAR'},
-	5:{num:4,rate:.55,mod:1.55,equip:'BBR'},
-	6:{num:4,rate:.4,mod:1.5,equip:'MSA'},
-	7:{num:3,rate:.45,mod:1.35,equip:'HAR'},
-	8:{num:4,rate:.5,mod:1.45,equip:'BR'},
-	9:{num:2,rate:.4,mod:1.3,equip:'HA'},
-	10:{num:8,rate:.6,mod:1.65,equip:'HCR'},
-	11:{num:6,rate:.55,mod:1.5,equip:'HC'},
-	12:{num:3,rate:.45,mod:1.25,equip:'CGR'},
+	1:{numA:3,numB:5,num:8,rate:.65,mod:1.75,equip:'HHR'},
+	2:{numA:3,numB:4,num:7,rate:.58,mod:1.7,equip:'HR'},
+	3:{numA:2,numB:3,num:5,rate:.5,mod:1.6,equip:'HH'},
+	4:{numA:5,numB:2,num:7,rate:.52,mod:1.5,equip:'MSAR'},
+	5:{numA:2,numB:3,num:5,rate:.55,mod:1.55,equip:'BBR'},
+	6:{numA:4,numB:1,num:5,rate:.4,mod:1.5,equip:'MSA'},
+	7:{numA:2,numB:2,num:4,rate:.45,mod:1.35,equip:'HAR'},
+	8:{numA:2,numB:3,num:5,rate:.5,mod:1.45,equip:'BR'},
+	9:{numA:1,numB:2,num:3,rate:.4,mod:1.3,equip:'HA'},
+	10:{numA:3,numB:6,num:9,rate:.6,mod:1.65,equip:'HCR'},
+	11:{numA:2,numB:5,num:7,rate:.55,mod:1.5,equip:'HC'},
+	12:{numA:1,numB:3,num:4,rate:.45,mod:1.25,equip:'CGR'},
 	// 13:{num:4,rate:.35,mod:1.35,equip:'BCR'},
-	14:{num:4,rate:.63,mod:1.45,equip:'HGR'},
-	15:{num:3,rate:.53,mod:1.3,equip:'HG'},
-	16:{num:4,rate:.6,mod:1.4,equip:'HGR'},
-	17:{num:2,rate:.55,mod:1.25,equip:'HG'},
-	18:{num:2,rate:.6,mod:1.2,equip:'C'},
-	19:{num:5,rate:.55,mod:1.45,equip:'HC'},
-	20:{num:3,rate:.65,mod:1.25,equip:'C'},
-	21:{num:5,rate:.6,mod:1.45,equip:'HR'},
-	22:{num:2,rate:.6,mod:1.2,equip:'C'},
-	23:{num:1,rate:.8,mod:1.05,equip:'G'},
-	24:{num:3,rate:.55,mod:1.25,equip:'HG'},
-	25:{num:7,rate:.6,mod:1.55,equip:'GRS'},
-	26:{num:8,rate:.6,mod:1.4,equip:'HR'},
-	28:{num:4,rate:.55,mod:1.4,equip:'GR'},
-	29:{num:5,rate:.6,mod:1.55,equip:'HR'},
-	30:{num:3,rate:.4,mod:1.3,equip:'HHH'},
-	31:{num:2,rate:.5,mod:1.25,equip:'HH'},
-	32:{num:3,rate:.5,mod:1.2,equip:'CM'},
-	33:{num:3,rate:.4,mod:1.35,equip:'HG'},
-	34:{num:7,rate:.6,mod:1.6,equip:'BB',rollIndiv:true},
-	35:{num:6,rate:.5,mod:1.55,equip:'BH',rollIndiv:true},
-	36:{num:6,rate:.5,mod:1.55,equip:'HHR',rollIndiv:true},
-	37:{num:4,rate:.4,mod:1.45,equip:'HH',rollIndiv:true},
-	38:{num:10,rate:.6,mod:1.85,equip:'BB',rollIndiv:true},
-	39:{num:10,rate:.6,mod:1.7,equip:'BB',rollIndiv:true},
-	40:{num:10,rate:.6,mod:1.7,equip:'BBR',rollIndiv:true},
-	41:{num:9,rate:.6,mod:1.65,equip:'BB',rollIndiv:true},
+	14:{num:5,rate:.63,mod:1.45,equip:'HGR'},
+	15:{num:4,rate:.53,mod:1.3,equip:'HG'},
+	16:{num:5,rate:.6,mod:1.4,equip:'HGR'},
+	17:{num:3,rate:.55,mod:1.25,equip:'HG'},
+	18:{num:3,rate:.6,mod:1.2,equip:'C'},
+	19:{num:6,rate:.55,mod:1.45,equip:'HC'},
+	20:{num:4,rate:.65,mod:1.25,equip:'C'},
+	21:{num:6,rate:.6,mod:1.45,equip:'HR'},
+	22:{num:3,rate:.6,mod:1.2,equip:'C'},
+	23:{num:2,rate:.8,mod:1.05,equip:'G'},
+	24:{num:4,rate:.55,mod:1.25,equip:'HG'},
+	25:{num:8,rate:.6,mod:1.55,equip:'GRS'},
+	26:{num:9,rate:.6,mod:1.4,equip:'HR'},
+	28:{num:5,rate:.55,mod:1.4,equip:'GR'},
+	29:{num:6,rate:.6,mod:1.55,equip:'HR'},
+	30:{num:4,rate:.4,mod:1.3,equip:'HHH'},
+	31:{num:3,rate:.5,mod:1.25,equip:'HH'},
+	32:{num:4,rate:.5,mod:1.2,equip:'CM'},
+	33:{num:4,rate:.4,mod:1.35,equip:'HG'},
+	34:{num:8,rate:.6,mod:1.6,equip:'BB',rollIndiv:true},
+	35:{num:7,rate:.5,mod:1.55,equip:'BH',rollIndiv:true},
+	36:{num:7,rate:.5,mod:1.55,equip:'HHR',rollIndiv:true},
+	37:{num:5,rate:.4,mod:1.45,equip:'HH',rollIndiv:true},
+	38:{numA:6,numB:5,num:11,rate:.6,mod:1.85,equip:'BB',rollIndiv:true},
+	39:{numA:6,numB:5,num:11,rate:.6,mod:1.7,equip:'BB',rollIndiv:true},
+	40:{numA:6,numB:5,num:11,rate:.6,mod:1.7,equip:'BBR',rollIndiv:true},
+	41:{num:10,rate:.6,mod:1.65,equip:'BB',rollIndiv:true},
 };
 
 var ARTILLERYSPOTDATA = {
@@ -110,17 +109,17 @@ var NBATTACKDATA = {
 	31: { dmgMod: 1.75, accMod: 1.65, chanceMod: 1.05, id: 3, numHits: 2, torpedo: true, name: 'SSCI (TR)' },  // Chance Mod data: https://docs.google.com/spreadsheets/d/1XaP5z9_IOktGWL6mu_ZTZv5Z0TbvgRL_91fA_fsb0fc/edit#gid=0
 	32: { dmgMod: 1.6, accMod: 1.65, chanceMod: 1.1, id: 3, numHits: 2, torpedo: true, name: 'SSCI (TT)' },
 	61: { dmgMod: 1.25, accMod: 1.25, chanceMod: 1.05, id: 6, name: 'CVCI (1.25)' },
-	62: { dmgMod: 1.2, accMod: 1.2, chanceMod: 1.15, id: 6, name: 'CVCI (1.2)' },
-	63: { dmgMod: 1.18, accMod: 1.2, chanceMod: 1.25, id: 6, name: 'CVCI (1.18)' },
-	64: { dmgMod: 1.2, accMod: 1.2, chanceMod: 1.15, id: 6, name: 'CVCI (1.2, suisei)' },
+	62: { dmgMod: 1.2, accMod: 1.2, chanceMod: 1.2, id: 6, name: 'CVCI (1.2)' },
+	63: { dmgMod: 1.18, accMod: 1.2, chanceMod: 1.3, id: 6, name: 'CVCI (1.18)' },
+	64: { dmgMod: 1.2, accMod: 1.2, chanceMod: 1.2, id: 6, name: 'CVCI (1.2, suisei)' },
 	7: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.15, improve: 11, improveChance: .65, torpedo: true, name: 'DDCI (GTR)' },  // data: https://twitter.com/dewydrops/status/1404966491695378433
 	8: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.4, improve: 12, improveChance: .5, torpedo: true, name: 'DDCI (LTR)' },
-	9: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.22, improve: 13, improveChance: .8, torpedo: true, name: 'DDCI (LTT)' },
-	10: { dmgMod: 1.3, accMod: 1.65, chanceMod: 1.22, improve: 14, improveChance: .55, torpedo: true, name: 'DDCI (LTD)' },
+	9: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.25, improve: 13, improveChance: .8, torpedo: true, name: 'DDCI (LTT)' },
+	10: { dmgMod: 1.3, accMod: 1.65, chanceMod: 1.25, improve: 14, improveChance: .55, torpedo: true, name: 'DDCI (LTD)' },
 	11: { dmgMod: 1.3, accMod: 1.5, chanceMod: 1.15, numHits: 2, torpedo: true, name: 'DDCI (GTR, double)' },
 	12: { dmgMod: 1.2, accMod: 1.65, chanceMod: 1.4, numHits: 2, torpedo: true, name: 'DDCI (LTR, double)' },
-	13: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.22, numHits: 2, torpedo: true, name: 'DDCI (LTT, double)' },
-	14: { dmgMod: 1.3, accMod: 1.65, chanceMod: 1.22, numHits: 2, torpedo: true, name: 'DDCI (LTD, double)' },
+	13: { dmgMod: 1.5, accMod: 1.65, chanceMod: 1.25, numHits: 2, torpedo: true, name: 'DDCI (LTT, double)' },
+	14: { dmgMod: 1.3, accMod: 1.65, chanceMod: 1.25, numHits: 2, torpedo: true, name: 'DDCI (LTD, double)' },
 }
 
 var FLEETS1 = [];
@@ -1567,7 +1566,7 @@ function getAAShotFlat(defender,isbombing,resistModShip,resistModFleet) {
 }
 
 function getAACI(defenders,APIkouku) {
-	var AACInum = 0, AACImod = 1;
+	var AACInum = 0, AACImod = 1, AACInumA = 0, AACInumB = 0;
 	if (MECHANICS.AACI) {
 		var AACIship, AACItype = 0;
 		for (var i=0; i<defenders.length; i++) {
@@ -1587,6 +1586,8 @@ function getAACI(defenders,APIkouku) {
 		if (AACItype) {
 			AACInum = AACIDATA[AACItype].num;
 			AACImod = AACIDATA[AACItype].mod;
+			AACInumA = AACIDATA[AACItype].numA || Math.floor(AACInum/2);
+			AACInumB = AACIDATA[AACItype].numB || (AACInum - AACInumA);
 			if (C) {
 				var apiAACI = APIkouku.api_stage2[(!AACIship.side)?'api_air_fire':'api_air_fire_e'] = {api_idx:AACIship.apiID2-1,api_kind:AACItype};
 				apiAACI.api_use_items = [];
@@ -1640,7 +1641,7 @@ function getAACI(defenders,APIkouku) {
 			}
 		}
 	}
-	return { num: AACInum, mod: AACImod };
+	return { num: AACInum, mod: AACImod, numA: AACInumA, numB: AACInumB };
 }
 
 function getContact(carriers) {
@@ -1699,10 +1700,11 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 	if (!hasbomber) return;
 	
 	//get AACI
-	var AACInum = 0, AACImod = 1;
+	var AACInumA = 0, AACInumB = 0, AACImod = 1;
 	if (SIMCONSTS.enableEnemyAACI) {
 		let AACIResult = getAACI(defenders,APIkouku);
-		AACInum = AACIResult.num;
+		AACInumA = AACIResult.numA;
+		AACInumB = AACIResult.numB;
 		AACImod = AACIResult.mod;
 	}
 	
@@ -1731,7 +1733,7 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 			var supportMod = (issupport)? .8 : 1;
 			var shotProp = (Math.random() < .5)? Math.floor(getAAShotProp(defender,ship.planecount[slot],isbombing,ship.equips[slot].aaResistShip)*supportMod) : 0;
 			var shotFlat = (Math.random() < .5)? Math.floor(getAAShotFlat(defender,isbombing,ship.equips[slot].aaResistShip,ship.equips[slot].aaResistFleet)*AACImod*supportMod) : 0;
-			var shotFix = ((defender.side==0 || AACInum)? 1 : 0) + AACInum;
+			var shotFix = AACInumA? Math.floor(AACInumA * (ship.equips[slot].aaResistShip || 1) + AACInumB) : (defender.side==0? 1 : 0);
 			
 			if (C) {
 				APIkouku.api_stage2[(ship.side)?'api_e_count':'api_f_count'] += ship.planecount[slot];
@@ -2120,12 +2122,14 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 	//bomber defence
 	var defenders = [];
 	var AACImod = 1;
-	var AACInum = 0;
+	var AACInumA = 0;
+	var AACInumB = 0;
 	for (var i=0; i<alive2.length; i++) defenders.push(alive2[i]);
 	for (var i=0; i<subsalive2.length; i++) defenders.push(subsalive2[i]);
 	if (SIMCONSTS.enableEnemyAACILBAS) {
 		let AACIResult = getAACI(defenders,APIkouku);
-		AACInum = AACIResult.num;
+		AACInumA = AACIResult.numA;
+		AACInumB = AACIResult.numB;
 		AACImod = AACIResult.mod;
 	}
 	for (var i=0; i<lbas.equips.length; i++) {
@@ -2134,7 +2138,7 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 		var defender = defenders[Math.floor(Math.random()*defenders.length)];
 		var shotProp = (Math.random() < .5)? Math.floor(getAAShotProp(defender,lbas.planecount[i],false,eq.aaResistShip)) : 0;
 		var shotFlat = (Math.random() < .5)? Math.floor(getAAShotFlat(defender,false,eq.aaResistShip,eq.aaResistFleet)*AACImod) : 0;
-		var shotFix = ((defender.side==0 || AACInum)? 1 : 0) + AACInum;
+		var shotFix = AACInumA? Math.floor(AACInumA * (eq.aaResistShip || 1) + AACInumB) : (defender.side==0? 1 : 0);
 		
 		if (C) {
 			APIkouku.api_stage2.api_f_count += lbas.planecount[i];
