@@ -287,8 +287,13 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		else if (eq.type == DIVEBOMBER) installeqtypes.DB++;
 
         //installation equips by id
-        if ([68,126,166,167,193,230,346,347,348,349,355,408,409].indexOf(eq.mid) !== -1) installeqids[eq.mid] = installeqids[eq.mid] + 1 || 1;
+        if ([68,126,166,167,193,230,346,347,348,349,355,408,409,436,449].indexOf(eq.mid) !== -1) installeqids[eq.mid] = installeqids[eq.mid] + 1 || 1;
 		
+        //special installation equips
+        if (eq.mid == 230) this.has11Tank = true;
+        if (eq.mid == 355) this.hasM4A1 = true;
+        if (eq.mid == 449) this.hasType1SPG = true;
+
 		if (eq.LOS) this.LOSeq += eq.LOS;
 		if (eq.TP) tpEquip += eq.TP;
 		
@@ -403,7 +408,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		}
 	}
 	
-    [this.installFlat1, this.installFlat2, 
+    [this.installFlat, 
     this.softSkinMult, this.softSkinMultDayOnly, 
     this.pillboxMult, this.pillboxMultDayOnly, 
     this.isoMult, this.isoMultDayOnly, 
@@ -611,17 +616,7 @@ Ship.prototype.shellPower = function(target,base,isSupport) {
 	var improve = !isSupport? (this.improves.Pshell || 0) : 0;
 	if (target && target.isInstall) {
         let fp = this.FP + bonus + improve + ((this.isSub)? 30 : 0);
-		switch (target.installtype) {
-			case 2: //artillery imp
-				return (fp * this.pillboxMult * this.pillboxMultDayOnly + this.installFlat1) * this.commonMult + this.installFlat2;
-			case 4: //isolated island
-            case 5: // Northernmost
-				return (fp * this.isoMult * this.isoMultDayOnly + this.installFlat1) * this.commonMult + this.installFlat2;
-			case 6: // summer harbour
-				return (fp * this.harbourSummerMult * this.harbourSummerMultDayOnly + this.installFlat1) * this.commonMult + this.installFlat2;
-			default: //regular soft
-				return (fp * this.softSkinMult * this.softSkinMultDayOnly + this.installFlat1) * this.commonMult + this.installFlat2;
-		}
+        return this.installPower(fp,target.installtype,true);
 	}
 	return this.FP + bonus + improve;
 }
@@ -631,18 +626,7 @@ Ship.prototype.NBPower = function(target,bonus) {
     var improve = this.improves.Pnb || 0;
 	if (target && target.isInstall) {
         let fp = this.FP + bonus + improve + ((this.isSub)? 30 : 0);
-		switch (target.installtype) {
-			case 2: //artillery imp
-				return (fp * this.pillboxMult + this.installFlat1) * this.commonMult + this.installFlat2;
-			case 4: //isolated island
-				return (fp * this.isoMult + this.installFlat1) * this.commonMult + this.installFlat2;
-            case 5: // Northernmost
-                return ((fp + this.TP) * this.isoMult + this.installFlat1) * this.commonMult + this.installFlat2;
-            case 6: // summer harbour
-				return (fp * this.harbourSummerMult + this.installFlat1) * this.commonMult + this.installFlat2;
-			default: //regular soft
-				return (fp * this.softSkinMult + this.installFlat1) * this.commonMult + this.installFlat2;
-		}
+        return this.installPower(fp,target.installtype,false);
 	}
 	return this.FP + this.TP + bonus + improve;
 }
@@ -953,8 +937,7 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
     var LCbonus = 1 + (installeqtypes.LC > 0? (installeqtypes.LCstars / installeqtypes.LC)/50 : 0);
 	var LTbonus = 1 + (installeqtypes.LT > 0? (installeqtypes.LTstars / installeqtypes.LT)/30 : 0);
 	
-	var installFlat1 = 0;
-    var installFlat2 = 0;
+    var installFlat = 0;
     
     var softSkinMult = 1;
     var pillboxMult = (this.type=='DD'||this.type=='CL')? 1.4 : 1;
@@ -1015,8 +998,8 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
         anchoragePostMult *= [1.4, 2.45][i];
     }
 
-    if (installeqids[166]) {
-        let i = Math.min(installeqids[166], 2) - 1;
+    if (installeqids[166] || installeqids[449]) {
+        let i = Math.min((installeqids[166] || 0) + (installeqids[449] || 0), 2) - 1;
         softSkinMult *= [1.5, 1.95][i];
         pillboxMult *= [1.5, 2.1][i];
         isoMult *= [1.2, 1.68][i];
@@ -1032,18 +1015,11 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
         supplyPostMult *= 1.2;
     }
 
-    if (installeqids[230]) {
-        installFlat1 += 25;
-        softSkinMult *= 1.8;
-        pillboxMult *= 1.8;
-        isoMult *= 1.8;
-        harbourSummerMult *= 1.8;
-    }
 
     if (installeqids[346] || installeqids[347]) {
         let m1 = installeqids[346] || 0;
         let m2 = installeqids[347] || 0;
-        installFlat2 += [0, 30, 55, 75, 90][m1] + [0, 60, 110, 150, 180][m2];
+        installFlat += [0, 30, 55, 75, 90][m1] + [0, 60, 110, 150, 180][m2];
         let i = Math.min(m1+m2, 2) - 1;
         softSkinMult *= [1.2, 1.56][i];
         pillboxMult *= [1.3, 1.95][i];
@@ -1057,7 +1033,7 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
         let w = installeqids[126] || 0;
         let r1 = installeqids[348] || 0;
         let r2 = installeqids[349] || 0;
-        installFlat2 += [0, 75, 110, 140, 160][w] + [0, 55, 115, 160, 190][r1] + [0, 80, 170, 230, 260][r2];
+        installFlat += [0, 75, 110, 140, 160][w] + [0, 55, 115, 160, 190][r1] + [0, 80, 170, 230, 260][r2];
         let r = r1 + r2;
         if (w > 0) {
             let i = Math.min(w, 2) - 1;
@@ -1080,12 +1056,10 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
     }
 
     if (installeqids[355]) {
-        installFlat1 += 25;
         softSkinMult *= 1.1;
         pillboxMult *= 2;
         isoMult *= 1.8;
         harbourSummerMult *= 2;
-        commonMult *= 1.4;
         supplyPostMult *= 1.2;
         anchoragePostMult *= 1.6;   // guess
     }
@@ -1099,24 +1073,24 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
         isoMultDayOnly *= [1, 1.3, 1.43][n];
         supplyPostMult *= [1, 1.5, 1.65][n];
 
-        let a = Math.min((installeqids[68] || 0) + (installeqids[166] || 0) + (installeqids[193] || 0), 2);
+        let a = Math.min((installeqids[68] || 0) + (installeqids[166] || 0) + (installeqids[193] || 0) + (installeqids[449] || 0), 2);
         let b = Math.min((installeqids[230] || 0) + (installeqids[167] || 0), 2);
         if (n1 == 1 || n2 == 1) {
             if (a + b >= 1) {
                 commonMult *= 1.2;
-                installFlat2 += 10;
+                installFlat += 10;
             }
         }
         if (n1 >= 1 && n2 >= 1) {
             if (a + b >= 2) {
                 commonMult *= 1.3;
-                installFlat2 += 5;
+                installFlat += 5;
             }else if (b >= 1) {
                 commonMult *= 1.2;
-                installFlat2 += 3;
+                installFlat += 3;
             }else if (a >= 1) {
                 commonMult *= 1.1;
-                installFlat2 += 2;
+                installFlat += 2;
             }
         }
     }
@@ -1130,7 +1104,7 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
         supplyPostMult *= [1.3, 2.08][i] * LCbonus;
     }
 
-    return [installFlat1, installFlat2, 
+    return [installFlat, 
             softSkinMult, softSkinMultDayOnly, 
             pillboxMult, pillboxMultDayOnly, 
             isoMult, isoMultDayOnly, 
@@ -1186,6 +1160,41 @@ Ship.prototype.ptMod = function() {
     }
 
     return [dmgMod, accMod];
+}
+
+Ship.prototype.installPower = function (fp, installType, isDayBattle) {
+    
+    switch (installType) {
+        case 2: //artillery imp
+            fp *= this.pillboxMult * (isDayBattle? this.pillboxMultDayOnly : 1);
+            break;
+        case 4: //isolated island
+            fp *= this.isoMult * (isDayBattle? this.isoMultDayOnly : 1);
+            break;
+        case 6: // summer harbour
+            fp *= this.harbourSummerMult * (isDayBattle? this.harbourSummerMultDayOnly : 1);
+            break;
+        default: //regular soft
+            fp *= this.softSkinMult * (isDayBattle? this.softSkinMultDayOnly : 1);
+            break;
+    }
+    
+    if (this.has11Tank || this.hasType1SPG) {
+        fp *= 1.8;
+        fp += 25;
+    }
+    if (this.hasM4A1) {
+        fp *= 1.4;
+        fp += 35;
+    }
+    if (this.hasType1SPG) {
+        fp *= 1.3;
+        fp += 42;
+    }
+    fp *= this.commonMult;
+    fp += this.installFlat;
+    return fp;
+
 }
 
 //------------------
@@ -1330,21 +1339,7 @@ CV.prototype.shellPower = function(target,base,isSupport) {
 	var fp = this.FP + bonus + improve;
     var dp = 0, tp = 0;
 	if (target && target.isInstall) {
-		switch (target.installtype) {
-			case 2: //artillery imp
-				fp = (fp * this.pillboxMult * this.pillboxMultDayOnly + this.installFlat1) * this.commonMult + this.installFlat2;
-				break;
-			case 4: //isolated island
-            case 5: // Northernmost
-				fp = (fp * this.isoMult * this.isoMultDayOnly + this.installFlat1) * this.commonMult + this.installFlat2;
-				break;
-			case 6: // summer harbour
-				fp = (fp * this.harbourSummerMult * this.harbourSummerMultDayOnly + this.installFlat1) * this.commonMult + this.installFlat2;
-				break;
-			default: //regular soft
-				fp = (fp * this.softSkinMult * this.softSkinMultDayOnly + this.installFlat1) * this.commonMult + this.installFlat2;
-				break;
-		}
+        fp = this.installPower(fp,target.installtype,true);
         this.equips.forEach((eq) => dp += eq.canShellInstall? (eq.DIVEBOMB || 0) : 0);
 	}else {
         this.equips.forEach((eq) => {
