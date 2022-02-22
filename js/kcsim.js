@@ -278,20 +278,20 @@ function shell(ship,target,APIhou,attackSpecial) {
 		cutin = attackSpecial;
 	}
 
-	//PT Imp bonus
-	if (target.isPT) {
-		postMod *= (ship.ptDmgMod||1);
-		accMod2 *= (ship.ptAccMod||1) * .4;
-	}
 	
 	var accflat = (ship.ACC)? ship.ACC : 0;
 	if (ship.improves.ACCshell) accflat += ship.improves.ACCshell;
 	
 	var acc = hitRate(ship,(ship.fleet.baseaccshell||90),accflat,accMod); //use global hit acc
 	if (MECHANICS.fitGun && ship.ACCfit) acc += ship.ACCfit*.01;
-	if (ship.fleet.formation.id == 6 && target.type == 'DD') acc *= 1.1;
-	if (ship.type == 'DE') acc -= .15;
 	acc *= accMod2;
+	if (target.isPT) {		//PT Imp bonus: https://nga.178.com/read.php?tid=30455886
+		postMod *= (ship.ptDmgMod||1);
+		acc = acc * .42 + .24;
+		acc *= (ship.ptAccMod||1);
+	}
+	if (ship.type == 'DE') acc -= .15;
+	if (ship.fleet.formation.id == 6 && target.type == 'DD') acc *= 1.1;
 	
 	var evFlat = 0;
 	if (target.fleet.formation.id == 6) {
@@ -483,21 +483,19 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 		cutin = attackSpecial;
 	}
 	
-	//PT Imp bonus
-	var accMod2 = 1;
-	if (target.isPT) {
-		postMod *= (ship.ptDmgMod||1) * .6;
-		accMod2 *= (ship.ptAccMod||1) * .4;
-	}
 	
 	var acc = hitRate(ship,accBase,accFlat,accMod);
 	if (MECHANICS.fitGun && ship.ACCfitN) acc += ship.ACCfitN*.01;
 	if (searchlights[0]) acc += .07;
 	if (ship.ACCnbca) acc += ship.ACCnbca*.01;
-	if (ship.fleet.formation.id == 6 && target.type == 'DD') acc *= 1.1;
+	if (target.isPT) { 		//PT Imp bonus: https://nga.178.com/read.php?tid=30455886
+		postMod *= (ship.ptDmgMod||1) * .6;
+		acc = acc * .42 + .24;
+		acc *= (ship.ptAccMod||1);
+	}
 	if (ship.type == 'DE') acc -= .15;
-	acc *= accMod2;
-	
+	if (ship.fleet.formation.id == 6 && target.type == 'DD') acc *= 1.1;
+
 	var critrateMod = 1.5;
 	if (nightscouts[0]) critrateMod += .07;
 	
@@ -775,6 +773,10 @@ function shellPhaseTarget(ship,alive,subsalive,isOASW) {
 			} else if (ship.isSub) {
 				targets = [];
 				for (var j=0; j<alive.length; j++) if (alive[j].isInstall) targets.push(alive[j]);
+			} else if (ship.isPTfirst) {
+				targets = [];
+				for (var j=0; j<alive.length; j++) if (alive[j].isPT) targets.push(alive[j]);
+				if (!targets.length) targets = alive;
 			} else targets = alive;
 			if (targets.length) {
 				result.type = 1;
@@ -1179,8 +1181,8 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 		if (ship.improves.ACCtorp) accflat += Math.floor(ship.improves.ACCtorp);
 		accflat += Math.floor(power/5);
 		if (ship.TACC) accflat += ship.TACC;
-		var ptMod = (target.isPT)? .4 : 1;
-		var acc = hitRate(ship,accbase,accflat,ship.getFormation().torpacc*ship.moraleMod(true)*ptMod);
+		var acc = hitRate(ship,accbase,accflat,ship.getFormation().torpacc*ship.moraleMod(true));
+		if (target.isPT) acc = acc * .42 + .24; 		//PT Imp bonus: https://nga.178.com/read.php?tid=30455886
 		if (ship.fleet.formation.id == 6 && target.type == 'DD') acc *= 1.2;
 		
 		var evFlat = (target.improves.EVtorp)? ship.improves.EVtorp : 0;
@@ -1229,7 +1231,6 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 function airstrike(ship,target,slot,contactMod,issupport,isjetphase) {
 	if (!contactMod) contactMod = 1;
 	var acc = .95 + (target.fleet.airstrikeaccMod || 0) / 100;
-	if (target.isPT) acc *= .8;
 	if (issupport) acc = .85;  
 	var res = rollHit(accuracyAndCrit(ship,target,acc,1.0,0,.2,!issupport),(!issupport)? (ship.critdmgbonus || 1) : 1);  // No evMod for airstrike
 	var equip = ship.equips[slot];
@@ -2215,7 +2216,6 @@ function airstrikeLBAS(lbas,target,slot,contactMod,isjetphase) {
 	if (!contactMod) contactMod = 1;
 	var equip = lbas.equips[slot];
 	var acc = .95;
-	if (target.isPT) acc *= .8;
 	var critdmgbonus = 1, critratebonus = 0, ACCplane = 0;
 	if (equip.type != LANDBOMBER || MECHANICS.LBASBuff) {
 		ACCplane = Math.sqrt(equip.exp*.1);

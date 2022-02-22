@@ -34,6 +34,21 @@ Fleet.prototype.loadShips = function(ships) {
 		if (this.isescort) ships[i].isescort = true;
 	}
 	this.ships[0].isflagship = true;
+
+    // Amagiri Kai 2
+    var i = this.ships.findIndex((ship) => [903,908].indexOf(ship.mid) !== -1);
+    if (i >= 0) {
+        this.ships[i].isPTfirst = true;
+        this.ships[i].ptAccMod *= 1.25;
+        if (i < this.ships.length - 1 && ['DD','DE'].indexOf(this.ships[i+1].type) !== -1) {
+            this.ships[i+1].isPTfirst = true;
+            this.ships[i+1].ptAccMod *= 1.2;
+        }
+        if (i > 0 && ['DD','DE'].indexOf(this.ships[i-1].type) !== -1) {
+            this.ships[i-1].isPTfirst = true;
+            this.ships[i-1].ptAccMod *= 1.2;
+        }
+    }
 }
 Fleet.prototype.fleetAirPower = function(jetonly,includeScout,isSupport) {  //get air power
 	this.AP = 0;
@@ -1116,7 +1131,9 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
 
 Ship.prototype.ptMod = function() {
     var dmgMod = 1; 
-    var accMod = 1;
+    var accMod = .7;
+    if (['DD','DE'].indexOf(this.type) !== -1) accMod = 1;
+    else if (['CL','CLT','CT'].indexOf(this.type) !== -1) accMod = .82;
     
     let num1 = this.equiptypes[MAINGUNS] || 0;
     let num2 = this.equiptypes[SECGUN] || 0;
@@ -1126,38 +1143,44 @@ Ship.prototype.ptMod = function() {
     let num6 = Math.max(this.equiptypes[DIVEBOMBER] || 0, this.equiptypes[JETBOMBER] || 0);
     let num7 = this.equips.filter(eq => eq.mid == 408).length + this.equips.filter(eq => eq.mid == 409).length;
 
-    if (num1 >= 1) dmgMod *= 1.5;
-    if (num1 >= 2) dmgMod *= 1.4;
-    if (num2 >= 1) dmgMod *= 1.3;
-    if (num3 >= 1) dmgMod *= 1.2;
-    if (num3 >= 2) dmgMod *= 1.2;
-    if (num4 >= 1) dmgMod *= 1.1;
-    if (num5 >= 1) dmgMod *= 1.2;
-    if (num6 >= 1) dmgMod *= 1.4;
-    if (num6 >= 2) dmgMod *= 1.3;
-    if (num7 >= 1) dmgMod *= 1.2;
-    if (num7 >= 2) dmgMod *= 1.1;
-
-    let cond1 = (num1 >= 1) && (num2 + num3 >= 1)
-    let cond2 = (num4 + num5 + num6) >= 1;  // Skilled lookout alone has effect: https://twitter.com/shiro_sh39/status/1375801626259124224
-
-    if (cond1 || cond2){
-        if (this.type == 'DD') accMod *= 1.6;
-        if (this.type == 'DE') accMod *= 1.4;
-        if (this.type == 'CL' || this.type == 'CLT' || this.type == 'CT') accMod *= 1.2;
-        if (num1 >= 1) accMod *= 1.3;
-        if (num1 >= 2) accMod *= 1.2;
-        if ((num2 >= 1 && num3 >= 1) || num3 >= 2) accMod *= 1.96;
-        else if (num2 >= 1 || num3 >= 1) accMod *= 1.4;
-        if (num4 >= 1) {
-            if (num1 >= 1 || num3 >= 1) accMod *= 1.8;
-            else if (num2 >= 1) accMod *= 2.1;
-            else accMod *= 1.4;    // Skilled lookout alone has effect: https://twitter.com/shiro_sh39/status/1375801626259124224
-        }
-        if (num5 >= 1) accMod *= 1.8;
-        else if (num6 >= 1) accMod *= 1.4;  // https://twitter.com/panmodoki10/status/1375778672292941828
-        if (num7 >= 1) accMod *= 1.5;    // https://twitter.com/panmodoki10/status/1376176923378782211
+    if (num1 >= 1) {
+        dmgMod *= 1.5;
+        accMod *= 1.3;
     }
+    if (num1 >= 2) {
+        dmgMod *= 1.4;
+        accMod *= 1.15;
+    }
+    if (num2 >= 1) {
+        dmgMod *= 1.3;
+        accMod *= 1.55;
+    }
+    if (num3 >= 1) {
+        dmgMod *= 1.2;
+        accMod *= 1.45;
+    }
+    if (num3 >= 2) {
+        dmgMod *= 1.2;
+        accMod *= 1.35;
+    }
+    if (num4 >= 1) {
+        dmgMod *= 1.1;
+        accMod *= 1.75;
+    }
+    if (num5 >= 1) {
+        dmgMod *= 1.2;
+        accMod *= 1.5;
+    }
+    if (num6 >= 1) {
+        dmgMod *= 1.4;
+        accMod *= 1.4;
+    }
+    if (num6 >= 2) dmgMod *= 1.3;
+    if (num7 >= 1) {
+        dmgMod *= 1.2;
+        accMod *= 1.45;
+    }
+    if (num7 >= 2) dmgMod *= 1.1;
 
     return [dmgMod, accMod];
 }
@@ -5240,7 +5263,9 @@ Equip.explicitStatsBonusGears = function(){
                     multiple: { "houg": 1 },
                 },
                 // Ooyodo Class
-                "52": "9",
+                "52": {
+                    multiple: { "houg": 2 },
+                },
             },
         },
         // 15.5cm Triple Gun Mount Kai
@@ -5249,7 +5274,7 @@ Equip.explicitStatsBonusGears = function(){
             byClass: {
                 // Mogami Class
                 "9": {
-                    multiple: { "houg": 1, "tyku": 1 },
+                    multiple: { "houg": 2, "tyku": 1 },
                 },
                 // Ooyodo Class
                 "52": "9",
@@ -5977,11 +6002,21 @@ Equip.explicitStatsBonusGears = function(){
                         countCap: 2,
                     },
                     {
-                        // +1 fp if stars +max
                         minStars: 10,
                         remodel: 2,
-                        multiple: { "houg": 1 },
-                        countCap: 2,
+                        single: { "houg": 1, "raig": 1 },
+                    },
+                    {
+                        minStars: 10,
+                        remodel: 2,
+                        minCount: 2,
+                        single: { "houg": 2, "raig": 1 },
+                    },
+                    {
+                        minStars: 10,
+                        remodel: 2,
+                        minCount: 3,
+                        single: { "raig": 3 },
                     },
                 ],
                 // Akatsuki Class K2: Akatsuki K2, Hibiki K2 (Bep)
@@ -5991,6 +6026,32 @@ Equip.explicitStatsBonusGears = function(){
                 // Fubuki Class K2: Fubuki K2, Murakumo K2
                 "12": "1",
             },
+            byShip: [
+                {
+                    // Amagiri K2
+                    ids: [903],
+                    minCount: 2,
+                    single: { "raig": 2 },
+                },
+                {
+                    // Amagiri K2
+                    ids: [903],
+                    minCount: 3,
+                    single: { "raig": 2 },
+                },
+                {
+                    // Amagiri K2D
+                    ids: [908],
+                    minCount: 2,
+                    single: { "raig": 1 },
+                },
+                {
+                    // Amagiri K2D
+                    ids: [908],
+                    minCount: 3,
+                    single: { "raig": 1 },
+                },
+            ],
         },
         // 61cm Quadruple (Oxygen) Torpedo Mount Late Model
         "286": {
@@ -7025,6 +7086,11 @@ Equip.explicitStatsBonusGears = function(){
                     ids: [469],
                     multiple: { "houk": 2 },
                 },
+                {
+                    // Amagiri K2/K2D
+                    ids: [903, 908],
+                    multiple: { "houg": 2 },
+                },
             ],
         },
         // 12.7cm Twin Gun Mount Model C Kai Ni
@@ -7413,7 +7479,12 @@ Equip.explicitStatsBonusGears = function(){
                 {
                     // Shikinami K2
                     ids: [627],
-                    multiple: { "houg": 2, "raig": 1},
+                    multiple: { "houg": 2, "raig": 1 },
+                },
+                {
+                    // Amagiri K2/K2D
+                    ids: [903, 908],
+                    multiple: { "houg": 3 },
                 },
             ],
         },
@@ -7795,6 +7866,57 @@ Equip.explicitStatsBonusGears = function(){
                     // Yahagi Kai Ni B
                     ids: [668],
                     multiple: { "tyku": 3, "houk": 2 },
+                },
+            ],
+        },
+        // 2cm Flakvierling 38
+        "84": {
+            count: 0,
+            starsDist: [],
+            byClass: {
+                // All Italian ship-classes despite of equippable:
+                "58": [
+                    {
+                        minStars: 4,
+                        multiple: { "tyku": 1, "houk": 1 },
+                    },
+                    {
+                        minStars: 10,
+                        multiple: { "houg": 1 },
+                    },
+                ],
+                "61": "58",
+                "64": "58",
+                "68": "58",
+                "80": "58",
+                "92": "58",
+                "113": "58",
+                // All German ship-classes despite of equippable:
+                "47": "58",
+                "48": "58",
+                "55": "58",
+                "57": "58",
+                "63": "58",
+            },
+            byShip: [
+                {
+                    // All ships can equip this gun stars+4
+                    minStars: 4,
+                    multiple: { "tyku": 1, "houk": 1 },
+                    synergy: {
+                        flags: [ "airRadar" ],
+                        distinct: { "tyku": 1 },
+                    },
+                },
+                {
+                    // All ships can equip this gun stars+7
+                    minStars: 7,
+                    multiple: { "tyku": 1, "houk": 1 },
+                },
+                {
+                    // All ships can equip this gun stars+10
+                    minStars: 10,
+                    multiple: { "tyku": 1, "houk": 1 },
                 },
             ],
         },
