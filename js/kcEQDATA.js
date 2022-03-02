@@ -5509,6 +5509,36 @@ var EQDATA = {
 		type: LANDINGCRAFT,
 		FP: 2,
 	},
+	450: {
+		name: 'Type 13 Air Radar Kai (Late Model)',
+		nameJP: '13号対空電探改(後期型)',
+		added: '2022-02-22',
+		type: RADARS,
+		AA: 6,
+		ACC: 2,
+		EV: 3,
+		LOS: 5,
+	},
+	451: {
+		name: 'Type 3 Command Liaison Aircraft Kai',
+		nameJP: '三式指揮連絡機改',
+		added: '2022-02-22',
+		type: ASWPLANE,
+		FP: 1,
+		ACC: 2,
+		ASW: 9,
+		LOS: 2,
+	},
+	452: {
+		name: 'Ki-96',
+		nameJP: 'キ96',
+		added: '2022-02-22',
+		type: INTERCEPTOR,
+		AA: 5,
+		AR: 2,
+		ACC: 5,
+		EV: 4,
+	},
 	501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -6825,6 +6855,16 @@ var EQDATA = {
 		LOS: 3,
 		RNG: 4,
 	},
+	622: {
+		name: 'Abyssal Quadruple (Oxygen) Torpedo Mount Late Model',
+		nameJP: '深海四連装(酸素)魚雷後期型',
+		added: '2022-02-22',
+		type: MIDGETSUB,
+		TP: 14,
+		ACC: 8,
+		EV: 2,
+		RNG: 1,
+	},
 
 	// Custom Equipments
 	5001: {
@@ -7096,6 +7136,8 @@ var LBASDATA = {
 	444: { distance: 5, cost: 15 },
 	445: { distance: 3, cost: 8 },
 	446: { distance: 3, cost: 9 },
+	447: { distance: 4, cost: 5 },
+	452: { distance: 3, cost: 10 },
 
 	// Custom Eq
 	5001: { distance: 9, cost: 13 },

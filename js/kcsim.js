@@ -3861,7 +3861,7 @@ function dmgSpecialTarget(dmg,ship,target,plane){
 		if (target.mid >= 1665 && target.mid <= 1667) dmg *= (Math.random() < .5? 1.6 : 2.5);		// Source: https://nga.178.com/read.php?tid=16936146
 		else if (target.mid >= 1668 && target.mid <= 1672) dmg *= (Math.random() < .5? 1.5 : 2);   // Source: https://nga.178.com/read.php?tid=16936146
 		else if (target.mid >= 1679 && target.mid <= 1683) dmg *= 2;  // Source: https://nga.178.com/read.php?tid=16936146
-		else if ([1557,1586,1620].indexOf(target.mid) !== -1) dmg *= (Math.random() < .5? 1.8 : 3.06);  // Source: https://twitter.com/myteaGuard/status/1467502506377097218
+		else if ([1557,1586,1620,1690,1691,1692].indexOf(target.mid) !== -1) dmg *= (Math.random() < .5? 1.8 : 3.06);  // Source: https://twitter.com/myteaGuard/status/1467502506377097218
 	}else {
 		if (target.isAnchorage) dmg *= ship.anchoragePostMult || 1;
 		else if (target.isSummerBBHime) dmg *= ship.summerBBHimePostMult || 1;
