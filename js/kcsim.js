@@ -1176,7 +1176,7 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 		power *= ship.getFormation().torpmod*ENGAGEMENT*(combinedAll? ship.damageMod(true) : damageMods[ship.id]);
 		if (power > TORPDMGBASE) power = TORPDMGBASE + Math.sqrt(power-TORPDMGBASE);
 		
-		var accbase = (combinedAll)? 85 : 50;
+		var accbase = (combinedAll)? 50 : 85;
 		var accflat = (ship.ACC)? ship.ACC : 0;
 		if (ship.improves.ACCtorp) accflat += Math.floor(ship.improves.ACCtorp);
 		accflat += Math.floor(power/5);
