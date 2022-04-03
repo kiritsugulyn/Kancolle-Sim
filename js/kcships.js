@@ -50,11 +50,11 @@ Fleet.prototype.loadShips = function(ships) {
         }
     }
 }
-Fleet.prototype.fleetAirPower = function(jetonly,includeScout,isSupport) {  //get air power
+Fleet.prototype.fleetAirPower = function(jetonly,isLBAS,isSupport) {  //get air power
 	this.AP = 0;
 	for (var i=0; i<this.ships.length; i++) {
 		if (this.ships[i].HP <= 0 || this.ships[i].retreated) continue;
-		this.AP += isSupport? this.ships[i].airPowerSupport(): this.ships[i].airPower(jetonly,includeScout);
+		this.AP += isSupport? this.ships[i].airPowerSupport(): this.ships[i].airPower(jetonly,isLBAS);
 	}
 	return this.AP;
 }
@@ -823,11 +823,11 @@ Ship.prototype.reset = function(notHP,notMorale) {
 }
 
 Ship.prototype.airState = function() { return this.fleet.AS; }
-Ship.prototype.airPower = function(jetonly,includeScout) {
+Ship.prototype.airPower = function(jetonly,isLBAS) {
 	var ap = 0;
 	for (var i=0; i<this.equips.length; i++) {
 		if (this.planecount[i] <= 0) continue;
-		if ((this.equips[i].isfighter && (!jetonly||this.equips[i].isjet)) || (includeScout && EQTDATA[this.equips[i].type].isPlane)) {
+		if ((this.equips[i].isfighter && !this.equips[i].isLB && (!jetonly||this.equips[i].isjet)) || (isLBAS && EQTDATA[this.equips[i].type].isPlane)) {
 			ap += Math.floor(((this.equips[i].AA||0) + (this.equips[i].AAImprove||0)) * Math.sqrt(this.planecount[i]) + (this.equips[i].APbonus||0));
 		}
 	}
@@ -837,7 +837,7 @@ Ship.prototype.airPowerSupport = function(){
     var ap = 0;
 	for (var i=0; i<this.equips.length; i++) {
         if (this.planecount[i] <= 0) continue;
-		if (this.equips[i].isfighter) {
+		if (this.equips[i].isfighter && !this.equips[i].isLB) {
 			ap += Math.floor((this.equips[i].AA||0) * Math.sqrt(this.planecount[i]));
 		}
 	}
@@ -1348,7 +1348,7 @@ CV.prototype.canShell = function() {
 	if (this.HP <= 0) return false;
 	for (var i=0; i<this.equips.length; i++) {
 		var equip = this.equips[i];
-		if ((equip.isdivebomber || equip.istorpbomber) && this.planecount[i] > 0) return true;
+		if ((equip.isdivebomber || equip.istorpbomber) && !equip.isLB && this.planecount[i] > 0) return true;
 	}
 	return false;
 }
@@ -1689,6 +1689,7 @@ function Equip(equipid,level,rank,forLBAS) {
 	if (EQTDATA[eq.type].isfighter && eq.AA) this.isfighter = true;
 	if (EQTDATA[eq.type].isdivebomber) this.isdivebomber = true;
 	if (EQTDATA[eq.type].istorpbomber) this.istorpbomber = true;
+	if (EQTDATA[eq.type].isLB) this.isLB = true;
 	
 	if (eq.btype == null && EQTDATA[eq.type].btype) {
 		this.btype = EQTDATA[eq.type].btype;
@@ -6022,7 +6023,7 @@ Equip.explicitStatsBonusGears = function(){
 			count: 0,
 			starsDist: [],
 			byClass: {
-				// Ayanami Class K2: Ayanami K2, Ushio K2, Akebono K2
+				// Ayanami Class K2: Ayanami K2, Ushio K2, Akebono K2, Amagiri K2+
 				"1": [
 					{
 						remodel: 2,
@@ -6051,7 +6052,7 @@ Equip.explicitStatsBonusGears = function(){
 				"5": "1",
 				// Hatsuharu Class K2: Hatsuharu K2, Hatsushimo K2
 				"10": "1",
-				// Fubuki Class K2: Fubuki K2, Murakumo K2
+				// Fubuki Class K2: Fubuki K2, Murakumo K2, Uranami K2
 				"12": "1",
 			},
 			byShip: [
@@ -7074,6 +7075,80 @@ Equip.explicitStatsBonusGears = function(){
 				// Fubuki Class
 				"12": "1",
 			},
+		},
+		// Prototype Long-barrel 12.7cm Twin Gun Mount Model A Kai 4
+		"455": {
+			count: 0,
+			byClass: {
+				// Ayanami Class
+				"1": {
+					multiple: { "houg": 2, "tyku": 1 },
+					synergy: [
+						{
+							flags: [ "surfaceRadar" ],
+							single: { "houg": 3, "raig": 1, "houk": 2 },
+						},
+						{
+							flags: [ "airRadar" ],
+							single: { "tyku": 4 },
+						},
+						{
+							flags: [ "tripleTorpedo" ],
+							byCount: {
+								gear: "tripleTorpedo",
+								"1": { "houg": 1, "raig": 3 },
+								"2": { "houg": 2, "raig": 5 },
+								"3": { "houg": 2, "raig": 5 },
+							},
+						},
+						{
+							flags: [ "tripleTorpedoLateModel" ],
+							single: { "raig": 1 },
+						},
+					],
+				},
+				// Akatsuki Class
+				"5": "1",
+				// Fubuki Class
+				"12": {
+					multiple: { "houg": 3, "tyku": 1 },
+					synergy: [
+						{
+							flags: [ "surfaceRadar" ],
+							single: { "houg": 3, "raig": 1, "houk": 2 },
+						},
+						{
+							flags: [ "airRadar" ],
+							single: { "tyku": 4 },
+						},
+						{
+							flags: [ "tripleTorpedo" ],
+							byCount: {
+								gear: "tripleTorpedo",
+								"1": { "houg": 1, "raig": 3 },
+								"2": { "houg": 2, "raig": 5 },
+								"3": { "houg": 2, "raig": 5 },
+							},
+						},
+						{
+							flags: [ "tripleTorpedoLateModel" ],
+							single: { "raig": 1 },
+						},
+					],
+				},
+			},
+			byShip: [
+				{
+					// All remodels of Uranami
+					origins: [486],
+					multiple: { "houg": 1 },
+				},
+				{
+					// Uranami K2
+					ids: [647],
+					multiple: { "houg": 1, "raig": 1, "tais": 1, "houk": 1 },
+				},
+			],
 		},
 		// 12.7cm Twin Gun Mount Model B Kai Ni
 		"63": {

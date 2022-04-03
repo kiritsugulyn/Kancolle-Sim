@@ -465,6 +465,7 @@ EQTDATA[LANDBOMBER] = {
 	isfighter: true,
 	isdivebomber: true,
 	istorpbomber: true,
+	isLB: true,
 };
 EQTDATA[INTERCEPTOR] = {
 	name: 'Interceptor',
@@ -472,6 +473,7 @@ EQTDATA[INTERCEPTOR] = {
 	canequip: ['LandBase'],
 	isPlane: true,
 	isfighter: true,
+	isLB: true,
 };
 EQTDATA[LANDSCOUT] = {
 	name: 'Scout Plane',
@@ -510,6 +512,7 @@ EQTDATA[HEAVYBOMBER] = {
 	isfighter: true,
 	isdivebomber: true,
 	istorpbomber: true,
+	isLB: true,
 };
 EQTDATA[OTHER] = {
 	name: 'Misc',
@@ -5544,12 +5547,38 @@ var EQDATA = {
 		nameJP: 'キ102乙',
 		added: '2022-03-05',
 		type: LANDBOMBER,
+		aaResistShip: .6,
 		FP: 4,
 		DIVEBOMB: 19,
 		TP: 11,
 		AA: 4,
 		ACC: 4,
 		ASW: 4,
+	},
+	454: {
+		name: 'Ki-102 B Kai + No.1 Model 1B Guided Missile',
+		nameJP: 'キ102乙改+イ号一型乙 誘導弾',
+		added: '2022-03-31',
+		type: LANDBOMBER,
+		aaResistShip: .6,
+		aaResistFleet: .7,
+		FP: 4,
+		DIVEBOMB: 20,
+		TP: 14,
+		AA: 3,
+		ACC: 3,
+		ASW: 4,
+	},
+	455: {
+		name: 'Prototype Long 12.7cm Twin Gun Mount Model A Kai 4',
+		nameJP: '試製 長12.7cm連装砲A型改四',
+		added: '2022-04-01',
+		type: MAINGUNS,
+		FP: 4,
+		AA: 3,
+		AR: 1,
+		ACC: 2,
+		RNG: 1,
 	},
 	501: {
 		name: '5inch Single Cannon',
@@ -7198,6 +7227,7 @@ var LBASDATA = {
 	447: { distance: 4, cost: 5 },
 	452: { distance: 3, cost: 10 },
 	453: { distance: 4, cost: 9 },
+	454: { distance: 3, cost: 12 },
 
 	// Custom Eq
 	5001: { distance: 9, cost: 13 },

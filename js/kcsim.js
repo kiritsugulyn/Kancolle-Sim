@@ -491,7 +491,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 	if (target.isPT) { 		//PT Imp bonus: https://nga.178.com/read.php?tid=30455886
 		postMod *= (ship.ptDmgMod||1) * .6;
 		acc = acc * .42 + .24;
-		acc *= (ship.ptAccMod||1);
+		acc *= (ship.ptAccMod||1) * .7;
 	}
 	if (ship.type == 'DE') acc -= .15;
 	if (ship.fleet.formation.id == 6 && target.type == 'DD') acc *= 1.1;
@@ -1438,11 +1438,11 @@ function softCap(num,cap) {
 	return (num > cap)? cap+Math.sqrt(num-cap) : num;
 }
 
-function compareAP(fleet1,fleet2,isjetphase,includeEscort,includeScout,isSupport) {
-	var ap1 = fleet1.fleetAirPower(isjetphase,includeScout,isSupport), ap2 = fleet2.fleetAirPower(isjetphase,includeScout);
+function compareAP(fleet1,fleet2,isjetphase,includeEscort,isLBAS,isSupport) {
+	var ap1 = fleet1.fleetAirPower(isjetphase,isLBAS,isSupport), ap2 = fleet2.fleetAirPower(isjetphase,isLBAS);
 	if (includeEscort) {
-		if (fleet1.combinedWith) ap1 += fleet1.combinedWith.fleetAirPower(isjetphase,includeScout);
-		if (fleet2.combinedWith) ap2 += fleet2.combinedWith.fleetAirPower(isjetphase,includeScout);
+		if (fleet1.combinedWith) ap1 += fleet1.combinedWith.fleetAirPower(isjetphase,isLBAS);
+		if (fleet2.combinedWith) ap2 += fleet2.combinedWith.fleetAirPower(isjetphase,isLBAS);
 	}
 	if (ap1 == 0 && ap2 == 0) { fleet1.AS = fleet2.AS = 0; }
 	else if (ap1 >= ap2*3) { fleet1.AS = 2; fleet2.AS = -2; }
@@ -2247,7 +2247,8 @@ function airstrikeLBAS(lbas,target,slot,contactMod,isjetphase) {
 	if (equip.mid == 224 && target.type == 'DD') planebase = 25;
 	else if (equip.mid == 405 && target.type == 'DD') planebase *= 1.1;
 	else if (equip.mid == 406 && ['FBB','BB','BBV'].indexOf(target.type) !== -1) planebase *= 1.35;
-	else if (equip.mid == 444 && ['DD','CL','CLT','CA','CAV','FBB','BB','BBV'].indexOf(target.type) !== -1) planebase *= 1.15;
+	else if (equip.mid == 444) planebase *= 1.15;
+	else if (equip.mid == 454) planebase *= 1.16;
 	if (planebase) planebase += equip.ASImprove || 0;
 	else planebase = 0;
 	if (res) {
