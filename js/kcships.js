@@ -221,7 +221,7 @@ function Ship(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	this._astype = false;
 	this._aswpower = false;
 	
-	if (this.installtype) {
+	if (this.installtype || SHIPDATA[this.mid].SPD == 0) {
 		this.isInstall = true;
 	}
 }
@@ -1290,6 +1290,11 @@ CAV.prototype.rocketBarrageChance = function() {
 
 function BBV(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 	Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
+	if (this.installtype) {
+		this.shellPower = CV.prototype.shellPower;
+		this.canShell = CV.prototype.canShell;
+		this.canStillShell = CV.prototype.canStillShell;
+	}
     this.planeasw = true;
     this.transportPoint = 7;
 }
@@ -1502,16 +1507,6 @@ AO.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		}
 	}
 }
-
-function Installation(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
-	this.isInstall = true;
-	BBV.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
-};
-Installation.prototype = Object.create(BBV.prototype);
-//want CVshelltype=true? impossible to know ingame
-Installation.prototype.shellPower = CV.prototype.shellPower;
-Installation.prototype.canShell = CV.prototype.canShell;
-Installation.prototype.canStillShell = CV.prototype.canStillShell;
 
 function AS(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
     Ship.call(this,id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots);
