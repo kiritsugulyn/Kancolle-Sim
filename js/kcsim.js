@@ -2235,8 +2235,15 @@ function airstrikeLBAS(lbas,target,slot,contactMod,isjetphase) {
 	}
 	if (MECHANICS.LBASBuff) {
 		ACCplane += 7*(equip.ACC || 0);
-		if (equip.mid == 444 && target.type == 'DD') ACCplane -= 7;
-		else if (equip.mid == 454 && target.type == 'DD') ACCplane -= 14;
+		if (equip.mid == 444) {
+			if (target.type == 'DD') ACCplane -= 7;
+			else if (target.type == 'CL') ACCplane += 7;
+		}
+		else if (equip.mid == 453 && target.type == 'DD') ACCplane += 7;
+		else if (equip.mid == 454) {
+			if (target.type == 'DD') ACCplane -= 14;
+			else if (target.type == 'CL') ACCplane += 7;
+		}
 	}
 	lbas.critratebonus = critratebonus; lbas.ACCplane = ACCplane;
 	var res = rollHit(accuracyAndCrit(lbas,target,acc,1.0,0,.2,true),critdmgbonus);  // No evMod for airstrike

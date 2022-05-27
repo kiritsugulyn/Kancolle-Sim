@@ -392,11 +392,6 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		this.FPfit = (Math.sqrt(italygun) || 0);
 	}
 
-	if (this.sclass==81){   // Tashkent
-		let tashgun = this.equips.filter(eq => eq.mid == 282).length;
-		this.ACCfit = (5*Math.sqrt(tashgun) || 0);
-		this.ACCfitN = this.ACCfit;
-	}
 
 	if (this.mid == 541 || this.mid == 573){   // Nagato class Kai 2
 		if (this.equips.filter(eq => eq.mid == 318).length >= 1){
@@ -421,6 +416,31 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 			this.ACCfit += 3;
 			this.ACCfitN += 3;
 		}
+	}
+
+	if (this.sclass == 81 || this.mid == 147){   // USSR DD
+		let tashgun = this.equips.filter(eq => eq.mid == 282).length;
+		this.ACCfit = (5*Math.sqrt(tashgun) || 0);
+		this.ACCfitN = this.ACCfit;
+	}
+
+	if (this.sclass == 87 || this.sclass == 91) {  // US DD
+		let usgun = this.equips.filter(eq => [284,308,313].indexOf(eq.mid) !== -1).length;
+		this.ACCfit = (4*Math.sqrt(usgun) || 0);
+		this.ACCfitN = this.ACCfit;
+	}
+
+	if (this.sclass == 82) {  // UK DD
+		let ukgun = this.equips.filter(eq => eq.mid == 280).length;
+		let asdic = this.equips.filter(eq => [260,261,262].indexOf(eq.mid) !== -1).length;
+		this.ACCfit = (3*Math.sqrt(ukgun) || 0) + (3*Math.sqrt(asdic) || 0);
+		this.ACCfitN = this.ACCfit;
+	}
+
+	if (this.sclass == 28) {  // Mutsuki class
+		let mutsukigun = this.equips.filter(eq => eq.mid == 293).length;
+		this.ACCfit = (5*Math.sqrt(mutsukigun) || 0);
+		this.ACCfitN = this.ACCfit;
 	}
 	
     [this.installFlat, 
@@ -1735,7 +1755,9 @@ Equip.prototype.setImprovement = function(level) {
 			this.ASImprove = .2*level;
             break;
         case AUTOGYRO:
+		case ASWPLANE:
             this.improves.Pasw = .2*level;
+			if (this.mid == 451) this.improves.Pasw = .3*level;
             break;
         case SECGUN:
             if ((this.atype == A_HAFD || this.atype == A_HAGUN)) {
