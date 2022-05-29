@@ -79,7 +79,7 @@ function transNames(lang) {
 	}
 	$('.fleet').each(function() {
 		var id = $(this).attr('id');
-		for (var i=0; i<6; i++) {
+		for (var i=0; i<(id=='T4'?7:6); i++) {
 			$('#'+id+'n'+i).children().each(function() {
 				$(this).children().each(function() {
 					$(this).text(SHIPDATA[$(this).val()].name);
@@ -471,13 +471,16 @@ function dialogEquip(types) {
 function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,addEnemyCombined) {
 	if (!tabcolor) tabcolor = '#CCCCCC';
     var root = document.getElementById(rootid);
-    PREVEQS[fleetnum] = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];
+	var shipnum = fleetnum == 4? 7 : 6;
+    PREVEQS[fleetnum] = [[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]];
+
     var tid = 'T'+fleetnum;
     var da = document.createElement('div');
     da.setAttribute('id',tid);
     da.setAttribute('class','fleet');
     // da.setAttribute('height',');
-    da.setAttribute('style','width:980px; border:1px solid black');
+	if (shipnum == 7) da.setAttribute('style','width:1143px; border:1px solid black');
+    else da.setAttribute('style','width:980px; border:1px solid black');
      
     var dhead = document.createElement('div');
     dhead.setAttribute('id',tid+'head');
@@ -502,7 +505,7 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
 	var talt = document.createElement('table');
 	talt.setAttribute('class','t1');
     var tralt = document.createElement('tr');
-	for (var i=0; i<6; i++) {
+	for (var i=0; i<shipnum; i++) {
 		var td = document.createElement('td');
 		var img = document.createElement('img');
 		img.setAttribute('width','160');
@@ -588,7 +591,7 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
 		sel1.appendChild(g);
 	}
 	
-	if ([1,11,12,13,14,15,16,17].indexOf(fleetnum) !== -1){
+	if ([1,4,11,12,13,14,15,16,17].indexOf(fleetnum) !== -1){
 		dl = document.createElement('div');
 		dl.setAttribute('style','float:left;width:150px;margin:10px');
 		$(dl).append('<b>Options:</b><br>');
@@ -616,7 +619,7 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
     var t = document.createElement('table');
     t.setAttribute('class','t1');
     var tr = document.createElement('tr'); //number, clear button
-    for (var i=0; i<6; i++) {
+    for (var i=0; i<shipnum; i++) {
         var td = document.createElement('th');
         td.setAttribute('colspan','2');
         // var num = document.createTextNode((i+1).toString());
@@ -634,7 +637,7 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
     t.appendChild(tr);
      
     var tr = document.createElement('tr'); //name selecter
-    for (var i=0; i<6; i++) {
+    for (var i=0; i<shipnum; i++) {
         var td = document.createElement('td');
         td.setAttribute('colspan','2');
         var sel = document.createElement('select');
@@ -688,7 +691,7 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
     t.appendChild(tr);
      
     tr = document.createElement('tr'); //images
-    for (var i=0; i<6; i++) {
+    for (var i=0; i<shipnum; i++) {
         var td = document.createElement('td');
         td.setAttribute('colspan','2');
         var img = document.createElement('img');
@@ -719,7 +722,7 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
     for (var i=0; i<stats.length; i++) {
         tr = document.createElement('tr');
         var id1 = stats[i][0][0], src1 = stats[i][0][1], id2 = stats[i][1][0], src2 = stats[i][1][1];
-        for (var j=0; j<6; j++) {
+        for (var j=0; j<shipnum; j++) {
             var td1 = document.createElement('td');
             var td2 = document.createElement('td');
             var s1 = document.createElement('input');
@@ -750,7 +753,7 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
         t.appendChild(tr);
     }
 	var tr = document.createElement('tr');
-	for (var j=0; j<6; j++) {
+	for (var j=0; j<shipnum; j++) {
 		var td = document.createElement('td');
 		var desc = 'Torpedo Accuracy (hidden abyssal-only stat in-game)';
 		var img = document.createElement('img'); img.setAttribute('src','assets/stats/rm.png'); img.setAttribute('title',desc);
@@ -765,9 +768,9 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
 	}
 	t.appendChild(tr);
 
-	if (fleetnum == 1 || fleetnum == 11){
+	if (fleetnum == 1 || fleetnum == 4 || fleetnum == 11){
 		var tr = document.createElement('tr');
-		for (var j=0; j<6; j++) {
+		for (var j=0; j<shipnum; j++) {
 			var td = document.createElement('td');
 			td.setAttribute('colspan','2');
 			var desc = 'Historical Bonus Multiplier A';
@@ -785,7 +788,7 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
 		}
 		t.appendChild(tr);		
 		var tr = document.createElement('tr');
-		for (var j=0; j<6; j++) {
+		for (var j=0; j<shipnum; j++) {
 			var td = document.createElement('td');
 			td.setAttribute('colspan','2');
 			var desc = 'Historical Bonus Multiplier B';
@@ -803,7 +806,7 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
 		}
 		t.appendChild(tr);
 		var tr = document.createElement('tr');
-		for (var j=0; j<6; j++) {
+		for (var j=0; j<shipnum; j++) {
 			var td = document.createElement('td');
 			td.setAttribute('colspan','2');
 			var desc = 'Historical Bonus Multiplier C';
@@ -821,7 +824,7 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
 		}
 		t.appendChild(tr);
 		var tr = document.createElement('tr');
-		for (var j=0; j<6; j++) {
+		for (var j=0; j<shipnum; j++) {
 			var td = document.createElement('td');
 			td.setAttribute('colspan','2');
 			var desc = 'Accuracy Bonus Multiplier';
@@ -839,7 +842,7 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
 		}
 		t.appendChild(tr);
 		var tr = document.createElement('tr');
-		for (var j=0; j<6; j++) {
+		for (var j=0; j<shipnum; j++) {
 			var td = document.createElement('td');
 			td.setAttribute('colspan','2');
 			var desc = 'Evasion Bonus Multiplier';
@@ -859,7 +862,7 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
 	}
 	else if (fleetnum >= 20 || fleetnum == 2 || fleetnum == 3) {
 		var tr = document.createElement('tr');
-		for (var j=0; j<6; j++) {
+		for (var j=0; j<shipnum; j++) {
 			var td = document.createElement('td');
 			td.setAttribute('colspan','2');
 			var desc = 'Enemy Debuff Multiplier';
@@ -879,7 +882,7 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
 	}
 	else if (fleetnum >= 14 && fleetnum < 18) {
 		var tr = document.createElement('tr');
-		for (var j=0; j<6; j++) {
+		for (var j=0; j<shipnum; j++) {
 			var td = document.createElement('td');
 			td.setAttribute('colspan','2');
 			var desc = 'Historical Bonus Multiplier';
@@ -906,7 +909,7 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
 	}
     for (var i=0; i<NUMEQUIPSMAX; i++) {  //equips
         var tr = document.createElement('tr');
-        for (var j=0; j<6; j++) {
+        for (var j=0; j<shipnum; j++) {
             var td = document.createElement('td');
             td.setAttribute('colspan','2');
 			
@@ -950,12 +953,12 @@ function genFleetHTML(rootid,fleetnum,fleetname,tabcolor,isCombined,isSupport,ad
     }
 	if (/*fleetnum==1||fleetnum==11||fleetnum==12||fleetnum==13*/true) {
 		var tr = $('<tr></tr>');
-		for (var i=0; i<6; i++) {
+		for (var i=0; i<shipnum; i++) {
 			tr.append('<td colspan="2">Morale: <input id="'+tid+'morale'+i+'" type="number" max="100" min="0" value="49" onchange="updateFleetCode('+fleetnum+')"/></td>');
 		}
 		$(t).append(tr);
 		tr = $('<tr></tr>');
-		for (var i=0; i<6; i++) {
+		for (var i=0; i<shipnum; i++) {
 			tr.append('<td><img src="assets/stats/fuel.png" /><input id="'+tid+'fuel'+i+'" type="number" max="100" min="0" value="100" onchange="updateFleetCode('+fleetnum+')"/></td>');
 			tr.append('<td><img src="assets/stats/ammo.png" /><input id="'+tid+'ammo'+i+'" type="number" max="100" min="0" value="100" onchange="updateFleetCode('+fleetnum+')"/></td>');
 		}
@@ -1379,14 +1382,14 @@ function setImprove(fleet,ship,eqslot,type,level) {
 }
 
 function setMoraleAll(fleet,num){
-	for (var i = 0; i < 6; i++){
+	for (var i = 0; i < (fleet==4?7:6); i++){
 		if ($('#T'+fleet+'morale'+i)) $('#T'+fleet+'morale'+i).val(num);
 	}
 	raiseFleetChange();
 }
 
 function setLuckAll(fleet,flag){
-	for (var i = 0; i < 6; i++){
+	for (var i = 0; i < (fleet==4?7:6); i++){
 		var mid = $('#T'+fleet+'n'+i).val();
 		if (flag) $('#T'+fleet+'luk'+i).val(SHIPDATA[mid].LUKmax||60);
 		else $('#T'+fleet+'luk'+i).val(SHIPDATA[mid].LUK||20);
@@ -1561,7 +1564,8 @@ function changedEquip(fleet,slot,equipslot,nochangeimprov) {
 
 function loadIntoSim(fleet,side,isescort) {
 	var ships = [];
-	for (var i=0; i<6; i++) {
+	var shipnum = fleet == 4? 7 : 6
+	for (var i=0; i<shipnum; i++) {
 		var mid = parseInt(document.getElementById('T'+fleet+'n'+i).value);
 		if (mid) {
 			var ShipType = window[SHIPDATA[mid].type];
@@ -1696,6 +1700,7 @@ function clickedAddComb(update) {
 	if (update) updateFleetCode('11');
 	$('#btnDelComb').css('display','');
 	$('#btnAddComb').css('display','none');
+	$('#btnAddSF').css('display','none');
 	$('.ofcombined').each(function(){ $(this).show(); });
 	$('.ofsingle').each(function(){ $(this).hide(); });
 	if (update) {
@@ -1723,6 +1728,7 @@ function clickedDelComb() {
 	for (var i = 2; i <= NUMFLEETS2; i++) updateNBFormSelection(20+i);
 	$('#btnDelComb').css('display','none');
 	$('#btnAddComb').css('display','');
+	$('#btnAddSF').css('display','');
 	$('.ofcombined').each(function(){ $(this).hide(); });
 	$('.ofsingle').each(function(){ $(this).show(); });
 	for (var i=1; i<=NUMFLEETS2; i++) {
@@ -1804,6 +1810,35 @@ function clickedDelFriendFleet() {
 	ADDEDFRIENDFLEET = false;
 	$('#btnDelFF').css('display','none');
 	$('#btnAddFF').css('display','');
+	raiseFleetChange();
+}
+
+var ADDEDSF = false;
+
+function clickedAddSF(update) {
+	if (ADDEDCOMBINED) return;
+	if (ADDEDSF) return;
+	if (!document.getElementById('T4')) genFleetHTML('fleetspace1', 4, 'Strike Force Fleet', '#90ee90');
+	else $('#T4').css('display','block');
+	ADDEDSF = true;
+	if (update) updateFleetCode(4);
+	$('#T1').css('display','none');
+	$('#btnAddSF').css('display','none');
+	$('#btnDelSF').css('display','');
+	$('#btnAddComb').css('display','none');
+	raiseFleetChange();
+}
+
+function clickedDelSF() {
+	if (ADDEDCOMBINED) return;
+	if (!ADDEDSF) return;
+	ADDEDSF = false;
+	$('#T1').css('display','');
+	$('#T4').css('display','none');
+	saveFleet(4,'');
+	$('#btnAddSF').css('display','');
+	$('#btnDelSF').css('display','none');
+	$('#btnAddComb').css('display','');
 	raiseFleetChange();
 }
 
@@ -2255,7 +2290,7 @@ function updateFleetCode(fleet) {
 		var type = $('input[name=T'+fleet+'type]:checked').val();
 		fdata.type = (type||0);
 	}
-	for (var i=0; i<6; i++) {
+	for (var i=0; i<(fleet==4?7:6); i++) {
 		var shipid = document.getElementById('T'+fleet+'n'+i).value;
 		if (parseInt(shipid)) {
 			var sdata = fdata['s'+(i+1)] = {id:shipid};
@@ -2306,7 +2341,7 @@ function loadFleetFromCodeOld(fleet,fcode) {
 	var s = parts[0].split(',');
 	if(document.getElementById('T'+fleet+'r'+s[0])) document.getElementById('T'+fleet+'r'+s[0]).checked = true;
 	if(document.getElementById('T'+fleet+'t'+s[1])) document.getElementById('T'+fleet+'t'+s[1]).checked = true;
-	for (var i=0; i<6; i++) {
+	for (var i=0; i<(fleet==4?7:6); i++) {
 		var s = parts[i+1].split(',');
 		var slots = s.slice(24,28);
 		if (slots.length <= 0) slots = null;
@@ -2332,7 +2367,7 @@ function loadFleetFromCode(fleet,fcode) {
 	if ($('#T'+fleet+'r'+form)) $('#T'+fleet+'r'+form).prop('checked',true);
 	if ($('#T'+fleet+'t'+type)) $('#T'+fleet+'t'+type).prop('checked',true);
 	
-	for (var i=0; i<6; i++) {
+	for (var i=0; i<(fleet==4?7:6); i++) {
 		var ship = data.f1['s'+(i+1)];
 		if (!ship) {
 			clickedClear(fleet,i);
@@ -2448,7 +2483,8 @@ function clickedResetStats() {
 
 function extractForSim() {
 	FLEETS1 = []; FLEETS2 = [];
-	var d = loadIntoSim(1,0);
+	if (ADDEDSF) d = loadIntoSim(4,0);
+	else d = loadIntoSim(1,0);
 	if (!d[0].length) {
 		document.getElementById('simnotespace').innerHTML = 'Main Fleet has no ships.';
 		return;
@@ -2754,6 +2790,7 @@ function loadLocalStorage() {
 	}
 	
 	if (localStorage.simulator_fleet11) clickedAddComb();
+	else if (localStorage.simulator_fleet4) clickedAddSF();
 	if (localStorage.simulator_fleet12) clickedAddSupportN();
 	if (localStorage.simulator_fleet13) clickedAddSupportB();
 	if (localStorage.simulator_fleet14) clickedAddFriendFleet();
