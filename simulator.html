@@ -139,8 +139,6 @@
 			<!--<input type="checkbox" checked id="mech12" onchange="MECHANICS.zuiunCI=this.checked"/><label for="mech12">Zuiun/Suisei Cut-In</label><br>-->
 			<input type="checkbox" checked id="mech13" onchange="MECHANICS.aaResist=this.checked"/><label for="mech13">Anti-Air Resist</label><br>
 			<!-- <input type="checkbox" checked id="mech14" onchange="MECHANICS.divebomberInstall=this.checked"/><label for="mech14">Divebomber Installation Targeting</label><br> -->
-			<input type="checkbox" checked id="mech101" onchange="MECHANICS.visibleEquipBonus=this.checked"/><label for="mech101">Visible Equipment Bonus</label><br>
-			<input type="checkbox" checked id="mech102" onchange="MECHANICS.newVanguardMod=this.checked"/><label for="mech102">New Vanguard Modifiers</label><br>
 			<br>
 			<label for="mechshelldmg">Day Shelling Soft-Cap: </label><input id="mechshelldmg" type="number" min="0" max="9999" value="220" style="width:50px" onchange="SHELLDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
 			<label for="mechnightdmg">Night Battle Soft-Cap: </label><input id="mechnightdmg" type="number" min="0" max="9999" value="360" style="width:50px" onchange="NIGHTDMGBASE=parseInt(this.value);raiseFleetChange()" /><br>
@@ -219,14 +217,6 @@
 					<td>Accuracy:</td><td><input type="number" min=".01" max="999" value="1.15" step=".01" style="width:50px" onchange="ARTILLERYSPOTDATA[73].accMod = parseFloat(this.value) || 1.15" /></td>
 					<td>Chance:</td><td><input type="number" min=".01" max="999" value="1.55" step=".01" style="width:50px" onchange="ARTILLERYSPOTDATA[73].chanceMod = parseFloat(this.value) || 1.55" /></td>
 				</tr>
-				</table>
-				<br>
-				<span>Vanguard Evasion Bonus:</span><br>
-				<table>
-				<tr><td>Top Half DD:</td><td><input type="number" min="0" max="99" value="20" onchange="SIMCONSTS.vanguardEvDD1 = parseInt(this.value) || 20" /></td></tr>
-				<tr><td>Bottom Half DD:</td><td><input type="number" min="0" max="99" value="40" onchange="SIMCONSTS.vanguardEvDD2 = parseInt(this.value) || 40" /></td></tr>
-				<tr><td>Top Half Non-DD:</td><td><input type="number" min="0" max="99" value="5" onchange="SIMCONSTS.vanguardEvOther1 = parseInt(this.value) || 5" /></td></tr>
-				<tr><td>Bottom Half Non-DD:</td><td><input type="number" min="0" max="99" value="20" onchange="SIMCONSTS.vanguardEvOther2 = parseInt(this.value) || 20" /></td></tr>
 				</table>
 				<!--<span>Preset 12vs6 values: </span>
 				<input type="button" value="CTF" onclick="clickedAdvDefault('acc',90,90,55,55)" />

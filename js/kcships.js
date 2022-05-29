@@ -26,6 +26,7 @@ Fleet.prototype.loadShips = function(ships) {
 		ships[i].apiID = (i+1)+6*this.id;
 		ships[i].apiID2 = (i+1)+6*(this.isescort||0);
 		ships[i].num = i+1;
+		ships[i].numalive = i+1;  // for vanguard ship num calculation
 		ships[i].fleet = this;
 		for (var j=0; j<ships[i].equips.length; j++) {
 			if (ships[i].equips[j].noRedT) { this.noRedT = true; break; }
@@ -264,7 +265,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
         if (eq.mid == 107) this.hasCombinedFCF = true;
         if (eq.mid == 272) this.hasStrikeFCF = true;
         if (eq.mid == 413) this.hasTorpFCF = true;
-		if ([213,214,383,441,443].indexOf(eq.mid) !== -1) this.numSpecialTorp = this.numSpecialTorp + 1 || 1;
+		if ([213,214,383,441,443,457].indexOf(eq.mid) !== -1) this.numSpecialTorp = this.numSpecialTorp + 1 || 1;
 		if (eq.type == REPAIR) {
 			if (this.repairs) this.repairs.push(equips[i]);
 			else this.repairs = [equips[i]];
@@ -493,7 +494,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 
 	if (this.evimprove) this.evimprove = 1.5 * Math.sqrt(this.evimprove);
 
-	if (MECHANICS.visibleEquipBonus && this.mid <= 1500){
+	if (this.mid <= 1500){
 		this.FP += this.equipmentBonusStats('houg');
 		this.TP += this.equipmentBonusStats('raig');
 		this.AR += this.equipmentBonusStats('souk');
@@ -506,8 +507,10 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 Ship.prototype.getFormation = function() {
 	if (!this.fleet || !this.fleet.formation) return null;
 	if (this.fleet.formation.id != 6) return this.fleet.formation;
-	let threshold = Math.floor(this.fleet.ships.length/2);
-	return (this.num <= threshold)? VANGUARD1 : VANGUARD2;
+
+	let numalive = this.fleet.ships.filter((ship) => ship.numalive > 0).length;
+	let threshold = Math.floor(numalive/2);
+	return (this.numalive <= threshold)? VANGUARD1 : VANGUARD2;
 }
 
 Ship.prototype.canShell = function() { return (this.HP > 0); }

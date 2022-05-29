@@ -149,10 +149,10 @@ var SIMCONSTS = {
 	kiraEvMod: null,
 	supportShellN: null,
 	supportShellB: null,
-	vanguardEvDD1: 20,
-	vanguardEvDD2: 40,
-	vanguardEvOther1: 5,
-	vanguardEvOther2: 20,
+	vanguardEvShellDD: [7,7,20,20,35,40,40],
+	vanguardEvShellOther: [7,7,7,7,15,20,20],
+	vanguardEvTorpDD: [15,15,45,55,65,75,75],
+	vanguardEvTorpOther: [15,15,15,45,45,55,55],
 	nelsonTouchRate: 60,
 	nagatoSpecialRate: 60,
 	mutsuSpecialRate: 60,
@@ -196,8 +196,6 @@ var MECHANICS = {
 	LBASBuff: true,
 	zuiunCI: true,
 	aaResist: true,
-	visibleEquipBonus: true,
-	newVanguardMod: true,
 };
 
 function getRepairCost(ship) {
@@ -294,16 +292,7 @@ function shell(ship,target,APIhou,attackSpecial) {
 	if (ship.fleet.formation.id == 6 && target.type == 'DD') acc *= 1.1;
 	
 	var evFlat = 0;
-	if (target.fleet.formation.id == 6) {
-		if (MECHANICS.newVanguardMod && target.fleet.ships.length == 6) evFlat += vanguardEvFlat(target);
-		else {
-			if (target.num/target.fleet.ships.length <= .8) {
-				evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD1 : SIMCONSTS.vanguardEvOther1;
-			} else {
-				evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD2 : SIMCONSTS.vanguardEvOther2;
-			}
-		}
-	}
+	if (target.fleet.formation.id == 6) evFlat += vanguardEvFlat(target);
 	
 	
 	if (da) {
@@ -502,16 +491,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 	if (ship.getFormation() == VANGUARD1) {
 		preMod *= .5;
 	}
-	if (target.fleet.formation.id == 6) {
-		if (MECHANICS.newVanguardMod && target.fleet.ships.length == 6) evFlat += vanguardEvFlat(target);
-		else {
-			if (target.num/target.fleet.ships.length <= .8) {
-				evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD1 : SIMCONSTS.vanguardEvOther1;
-			} else {
-				evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD2 : SIMCONSTS.vanguardEvOther2;
-			}
-		}
-	}
+	if (target.fleet.formation.id == 6) evFlat += vanguardEvFlat(target);
 	
 	
 	if (da) {
@@ -666,16 +646,7 @@ function ASW(ship,target,isnight,APIhou,isOASW) {
 	else if (!formationCountered(ship.fleet.formation.id,target.fleet.formation.id)) accMod *= (ship.getFormation().aswacc || ship.getFormation().shellacc);
 	var evMod = target.getFormation().ASWev;
 	var evFlat = 0;
-	if (target.fleet.formation.id == 6) {
-		if (MECHANICS.newVanguardMod && target.fleet.ships.length == 6) evFlat += vanguardEvFlat(target);
-		else {
-			if (target.num/target.fleet.ships.length <= .8) {
-				evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD1 : SIMCONSTS.vanguardEvOther1;
-			} else {
-				evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD2 : SIMCONSTS.vanguardEvOther2;
-			}
-		}
-	}
+	if (target.fleet.formation.id == 6) evFlat += vanguardEvFlat(target);
 	var acc = hitRate(ship,80,sonarAcc,accMod);
 	var isPlaneASW = ship.planeasw && !isOASW && ship.mid !== 646;
 	var res = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,1.3,isPlaneASW), isPlaneASW? (ship.critdmgbonus || 1) : 1);
@@ -1186,16 +1157,7 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 		if (ship.fleet.formation.id == 6 && target.type == 'DD') acc *= 1.2;
 		
 		var evFlat = (target.improves.EVtorp)? ship.improves.EVtorp : 0;
-		if (target.fleet.formation.id == 6) {
-			if (MECHANICS.newVanguardMod && target.fleet.ships.length == 6) evFlat += vanguardEvFlat(target, true);
-			else {
-				if (target.num/target.fleet.ships.length <= .8) {
-					evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD1 : SIMCONSTS.vanguardEvOther1;
-				} else {
-					evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD2 : SIMCONSTS.vanguardEvOther2;
-				}
-			}
-		}
+		if (target.fleet.formation.id == 6) evFlat += vanguardEvFlat(target, true);
 		
 		let postMod = 1;
 		
@@ -1873,16 +1835,7 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isBoss,isNight) {
 			}
 			var target = choiceWProtect(targets);
 			var evFlat = 0;
-			if (target.fleet.formation.id == 6) {
-				if (MECHANICS.newVanguardMod && target.fleet.ships.length == 6) evFlat += vanguardEvFlat(target);
-				else {
-					if (target.num/target.fleet.ships.length <= .8) {
-						evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD1 : SIMCONSTS.vanguardEvOther1;
-					} else {
-						evFlat += (target.type == 'DD')? SIMCONSTS.vanguardEvDD2 : SIMCONSTS.vanguardEvOther2;
-					}
-				}
-			}
+			if (target.fleet.formation.id == 6) evFlat += vanguardEvFlat(target);
 			var accCrit, torpDmg;
 			if (suptype == 3) {
 				if (!ship.canTorp()) continue;
@@ -2983,6 +2936,12 @@ function canContinue(ships1,ships1C) {
 			escorter.retreated = true;
 			escorter.fuelleft = 0;
 		}
+		if (!ships1C) {   // for vanguard ship num calculation
+			ships1.forEach((ship) => {
+				if (ship.numalive > retreater.numalive) ship.numalive -= 1;
+			})
+			retreater.numalive = 0;
+		}
 	}
 	return true;
 }
@@ -3883,46 +3842,21 @@ function dmgSpecialTarget(dmg,ship,target,plane){
 }
 
 function vanguardEvFlat(ship, isTorpedo) {
+	var numalive = ship.fleet.ships.filter((ship) => ship.numalive > 0).length;
+	var shipnum = Math.floor((ship.numalive - 1) / numalive * 7);
 	// Source: https://twitter.com/Xe_UCH/status/1298910160664924160
 	// Update: https://twitter.com/Xe_UCH/status/1349290257825419268
 	if (isTorpedo) {
-		if (ship.num <= 2) return 15;
-		if (ship.num == 3) {
-			if (ship.type == 'DD') return 45;
-			return 15;
-		} 
-		if (ship.num == 4) {
-			if (ship.type == 'DD') return 55;
-			return 45;
-		}
-		if (ship.num == 5){
-			if (ship.type == 'DD') return 65;
-			return 45; 
-		}
-		if (ship.num == 6) {
-			if (ship.type == 'DD') return 75;
-			return 55; 
-		}
+		if (ship.type == 'DD') return SIMCONSTS.vanguardEvTorpDD[shipnum];
+		else return SIMCONSTS.vanguardEvTorpOther[shipnum];
 	}
 	else
 	// Source: https://twitter.com/Xe_UCH/status/1332267790686769159
 	// Update: https://twitter.com/Xe_UCH/status/1349290257825419268
 	{
-		if (ship.num <= 2) return 7;
-		if (ship.num <= 4) {
-			if (ship.type == 'DD') return 20;
-			return 7;
-		}
-		if (ship.num == 5){
-			if (ship.type == 'DD') return 35;
-			return 15;
-		}
-		if (ship.num == 6) {
-			if (ship.type == 'DD') return 40;
-			return 20;
-		}
+		if (ship.type == 'DD') return SIMCONSTS.vanguardEvShellDD[shipnum];
+		else return SIMCONSTS.vanguardEvShellOther[shipnum];
 	}
-	return 0;
 }
 
 

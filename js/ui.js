@@ -152,25 +152,25 @@ function showAdditionalStats(fleet) {
 	table.append(tr); tr = $('<tr></tr>');
 	for (var i=0; i<ships.length; i++) {
 		var td = $('<td></td>'); tr.append(td);
-		if (MECHANICS.visibleEquipBonus && ships[i].equipmentBonusStats('houg') > 0){
+		if (ships[i].equipmentBonusStats('houg') > 0){
 			td.append('<span>FP: '+Math.floor(ships[i].FP)+'</span><br>');
 		}
-		if (MECHANICS.visibleEquipBonus && ships[i].equipmentBonusStats('raig') > 0){
+		if (ships[i].equipmentBonusStats('raig') > 0){
 			td.append('<span>TP: '+Math.floor(ships[i].TP)+'</span><br>');
 		}
-		if (MECHANICS.visibleEquipBonus && ships[i].equipmentBonusStats('souk') > 0){
+		if (ships[i].equipmentBonusStats('souk') > 0){
 			td.append('<span>AR: '+Math.floor(ships[i].AR)+'</span><br>');
 		}
-		if (MECHANICS.visibleEquipBonus && ships[i].equipmentBonusStats('houk') > 0){
+		if (ships[i].equipmentBonusStats('houk') > 0){
 			td.append('<span>EV: '+Math.floor(ships[i].EV)+'</span><br>');
 		}
-		if (MECHANICS.visibleEquipBonus && ships[i].equipmentBonusStats('tais') > 0){
+		if (ships[i].equipmentBonusStats('tais') > 0){
 			td.append('<span>ASW: '+(Math.floor(ships[i].ASW)+Math.floor(ships[i].ASWBonus))+'</span><br>');
 		}
-		if (MECHANICS.visibleEquipBonus && ships[i].equipmentBonusStats('soku') > 0){
+		if (ships[i].equipmentBonusStats('soku') > 0){
 			td.append('<span>SPD: '+Math.floor(ships[i].SPD)+'</span><br>');
 		}
-		if (MECHANICS.visibleEquipBonus && ships[i].equipmentBonusStats('leng') > 0){
+		if (ships[i].equipmentBonusStats('leng') > 0){
 			td.append('<span>RNG: '+Math.floor(ships[i].RNG)+'</span><br>');
 		}
 		if (fleet == 12 || fleet == 13){
