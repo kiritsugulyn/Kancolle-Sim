@@ -2916,7 +2916,7 @@ function canContinue(ships1,ships1C) {
 	if (ships1[0].HP/ships1[0].maxHP <= .25) return false;
 	var retreater = null, escorter = null;
 	if (ships1C && ships1[0].hasCombinedFCF) { var d = getFCFShips(ships1,ships1C); retreater = d[0]; escorter = d[1]; }
-	else if (!ships1C && (SIMCONSTS.strikingForceRetreat && ships1[0].hasStrikeFCF) || (SIMCONSTS.torpSquadronRetreat && ships1[0].hasTorpFCF && isTorpSquadron(ships1))) retreater = getFCFShip(ships1);
+	else if (!ships1C && (SIMCONSTS.strikingForceRetreat && ships1[0].hasStrikeFCF && ADDEDSF) || (SIMCONSTS.torpSquadronRetreat && ships1[0].hasTorpFCF && isTorpSquadron(ships1))) retreater = getFCFShip(ships1);
 	if (DORETREAT) {
 		for (var i=1; i<ships1.length; i++) {
 			if (ships1[i].retreated) continue;
@@ -2972,11 +2972,11 @@ function simStats(numsims,foptions) {
 			num: 0,
 			didNB: 0, //used for rsammo calc
 			redded: 0,
-			redIndiv: [0,0,0,0,0,0],
+			redIndiv: ADDEDSF? [0,0,0,0,0,0,0] : [0,0,0,0,0,0],
 			undamaged: 0,
-			MVPs: [0,0,0,0,0,0],
-			sinkFlagships: [0,0,0,0,0,0],
-			dmgTotals: [0,0,0,0,0,0],
+			MVPs: ADDEDSF? [0,0,0,0,0,0,0] : [0,0,0,0,0,0],
+			sinkFlagships: ADDEDSF? [0,0,0,0,0,0,0] : [0,0,0,0,0,0],
+			dmgTotals: ADDEDSF? [0,0,0,0,0,0,0] : [0,0,0,0,0,0],
 			ranks: {S:0,A:0,B:0,C:0,D:0,E:0},
 			flagsunk: 0,
 			airStates: [0,0,0,0,0],
@@ -3028,8 +3028,8 @@ function simStats(numsims,foptions) {
 				else if (options.bonusB) ship.bonusSpecial = ship.bonusB || 1;
 				else if (options.bonusC) ship.bonusSpecial = ship.bonusC || 1;
 			}
-			FLEETS1[0].DMGTOTALS = [0,0,0,0,0,0];
-			FLEETS1[0].SINKFLAGSHIP = [false, false, false, false, false, false];
+			FLEETS1[0].DMGTOTALS = ADDEDSF? [0,0,0,0,0,0,0] : [0,0,0,0,0,0];
+			FLEETS1[0].SINKFLAGSHIP = ADDEDSF? [false, false, false, false, false, false, false] : [false, false, false, false, false, false];
 			if (options.formation != '0') FLEETS1[0].formation = ALLFORMATIONS[options.formation];
 			else FLEETS1[0].formation = formdef;
 			if (options.randform && !FLEETS2[j].combinedWith) {

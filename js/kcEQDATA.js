@@ -5608,7 +5608,7 @@ var EQDATA = {
 		RNG: 1,
 	},
 	458: {
-		name: 'Late Model Submarine Radar & Passive Radiolocator + Snorkel',
+		name: 'Late Model Submarine Radar & Passive Radiolocator + Snorkel Equipment',
 		nameJP: '後期型電探&逆探+シュノーケル装備',
 		added: '2022-05-27',
 		type: SUBRADAR,
@@ -5628,6 +5628,18 @@ var EQDATA = {
 		TP: 8,
 		AA: 4,
 		LOS: 4,
+	},
+	460: {
+		name: '15m Duplex Rangefinder + Type 21 Air Radar Kai 2 + Skilled Fire Direction Center',
+		nameJP: '15m二重測距儀改+21号電探改二+熟練射撃指揮所',
+		added: '2022-05-31',
+		type: RADARXL,
+		FP: 4,
+		AA: 8,
+		AR: 1,
+		LOS: 8,
+		EV: 2,
+		ACC: 10,
 	},
 	501: {
 		name: '5inch Single Cannon',

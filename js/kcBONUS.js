@@ -152,5 +152,24 @@ var EQUIPBONUS = {
                 noAccBonus: true
             }
         ]
+    },
+    'Spring 2022': {
+        'E-2': [
+            {
+                mod: [1.05, 1.11, 1.16, 1.21],
+                eqtypes: [SEAPLANE, SEAPLANEBOMBER, SEAPLANEFIGHTER],
+                noAccBonus: true
+            },
+            {
+                mod: [1.03, 1.06],
+                eqtypes: [SEAPLANEBOMBER],
+                noAccBonus: true
+            },
+            {
+                mod: [1.075, 1.155],
+                eqids: [59],
+                noAccBonus: true
+            }
+        ]
     }
 }

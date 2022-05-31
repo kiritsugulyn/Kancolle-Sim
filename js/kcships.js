@@ -13,8 +13,8 @@ function Fleet(id,isescortfor) {
 	this.formation = false;
 	this.AP = 0;  //air (fighter) power
 	this.AS = 0;  //air superiority
-    this.DMGTOTALS = [0,0,0,0,0,0];
-    this.SINKFLAGSHIP = [false, false, false, false, false, false];
+    this.DMGTOTALS = [];
+    this.SINKFLAGSHIP = [];
     this.didSpecial = 0;
     this.didSpecialNB = [0,0];
 }
@@ -28,6 +28,8 @@ Fleet.prototype.loadShips = function(ships) {
 		ships[i].num = i+1;
 		ships[i].numalive = i+1;  // for vanguard ship num calculation
 		ships[i].fleet = this;
+		this.DMGTOTALS.push(0);
+		this.SINKFLAGSHIP.push(false);
 		for (var j=0; j<ships[i].equips.length; j++) {
 			if (ships[i].equips[j].noRedT) { this.noRedT = true; break; }
 			if (ships[i].equips[j].type == OILDRUM) this.numUnderwaySupply = this.numUnderwaySupply + 1 || 1;
@@ -131,8 +133,9 @@ Fleet.prototype.reset = function(notShips) {
 		for (var i=0; i<this.ships.length; i++) this.ships[i].reset();
 	}
 	this.AS = 0;
-    this.DMGTOTALS = [0,0,0,0,0,0];
-    this.SINKFLAGSHIP = [false, false, false, false, false, false];
+    this.DMGTOTALS = [];
+    this.SINKFLAGSHIP = [];
+	this.ships.forEach((ship) => { this.DMGTOTALS.push(0); this.SINKFLAGSHIP.push(false); })
 	this._baseFAA = undefined;
     this._fLoS = undefined;
     this.didSpecial = 0;

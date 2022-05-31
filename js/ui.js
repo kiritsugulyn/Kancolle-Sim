@@ -1886,6 +1886,9 @@ function updateResults(results) {
 	if (ADDEDCOMBINED) $('.rescombined').each(function() { $(this).show(); });
 	else $('.rescombined').each(function() { $(this).hide(); });
 
+	if (ADDEDSF) $('.ressf').each(function() { $(this).show(); });
+	else $('.ressf').each(function() { $(this).hide(); });
+
 	if (FLEETS2[FLEETS2.length - 1].combinedWith) $('.bosscombined').each(function() { $(this).show(); });
 	else $('.bosscombined').each(function() { $(this).hide(); });
 
@@ -2060,6 +2063,11 @@ function genStatTableHTML() {
 		}
 		mvptab.append(tr);
 	}
+	var tr = $('<tr class="ressf"><th><img src="assets/stats/F7.png" /></th></tr>');
+	for (var j=1; j<=NUMNODESDEFAULT; j++) {
+		tr.append($('<td id="mvpc7'+j+'" class="res'+j+'">0.222</td>'));
+	}
+	mvptab.append(tr);
 	mvptab.append('<tr class="rescombined" style="height:20px"></tr>');
 	for (var i=1; i<=6; i++) {
 		var tr = $('<tr class="rescombined"><th><img src="assets/stats/F'+i+'.png" /></th></tr>');
@@ -2099,6 +2107,11 @@ function genStatTableHTML() {
 		}
 		dmgtab.append(tr);
 	}
+	var tr = $('<tr class="ressf"><th><img src="assets/stats/F7.png" /></th></tr>');
+	for (var j=1; j<=NUMNODESDEFAULT; j++) {
+		tr.append($('<td id="avgdmg7'+j+'" class="res'+j+'">0.222</td>'));
+	}
+	dmgtab.append(tr);
 	dmgtab.append('<tr class="rescombined" style="height:20px"></tr>');
 	for (var i=1; i<=6; i++) {
 		var tr = $('<tr class="rescombined"><th><img src="assets/stats/F'+i+'.png" /></th></tr>');
@@ -2126,6 +2139,11 @@ function genStatTableHTML() {
 		}
 		dmgtab.append(tr);
 	}
+	var tr = $('<tr class="ressf"><th><img src="assets/stats/F7.png" /></th></tr>');
+	for (var j=1; j<=NUMNODESDEFAULT; j++) {
+		tr.append($('<td id="red7'+j+'" class="res'+j+'">0.222</td>'));
+	}
+	dmgtab.append(tr);
 	dmgtab.append('<tr class="rescombined" style="height:20px"></tr>');
 	for (var i=1; i<=6; i++) {
 		var tr = $('<tr class="rescombined"><th><img src="assets/stats/F'+i+'.png" /></th></tr>');
@@ -2470,9 +2488,11 @@ function clickedResetStats() {
 	document.getElementById('rsunkfs').innerHTML = '0';
 	
 	for(var i=1; i<=6; i++) document.getElementById('mvp'+i).innerHTML = '0';
+	if (document.getElementById('mvp7')) document.getElementById('mvp7').innerHTML = '0';
 	
 	document.getElementById('rredany').innerHTML = '0';
 	for(var i=1; i<=6; i++) document.getElementById('red'+i).innerHTML = '0';
+	if (document.getElementById('red7')) document.getElementById('red7').innerHTML = '0';
 	document.getElementById('rnodam').innerHTML = '0';
 
 	document.getElementById('resultspace').style.display = 'none';
