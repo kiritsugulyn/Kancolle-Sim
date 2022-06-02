@@ -135,7 +135,7 @@ Fleet.prototype.reset = function(notShips) {
 	this.AS = 0;
     this.DMGTOTALS = [];
     this.SINKFLAGSHIP = [];
-	this.ships.forEach((ship) => { this.DMGTOTALS.push(0); this.SINKFLAGSHIP.push(false); })
+	this.ships.forEach((ship,i) => { this.DMGTOTALS.push(0); this.SINKFLAGSHIP.push(false); ship.numalive = i+1;})
 	this._baseFAA = undefined;
     this._fLoS = undefined;
     this.didSpecial = 0;

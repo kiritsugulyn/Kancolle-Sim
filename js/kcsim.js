@@ -2582,7 +2582,7 @@ function sim(F1,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombing,noammo,BAPI,no
 	}
 	
 	if (!noupdate) {
-		updateSupply(ships1,didNB,NBonly,bombing,noammo);
+		updateSupply(ships1,ships2,didNB,NBonly,bombing,noammo);
 	}
 	
 	
@@ -2682,7 +2682,7 @@ function getRankRaid(ships1) {
 	return 'E';
 }
 
-function updateSupply(ships,didNB,NBonly,bombing,noammo,isECombined) {
+function updateSupply(ships,targets,didNB,NBonly,bombing,noammo,isECombined) {
 	let costSpecial = null, shipsSpecial = null;
 	if (ships[0].fleet.didSpecial == 1) {
 		if (ships[0].attackSpecial == 101 || ships[0].attackSpecial == 102 || ships[0].attackSpecial == 103) costSpecial = 1.5;
@@ -2702,7 +2702,7 @@ function updateSupply(ships,didNB,NBonly,bombing,noammo,isECombined) {
 	let costFuel = 0, costAmmo = 0;
 	if (MECHANICS.newSupply) {
 		let allPT = true;
-		for (let ship of ships) { if (!ship.isPT) { allPT = false; break; } }
+		for (let target of targets) { if (!target.isPT) { allPT = false; break; } }
 		if (allPT) {
 			costFuel = .04;
 			costAmmo = .08;

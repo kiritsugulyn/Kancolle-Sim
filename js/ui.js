@@ -1510,7 +1510,7 @@ function changedEquip(fleet,slot,equipslot,nochangeimprov) {
 			} else {
 				$('#T'+fleet+'prof'+slot+equipslot).hide();
 			}
-			if (equipid>0 && equipid<500 && (fleet==1 || fleet==11 || fleet=='LB')) {
+			if (equipid>0 && equipid<500 && (fleet==1 || fleet==4 || fleet==11 || fleet=='LB')) {
 				$('#T'+fleet+'prof'+slot+equipslot).val(7);
 				changedProficiency('#T'+fleet+'prof'+slot+equipslot);
 			} else {
@@ -2065,7 +2065,7 @@ function genStatTableHTML() {
 	}
 	var tr = $('<tr class="ressf"><th><img src="assets/stats/F7.png" /></th></tr>');
 	for (var j=1; j<=NUMNODESDEFAULT; j++) {
-		tr.append($('<td id="mvpc7'+j+'" class="res'+j+'">0.222</td>'));
+		tr.append($('<td id="mvp7'+j+'" class="res'+j+'">0.222</td>'));
 	}
 	mvptab.append(tr);
 	mvptab.append('<tr class="rescombined" style="height:20px"></tr>');
