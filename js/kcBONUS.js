@@ -156,17 +156,17 @@ var EQUIPBONUS = {
     'Spring 2022': {
         'E-2': [
             {
-                mod: [1.05, 1.11, 1.16, 1.21],
+                mod: [1.05, 1.1, 1.158, 1.216],
                 eqtypes: [SEAPLANE, SEAPLANEBOMBER, SEAPLANEFIGHTER],
                 noAccBonus: true
             },
             {
-                mod: [1.03, 1.06],
+                mod: [1.03, 1.06, 1.093, 1.126],
                 eqtypes: [SEAPLANEBOMBER],
                 noAccBonus: true
             },
             {
-                mod: [1.075, 1.155],
+                mod: [1.07, 1.145, 1.225, 1.311],
                 eqids: [59],
                 noAccBonus: true
             }

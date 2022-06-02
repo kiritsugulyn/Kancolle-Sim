@@ -30116,8 +30116,8 @@ var SHIPDATA = {
 		unknownstats: true,
 		RNG: 1,
 		SPD: 0,
-		SLOTS: [626, 626, 625, 625],
-		EQUIPS: [18, 18, 12, 8],
+		SLOTS: [18, 18, 12, 8],
+		EQUIPS: [626, 626, 625, 625],
 	},
 	2096: {
 		name: 'Airfield Princess 18',
