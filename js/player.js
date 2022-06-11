@@ -473,7 +473,7 @@ function processAPI(root) {
 			var letter, edges = EDGES['World '+root.world+'-'+root.mapnum];
 			if (root.world < 7 && root.time*1000 < Date.UTC(2018,7,16)) edges = EDGES.old['World '+root.world+'-'+root.mapnum]; //old node letters pre-Phase 2
 			if (edges && edges[root.battles[i].node]) letter = edges[root.battles[i].node][1];
-			else letter = (root.battles[i].node <= 26)? String.fromCharCode(64+root.battles[i].node) : '-';
+			else letter = root.battles[i].node.toString();
 			bspace.append(() => {
 				return $('<input>')
 					.attr('type', 'button')
@@ -1037,11 +1037,13 @@ function processAPI(root) {
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
 					case 101:
 					case 102:
+					case 401:
 						var attackers = (hou.api_at_eflag && hou.api_at_eflag[j])? [f2[0],f2[0],f2[1]] : [f1[0],f1[0],f1[1]];
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
 						var args = [attackers,defenders,d.slice(2,5),d.slice(5,8),protects];
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
 					case 103:
+					case 400:
 						var attackers = (hou.api_at_eflag && hou.api_at_eflag[j])? [f2[0],f2[1],f2[2]] : [f1[0],f1[1],f1[2]];
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
 						var args = [attackers,defenders,d.slice(2,5),d.slice(5,8),protects];
@@ -1146,11 +1148,13 @@ function processAPI(root) {
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
 					case 101:
 					case 102:
+					case 401:
 						var attackers = (hou.api_at_eflag && hou.api_at_eflag[j])? [f2[0],f2[0],f2[1]] : [f1[0],f1[0],f1[1]];
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
 						var args = [attackers,targets,d.slice(2,5),d.slice(5,8),protects];
 						eventqueue.push([shootNelsonTouch,args,getState()]); break;
 					case 103:
+					case 400:
 						var attackers = (hou.api_at_eflag && hou.api_at_eflag[j])? [f2[0],f2[1],f2[2]] : [f1[0],f1[1],f1[2]];
 						var protects = []; for (let k=0; k<hou.api_damage[j].length; k++) protects.push(d[k+2] != hou.api_damage[j][k]);
 						var args = [attackers,targets,d.slice(2,5),d.slice(5,8),protects];
@@ -1252,7 +1256,7 @@ function processAPI(root) {
 		}
 		
 		//friend fleet air
-		if (data.api_friendly_info) {
+		if (data.api_friendly_info && !data.api_hougeki) {
 			var fleetData = data.api_friendly_info;
 			if (!fleetFriendDay[b]) {
 				fleetFriendDay[b] = [];
@@ -1418,20 +1422,29 @@ var SHOW = false;
 var statechangefunc = null;
 var STEPBYFRAME = false;
 var RATE = 1, RCOUNTER = 0;
+var TARGETFRAMETIME = 1000/60;
 
-var prevtime = Date.now(), currtime = Date.now(), timeelapsed = 0, frameselapsed = 0;
-function animate() {
+var prevtime = 0, timeelapsedFPS = 0, frameselapsed = 0, timeelapsedFrame = 0;
+function animate(currtime=TARGETFRAMETIME) {
 	if (END) return;
     requestAnimationFrame(animate);
 	
 	if (!ALLLOADED || !SHIPSLOADED) return; //??????
 	if (HASLOADTEXT) { $('#error').text(''); HASLOADTEXT = false; }
 	
+	let timeDiff = currtime - prevtime;
+	prevtime = currtime;
+	timeelapsedFrame += timeDiff;
+	timeelapsedFPS += timeDiff;
+	if (timeelapsedFrame >= TARGETFRAMETIME) {
+		timeelapsedFrame = timeelapsedFrame % TARGETFRAMETIME;
+	} else {
+		return;
+	}
+	
 	frameselapsed++;
-	currtime = Date.now();
-	timeelapsed += currtime - prevtime;
-	if (timeelapsed >= 1000) {
-		timeelapsed = timeelapsed % 1000;
+	if (timeelapsedFPS >= 1000) {
+		timeelapsedFPS = timeelapsedFPS % 1000;
 		$('#FPS').text(frameselapsed);
 		frameselapsed = 0;
 	}
@@ -2179,7 +2192,9 @@ function shootSpecialGun(ship,target,damage,forcecrit,protect) {
 }
 
 function shootNelsonTouch(ships,targets,damages,crits,protects) {
-	SM.playVoice(ships[0].mid,'special',ships[0].id);
+	let key = 'special';
+	if ((ships[0].mid == 911 || ships[0].mid == 916) && (ships[2] && ships[0].mid == ships[1].mid ? ships[2].mid : ships[1].mid) == 546) key = 'special2';
+	SM.playVoice(ships[0].mid,key,ships[0].id);
 	
 	for (var i=0; i<ships.length; i++) {
 		let ship = ships[i], target = targets[i], damage = damages[i], forcecrit = crits[i], protect = protects[i];

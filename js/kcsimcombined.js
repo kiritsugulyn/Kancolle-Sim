@@ -370,7 +370,7 @@ function simCombined(type,F1,F1C,F2,Fsupport,LBASwaves,doNB,NBonly,aironly,bombi
 		if (C) BAPI.data.api_hougeki3 = {api_at_list:[-1],api_at_type:[-1],api_damage:[-1],api_df_list:[-1],api_cl_list:[-1],api_si_list:[-1]};
 		if (type==2) {
 			F1C.basepowshell = F1C.formation.shellbonus; F1C.baseaccshell = F1C.formation.accbase;
-			F2.basepowshell = F1C.formation.shellbonusE; F2.baseaccshell = 80;
+			F2.basepowshell = F1C.formation.shellbonusE; F2.baseaccshell = 75;
 			shellRange(true,(C)? BAPI.data.api_hougeki3 : undefined);
 		} else if (doShell2) {
 			F1.basepowshell = F1.formation.shellbonus; F1.baseaccshell = F1.formation.accbase;
@@ -722,8 +722,8 @@ function simStatsCombined(numsims,type,foptions) {
 				if (useBucket) totalResult.totalBuckets++;
 				let fuelleft = ship.fuelleft - (ship._fuelUnderway || 0);
 				let ammoleft = ship.ammoleft - (ship._ammoUnderway || 0);
-				totalResult.totalFuelS += Math.floor(ship.fuel * (10-fuelleft)/10 * (ship.LVL > 99? .85: 1));
-				totalResult.totalAmmoS += Math.floor(ship.ammo * (10-ammoleft)/10 * (ship.LVL > 99? .85: 1));
+				totalResult.totalFuelS += Math.floor(Math.round(ship.fuel * (10-fuelleft)/10) * (ship.LVL > 99? .85: 1));
+				totalResult.totalAmmoS += Math.floor(Math.round(ship.ammo * (10-ammoleft)/10) * (ship.LVL > 99? .85: 1));
 				for (var k=0; k<ship.PLANESLOTS.length; k++) {
 					totalResult.totalBauxS += 5*(ship.PLANESLOTS[k]-ship.planecount[k]);
 					if (ship.PLANESLOTS[k] && ship.planecount[k] <= 0) totalResult.totalEmptiedPlanes++;

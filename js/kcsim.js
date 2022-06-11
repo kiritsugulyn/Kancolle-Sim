@@ -872,9 +872,9 @@ function getSpecialAttackMod(ship,attackSpecial) {
 		if (ship.equiptypesB[B_APSHELL]) mod *= 1.35;
 		if (ship.hasLOSRadar) mod *= 1.15;
 	} else if (attackSpecial == 104) {
-		mod = 1.9;
+		mod = 2.2;
 		if (ENGAGEMENT == 1.2) mod *= 1.25;
-		else if (ENGAGEMENT == .6) mod *= .75;
+		else if (ENGAGEMENT == .6) mod *= .8;
 	}
 	return mod;
 }
@@ -3116,8 +3116,8 @@ function simStats(numsims,foptions) {
 			if (useBucket) totalResult.totalBuckets++;
 			let fuelleft = ship.fuelleft - (ship._fuelUnderway || 0);
 			let ammoleft = ship.ammoleft - (ship._ammoUnderway || 0);
-			totalResult.totalFuelS += Math.floor(ship.fuel * (10-fuelleft)/10 * (ship.LVL > 99? .85: 1));
-			totalResult.totalAmmoS += Math.floor(ship.ammo * (10-ammoleft)/10 * (ship.LVL > 99? .85: 1));
+			totalResult.totalFuelS += Math.floor(Math.round(ship.fuel * (10-fuelleft)/10) * (ship.LVL > 99? .85: 1));
+			totalResult.totalAmmoS += Math.floor(Math.round(ship.ammo * (10-ammoleft)/10) * (ship.LVL > 99? .85: 1));
 			for (var k=0; k<ship.PLANESLOTS.length; k++) {
 				totalResult.totalBauxS += 5*(ship.PLANESLOTS[k]-ship.planecount[k]);
 				if (ship.PLANESLOTS[k] && ship.planecount[k] <= 0) totalResult.totalEmptiedPlanes++;
