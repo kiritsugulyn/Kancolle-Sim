@@ -276,6 +276,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (eq.isjet) this.hasjet = true;
 		if (eq.btype == B_RADAR && eq.LOS >= 5) this.hasLOSRadar = true;
 		if (eq.btype == B_RADAR && eq.LOS >= 8) this.hasLOSRadar2 = true;
+		if ([142,460].indexOf(eq.mid) !== -1) this.hasYamatoRadar = true;
 		
 		if (eq.CANBbonus && this.type=='CA'||this.type=='CAV') {
 			if (!this.ACCnbca || this.ACCnbca > eq.CANBbonus) this.ACCnbca = eq.CANBbonus; //10 overrides 15
@@ -718,9 +719,10 @@ Ship.prototype.weightedAntiAir = function() {
 Ship.prototype.getAACItype = function(atypes) {
 	var types = [];
 	
-	var concentrated = 0, hasID = {};
+	var concentrated = 0, concentrated2 = 0; hasID = {};
 	for (var i=0; i<this.equips.length; i++) {
 		if (this.equips[i].isconcentrated) { concentrated++; }
+		if (this.equips[i].isconcentrated2) { concentrated2++; }
 		hasID[this.equips[i].mid] = hasID[this.equips[i].mid] + 1 || 1;
 	}
 	
@@ -729,6 +731,12 @@ Ship.prototype.getAACItype = function(atypes) {
 		if (atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(2);
         if (atypes[A_HAGUN] >= 2) types.push(3);
 	}else{
+		if([546,911,916].indexOf(this.mid) != -1) { // Yamato Class Kai Ni
+            if (hasID[464] >= 2 && this.hasYamatoRadar && concentrated2) types.push(42);
+            if (hasID[464] >= 2 && this.hasYamatoRadar) types.push(43);
+            if (hasID[464] && this.hasYamatoRadar && concentrated2) types.push(44);
+            if (hasID[464] && this.hasYamatoRadar) types.push(45);
+        }
         if(this.sclass == 91) { //Fletcher class
             if (hasID[308] >= 2) types.push(34);
             if (hasID[308] && (hasID[284] || hasID[313])) types.push(35);
@@ -763,7 +771,7 @@ Ship.prototype.getAACItype = function(atypes) {
         if (atypes[A_HAFD] && atypes[A_AIRRADAR]) types.push(8); //changed 8 > 7 some time between 2018-04-21 - 2019-04-24, too minor for mechanic toggle
         if (atypes[A_HAGUN] && atypes[A_AAFD] && atypes[A_AIRRADAR]) types.push(7);
         
-        if (this.mid == 546 && hasID[275] && atypes[A_AIRRADAR]) types.push(26); //Musashi Kai Ni
+        if ([546,911,916].indexOf(this.mid) != -1 && hasID[275] && atypes[A_AIRRADAR]) types.push(26); //Yamato Class Kai Ni
         if ([82,88,553,554,148,546].indexOf(this.mid) != -1 && hasID[274] && atypes[A_AIRRADAR]) types.push(28); //Ise-class Kai (Ni) + Musashi Kai (Ni)
         if ((this.mid == 557 || this.mid == 558) && atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(29); //Isokaze+Hamakaze B Kai
         
@@ -818,6 +826,7 @@ Ship.prototype.reset = function(notHP,notMorale) {
 	if (this.repairsOrig) this.repairs = this.repairsOrig.slice();
 	if (this.side==0 && isPlayable(this.mid)) this.protection = true;
 	if (this.retreated) this.retreated = false;
+	if (this.didSpecial) delete this.didSpecial;
 	delete this._fuelUnderway;
     delete this._ammoUnderway;
     this.setProficiencyBonus(true);
@@ -1695,8 +1704,9 @@ function Equip(equipid,level,rank,forLBAS) {
 	if (eq.atype == null && EQTDATA[eq.type].atype) {
 		this.atype = EQTDATA[eq.type].atype;
 		if (this.atype == A_HAGUN && this.AA >= 8) this.atype = A_HAFD;
-		if (this.atype == A_AAGUN && this.AA >= 9) this.isconcentrated = true;
     }
+	if (this.atype == A_AAGUN && this.AA >= 9) this.isconcentrated = true;
+	if (this.atype == A_AAGUN && this.AA >= 6) this.isconcentrated2 = true;
     
     this.improves = {};
     if (level) this.setImprovement(level);

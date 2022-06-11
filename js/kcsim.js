@@ -85,6 +85,10 @@ var AACIDATA = {
 	39:{numA:6,numB:5,num:11,rate:.6,mod:1.7,equip:'BB',rollIndiv:true},
 	40:{numA:6,numB:5,num:11,rate:.6,mod:1.7,equip:'BBR',rollIndiv:true},
 	41:{num:10,rate:.6,mod:1.65,equip:'BB',rollIndiv:true},
+	42:{num:10,rate:.65,mod:1.65,equip:'BBRG'},
+	43:{num:8,rate:.6,mod:1.6,equip:'BBR'},
+	44:{num:6,rate:.55,mod:1.6,equip:'BRG'},
+	45:{num:5,rate:.5,mod:1.55,equip:'BR'},
 };
 
 var ARTILLERYSPOTDATA = {
@@ -153,11 +157,13 @@ var SIMCONSTS = {
 	vanguardEvShellOther: [7,7,7,7,15,20,20],
 	vanguardEvTorpDD: [15,15,45,55,65,75,75],
 	vanguardEvTorpOther: [15,15,15,45,45,55,55],
-	nelsonTouchRate: 60,
-	nagatoSpecialRate: 60,
-	mutsuSpecialRate: 60,
-	coloradoSpecialRate: 60,
-	kongouSpecialRate: 60,
+	nelsonTouchRate: 70,
+	nagatoSpecialRate: 70,
+	mutsuSpecialRate: 70,
+	coloradoSpecialRate: 70,
+	kongouSpecialRate: 70,
+	yamato3SpecialRate: 70,
+	yamato2SpecialRate: 70,
 	airRaidCostW6: false,
 	strikingForceRetreat: true,
 	torpSquadronRetreat: true,
@@ -776,63 +782,105 @@ function shellPhaseAttack(ship,targetData,APIhou,isOASW,attackSpecial) {
 }
 
 function canSpecialAttack(ship) {
-	if (ship.fleet.didSpecial) return false;
-	if (ship.attackSpecial == 100) {
-		if (ship.fleet.ships[0] != ship || ship.isescort) return false;
-		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 6) return false;
-		if (ship.fleet.formation.id != 12 && ship.fleet.formation.id != 2) return false;
-		if (ship.HP/ship.maxHP <= .5) return false;
-		if (ship.fleet.ships[2].CVshelltype || ship.fleet.ships[4].CVshelltype) return false;
-		return Math.random() < SIMCONSTS.nelsonTouchRate/100;
-	} else if (ship.attackSpecial == 101 || ship.attackSpecial == 102) {
-		if (ship.fleet.ships[0] != ship || ship.isescort) return false;
-		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 6) return false;
-		if (ship.fleet.formation.id != 12 && ship.fleet.formation.id != 4) return false;
-		if (ship.HP/ship.maxHP <= .5) return false;
-		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[1].type) == -1) return false;
-		if (ship.fleet.ships[1].HP/ship.fleet.ships[1].maxHP <= .25) return false;
-		let rate = (ship.attackSpecial == 101)? SIMCONSTS.nagatoSpecialRate : SIMCONSTS.mutsuSpecialRate;
-		return Math.random() < rate/100;
-	} else if (ship.attackSpecial == 103) {
-		if (ship.fleet.ships[0] != ship || ship.isescort) return false;
-		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 6) return false;
-		if (ship.fleet.formation.id != 12 && ship.fleet.formation.id != 4) return false;
-		if (ship.HP/ship.maxHP <= .5) return false;
-		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[1].type) == -1 || ship.fleet.ships[1].HP / ship.fleet.ships[1].maxHP <= .25) return false;
-		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[2].type) == -1 || ship.fleet.ships[2].HP / ship.fleet.ships[2].maxHP <= .25) return false;
-		let rate = SIMCONSTS.coloradoSpecialRate;
-		return Math.random() < rate/100;
+	if (!ship.attackSpecial) return 0;
+	if (ship.fleet.didSpecial) return 0;
+	if (ship.attackSpecial.indexOf(100) !== -1) {
+		let flag = true;
+		if (ship.fleet.ships[0] != ship || ship.isescort) flag = false;
+		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 6) flag = false;
+		if (ship.fleet.formation.id != 12 && ship.fleet.formation.id != 2) flag = false;
+		if (ship.HP/ship.maxHP <= .5) flag = false;
+		if (ship.fleet.ships[2].CVshelltype || ship.fleet.ships[4].CVshelltype) flag = false;
+		if (flag && Math.random() < SIMCONSTS.nelsonTouchRate/100) return 100;
 	}
-	return false;
+	if (ship.attackSpecial.indexOf(101) !== -1) {
+		let flag = true;
+		if (ship.fleet.ships[0] != ship || ship.isescort) flag = false;
+		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 6) flag = false;
+		if (ship.fleet.formation.id != 12 && ship.fleet.formation.id != 4) flag = false;
+		if (ship.HP/ship.maxHP <= .5) flag = false;
+		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[1].type) == -1) flag = false;
+		if (ship.fleet.ships[1].HP/ship.fleet.ships[1].maxHP <= .25) flag = false;
+		if (flag && Math.random() < SIMCONSTS.nagatoSpecialRate/100) return 101;
+	}
+	if (ship.attackSpecial.indexOf(102) !== -1) {
+		let flag = true;
+		if (ship.fleet.ships[0] != ship || ship.isescort) flag = false;
+		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 6) flag = false;
+		if (ship.fleet.formation.id != 12 && ship.fleet.formation.id != 4) flag = false;
+		if (ship.HP/ship.maxHP <= .5) flag = false;
+		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[1].type) == -1) flag = false;
+		if (ship.fleet.ships[1].HP/ship.fleet.ships[1].maxHP <= .25) flag = false;
+		if (flag && Math.random() < SIMCONSTS.mutsuSpecialRate/100) return 102;
+	} 
+	if (ship.attackSpecial.indexOf(103) !== -1) {
+		let flag = true;
+		if (ship.fleet.ships[0] != ship || ship.isescort) flag = false;
+		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 6) flag = false;
+		if (ship.fleet.formation.id != 12 && ship.fleet.formation.id != 4) flag = false;
+		if (ship.HP/ship.maxHP <= .5) flag = false;
+		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[1].type) == -1 || ship.fleet.ships[1].HP / ship.fleet.ships[1].maxHP <= .25) flag = false;
+		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[2].type) == -1 || ship.fleet.ships[2].HP / ship.fleet.ships[2].maxHP <= .25) flag = false;
+		if (flag && Math.random() < SIMCONSTS.coloradoSpecialRate/100) return 103;
+	}
+	if (ship.attackSpecial.indexOf(400) !== -1) {
+		let flag = true
+		if (ship.fleet.ships[0] != ship || ship.isescort) flag = false;
+		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 6) flag = false;
+		if (ship.fleet.formation.id != 14 && ship.fleet.formation.id != 4) flag = false;
+		if (ship.HP/ship.maxHP <= .5) flag = false;
+		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[1].type) == -1 || ship.fleet.ships[1].HP / ship.fleet.ships[1].maxHP <= .5) flag = false;
+		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[2].type) == -1 || ship.fleet.ships[2].HP / ship.fleet.ships[2].maxHP <= .5) flag = false;
+		let pairArray = [[546,541],[546,573],[541,573],[553,554],[411,412],[576,364],[446,447],[591,592],[659,697]];
+		if (!pairArray.some((pair) => pair.indexOf(ship.fleet.ships[1].mid) !== -1 && pair.indexOf(ship.fleet.ships[2].mid) !== -1)) flag = false;
+		if (ship.fleet.ships[2].mid == 546) flag = false;
+		if (flag && Math.random() < SIMCONSTS.yamato3SpecialRate/100) return 400;
+	} 
+	if (ship.attackSpecial.indexOf(401) !== -1) {
+		let flag = true;
+		if (ship.fleet.ships[0] != ship || ship.isescort) flag = false;
+		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 6) flag = false;
+		if (ship.fleet.formation.id != 14 && ship.fleet.formation.id != 4) flag = false;
+		if (ship.HP/ship.maxHP <= .5) flag = false;
+		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[1].type) == -1 || ship.fleet.ships[1].HP / ship.fleet.ships[1].maxHP <= .5) flag = false;
+		if (ship.mid == 546) {
+			if ([911,916].indexOf(ship.fleet.ships[1].mid) === -1) flag = false;
+		} else {
+			if ([546,178,360,392].indexOf(ship.fleet.ships[1].mid) === -1) flag = false;
+		}
+		if (flag && Math.random() < SIMCONSTS.yamato2SpecialRate/100) return 401;
+	}
+	return 0;
 }
 
 function canSpecialAttackNB(ship) {
-	if (ship.fleet.didSpecialNB[0] && ship.fleet.didSpecialNB[1]) return false;
-	if (ship.attackSpecial == 104) {
-		if (ship.fleet.ships[0] != ship) return false;
-		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 5) return false;
-		if (ship.fleet.formation.id != 1 && ship.fleet.formation.id != 4 && ship.fleet.formation.id != 12 && ship.fleet.formation.id != 14) return false;
+	if (!ship.attackSpecial) return 0;
+	if (ship.fleet.didSpecialNB[0] && ship.fleet.didSpecialNB[1]) return 0;
+	if (ship.attackSpecial.indexOf(104) !== -1) {
+		if (ship.fleet.ships[0] != ship) return 0;
+		if (ship.fleet.ships.filter(ship => ship.HP > 0 && !ship.retreated && !ship.isSub).length < 5) return 0;
+		if (ship.fleet.formation.id != 1 && ship.fleet.formation.id != 4 && ship.fleet.formation.id != 12 && ship.fleet.formation.id != 14) return 0;
 		for (let i=0; i<=1; i++) {
 			let s = ship.fleet.ships[i];
-			if (s.HP/s.maxHP <= .5) return false;
+			if (s.HP/s.maxHP <= .5) return 0;
 		}
-		if (ship.mid == 591 && [592,151,439,364].indexOf(ship.fleet.ships[1].mid) == -1) return false;
-		if (ship.mid == 592 && [591,152].indexOf(ship.fleet.ships[1].mid) == -1) return false;
+		if (ship.mid == 591 && [592,151,439,364].indexOf(ship.fleet.ships[1].mid) == -1) return 0;
+		if (ship.mid == 592 && [591,152].indexOf(ship.fleet.ships[1].mid) == -1) return 0;
 		let rate = SIMCONSTS.kongouSpecialRate/100;
 		if (ship.hasLOSRadar2) rate += (ship.mid == 591)? .3 : .1;
 		if (ship.equiptypes[SEARCHLIGHTL]) rate += (ship.mid == 592)? .3 : .1;
-		return Math.random() < rate;
+		return Math.random() < rate? 104 : 0;
 	}
-	return false;
+	return 0;
 }
 
 function getSpecialAttackShips(ships,attackSpecial) {
 	let attackers;
-	if (attackSpecial == 101 || attackSpecial == 102) {
+	if (attackSpecial == 101 || attackSpecial == 102 || attackSpecial == 401) {
 		attackers = [ships[0], ships[0], ships[1]];
 	} else if (attackSpecial == 100) {
 		attackers = [ships[0], ships[2], ships[4]];
-	} else if (attackSpecial == 103) {
+	} else if (attackSpecial == 103 || attackSpecial == 400) {
 		attackers = [ships[0], ships[1], ships[2]];
 	} else if (attackSpecial == 104) {
 		attackers = [ships[0], ships[1]];
@@ -875,6 +923,24 @@ function getSpecialAttackMod(ship,attackSpecial) {
 		mod = 2.2;
 		if (ENGAGEMENT == 1.2) mod *= 1.25;
 		else if (ENGAGEMENT == .6) mod *= .8;
+	} else if (attackSpecial == 400) {
+		mod = 1.5;
+		if (ship.isflagship && [546,541,573,553,554].indexOf(ship.fleet.ships[1].mid)) mod *= 1.1;
+		if (ship.num == 2) {
+			if (ship.mid == 546) mod *= 1.2;
+			else if ([541,573].indexOf(ship.mid) !== -1) mod *= 1.1;
+			else if ([553,554].indexOf(ship.mid) !== -1) mod *= 1.05;
+		}
+		if (ship.num == 3) mod *= 1.1;
+		if (ship.equiptypesB[B_APSHELL]) mod *= 1.35;
+		if (ship.hasLOSRadar) mod *= 1.15;
+		if (ship.hasYamatoRadar && ship.num <= 2) mod *= 1.1;
+	} else if (attackSpecial == 401) {
+		mod = (ship.isflagship)? 1.4 : 1.55;
+		if ([546,911,916].indexOf(ship.fleet.ships[1].mid) !== -1) mod *= (ship.isflagship)? 1.1 : 1.2;
+		if (ship.equiptypesB[B_APSHELL]) mod *= 1.35;
+		if (ship.hasLOSRadar) mod *= 1.15;
+		if (ship.hasYamatoRadar) mod *= 1.1;
 	}
 	return mod;
 }
@@ -885,11 +951,28 @@ function getSpecialAttackAccMod(attackSpecial){
 			return 1.05;
 		case 101:
 		case 102:
-			return 1.2;
 		case 103:
+		case 400:
+		case 401:
 			return 1.2;
 		case 104:
 			return 1.3;
+	}
+	return 1;
+}
+
+function getSpecialAttackCost(attackSpecial){
+	switch(attackSpecial){
+		case 101:
+		case 102:
+		case 103:
+			return 1.5;
+		case 104:
+			return 1.2;
+		case 400:
+			return 1.8;
+		case 401:
+			return 1.6;
 	}
 	return 1;
 }
@@ -902,13 +985,15 @@ function shellPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,APIhou,isO
 	let numRounds = Math.max(order1.length,order2.length);
 	for (var i=0; i<numRounds; i++) {
 		if (i < order1.length && order1[i].canStillShell()) {
-			if (canSpecialAttack(order1[i])) {
-				let ships = getSpecialAttackShips(order1[i].fleet.ships,order1[i].attackSpecial);
+			let attackSpecialId = canSpecialAttack(order1[i]);
+			if (attackSpecialId) {
+				let ships = getSpecialAttackShips(order1[i].fleet.ships,attackSpecialId);
 				let k = 0;
 				for (; k<ships.length; k++) {
 					if (alive2.length <= 0) break;
 					var targetData = shellPhaseTarget(ships[k],alive2,[]);
-					shellPhaseAttack(ships[k],targetData,APIhou,isOASW,order1[i].attackSpecial);
+					shellPhaseAttack(ships[k],targetData,APIhou,isOASW,attackSpecialId);
+					ships[k].didSpecial = attackSpecialId;
 				}
 				order1[i].fleet.didSpecial = 1;
 				if (C) {
@@ -948,12 +1033,14 @@ function shellPhaseC(order1,order2,targets,APIhou,isOASW) {
 	let numRounds = Math.max(order1.length,order2.length);
 	for (var i=0; i<numRounds; i++) {
 		if (i < order1.length && order1[i].canStillShell()) {
-			if (canSpecialAttack(order1[i])) {
-				let ships = getSpecialAttackShips(order1[i].fleet.ships,order1[i].attackSpecial);
+			let attackSpecialId = canSpecialAttack(order1[i]);
+			if (attackSpecialId) {
+				let ships = getSpecialAttackShips(order1[i].fleet.ships,attackSpecialId);
 				let k=0;
 				for (; k<ships.length; k++) {
 					if (targets.alive2.length + targets.alive2C.length <= 0) break;
-					doShellC(ships[k],targets,APIhou,isOASW,order1[i].attackSpecial);
+					doShellC(ships[k],targets,APIhou,isOASW,attackSpecialId);
+					ships[k].didSpecial = attackSpecialId;
 				}
 				order1[i].fleet.didSpecial = 1;
 				if (C) {
@@ -1024,15 +1111,17 @@ function nightPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,NBonly,API
 	let numRounds = Math.max(order1.length,order2.length);
 	for (var i=0; i<numRounds; i++) {
 		if (i < order1.length && order1[i].canNB()) {
-			if (canSpecialAttack(order1[i]) || canSpecialAttackNB(order1[i])) {
-				let ships = getSpecialAttackShips(order1[i].fleet.ships,order1[i].attackSpecial);
+			let attackSpecialId = canSpecialAttack(order1[i]) || canSpecialAttackNB(order1[i]);
+			if (attackSpecialId) {
+				let ships = getSpecialAttackShips(order1[i].fleet.ships,attackSpecialId);
 				let k=0;
 				for (; k<ships.length; k++) {
 					if (alive2.length <= 0) break;
 					var target = choiceWProtect(alive2,slrerolls2,true);
-					if (NBattack(ships[k],target,NBonly,[[star1,star2],[light1,light2],[scout1,scout2]],APIhou,order1[i].attackSpecial)) alive2.splice(alive2.indexOf(target),1);
+					if (NBattack(ships[k],target,NBonly,[[star1,star2],[light1,light2],[scout1,scout2]],APIhou,attackSpecialId)) alive2.splice(alive2.indexOf(target),1);
+					ships[k].didSpecial = attackSpecialId;
 				}
-				if (ships[0].attackSpecial == 104) {
+				if (attackSpecialId == 104) {
 					if (order1[i].fleet.didSpecialNB[0]) order1[i].fleet.didSpecialNB[1] = 1;
 					else order1[i].fleet.didSpecialNB[0] = 1;
 				} else order1[i].fleet.didSpecial = 1;
@@ -2683,22 +2772,6 @@ function getRankRaid(ships1) {
 }
 
 function updateSupply(ships,targets,didNB,NBonly,bombing,noammo,isECombined) {
-	let costSpecial = null, shipsSpecial = null;
-	if (ships[0].fleet.didSpecial == 1) {
-		if (ships[0].attackSpecial == 101 || ships[0].attackSpecial == 102 || ships[0].attackSpecial == 103) costSpecial = 1.5;
-		if (costSpecial) shipsSpecial = getSpecialAttackShips(ships,ships[0].attackSpecial);
-		ships[0].fleet.didSpecial = 2;
-	}
-	if (ships[0].fleet.didSpecialNB[0] == 1) {
-		if (ships[0].attackSpecial == 104) costSpecial = 1.2;
-		if (costSpecial) shipsSpecial = getSpecialAttackShips(ships,ships[0].attackSpecial);
-		ships[0].fleet.didSpecialNB[0] = 2;
-	}
-	if (ships[0].fleet.didSpecialNB[1] == 1) {
-		if (ships[0].attackSpecial == 104) costSpecial = 1.2;
-		if (costSpecial) shipsSpecial = getSpecialAttackShips(ships,ships[0].attackSpecial);
-		ships[0].fleet.didSpecialNB[1] = 2;
-	}
 	let costFuel = 0, costAmmo = 0;
 	if (MECHANICS.newSupply) {
 		let allPT = true;
@@ -2745,7 +2818,10 @@ function updateSupply(ships,targets,didNB,NBonly,bombing,noammo,isECombined) {
 		if (costAmmo > 0) {
 			let subAmmo = Math.floor(ammoMax * costAmmo) || 1;
 			if (didNB && !isECombined) subAmmo += Math.ceil(ammoMax * costAmmo/2);
-			if (costSpecial && shipsSpecial.indexOf(ships[i]) != -1 && (!isECombined || !didNB)) subAmmo = Math.floor(subAmmo*costSpecial);
+			if (ships[i].didSpecial) {
+				if (!isECombined || !didNB) subAmmo = Math.floor(subAmmo*getSpecialAttackCost(ships[i].didSpecial));
+				delete ships[i].didSpecial;
+			}
 			ships[i].ammoleft -= 10*subAmmo/ammoMax;
 			if (ships[i].ammoleft < 0) ships[i].ammoleft = 0;
 		}

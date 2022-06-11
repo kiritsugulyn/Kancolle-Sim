@@ -155,11 +155,13 @@
 			<br>
 			<span>Special Attack Activation Rate:</span><br>
 			<table>
-			<tr><td>Nelson Touch:</td><td><input type="number" min="0" max="100" value="60" onchange="SIMCONSTS.nelsonTouchRate = +this.value;raiseFleetChange()" />%</td></tr>
-			<tr><td>Nagato Cut-In:</td><td><input type="number" min="0" max="100" value="60" onchange="SIMCONSTS.nagatoSpecialRate = +this.value;raiseFleetChange()" />%</td></tr>
-			<tr><td>Mutsu Cut-In:</td><td><input type="number" min="0" max="100" value="60" onchange="SIMCONSTS.mutsuSpecialRate = +this.value;raiseFleetChange()" />%</td></tr>
-			<tr><td>Colorado Cut-In:</td><td><input type="number" min="0" max="100" value="60" onchange="SIMCONSTS.coloradoSpecialRate = +this.value;raiseFleetChange()" />%</td></tr>
-			<tr><td>Kongou Cut-In:</td><td><input type="number" min="0" max="100" value="60" onchange="SIMCONSTS.kongouSpecialRate = +this.value;raiseFleetChange()" />%</td></tr>
+			<tr><td>Nelson Touch:</td><td><input type="number" min="0" max="100" value="70" onchange="SIMCONSTS.nelsonTouchRate = +this.value;raiseFleetChange()" />%</td></tr>
+			<tr><td>Nagato Cut-In:</td><td><input type="number" min="0" max="100" value="70" onchange="SIMCONSTS.nagatoSpecialRate = +this.value;raiseFleetChange()" />%</td></tr>
+			<tr><td>Mutsu Cut-In:</td><td><input type="number" min="0" max="100" value="70" onchange="SIMCONSTS.mutsuSpecialRate = +this.value;raiseFleetChange()" />%</td></tr>
+			<tr><td>Colorado Cut-In:</td><td><input type="number" min="0" max="100" value="70" onchange="SIMCONSTS.coloradoSpecialRate = +this.value;raiseFleetChange()" />%</td></tr>
+			<tr><td>Kongou Cut-In:</td><td><input type="number" min="0" max="100" value="70" onchange="SIMCONSTS.kongouSpecialRate = +this.value;raiseFleetChange()" />%</td></tr>
+			<tr><td>Yamato Cut-In (3 Ships):</td><td><input type="number" min="0" max="100" value="70" onchange="SIMCONSTS.yamato3SpecialRate = +this.value;raiseFleetChange()" />%</td></tr>
+			<tr><td>Yamato Cut-In (2 Ships):</td><td><input type="number" min="0" max="100" value="70" onchange="SIMCONSTS.yamato2SpecialRate = +this.value;raiseFleetChange()" />%</td></tr>
 			</table>
 			<br>
 			<input type="checkbox" id="advCostW6" onchange="SIMCONSTS.airRaidCostW6=this.checked;raiseFleetChange()" /><label for="advCostW6">Use World 6 costs for Air Raid (4% <img src="assets/stats/fuel.png" /> 8% <img src="assets/stats/ammo.png" />)</label><br>
