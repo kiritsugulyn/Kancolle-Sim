@@ -30363,11 +30363,12 @@ var SHIPDATA = {
 	},
 	2108: {
 		name: 'Aircraft Carrier Princess B 4',
-		nameJP: '空母棲姫改',
+		nameJP: '空母棲姫II',
 		image: 'S2105.jpg',
 		type: 'CV',
 		nightattack: 1,
 		canCVCI: true,
+		hasBuiltInNightCrew: true,
 		HP: 790,
 		FP: 228,
 		TP: 0,
@@ -30381,7 +30382,7 @@ var SHIPDATA = {
 		RNG: 4,
 		SPD: 10,
 		SLOTS: [72, 48, 48, 48],
-		EQUIPS: [581, 575, 583, 583],
+		EQUIPS: [581, 575, 582, 583],
 	},
 	2111: {
 		name: 'Modernized Battleship Princess 3',
