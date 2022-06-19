@@ -1449,7 +1449,7 @@ CVL.prototype.canASW = function() {
 	return false;
 }
 CVL.prototype.canOASW = function() {
-    if ([380, 381, 529, 536].indexOf(this.mid) !== -1) return this.equips.some((eq) => eq.ASW >= 1 && [DIVEBOMBER, TORPBOMBER, AUTOGYRO, ASWPLANE].indexOf(eq.type) !== -1);
+    if ([380,381,382,529,536,889].indexOf(this.mid) !== -1) return this.equips.some((eq) => eq.ASW >= 1 && [DIVEBOMBER, TORPBOMBER, AUTOGYRO, ASWPLANE].indexOf(eq.type) !== -1);
     
     let found = this.equips.some((eq) => eq.ASW >= 7 && [TORPBOMBER, AUTOGYRO, ASWPLANE].indexOf(eq.type) !== -1);
     if (!found) return this.ASW + (this.ASWBonus || 0) >= this.OASWstat && this.equiptypesB[B_SONAR] && isPlayable(this.mid);
