@@ -3846,12 +3846,25 @@ function getSpecialEquipBonus(ship,target,plane,isAcc){
 		if (!plane) return specialMod;
 		bonuses.forEach((bonus) => {
 			if (bonus.excludeLBAS) return;
-			let flag = false;
-			if (bonus.eqtypes) flag = bonus.eqtypes.indexOf(plane.type) !== -1;
-			else if (bonus.eqids) flag = bonus.eqids.indexOf(plane.mid) !== -1;
-			if (flag) {
-				if (typeof bonus.mod === 'object') specialMod *= (bonus.mod[0] || 1);
-				else specialMod *= (bonus.mod || 1);
+			if (bonus.LBASShare) {
+				let count = 0;
+				if (bonus.eqtypes) count = ship.equips.filter((eq,i) => bonus.eqtypes.indexOf(eq.type) !== -1 && (bonus.noPlaneCheck || ship.planecount[i] > 0)).length;
+				else if (bonus.eqids) count = ship.equips.filter((eq,i) => bonus.eqids.indexOf(eq.mid) !== -1 && (bonus.noPlaneCheck || ship.planecount[i] > 0)).length;
+				if (count > 0) {
+					if (typeof bonus.mod === 'object'){
+						count = count > bonus.mod.length? bonus.mod.length: count;
+						specialMod *= (bonus.mod[count-1] || 1);
+					}
+					else specialMod *= (bonus.mod || 1);
+				}
+			} else {
+				let flag = false;
+				if (bonus.eqtypes) flag = bonus.eqtypes.indexOf(plane.type) !== -1;
+				else if (bonus.eqids) flag = bonus.eqids.indexOf(plane.mid) !== -1;
+				if (flag) {
+					if (typeof bonus.mod === 'object') specialMod *= (bonus.mod[0] || 1);
+					else specialMod *= (bonus.mod || 1);
+				}
 			}
 		});
 		return specialMod;
