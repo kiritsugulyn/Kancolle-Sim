@@ -631,6 +631,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 						break;
 					case 64:
 						si_list = [btypeMap[B_NIGHTFIGHTER][0]||btypeMap[B_NIGHTBOMBER][0],btypeAll.filter(mid => mid === 320)[0]];
+						break;
 					default:
 						si_list = [-1];
 						break;
@@ -912,13 +913,14 @@ function getSpecialAttackMod(ship,attackSpecial) {
 		if (ship.equiptypesB[B_APSHELL]) mod *= 1.35;
 		if (ship.hasLOSRadar) mod *= 1.15;
 	} else if (attackSpecial == 103) {
-		if (ship.isflagship) mod = 1.3;
+		if (ship.isflagship) mod = 1.5;
 		else {
-			mod = 1.15;
-			if ([19,88,93].indexOf(ship.sclass) != -1) mod *= (ship.num == 2? 1.1 : 1.15);
+			mod = 1.3;
+			if ([19,88,93].indexOf(ship.sclass) != -1) mod *= (ship.num == 2? 1.15 : 1.17);
 		}
 		if (ship.equiptypesB[B_APSHELL]) mod *= 1.35;
 		if (ship.hasLOSRadar) mod *= 1.15;
+		if (ship.hasSGLateModel) mod *= 1.15;
 	} else if (attackSpecial == 104) {
 		mod = 2.2;
 		if (ENGAGEMENT == 1.2) mod *= 1.25;
@@ -2281,10 +2283,15 @@ function airstrikeLBAS(lbas,target,slot,contactMod,isjetphase) {
 			if (target.type == 'DD') ACCplane -= 7;
 			else if (target.type == 'CL') ACCplane += 7;
 		}
-		else if (equip.mid == 453 && target.type == 'DD') ACCplane += 7;
+		else if (equip.mid == 453) {
+			if (target.type == 'DD') ACCplane += 7;
+		}
 		else if (equip.mid == 454) {
 			if (target.type == 'DD') ACCplane -= 14;
 			else if (target.type == 'CL') ACCplane += 7;
+		}
+		else if (equip.mid == 459) {
+			if (['DD','CL'].indexOf(target.type) !== -1) ACCplane += 21;
 		}
 	}
 	lbas.critratebonus = critratebonus; lbas.ACCplane = ACCplane;
@@ -2311,6 +2318,14 @@ function airstrikeLBAS(lbas,target,slot,contactMod,isjetphase) {
 			preMod = (equip.ASW >= 10)? .7 + Math.random()*.3 : .35 + Math.random()*.45;
 		}
 		preMod *= (target.LBWeak || 1);
+		if (equip.mid == 459 && !target.isInstall) {
+			switch(target.type) {
+				case 'DD': preMod *= 1.9; break;
+				case 'CL': preMod *= 1.75; break;
+				case 'CA': preMod *= 1.6; break;
+				default: preMod *= 1.3; break;
+			}
+		}
 		var postMod = (equip.type == LANDBOMBER)? 1.8 : 1;
 		postMod *= contactMod;
 		if (target.fleet.combinedWith) postMod *= 1.1;

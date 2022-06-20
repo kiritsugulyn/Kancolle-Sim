@@ -277,6 +277,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (eq.btype == B_RADAR && eq.LOS >= 5) this.hasLOSRadar = true;
 		if (eq.btype == B_RADAR && eq.LOS >= 8) this.hasLOSRadar2 = true;
 		if ([142,460].indexOf(eq.mid) !== -1) this.hasYamatoRadar = true;
+		if (eq.mid == 456) this.hasSGLateModel = true;
 		
 		if (eq.CANBbonus && this.type=='CA'||this.type=='CAV') {
 			if (!this.ACCnbca || this.ACCnbca > eq.CANBbonus) this.ACCnbca = eq.CANBbonus; //10 overrides 15
@@ -1905,6 +1906,10 @@ Equip.explicitStatsBonusGears = function(){
 			rangefinderAirRadarIds: [142, 460],
 			rangefinderKaiAirRadar: 0,
 			rangefinderKaiAirRadarIds: [460],
+			usNavySurfaceRadar: 0,
+			usNavySurfaceRadarIds: [279, 307, 315, 456],
+			usNavyAirRadar: 0,
+			usNavyAirRadarIds: [278, 279],
 		},
 		// getCountryName by ctype in main.js#SlotItemEffectParamModel.SHIP_COUNTRY
 		"countryCtypeMap": {
@@ -1976,6 +1981,27 @@ Equip.explicitStatsBonusGears = function(){
 					// extra +1 fp, +1 ev for Akagi Kai Ni E, Kaga K2E
 					ids: [599, 610],
 					multiple: { "houg": 1, "houk": 1 },
+				},
+			],
+		},
+		// Ryuusei Kai (Skilled)
+		"466": {
+			count: 0,
+			byShip: [
+				{
+					// Akagi Kai, Kaga Kai, Taihou Kai, Shoukaku Kai, Zuikaku Kai, Hiryuu Kai, Souryuu Kai
+					ids: [277, 278, 156, 288, 112, 280, 279],
+					multiple: { "houg": 1, "houm": 1 },
+				},
+				{
+					// Shoukaku K2/K2A, Zuikaku K2/K2A
+					ids: [461, 466, 462, 467],
+					multiple: { "houg": 1, "houk": 2, "houm": 1 },
+				},
+				{
+					// Akagi K2/K2E, Kaga K2/K2Go/K2E, Hiryuu K2, Souryuu K2
+					ids: [594, 698, 646, 599, 610, 196, 197],
+					multiple: { "houg": 1, "houk": 1, "houm": 2 },
 				},
 			],
 		},
@@ -5630,6 +5656,37 @@ Equip.explicitStatsBonusGears = function(){
 				},
 			},
 		},
+		// 5inch Twin Gun Mount (Secondary Armament) Concentrated Deployment
+		"467": {
+			count: 0,
+			byNation: {
+				"UnitedStates": {
+					multiple: { "houg": 1, "tyku": 1, "houk": 2 },
+					synergy: [
+						{
+							flags: [ "usNavySurfaceRadar" ],
+							single: { "houg": 1, "tyku": 1, "houk": 1, "houm": 2 },
+						},
+						{
+							flags: [ "usNavyAirRadar" ],
+							single: { "tyku": 2, "houk": 2 },
+						},
+					],
+				},
+			},
+			byClass: {
+				// Iowa Class
+				"65": {
+					multiple: { "tyku": 2, "houk": 1 },
+				},
+				// Colorado Class
+				"93": "65",
+				// South Dakota Class
+				"102": "65",
+				// North Carolina Class
+				"107": "65",
+			},
+		},
 		// 6inch Twin Rapid Fire Gun Mount Mk.XXI
 		"359": {
 			count: 0,
@@ -7793,10 +7850,10 @@ Equip.explicitStatsBonusGears = function(){
 			count: 0,
 			byNation: {
 				"UnitedStates": {
-					multiple: { "houg": 3, "houk": 4, "saku": 4 },
+					multiple: { "houg": 3, "houk": 4, "saku": 4, "houm": 3 },
 				},
 				"UnitedKingdom": {
-					multiple: { "houg": 2, "houk": 2, "saku": 2 },
+					multiple: { "houg": 2, "houk": 2, "saku": 2, "houm": 2 },
 				},
 				"Australia": "UnitedKingdom",
 			},
@@ -7816,7 +7873,7 @@ Equip.explicitStatsBonusGears = function(){
 			byShip: {
 				// Tan Yang/Yukikaze K2
 				ids: [651, 656],
-				single: { "houg": 2, "houk": 2, "saku": 3, "leng": 1 },
+				single: { "houg": 2, "houk": 2, "saku": 3, "houm": 2, "leng": 1 },
 			},
 		},
 		// Type 13 Air Radar Kai
@@ -9420,6 +9477,8 @@ Equip.accumulateShipBonusGear = function(bonusGears, equip){
         if(synergyGears.domesticSonarIds.includes(equip.mid)) synergyGears.domesticSonar += 1;
 		if(synergyGears.rangefinderAirRadarIds.includes(equip.mid)) synergyGears.rangefinderAirRadar += 1;
 		if(synergyGears.rangefinderKaiAirRadarIds.includes(equip.mid)) synergyGears.rangefinderKaiAirRadar += 1;
+		if(synergyGears.usNavySurfaceRadarIds.includes(equip.mid)) synergyGears.usNavySurfaceRadar += 1;
+		if(synergyGears.usNavyAirRadarIds.includes(equip.mid)) synergyGears.usNavyAirRadar += 1;
         if(equip.btype == B_RADAR && equip.LOS >= 5) synergyGears.surfaceRadar += 1;
         if(equip.atype == A_AIRRADAR) synergyGears.airRadar += 1;
         if(equip.type == AAGUN) synergyGears.aaMachineGun += 1;
