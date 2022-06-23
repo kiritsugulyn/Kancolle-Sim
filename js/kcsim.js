@@ -85,10 +85,10 @@ var AACIDATA = {
 	39:{numA:6,numB:5,num:11,rate:.6,mod:1.7,equip:'BB',rollIndiv:true},
 	40:{numA:6,numB:5,num:11,rate:.6,mod:1.7,equip:'BBR',rollIndiv:true},
 	41:{num:10,rate:.6,mod:1.65,equip:'BB',rollIndiv:true},
-	42:{num:10,rate:.65,mod:1.65,equip:'BBRG'},
-	43:{num:8,rate:.6,mod:1.6,equip:'BBR'},
-	44:{num:6,rate:.55,mod:1.6,equip:'BRG'},
-	45:{num:5,rate:.5,mod:1.55,equip:'BR'},
+	42:{num:11,rate:.65,mod:1.65,equip:'BBRG'},
+	43:{num:9,rate:.6,mod:1.6,equip:'BBR'},
+	44:{num:7,rate:.55,mod:1.6,equip:'BRG'},
+	45:{num:6,rate:.5,mod:1.55,equip:'BR'},
 };
 
 var ARTILLERYSPOTDATA = {
@@ -939,7 +939,7 @@ function getSpecialAttackMod(ship,attackSpecial) {
 		if (ship.hasYamatoRadar && ship.num <= 2) mod *= 1.1;
 	} else if (attackSpecial == 401) {
 		mod = (ship.isflagship)? 1.4 : 1.55;
-		if ([546,911,916].indexOf(ship.fleet.ships[1].mid) !== -1) mod *= (ship.isflagship)? 1.1 : 1.2;
+		if ([546,911,916].indexOf(ship.fleet.ships[1].mid) !== -1) mod *= (ship.isflagship)? 1.1 : (ship.fleet.ships[1].mid == 916? 1.25 : 1.2);
 		if (ship.equiptypesB[B_APSHELL]) mod *= 1.35;
 		if (ship.hasLOSRadar) mod *= 1.15;
 		if (ship.hasYamatoRadar) mod *= 1.1;
@@ -2278,22 +2278,23 @@ function airstrikeLBAS(lbas,target,slot,contactMod,isjetphase) {
 		critratebonus = critval*.6;
 	}
 	if (MECHANICS.LBASBuff) {
-		ACCplane += 7*(equip.ACC || 0);
+		acc += .07*(equip.ACC || 0);
 		if (equip.mid == 444) {
-			if (target.type == 'DD') ACCplane -= 7;
-			else if (target.type == 'CL') ACCplane += 7;
+			if (target.type == 'DD') acc -= .07;
+			else if (target.type == 'CL') acc += .07;
 		}
 		else if (equip.mid == 453) {
-			if (target.type == 'DD') ACCplane += 7;
+			if (target.type == 'DD') acc += .07;
 		}
 		else if (equip.mid == 454) {
-			if (target.type == 'DD') ACCplane -= 14;
-			else if (target.type == 'CL') ACCplane += 7;
+			if (target.type == 'DD') acc -= .14;
+			else if (target.type == 'CL') acc += .07;
 		}
 		else if (equip.mid == 459) {
-			if (['DD','CL'].indexOf(target.type) !== -1) ACCplane += 21;
+			if (['DD','CL'].indexOf(target.type) !== -1) acc += .21;
 		}
 	}
+	if (target.fleet.combinedWith) acc *= 1.1;
 	lbas.critratebonus = critratebonus; lbas.ACCplane = ACCplane;
 	var res = rollHit(accuracyAndCrit(lbas,target,acc,1.0,0,.2,true),critdmgbonus);  // No evMod for airstrike
 	lbas.critratebonus = 0; lbas.ACCplane = 0;

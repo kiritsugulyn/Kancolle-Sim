@@ -481,8 +481,8 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
         this.ASWBonus = this.equipmentBonusStats('tais');
         this.SPD += this.equipmentBonusStats('soku');
         this.RNG += this.equipmentBonusStats('leng');
-		this.ACCfit += this.equipmentBonusStats('houm');
-		this.ACCfitN += this.equipmentBonusStats('houm');
+		this.ACCfit = (this.ACCfit || 0) + this.equipmentBonusStats('houm');
+		this.ACCfitN = (this.ACCfitN || 0) +  this.equipmentBonusStats('houm');
 	}
 }
 Ship.prototype.getFormation = function() {
