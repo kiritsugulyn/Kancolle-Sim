@@ -832,7 +832,7 @@ function canSpecialAttack(ship) {
 		if (ship.HP/ship.maxHP <= .5) flag = false;
 		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[1].type) == -1 || ship.fleet.ships[1].HP / ship.fleet.ships[1].maxHP <= .5) flag = false;
 		if (['BB','FBB','BBV'].indexOf(ship.fleet.ships[2].type) == -1 || ship.fleet.ships[2].HP / ship.fleet.ships[2].maxHP <= .5) flag = false;
-		let pairArray = [[546,541],[546,573],[541,573],[553,554],[411,412],[576,364],[446,447],[591,592],[659,697]];
+		let pairArray = [[546,541],[546,573],[541,573],[553,554],[411,412],[576,364],[446,447],[591,592],[659,697],[1496,918]];
 		if (!pairArray.some((pair) => pair.indexOf(ship.fleet.ships[1].mid) !== -1 && pair.indexOf(ship.fleet.ships[2].mid) !== -1)) flag = false;
 		if (ship.fleet.ships[2].mid == 546) flag = false;
 		if (flag && Math.random() < SIMCONSTS.yamato3SpecialRate/100) return 400;
@@ -1282,11 +1282,12 @@ function torpedoPhase(alive1,subsalive1,alive2,subsalive2,opening,APIrai,combine
 }
 
 function airstrike(ship,target,slot,contactMod,issupport,isjetphase) {
+	var equip = ship.equips[slot];
 	if (!contactMod) contactMod = 1;
 	var acc = .95 + (target.fleet.airstrikeaccMod || 0) / 100;
-	if (issupport) acc = .85;  
+	if (issupport) acc = .85;
+	if (equip.skipBombing && !target.isInstall) acc += .2;
 	var res = rollHit(accuracyAndCrit(ship,target,acc,1.0,0,.2,!issupport),(!issupport)? (ship.critdmgbonus || 1) : 1);  // No evMod for airstrike
-	var equip = ship.equips[slot];
 	var dmg = 0, realdmg = 0;
 	var planebase = (equip.isdivebomber)? (equip.DIVEBOMB || 0) : (target.isInstall)? 0 : (equip.TP || 0);
 	if (!issupport) planebase += (equip.ASImprove || 0);
@@ -1294,6 +1295,7 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase) {
 	if (res) {
 		var preMod = (equip.isdivebomber)? 1 : ((Math.random() < .5)? .8 : 1.5);
 		if (equip.isjet && !isjetphase) preMod *= 1/Math.sqrt(2);
+		if (equip.skipBombing && !target.isInstall) preMod *= skipBombingMod(target);
 		var postMod = 1;
 		if (issupport){
 			if (MECHANICS.LBASBuff) postMod *= 1.35;
@@ -2290,10 +2292,8 @@ function airstrikeLBAS(lbas,target,slot,contactMod,isjetphase) {
 			if (target.type == 'DD') acc -= .14;
 			else if (target.type == 'CL') acc += .07;
 		}
-		else if (equip.mid == 459) {
-			if (['DD','CL'].indexOf(target.type) !== -1) acc += .21;
-		}
 	}
+	if (equip.skipBombing && !target.isInstall) acc += .2;
 	if (target.fleet.combinedWith) acc *= 1.1;
 	lbas.critratebonus = critratebonus; lbas.ACCplane = ACCplane;
 	var res = rollHit(accuracyAndCrit(lbas,target,acc,1.0,0,.2,true),critdmgbonus);  // No evMod for airstrike
@@ -2319,14 +2319,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod,isjetphase) {
 			preMod = (equip.ASW >= 10)? .7 + Math.random()*.3 : .35 + Math.random()*.45;
 		}
 		preMod *= (target.LBWeak || 1);
-		if (equip.mid == 459 && !target.isInstall) {
-			switch(target.type) {
-				case 'DD': preMod *= 1.9; break;
-				case 'CL': preMod *= 1.75; break;
-				case 'CA': preMod *= 1.6; break;
-				default: preMod *= 1.3; break;
-			}
-		}
+		if (equip.skipBombing && !target.isInstall) preMod *= skipBombingMod(target);
 		var postMod = (equip.type == LANDBOMBER)? 1.8 : 1;
 		postMod *= contactMod;
 		if (target.fleet.combinedWith) postMod *= 1.1;
@@ -4037,5 +4030,14 @@ function logFriendFleetInfo(fleet,api) {
 			api.api_friendly_info.api_voice_id.push(141);
 			api.api_friendly_info.api_voice_p_no.push(0);
 		}
+	}
+}
+
+function skipBombingMod(target) {
+	switch(target.type) {
+		case 'DD': case 'DE': return 1.9;
+		case 'CL': case 'CLT': case 'CT': return 1.75;
+		case 'CA': case 'CAV': return 1.6;
+		default: return 1.3;
 	}
 }
