@@ -173,7 +173,7 @@ var EQUIPBONUS = {
         ],
         'E-4/5': [
             {
-                mod: [1.18, 1.392, 1.643, 1.939],
+                mod: [1.18, 1.392],
                 eqids: [170, 263, 264],
                 noAccBonus: true,
                 LBASShare: true
