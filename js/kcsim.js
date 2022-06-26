@@ -1355,10 +1355,12 @@ function accuracyAndCrit(ship,target,hit,evMod,evFlat,critrateMod,isPlanes,critB
 	if (target.evimprove) dodge += target.evimprove*.01;
 	dodge *= target.bonusEva || 1;
 
-	var specialMod = 1; //e.g. equipment and historical bonus
-	if (target.equipWeak && ship.equips) specialMod *= getSpecialEquipBonus(ship,target,undefined,true);
-	specialMod *= ship.bonusAcc || 1;
-	hit *= specialMod;
+	if (!(ship.fleet && ship.fleet.supportType)) {
+		var specialMod = 1; //e.g. equipment and historical bonus
+		if (target.equipWeak && ship.equips) specialMod *= getSpecialEquipBonus(ship,target,undefined,true);
+		specialMod *= ship.bonusAcc || 1;
+		hit *= specialMod;
+	}
 	hit = Math.floor(hit*100)*.01;
 
 	if (C) console.log('	hit:'+hit.toFixed(2)+' dodge:'+dodge.toFixed(2));
