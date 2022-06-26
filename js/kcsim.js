@@ -1355,12 +1355,10 @@ function accuracyAndCrit(ship,target,hit,evMod,evFlat,critrateMod,isPlanes,critB
 	if (target.evimprove) dodge += target.evimprove*.01;
 	dodge *= target.bonusEva || 1;
 
-	if (!(ship instanceof LandBase) && !ship.fleet.supportType){
-		var specialMod = 1; //e.g. equipment and historical bonus
-		if (target.equipWeak && ship.equips) specialMod *= getSpecialEquipBonus(ship,target,undefined,true);
-		specialMod *= ship.bonusAcc || ship.bonusSpecial || 1;
-		hit *= specialMod;
-	}
+	var specialMod = 1; //e.g. equipment and historical bonus
+	if (target.equipWeak && ship.equips) specialMod *= getSpecialEquipBonus(ship,target,undefined,true);
+	specialMod *= ship.bonusAcc || 1;
+	hit *= specialMod;
 	hit = Math.floor(hit*100)*.01;
 
 	if (C) console.log('	hit:'+hit.toFixed(2)+' dodge:'+dodge.toFixed(2));
@@ -3852,19 +3850,26 @@ function getSpecialEquipBonus(ship,target,plane,isAcc){
 	var bonuses = target.equipWeak;
 
 	if (ship instanceof LandBase){
-		if (!plane) return specialMod;
 		bonuses.forEach((bonus) => {
-			if (bonus.excludeLBAS) return;
+			if ((isAcc && (!bonus.accMod || !bonus.LBASShare)) || bonus.excludeLBAS) return; // temp solution
 			if (bonus.LBASShare) {
 				let count = 0;
 				if (bonus.eqtypes) count = ship.equips.filter((eq,i) => bonus.eqtypes.indexOf(eq.type) !== -1 && (bonus.noPlaneCheck || ship.planecount[i] > 0)).length;
 				else if (bonus.eqids) count = ship.equips.filter((eq,i) => bonus.eqids.indexOf(eq.mid) !== -1 && (bonus.noPlaneCheck || ship.planecount[i] > 0)).length;
 				if (count > 0) {
-					if (typeof bonus.mod === 'object'){
-						count = count > bonus.mod.length? bonus.mod.length: count;
-						specialMod *= (bonus.mod[count-1] || 1);
+					if (isAcc) {
+						if (typeof bonus.accMod === 'object'){
+							count = count > bonus.accMod.length? bonus.accMod.length: count;
+							specialMod *= (bonus.accMod[count-1] || 1);
+						}
+						else specialMod *= (bonus.accMod || 1);
+					} else {
+						if (typeof bonus.mod === 'object'){
+							count = count > bonus.mod.length? bonus.mod.length: count;
+							specialMod *= (bonus.mod[count-1] || 1);
+						}
+						else specialMod *= (bonus.mod || 1);
 					}
-					else specialMod *= (bonus.mod || 1);
 				}
 			} else {
 				let flag = false;
@@ -3880,7 +3885,7 @@ function getSpecialEquipBonus(ship,target,plane,isAcc){
 	}
 
 	bonuses.forEach((bonus) => {
-		if (isAcc && bonus.noAccBonus) return;
+		if ((isAcc && !bonus.accMod) || bonus.LBASOnly) return;
 		let count = 0;
 		if (bonus.eqtypes) {
 			if (bonus.distinct){
@@ -3899,11 +3904,19 @@ function getSpecialEquipBonus(ship,target,plane,isAcc){
 			}
 		}
 		if (count > 0) {
-			if (typeof bonus.mod === 'object'){
-				count = count > bonus.mod.length? bonus.mod.length: count;
-				specialMod *= (bonus.mod[count-1] || 1);
+			if (isAcc) {
+				if (typeof bonus.accMod === 'object'){
+					count = count > bonus.accMod.length? bonus.accMod.length: count;
+					specialMod *= (bonus.accMod[count-1] || 1);
+				}
+				else specialMod *= (bonus.accMod || 1);
+			} else {
+				if (typeof bonus.mod === 'object'){
+					count = count > bonus.mod.length? bonus.mod.length: count;
+					specialMod *= (bonus.mod[count-1] || 1);
+				}
+				else specialMod *= (bonus.mod || 1);
 			}
-			else specialMod *= (bonus.mod || 1);
 		}
 	})
 	return specialMod;
