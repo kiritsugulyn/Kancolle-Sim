@@ -160,38 +160,7 @@ var EQUIPBONUS = {
         ],
         'E-4/5': [
             {
-                mod: [1.18, 1.392],
-                eqids: [170],
-                LBASOnly: true,
-                LBASShare: true
-            },
-            {
-                mod: [1.18, 1.392],
-                eqids: [263],
-                LBASOnly: true,
-                LBASShare: true
-            },
-            {
-                mod: [1.18, 1.392],
-                eqids: [264],
-                LBASOnly: true,
-                LBASShare: true
-            },
-            {
-                mod: [1.18, 1.392],
-                accMod: 1.15,
-                eqids: [388],
-                LBASOnly: true,
-                LBASShare: true
-            },
-            {
-                mod: [1.18, 1.392],
-                eqids: [466],
-                LBASOnly: true,
-                LBASShare: true
-            },
-            {
-                mod: 1,
+                mod: [1.18, 1.392, 1.643, 1.939],
                 accMod: 1.15,
                 eqids: [170, 263, 264, 388, 466],
                 LBASOnly: true,
