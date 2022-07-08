@@ -855,16 +855,16 @@ Ship.prototype.airPowerSupport = function(){
 	}
 	return Math.floor(ap);
 }
-Ship.prototype.numBombers = function () {
-	var planes = [];
-	for (var i=0; i<this.equips.length; i++) {
-		if (this.equips[i].isdivebomber || this.equips[i].istorpbomber || this.equips[i].isfighter) {
-			if (this.equips[i].b_image) planes.push(this.equips[i].b_image);
-			else planes.push((this.fleet.id==0)? 1 : 2);
-		}
-	}
-	return planes;
-}
+// Ship.prototype.numBombers = function () {
+// 	var planes = [];
+// 	for (var i=0; i<this.equips.length; i++) {
+// 		if (this.equips[i].isdivebomber || this.equips[i].istorpbomber || this.equips[i].isfighter) {
+// 			if (this.equips[i].b_image) planes.push(this.equips[i].b_image);
+// 			else planes.push((this.fleet.id==0)? 1 : 2);
+// 		}
+// 	}
+// 	return planes;
+// }
 Ship.prototype.rocketBarrageChance = function() { return 0; }
 
 Ship.prototype.setProficiencyBonus = function(resetFlag) {
@@ -1502,17 +1502,15 @@ AO.prototype = Object.create(Ship.prototype);
 AO.prototype.canASW = function() { return this.mid < 1500; }
 AO.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	Ship.prototype.loadEquips.call(this,equips,levels,profs,addstats);
-	for (var i=0; i<equips.length; i++) {
-		if (!equips[i]) continue;
-		var d = EQTDATA[EQDATA[equips[i]].type];
-		if (d && (d.istorpbomber||d.isdivebomber)) {
+	for (var i=0; i<this.equips.length; i++) {
+		if (!this.equips[i]) continue;
+		if ([TORPBOMBER,DIVEBOMBER,SEAPLANEBOMBER].indexOf(this.equips[i].type) !== -1) {
 			this.planeasw = true;
-			if (d.istorpbomber) {
+			if ([TORPBOMBER,DIVEBOMBER].indexOf(this.equips[i].type) !== -1) {
 				this.CVshelltype = true;
 				this.shellPower = CV.prototype.shellPower;
 				this.canShell = CV.prototype.canShell;
 				this.canStillShell = CV.prototype.canStillShell;
-                this.numBombers = CV.prototype.numBombers;
                 this.canShellInstall = CV.prototype.canShellInstall;
 				break;
 			}
@@ -1910,6 +1908,8 @@ Equip.explicitStatsBonusGears = function(){
 			usNavySurfaceRadarIds: [279, 307, 315, 456],
 			usNavyAirRadar: 0,
 			usNavyAirRadarIds: [278, 279],
+			frenchYellowSecGunMount: 0,
+			frenchYellowSecGunMountIds: [247],
 		},
 		// getCountryName by ctype in main.js#SlotItemEffectParamModel.SHIP_COUNTRY
 		"countryCtypeMap": {
@@ -5161,6 +5161,105 @@ Equip.explicitStatsBonusGears = function(){
 				"73": {
 					multiple: { "houg": 1 },
 				},
+			},
+		},
+		// 38cm Quadruple Gun Mount
+		"245": {
+			count: 0,
+			byClass: {
+				// Richelieu Class
+				"79": {
+					multiple: { "houg": 2, "houm": 1 },
+					synergy: {
+						flags: [ "frenchYellowSecGunMount" ],
+						byCount: {
+							gear: "frenchYellowSecGunMount",
+							distinct: true,
+							"1": { "houg": 2, "houk": 2, "houm": 2 },
+							"2": { "houg": 4, "houk": 4, "houm": 4 },
+							"3": { "houg": 6, "houk": 6, "houm": 6 },
+						},
+					},
+				},
+			},
+		},
+		// 38cm Quadruple Gun Mount Kai
+		"246": {
+			count: 0,
+			byClass: {
+				// Richelieu Class
+				"79": {
+					multiple: { "houg": 2, "houm": 1 },
+					synergy: {
+						flags: [ "frenchYellowSecGunMount" ],
+						byCount: {
+							gear: "frenchYellowSecGunMount",
+							distinct: true,
+							"1": { "houg": 2, "houk": 2, "houm": 2 },
+							"2": { "houg": 4, "houk": 4, "houm": 4 },
+							"3": { "houg": 6, "houk": 6, "houm": 6 },
+						},
+					},
+				},
+			},
+		},
+		// 38cm Quadruple Gun Mount Kai Deux
+		"468": {
+			count: 0,
+			starsDist: [],
+			byClass: {
+				// Richelieu Class
+				"79": [
+					{
+						multiple: { "houg": 3, "houm": 1 },
+						synergy: {
+							flags: [ "frenchYellowSecGunMount" ],
+							byCount: {
+								gear: "frenchYellowSecGunMount",
+								distinct: true,
+								"1": { "houg": 2, "houk": 2, "houm": 2 },
+								"2": { "houg": 4, "houk": 4, "houm": 4 },
+								"3": { "houg": 6, "houk": 6, "houm": 6 },
+							},
+						},
+					},
+					{
+						minStars: 4,
+						multiple: { "houg": 1, "houm": 1 },
+					},
+					{
+						minStars: 8,
+						multiple: { "houg": 1, "houm": 1 },
+					},
+					{
+						minStars: 10,
+						multiple: { "houm": 1 },
+					},
+				],
+			},
+		},
+		// 15.2cm Triple Gun Mount
+		"247": {
+			count: 0,
+			starsDist: [],
+			byNation: {
+				"France": [
+					{
+						multiple: { "houg": 2, "houm": 2 },
+					},
+					{
+						minStars: 4,
+						multiple: { "houg": 1, "houm": 1 },
+					},
+					{
+						minStars: 8,
+						multiple: { "houg": 1, "houk": 1, "houm": 1 },
+					},
+					{
+						minStars: 10,
+						multiple: { "houk": 1, "houm": 1 },
+					},
+				],
 			},
 		},
 		// 14cm Twin Gun Mount
@@ -9479,6 +9578,7 @@ Equip.accumulateShipBonusGear = function(bonusGears, equip){
 		if(synergyGears.rangefinderKaiAirRadarIds.includes(equip.mid)) synergyGears.rangefinderKaiAirRadar += 1;
 		if(synergyGears.usNavySurfaceRadarIds.includes(equip.mid)) synergyGears.usNavySurfaceRadar += 1;
 		if(synergyGears.usNavyAirRadarIds.includes(equip.mid)) synergyGears.usNavyAirRadar += 1;
+		if(synergyGears.frenchYellowSecGunMountIds.includes(equip.mid)) synergyGears.frenchYellowSecGunMount += 1;
         if(equip.btype == B_RADAR && equip.LOS >= 5) synergyGears.surfaceRadar += 1;
         if(equip.atype == A_AIRRADAR) synergyGears.airRadar += 1;
         if(equip.type == AAGUN) synergyGears.aaMachineGun += 1;

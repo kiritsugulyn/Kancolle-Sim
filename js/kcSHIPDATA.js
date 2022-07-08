@@ -12989,8 +12989,8 @@ var SHIPDATA = {
 		AA: 115, AAbase: 82,
 		AR: 53, ARbase: 16,
 		EV: 92, EVbase: 50,
-		ASW: 71, ASWbase: 28,  // guess
-		LOS: 48, LOSbase: 9,  // guess
+		ASW: 71, ASWbase: 29,
+		LOS: 48, LOSbase: 9,
 		LUK: 38, LUKmax: 98,
 		RNG: 1,
 		SPD: 10,
@@ -17146,9 +17146,9 @@ var SHIPDATA = {
 		TP: 0, TPbase: 0,
 		AA: 38, AAbase: 18,
 		AR: 28, ARbase: 8,
-		EV: 28, EVbase: 17,  // guess
-		ASW: 82, ASWbase: 40,  // guess
-		LOS: 63, LOSbase: 23,  // guess
+		EV: 28, EVbase: 14,
+		ASW: 82, ASWbase: 32,
+		LOS: 63, LOSbase: 23,
 		LUK: 7, LUKmax: 47,
 		RNG: 1,
 		SPD: 5,
@@ -17549,9 +17549,9 @@ var SHIPDATA = {
 		TP: 0, TPbase: 0,
 		AA: 36, AAbase: 9,
 		AR: 16, ARbase: 4,
-		EV: 80, EVbase: 40,  // guess
-		ASW: 78, ASWbase: 40,  // guess
-		LOS: 14, LOSbase: 3,  // guess
+		EV: 81, EVbase: 40,
+		ASW: 80, ASWbase: 40,
+		LOS: 14, LOSbase: 3,
 		LUK: 18, LUKmax: 78,
 		RNG: 1,
 		SPD: 5,
@@ -17708,9 +17708,9 @@ var SHIPDATA = {
 		TP: 0, TPbase: 0,
 		AA: 100, AAbase: 36,
 		AR: 99, ARbase: 83,
-		EV: 54, EVbase: 22,  // guess
+		EV: 53, EVbase: 22,
 		ASW: 0, ASWbase: 0,
-		LOS: 52, LOSbase: 16,  // guess
+		LOS: 51, LOSbase: 16,  // guess
 		LUK: 40, LUKmax: 110,
 		RNG: 3,
 		SPD: 5,

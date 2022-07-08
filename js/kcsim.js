@@ -1511,10 +1511,13 @@ function compareAP(fleet1,fleet2,isjetphase,includeEscort,isLBAS,isSupport) {
 	if (C) console.log('AS: '+ap1+' '+ap2+' '+fleet1.AS + ' '+fleet2.AS);
 }
 
-function choiceWProtect(targets,searchlightRerolls,isNightPhase) {
+function choiceWProtect(targets,searchlightRerolls,isNightPhase,friendFleetReroll) {
 	DIDPROTECT = false; //disgusting hack, rework later?
 	var target = targets[Math.floor(Math.random()*targets.length)];
 	if (target.getFormation() == VANGUARD1) {
+		target = targets[Math.floor(Math.random()*targets.length)];
+	}
+	if (friendFleetReroll && target.isflagship && !target.isescort) {
 		target = targets[Math.floor(Math.random()*targets.length)];
 	}
 	if (MECHANICS.flagProtect && target.isflagship && !target.isInstall && (!target.isescort || isNightPhase)) {
@@ -3734,7 +3737,7 @@ function friendFleetPhase(fleet1,fleet2,alive2,subsalive2,BAPI) {
 					ASW(attacker,target,false,APIhou);
 					removeSunk(subsalive2);
 				} else if (alive2.length) {
-					let target = choiceWProtect(alive2,nightEquips[3][1]);
+					let target = choiceWProtect(alive2,nightEquips[3][1],false,true);
 					NBattack(attacker,target,false,nightEquips,APIhou);
 					removeSunk(alive2);
 				}

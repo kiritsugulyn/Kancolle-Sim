@@ -1634,7 +1634,7 @@ var EQDATA = {
 		name: 'Type 98 Recon Seaplane (Night Scout)',
 		nameJP: '九八式水上偵察機(夜偵)',
 		added: '2014-06-06',
-		type: SEAPLANE,
+		type: SEAPLANE, image: 50,
 		btype: B_RECON,
 		isnightscout: true,
 		improveType: 2,
@@ -5728,7 +5728,7 @@ var EQDATA = {
 		name: 'Type 0 Reconnaissance Seaplane Model 11B Kai (Night Scout)',
 		nameJP: '零式水上偵察機11型乙改(夜偵)',
 		added: '2022-06-30',
-		type: SEAPLANE,
+		type: SEAPLANE, image: 50,
 		isnightscout: true,
 		FP: 1,
 		AA: 1,
@@ -7426,6 +7426,7 @@ var LBASDATA = {
 	454: { distance: 3, cost: 12 },
 	459: { distance: 7, cost: 13 },
 	466: { distance: 6, cost: 9 },
+	469: { distance: 7, cost: 5 },
 
 	// Custom Eq
 	5001: { distance: 9, cost: 13 },
