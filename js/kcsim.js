@@ -187,8 +187,6 @@ var NEWFORMAT = true;
 var DIDPROTECT = false;
 
 var MECHANICS = {
-	flagProtect: true,
-	aswSynergy: true,
 	artillerySpotting: true,
 	OASW: true,
 	APmod: true,
@@ -1520,7 +1518,7 @@ function choiceWProtect(targets,searchlightRerolls,isNightPhase,friendFleetRerol
 	if (friendFleetReroll && target.isflagship && !target.isescort) {
 		target = targets[Math.floor(Math.random()*targets.length)];
 	}
-	if (MECHANICS.flagProtect && target.isflagship && !target.isInstall && (!target.isescort || isNightPhase)) {
+	if (target.isflagship && !target.isInstall && (!target.isescort || isNightPhase)) {
 		target = selectProtect(target,targets,isNightPhase);
 	}
 	if (!searchlightRerolls) return target;
@@ -1528,7 +1526,7 @@ function choiceWProtect(targets,searchlightRerolls,isNightPhase,friendFleetRerol
 		if (!target.hasSearchlight) {
 			target = targets[Math.floor(Math.random()*targets.length)];
 		}
-		if (MECHANICS.flagProtect && target.isflagship && !target.isInstall && (!target.isescort || isNightPhase)) {
+		if (target.isflagship && !target.isInstall && (!target.isescort || isNightPhase)) {
 			target = selectProtect(target,targets,isNightPhase);
 		}
 	}
@@ -2214,8 +2212,8 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 		lbas.planecount[i] = Math.max(0,lbas.planecount[i]-shotProp-shotFlat-shotFix);
 		if (lbas.planecount[i] <= 0) continue;
 		
-		let isASWPlane = MECHANICS.LBASBuff && eq.ASW >= 7;
-		var targets = (isASWPlane)? subsalive2.concat(alive2) : alive2;
+		let isASWAttack = MECHANICS.LBASBuff && eq.ASW >= 7;
+		var targets = (isASWAttack)? subsalive2.concat(alive2) : alive2;
 		if (targets.length) {
 			if (targets[0].fleet.combinedWith) {
 				var targetsM = [], targetsE = [];
@@ -2230,7 +2228,7 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 				else if (!targetsM.length) targets = targetsE;
 				else targets = (Math.random() < .45)? targetsM : targetsE;
 			}
-			if (isASWPlane) {
+			if (isASWAttack) {
 				let targetsSub = targets.filter(ship => ship.isSub);
 				if (targetsSub.length) targets = targetsSub;
 			}

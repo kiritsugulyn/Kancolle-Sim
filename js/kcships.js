@@ -664,12 +664,10 @@ Ship.prototype.ASWPower = function() {
         if ([226,227,378,439].indexOf(eq.mid) !== -1) hasdc2 = true;
     });
 	var synergyMod = 1, synergyMod2 = 1;
-	if (MECHANICS.aswSynergy) {
-        synergyMod = (hassonar && hasdc)? 1.15 : 1;
-        if (hasdc2){
-            if (hassonars && hasdc1) synergyMod2 = 1.25;
-            else if (hasdc1) synergyMod2 = 1.1;
-        }
+	synergyMod = (hassonar && hasdc)? 1.15 : 1;
+	if (hasdc2){
+		if (hassonars && hasdc1) synergyMod2 = 1.25;
+		else if (hasdc1) synergyMod2 = 1.1;
 	}
 	this._aswpower = (2*Math.sqrt(this.ASW-equipASW)+1.5*(effEquipASW+(this.ASWBonus||0))+((this.planeasw)? 8 : 13)+(this.improves.Pasw||0)) * synergyMod * synergyMod2;
 	return this._aswpower;
@@ -1282,13 +1280,7 @@ function CAV(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 }
 CAV.prototype = Object.create(Ship.prototype);
 CAV.prototype.APweak = true;
-CAV.prototype.canASW = function() {
-	for (var i=0; i<this.equips.length; i++) {
-		if (this.planecount[i] <= 0) continue;
-		if (this.equips[i].isdivebomber || this.equips[i].istorpbomber) return true;
-	}
-	return false;
-}
+CAV.prototype.canASW = function() { return this.equips.some((eq,i) => eq.isASWplane && (eq.ASW || 0) > 0 && this.planecount[i] > 0); }
 CAV.prototype.rocketBarrageChance = function() {
 	let num = 0;
 	for (let equip of this.equips) {
@@ -1365,7 +1357,7 @@ CV.prototype.canShell = function() {
 	if (this.HP <= 0) return false;
 	for (var i=0; i<this.equips.length; i++) {
 		var equip = this.equips[i];
-		if ((equip.isdivebomber || equip.istorpbomber) && !equip.isLB && this.planecount[i] > 0) return true;
+		if ([TORPBOMBER,DIVEBOMBER,JETBOMBER].indexOf(equip.type) !== -1 && this.planecount[i] > 0) return true;
 	}
 	return false;
 }
@@ -1419,12 +1411,11 @@ CV.prototype.rocketBarrageChance = CAV.prototype.rocketBarrageChance;
 CV.prototype.canASW = function() {
     if (this.mid !== 646) return false;
 	if (this.HP/this.maxHP <= .5) return false;
-	for (var i=0; i<this.equips.length; i++) { if ((this.equips[i].isdivebomber || this.equips[i].istorpbomber) && (this.planecount[i] > 0)) return true; }
-	return false;
+	return CAV.prototype.canASW.call(this);
 }
 CV.prototype.canOASW = function() {
     if (this.mid !== 646) return false;
-    return this.equips.some((eq) => eq.ASW >= 1 && [DIVEBOMBER, TORPBOMBER, AUTOGYRO, ASWPLANE].indexOf(eq.type) !== -1);
+    return this.equips.some((eq) => eq.isASWplane && (eq.ASW || 0) > 0);
 }
 CV.prototype.canShellInstall = function () {
     let count1 = 0;
@@ -1446,16 +1437,16 @@ function CVL(id,name,side,LVL,HP,FP,TP,AA,AR,EV,ASW,LOS,LUK,RNG,planeslots) {
 CVL.prototype = Object.create(CV.prototype);
 CVL.prototype.canASW = function() {
 	if (this.HP/this.maxHP <= .5) return false;
-	for (var i=0; i<this.equips.length; i++) { if ((this.equips[i].isdivebomber || this.equips[i].istorpbomber) && (this.planecount[i] > 0)) return true; }
-	return false;
+	return CAV.prototype.canASW.call(this);
 }
 CVL.prototype.canOASW = function() {
-    if ([380,381,382,529,536,889].indexOf(this.mid) !== -1) return this.equips.some((eq) => eq.ASW >= 1 && [DIVEBOMBER, TORPBOMBER, AUTOGYRO, ASWPLANE].indexOf(eq.type) !== -1);
-    
-    let found = this.equips.some((eq) => eq.ASW >= 7 && [TORPBOMBER, AUTOGYRO, ASWPLANE].indexOf(eq.type) !== -1);
-    if (!found) return this.ASW + (this.ASWBonus || 0) >= this.OASWstat && this.equiptypesB[B_SONAR] && isPlayable(this.mid);
-    let threshold = (this.equiptypesB[B_SONAR])? 50 : 65;
-    return this.ASW + (this.ASWBonus || 0) >= threshold;
+    if ([380,381,382,529,536,889].indexOf(this.mid) !== -1) return this.equips.some((eq) => eq.isASWplane && (eq.ASW || 0) > 0); 
+    if (this.equips.some((eq) => (eq.ASW || 0) >= 7 && [TORPBOMBER, AUTOGYRO, ASWPLANE].indexOf(eq.type) !== -1)) {
+		let threshold = (this.equiptypesB[B_SONAR])? 50 : 65;
+		return this.ASW + (this.ASWBonus || 0) >= threshold;
+	}
+	return Ship.prototype.canOASW.call(this);
+
 }
 CVL.prototype.APweak = false;
 
@@ -1504,16 +1495,16 @@ AO.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	Ship.prototype.loadEquips.call(this,equips,levels,profs,addstats);
 	for (var i=0; i<this.equips.length; i++) {
 		if (!this.equips[i]) continue;
-		if ([TORPBOMBER,DIVEBOMBER,SEAPLANEBOMBER].indexOf(this.equips[i].type) !== -1) {
+		if (this.equips[i].isASWplane && (this.equips[i].ASW || 0) > 0) {
 			this.planeasw = true;
-			if ([TORPBOMBER,DIVEBOMBER].indexOf(this.equips[i].type) !== -1) {
-				this.CVshelltype = true;
-				this.shellPower = CV.prototype.shellPower;
-				this.canShell = CV.prototype.canShell;
-				this.canStillShell = CV.prototype.canStillShell;
-                this.canShellInstall = CV.prototype.canShellInstall;
-				break;
-			}
+			this.canASW = CAV.prototype.canASW;
+		}
+		if ([TORPBOMBER,DIVEBOMBER].indexOf(this.equips[i].type) !== -1) {
+			this.CVshelltype = true;
+			this.shellPower = CV.prototype.shellPower;
+			this.canShell = CV.prototype.canShell;
+			this.canStillShell = CV.prototype.canStillShell;
+			this.canShellInstall = CV.prototype.canShellInstall;
 		}
 	}
 }
@@ -1694,6 +1685,7 @@ function Equip(equipid,level,rank,forLBAS) {
 	if (EQTDATA[eq.type].isfighter && eq.AA) this.isfighter = true;
 	if (EQTDATA[eq.type].isdivebomber) this.isdivebomber = true;
 	if (EQTDATA[eq.type].istorpbomber) this.istorpbomber = true;
+	if (EQTDATA[eq.type].isASWplane) this.isASWplane = true;
 	if (EQTDATA[eq.type].isLB) this.isLB = true;
 	
 	if (eq.btype == null && EQTDATA[eq.type].btype) {

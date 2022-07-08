@@ -237,6 +237,7 @@ EQTDATA[TORPBOMBER] = {
 	canContact: true,
 	isfighter: true,
 	istorpbomber: true,
+	isASWplane: true,
 };
 EQTDATA[DIVEBOMBER] = {
 	name: 'Dive Bomber',
@@ -246,6 +247,7 @@ EQTDATA[DIVEBOMBER] = {
 	isPlane: true,
 	isfighter: true,
 	isdivebomber: true,
+	isASWplane: true,
 };
 EQTDATA[SEAPLANE] = {
 	name: 'Recon Seaplane',
@@ -267,6 +269,7 @@ EQTDATA[SEAPLANEBOMBER] = {
 	isPlane: true,
 	isfighter: true,
 	isdivebomber: true,
+	isASWplane: true,
 };
 EQTDATA[CARRIERSCOUT] = {
 	name: 'Scout Plane',
@@ -292,6 +295,7 @@ EQTDATA[AUTOGYRO] = {
 	canequipS: [372, 477, 478, 491, 546, 547, 573, 574, 586, 630, 646, 690],
 	cannotequipS: [380, 381, 521, 526, 534, 621],
 	isPlane: true,
+	isASWplane: true,
 };
 EQTDATA[ASWPLANE] = {
 	name: 'Anti-Sub Plane',
@@ -300,6 +304,7 @@ EQTDATA[ASWPLANE] = {
 	canequipS: [553, 554, 646],
 	cannotequipS: [521, 526, 534, 621, 626],
 	isPlane: true,
+	isASWplane: true,
 };
 EQTDATA[RADARS] = {
 	name: 'Radar (S)',
@@ -425,6 +430,7 @@ EQTDATA[FLYINGBOAT] = {
 	canequipS: [445, 450, 500, 586, 690],
 	isPlane: true,
 	canContact: true,
+	isASWplane: true,
 };
 EQTDATA[REPAIR] = {
 	name: 'Misc',
