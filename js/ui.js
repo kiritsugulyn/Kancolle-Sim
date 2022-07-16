@@ -18,7 +18,7 @@ if (!HASURLDATA || HASURLDATA_CONFIG) {
 // o.setAttribute('value',options[i][1]);
 // o.appendChild(document.createTextNode(options[i][0]));
 // document.getElementById('Sh'+s+'F'+f).appendChild(o);
-var edata = [['Main Gun (S)',[MAINGUNS],[MAINGUNS]],['Main Gun (M)',[MAINGUNM],[MAINGUNM]],['Main Gun (L)',[MAINGUNL,MAINGUNXL],[MAINGUNL]],['Secondary Gun',[SECGUN],[SECGUN]],
+var edata = [['Main Gun (S)',[MAINGUNS],[MAINGUNS]],['Main Gun (M)',[MAINGUNM],[MAINGUNM]],['Main Gun (L)',[MAINGUNL,MAINGUNXL],[MAINGUNL]],['Secondary Gun',[SECGUN,SECGUNL],[SECGUN]],
 				['Anti-Air Weapon',[AAGUN,AAFD],[AAGUN,AAFD]],['Torpedo/Midgetsub',[TORPEDO,TORPEDOSS,MIDGETSUB],[TORPEDO]],
 				['Fighter/Interceptor',[FIGHTER,INTERCEPTOR],[FIGHTER,INTERCEPTOR]],['Torpedo Bomber',[TORPBOMBER],[TORPBOMBER]],['Dive Bomber/Jet',[DIVEBOMBER,JETBOMBER],[DIVEBOMBER,JETBOMBER]],['(Heavy) Land Bomber',[LANDBOMBER,HEAVYBOMBER],[LANDBOMBER,HEAVYBOMBER]],['Scout Plane',[SEAPLANE,CARRIERSCOUT,CARRIERSCOUT2,FLYINGBOAT,LANDSCOUT],[SEAPLANE,CARRIERSCOUT]],['ASW plane',[AUTOGYRO,ASWPLANE],[AUTOGYRO,ASWPLANE]],
 				['Seaplane Bomber',[SEAPLANEBOMBER],[SEAPLANEBOMBER]],['Seaplane Fighter',[SEAPLANEFIGHTER],[SEAPLANEFIGHTER]],['RADAR',[RADARS,RADARL,RADARXL,SUBRADAR],[RADARS,SUBRADAR]],

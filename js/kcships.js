@@ -1146,7 +1146,7 @@ Ship.prototype.ptMod = function() {
     else if (['CL','CLT','CT'].indexOf(this.type) !== -1) accMod = .82;
     
     let num1 = this.equiptypes[MAINGUNS] || 0;
-    let num2 = this.equiptypes[SECGUN] || 0;
+    let num2 = this.equiptypesB[B_SECGUN] || 0;
     let num3 = this.equiptypes[AAGUN] || 0;
     let num4 = this.equiptypes[PICKET] || 0;
     let num5 = (this.equiptypes[SEAPLANEBOMBER] || 0) + (this.equiptypes[SEAPLANEFIGHTER] || 0);
@@ -1751,6 +1751,9 @@ Equip.prototype.setImprovement = function(level) {
                 this.improves.Pnb = .3*level;
             }
             break;
+		case SECGUNL:
+			this.improves.Pshell = .3*level;
+			this.improves.Pnb = .3*level;
         case BULGEM:
             this.improves.AR = .2*level;
             break;
@@ -4402,6 +4405,7 @@ Equip.explicitStatsBonusGears = function(){
 		// Type 3 Command Liaison Aircraft Kai
 		"451": {
 			count: 0,
+			starsDist: [],
 			byShip: [
 				{
 					// Yamashiomaru
@@ -4409,9 +4413,81 @@ Equip.explicitStatsBonusGears = function(){
 					multiple: { "houg": 1, "tais": 3 },
 				},
 				{
+					// Yamashiomaru
+					origins: [900],
+					minStars: 1,
+					multiple: { "houg": 2 },
+				},
+				{
+					// Yamashiomaru
+					origins: [900],
+					minStars: 2,
+					multiple: { "houm": 1 },
+				},
+				{
+					// Yamashiomaru
+					origins: [900],
+					minStars: 3,
+					multiple: { "tais": 1 },
+				},
+				{
+					// Yamashiomaru
+					origins: [900],
+					minStars: 4,
+					multiple: { "houg": 1 },
+				},
+				{
+					// Yamashiomaru
+					origins: [900],
+					minStars: 6,
+					multiple: { "houm": 1 },
+				},
+				{
+					// Yamashiomaru
+					origins: [900],
+					minStars: 8,
+					multiple: { "tais": 1 },
+				},
+				{
+					// Yamashiomaru
+					origins: [900],
+					minStars: 10,
+					multiple: { "houg": 1 },
+				},
+				{
 					// Akitsumaru
 					origins: [161],
 					multiple: { "houg": 1, "tais": 2 },
+				},
+				{
+					// Akitsumaru Kai
+					ids: [166],
+					minStars: 1,
+					multiple: { "houg": 1 },
+				},
+				{
+					// Akitsumaru Kai
+					ids: [166],
+					minStars: 3,
+					multiple: { "tais": 1 },
+				},
+				{
+					// Akitsumaru Kai
+					ids: [166],
+					minStars: 5,
+					multiple: { "houm": 1 },
+				},
+				{
+					// Akitsumaru Kai
+					ids: [166],
+					minStars: 7,
+					multiple: { "tais": 1 },
+				},
+				{
+					// Akitsumaru Kai
+					ids: [166],
+					minStars: 10,
+					multiple: { "houg": 1 },
 				},
 			],
 		},
@@ -7345,18 +7421,16 @@ Equip.explicitStatsBonusGears = function(){
 						},
 					},
 					{
+						// Kagerou Class K2
 						remodel: 2,
 						excludes: [556, 557, 558, 559, 648, 651],
-						// Kagerou Class K2 total +2 fp til 2 guns
-						multiple: { "houg": 1 },
-						countCap: 2,
+						single: { "houg": 1 },
 					},
 					{
+						// Kagerou Class K2
 						remodel: 2,
 						excludes: [556, 557, 558, 559, 648, 651],
-						// Kagerou Class K2 total +5 instead of +4 if guns = 2
-						// https://wikiwiki.jp/kancolle/%E9%99%BD%E7%82%8E%E6%94%B9%E4%BA%8C
-						single: { "houg": 1 },
+						single: { "houg": 2 },
 						minCount: 2,
 					},
 				],
@@ -7366,6 +7440,71 @@ Equip.explicitStatsBonusGears = function(){
 				origins: [20, 43, 167],
 				multiple: { "houk": 1 },
 			},
+		},
+		// 12.7cm Twin Gun Mount Model C Kai 3
+		"470": {
+			count: 0,
+			starsDist: [],
+			byClass: {
+				// Asashio Class
+				"18": {
+					multiple: { "houg": 1 },
+					synergy: {
+						flags: [ "surfaceRadar" ],
+						single: { "houg": 1, "raig": 3, "houk": 1, "houm": 1 },
+					},
+				},
+				// Shiratsuyu Class
+				"23": "18",
+				// Kagerou Class
+				"30": [
+					{
+						multiple: { "houg": 2 },
+						synergy: {
+							flags: [ "surfaceRadar" ],
+							single: { "houg": 2, "raig": 3, "houk": 1, "houm": 3 },
+						},
+					},
+					{
+						// Kagerou Class K2
+						remodel: 2,
+						excludes: [556, 557, 558, 559, 648],
+						single: { "houg": 1, "houm": 2 },
+					},
+					{
+						// Kagerou Class K2
+						remodel: 2,
+						excludes: [556, 557, 558, 559, 648],
+						single: { "houg": 2 },
+						minCount: 2,
+					},
+				],
+			},
+			byShip: [
+				{
+					// Yukikaze, Shigure, Isokaze, extra +2 ev
+					origins: [20, 43, 167],
+					multiple: { "houk": 2 },
+				},
+				{
+					// Kagerou Class K2, Tan Yang, Shigure K2
+					ids: [ 566, 567, 568, 656, 670, 915, 651, 145],
+					minStars: 5,
+					multiple: { "houm": 1 },
+				},
+				{
+					// Kagerou Class K2, Tan Yang, Shigure K2
+					ids: [ 566, 567, 568, 656, 670, 915, 651, 145],
+					minStars: 8,
+					multiple: { "houg": 1 },
+				},
+				{
+					// Kagerou Class K2, Tan Yang, Shigure K2
+					ids: [ 566, 567, 568, 656, 670, 915, 651, 145],
+					minStars: 10,
+					multiple: { "houm": 1 },
+				},
+			],
 		},
 		// 12.7cm Twin Gun Mount Model D Kai Ni
 		// https://wikiwiki.jp/kancolle/12.7cm%E9%80%A3%E8%A3%85%E7%A0%B2D%E5%9E%8B%E6%94%B9%E4%BA%8C
@@ -7425,8 +7564,8 @@ Equip.explicitStatsBonusGears = function(){
 			},
 			byShip: [
 				{
-					// Kagerou K2, Shiranui K2, Kuroshio K2, Yukikaze K2, Oyashio K2
-					ids: [566, 567, 568, 656, 670],
+					// Kagerou K2, Shiranui K2, Kuroshio K2, Yukikaze K2, Oyashio K2, Hayashio K2
+					ids: [566, 567, 568, 656, 670, 915],
 					single: { "houg": 1 },
 				},
 				{
@@ -7458,6 +7597,7 @@ Equip.explicitStatsBonusGears = function(){
 		// 12.7cm Twin Gun Mount Model D Kai 3
 		"366": {
 			count: 0,
+			starsDist: [],
 			byClass: {
 				// Shimakaze Class
 				"22": [
@@ -7465,39 +7605,77 @@ Equip.explicitStatsBonusGears = function(){
 						multiple: { "houg": 2, "houk": 1 },
 					},
 					{
+						minStars: 5,
+						multiple: { "houm": 1 },
+					},
+					{
+						minStars: 8,
+						multiple: { "houg": 1 },
+					},
+					{
+						minStars: 10,
+						multiple: { "houm": 1 },
+					},
+					{
 						// Shimakaze Kai
 						remodel: 1,
 						synergy: [
 							{
 								flags: [ "surfaceRadar" ],
-								single: { "houg": 2, "raig": 4, "houk": 2 },
+								single: { "houg": 2, "raig": 4, "houk": 2, "houm": 2 },
 							},
 							{
 								flags: [ "airRadar" ],
-								single: { "houg": 1, "tyku": 5, "houk": 2 },
+								single: { "houg": 1, "tyku": 5, "houk": 3, "houm": 1 },
 							},
 						],
 					},
 					{
-						// Shimakaze Kai, one-time +3 AA
+						// Shimakaze Kai, one-time +3 AA, since 2022-07-13, +1 fp, +1 acc
 						remodel: 1,
-						single: { "tyku": 3 },
+						single: { "houg": 1, "tyku": 3, "houm": 1 },
 					},
 					{
-						// Shimakaze Kai, one-time +5 AA for 2 guns
+						// Shimakaze Kai, one-time +5 AA for 2 guns, since 2022-07-13, +3 fp, +1 acc
 						remodel: 1,
-						single: { "tyku": 2 },
+						single: { "houg": 2, "tyku": 2 },
 						minCount: 2,
 					},
 				],
 				// Kagerou Class
-				"30": {
-					multiple: { "houg": 1, "houk": 1 },
-				},
+				"30": [
+					{
+						multiple: { "houg": 1, "houk": 1 },
+					},
+					{
+						minStars: 5,
+						multiple: { "houm": 1 },
+					},
+					{
+						minStars: 8,
+						multiple: { "houg": 1 },
+					},
+					{
+						minStars: 10,
+						multiple: { "houm": 1 },
+					},
+				],
 				// Yuugumo Class
 				"38": [
 					{
 						multiple: { "houg": 2, "houk": 1 },
+					},
+					{
+						minStars: 5,
+						multiple: { "houm": 1 },
+					},
+					{
+						minStars: 8,
+						multiple: { "houg": 1 },
+					},
+					{
+						minStars: 10,
+						multiple: { "houm": 1 },
 					},
 					{
 						// Yuugumo Class K2
@@ -7506,23 +7684,23 @@ Equip.explicitStatsBonusGears = function(){
 						synergy: [
 							{
 								flags: [ "surfaceRadar" ],
-								single: { "houg": 2, "raig": 4, "houk": 2 },
+								single: { "houg": 2, "raig": 4, "houk": 2, "houm": 2 },
 							},
 							{
 								flags: [ "airRadar" ],
-								single: { "houg": 1, "tyku": 5, "houk": 2 },
+								single: { "houg": 1, "tyku": 5, "houk": 3, "houm": 1 },
 							},
 						],
 					},
 					{
-						// Yuugumo Class K2, one-time +3 AA
+						// Yuugumo Class K2
 						remodel: 2,
-						single: { "tyku": 3 },
+						single: { "houg": 1, "tyku": 3, "houm": 1 },
 					},
 					{
-						// Yuugumo Class K2, one-time +5 AA for 2 guns
+						// Yuugumo Class K2, 2 more guns
 						remodel: 2,
-						single: { "tyku": 2 },
+						single: { "houg": 2, "tyku": 2 },
 						minCount: 2,
 					},
 				],
@@ -7542,12 +7720,12 @@ Equip.explicitStatsBonusGears = function(){
 				{
 					// Akigumo Kai Ni, one-time +3 AA
 					ids: [648],
-					single: { "tyku": 3 },
+					single: { "houg": 1, "tyku": 3, "houm": 1 },
 				},
 				{
 					// Akigumo Kai Ni, one-time +5 AA for 2 guns
 					ids: [648],
-					single: { "tyku": 2 },
+					single: { "houg": 2, "tyku": 2 },
 					minCount: 2,
 				},
 				{
@@ -7557,11 +7735,11 @@ Equip.explicitStatsBonusGears = function(){
 					synergy: [
 						{
 							flags: [ "surfaceRadar" ],
-							single: { "houg": 2, "raig": 4, "houk": 2 },
+							single: { "houg": 2, "raig": 4, "houk": 2, "houm": 2 },
 						},
 						{
 							flags: [ "airRadar" ],
-							single: { "houg": 1, "tyku": 5, "houk": 2 },
+							single: { "houg": 1, "tyku": 5, "houk": 3, "houm": 1 },
 						},
 						{
 							flags: [ "twin127SmallGunMountModelDK2Nonexist", "skilledLookouts" ],
@@ -7940,12 +8118,22 @@ Equip.explicitStatsBonusGears = function(){
 		"456": {
 			count: 0,
 			byNation: {
-				"UnitedStates": {
-					multiple: { "houg": 3, "houk": 4, "saku": 4, "houm": 3 },
-				},
-				"UnitedKingdom": {
-					multiple: { "houg": 2, "houk": 2, "saku": 2, "houm": 2 },
-				},
+				"UnitedStates": [
+					{
+						multiple: { "houg": 3, "houk": 4, "saku": 4 },
+					},
+					{
+						single: { "houm": 3 },
+					},
+				],
+				"UnitedKingdom": [
+					{
+						multiple: { "houg": 2, "houk": 2, "saku": 2 },
+					},
+					{
+						single: { "houm": 2 },
+					},
+				],
 				"Australia": "UnitedKingdom",
 			},
 			byClass: {

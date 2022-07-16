@@ -53,6 +53,7 @@ const JETBOMBER = 57;
 const JETSCOUT = 59;
 const RADARXL = 93;
 const CARRIERSCOUT2 = 94;
+const SECGUNL = 95;
 const OTHER = 99;
 
 //artillery spot/night battle/other combat type
@@ -146,6 +147,14 @@ EQTDATA[SECGUN] = {
 	canequip: ['CL','CT','CLT','CA','CAV','FBB','BB','BBV','CVL','CV','CVB','AS','AV','AR','LHA'],
 	canequipS: [500],
 	cannotequipS: [477, 478, 622, 623, 624],
+};
+EQTDATA[SECGUNL] = {
+	name: 'Secondary Gun (L)',
+	image: 4,
+	btype: B_SECGUN,
+	atype: A_GUN,
+	improve: {Pshell:1,Pnb:1,ACCshell:1,ACCnb:1.3},
+	canequip: ['CA','FBB','BB','BBV','CV','CVB'],
 };
 EQTDATA[APSHELL] = {
 	name: 'AP Shell',
@@ -5710,7 +5719,7 @@ var EQDATA = {
 		name: '5inch Twin Gun Mount (Secondary Armament) Concentrated Deployment',
 		nameJP: '5inch連装砲(副砲配置) 集中配備',
 		added: '2022-06-17',
-		type: SECGUN, image: 16,
+		type: SECGUNL, image: 16,
 		FP: 5,
 		AA: 11,
 		AR: 1,
@@ -5741,6 +5750,19 @@ var EQDATA = {
 		ACC: 2,
 		ASW: 6,
 		LOS: 5,
+	},
+	470: {
+		name: '12.7cm Twin Gun Mount Model C Kai 3',
+		nameJP: '12.7cm連装砲C型改三',
+		added: '2022-07-13',
+		type: MAINGUNS,
+		FP: 3,
+		AA: 2,
+		AR: 1,
+		ACC: 1,
+		EV: 1,
+		ASW: 3,
+		RNG: 1,
 	},
 	501: {
 		name: '5inch Single Cannon',

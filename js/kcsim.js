@@ -993,7 +993,7 @@ function shellPhase(order1,order2,alive1,subsalive1,alive2,subsalive2,APIhou,isO
 	for (var i=0; i<numRounds; i++) {
 		if (i < order1.length && order1[i].canStillShell()) {
 			let attackSpecialId = canSpecialAttack(order1[i]);
-			if (attackSpecialId) {
+			if (attackSpecialId && !isOASW) {
 				let ships = getSpecialAttackShips(order1[i].fleet.ships,attackSpecialId);
 				let k = 0;
 				for (; k<ships.length; k++) {
@@ -1041,7 +1041,7 @@ function shellPhaseC(order1,order2,targets,APIhou,isOASW) {
 	for (var i=0; i<numRounds; i++) {
 		if (i < order1.length && order1[i].canStillShell()) {
 			let attackSpecialId = canSpecialAttack(order1[i]);
-			if (attackSpecialId) {
+			if (attackSpecialId && !isOASW) {
 				let ships = getSpecialAttackShips(order1[i].fleet.ships,attackSpecialId);
 				let k=0;
 				for (; k<ships.length; k++) {
