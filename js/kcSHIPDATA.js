@@ -19333,7 +19333,7 @@ var SHIPDATA = {
 		LUK: 30,
 		RNG: 1,
 		SPD: 5,
-		TACC: 60,
+		TACC: 45,    // Based on yumemi reviews 2022/07
 		SLOTS: [0, 0, 0],
 		EQUIPS: [515, 515, 503],
 		fuel: 0,
@@ -19355,7 +19355,8 @@ var SHIPDATA = {
 		LUK: 45,
 		RNG: 1,
 		SPD: 5,
-		TACC: 80,	// Based on 14 summer api data
+		// TACC: 80,	// Based on 14 summer api data
+		TACC: 60, 		// Based on yumemi reviews 2022/07
 		SLOTS: [0, 0, 0],
 		EQUIPS: [515, 515, 515],
 		fuel: 0,
@@ -23053,7 +23054,8 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 48,
 		LUK: 80,
-		TACC: 80,	// Adjust 100 -> 80 based on historical data
+		// TACC: 80,	// Adjust 100 -> 80 based on historical data
+		TACC: 85, // Based on yumemi reviews 2022/07
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
