@@ -42,14 +42,14 @@ Fleet.prototype.loadShips = function(ships) {
     var i = this.ships.findIndex((ship) => [903,908].indexOf(ship.mid) !== -1);
     if (i >= 0) {
         this.ships[i].isPTfirst = true;
-        this.ships[i].ptAccMod *= 1.25;
+        this.ships[i].ptAccFlat = 64;
         if (i < this.ships.length - 1 && ['DD','DE'].indexOf(this.ships[i+1].type) !== -1) {
             this.ships[i+1].isPTfirst = true;
-            this.ships[i+1].ptAccMod *= 1.2;
+            this.ships[i].ptAccFlat = 32;
         }
         if (i > 0 && ['DD','DE'].indexOf(this.ships[i-1].type) !== -1) {
             this.ships[i-1].isPTfirst = true;
-            this.ships[i-1].ptAccMod *= 1.2;
+            this.ships[i].ptAccFlat = 32;
         }
     }
 }
@@ -86,7 +86,7 @@ Fleet.prototype.fleetAntiAir = function(alreadyCombined) {
 				baseFAA += (equip.AA || 0) * mod;
 			}
             if (this.ships[i].improves.AAfleet) baseFAA += this.ships[i].improves.AAfleet;
-            this._baseFAA += Math.floor(baseFAA);
+            this._baseFAA += Math.floor(baseFAA + .5 * (this.ships[i].AABonus || 0));
 		}
 	}
     var FAA = 2*Math.floor(this._baseFAA*this.formation.AAmod);
@@ -238,7 +238,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 	var fitcounts = {}; 
 	var FPfitcounts = {};
 	var tpEquip = 0;
-	var aswPenetrate = 0;
+	var aswPenetrate = this.type == 'DE'? 1 : 0;
 	for (var i=0; i<equips.length; i++){
 		if (!equips[i]) continue;
 		var eq = new Equip(equips[i],levels[i],profs[i]);
@@ -318,8 +318,8 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		if (eq.LOS) this.LOSeq += eq.LOS;
 		if (eq.TP) tpEquip += eq.TP;
 		
-		if (eq.mid == 226 || eq.mid == 227) {
-			aswPenetrate += Math.max(0, Math.sqrt(eq.ASW - 2) + +(this.type == 'DE'));
+		if ([226,227,377,378,439,472].indexOf(eq.mid) !== -1) {
+			aswPenetrate += Math.max(0, Math.sqrt(eq.ASW - 2));
 		}
 
 		if (eq.type == ENGINE) {
@@ -479,6 +479,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
 		this.AR += this.equipmentBonusStats('souk');
         this.EV += this.equipmentBonusStats('houk');
         this.ASWBonus = this.equipmentBonusStats('tais');
+		this.AABonus = this.equipmentBonusStats('tyku');
         this.SPD += this.equipmentBonusStats('soku');
         this.RNG += this.equipmentBonusStats('leng');
 		this.ACCfit = (this.ACCfit || 0) + this.equipmentBonusStats('houm');
@@ -660,7 +661,7 @@ Ship.prototype.ASWPower = function() {
         if (eq.btype == B_SONAR) hassonar = true;
         if (eq.type == SONARS) hassonars = true;
         if (eq.type == DEPTHCHARGE) hasdc = true;
-        if ([44,45,287,288,377].indexOf(eq.mid) !== -1) hasdc1 = true;
+        if ([44,45,287,288,377,472].indexOf(eq.mid) !== -1) hasdc1 = true;
         if ([226,227,378,439].indexOf(eq.mid) !== -1) hasdc2 = true;
     });
 	var synergyMod = 1, synergyMod2 = 1;
@@ -711,6 +712,7 @@ Ship.prototype.weightedAntiAir = function() {
             if (this.equips.length) this._wAA = 2 * Math.floor(this._wAA / 2);
             else this._wAA = Math.floor(this._wAA);
         }
+		this._wAA += Math.floor(.5 * (this.AABonus || 0));
 	}
 	return this._wAA;
 }
@@ -1183,14 +1185,20 @@ Ship.prototype.ptMod = function() {
     }
     if (num6 >= 1) {
         dmgMod *= 1.4;
-        accMod *= 1.4;
+        accMod *= 1.38;
     }
-    if (num6 >= 2) dmgMod *= 1.3;
+    if (num6 >= 2) {
+		dmgMod *= 1.3;
+		accMod *= 1.2;
+	} 
     if (num7 >= 1) {
         dmgMod *= 1.2;
         accMod *= 1.45;
     }
-    if (num7 >= 2) dmgMod *= 1.1;
+    if (num7 >= 2) {
+		dmgMod *= 1.1;
+		accMod *= 1.3;
+	} 
 
     return [dmgMod, accMod];
 }
@@ -1844,8 +1852,6 @@ Equip.explicitStatsBonusGears = function(){
 			airRadarIds: [27, 30, 32, 89, 106, 124, 142, 278, 279, 307, 315, 410, 411, 450, 456, 460],
 			aaMachineGun: 0,
 			aaMachineGunIds: [37, 38, 39, 40, 49, 51, 84, 85, 92, 131, 173, 191, 274, 301],
-			domesticSonar: 0,
-			domesticSonarIds: [46, 47, 132, 149, 438],
 			enhancedBoiler: 0,
 			enhancedBoilerIds: [34],
 			newModelBoiler: 0,
@@ -1892,9 +1898,6 @@ Equip.explicitStatsBonusGears = function(){
 			type21AirRadarIds: [30, 410],
 			type21AirRadarK2: 0,
 			type21AirRadarK2Ids: [410],
-			type13AirRadarKai: 0,
-			type13AirRadarKaiNonexist: 1,
-			type13AirRadarKaiIds: [106],
 			rangefinderAirRadar: 0,
 			rangefinderAirRadarIds: [142, 460],
 			rangefinderKaiAirRadar: 0,
@@ -3641,11 +3644,13 @@ Equip.explicitStatsBonusGears = function(){
 				{
 					// Noshiro Kai Ni
 					ids: [662],
+					distinctGears: [26, 62, 79, 80, 81, 207, 208],
 					single: { "houg": 2, "houk": 1 },
 				},
 				{
 					// Yahagi Kai Ni+, Mogami Kai Ni+
 					ids: [663, 668, 501, 506],
+					distinctGears: [26, 62, 79, 80, 81, 207, 208],
 					single: { "houg": 2 },
 				},
 				{
@@ -3662,11 +3667,13 @@ Equip.explicitStatsBonusGears = function(){
 				{
 					// Noshiro Kai Ni
 					ids: [662],
+					distinctGears: [26, 62, 79, 80, 81, 207, 208],
 					single: { "houg": 2, "houk": 1 },
 				},
 				{
 					// Yahagi Kai Ni+, Mogami Kai Ni+
 					ids: [663, 668, 501, 506],
+					distinctGears: [26, 62, 79, 80, 81, 207, 208],
 					single: { "houg": 2 },
 				},
 				{
@@ -3700,11 +3707,13 @@ Equip.explicitStatsBonusGears = function(){
 				{
 					// Noshiro Kai Ni
 					ids: [662],
+					distinctGears: [26, 62, 79, 80, 81, 207, 208],
 					single: { "houg": 2, "houk": 1 },
 				},
 				{
 					// Yahagi Kai Ni+, Mogami Kai Ni+
 					ids: [663, 668, 501, 506],
+					distinctGears: [26, 62, 79, 80, 81, 207, 208],
 					single: { "houg": 2 },
 				},
 				{
@@ -3721,11 +3730,13 @@ Equip.explicitStatsBonusGears = function(){
 				{
 					// Noshiro Kai Ni
 					ids: [662],
+					distinctGears: [26, 62, 79, 80, 81, 207, 208],
 					single: { "houg": 2, "houk": 1 },
 				},
 				{
 					// Yahagi Kai Ni+, Mogami Kai Ni+
 					ids: [663, 668, 501, 506],
+					distinctGears: [26, 62, 79, 80, 81, 207, 208],
 					single: { "houg": 2 },
 				},
 				{
@@ -3759,11 +3770,13 @@ Equip.explicitStatsBonusGears = function(){
 				{
 					// Noshiro Kai Ni
 					ids: [662],
+					distinctGears: [26, 62, 79, 80, 81, 207, 208],
 					single: { "houg": 2, "houk": 1 },
 				},
 				{
 					// Yahagi Kai Ni+, Mogami Kai Ni+
 					ids: [663, 668, 501, 506],
+					distinctGears: [26, 62, 79, 80, 81, 207, 208],
 					single: { "houg": 2 },
 				},
 				{
@@ -3780,11 +3793,13 @@ Equip.explicitStatsBonusGears = function(){
 				{
 					// Noshiro Kai Ni
 					ids: [662],
+					distinctGears: [26, 62, 79, 80, 81, 207, 208],
 					single: { "houg": 2, "houk": 1 },
 				},
 				{
 					// Yahagi Kai Ni+, Mogami Kai Ni+
 					ids: [663, 668, 501, 506],
+					distinctGears: [26, 62, 79, 80, 81, 207, 208],
 					single: { "houg": 2 },
 				},
 				{
@@ -3801,11 +3816,13 @@ Equip.explicitStatsBonusGears = function(){
 				{
 					// Noshiro Kai Ni
 					ids: [662],
+					distinctGears: [26, 62, 79, 80, 81, 207, 208],
 					single: { "houg": 2, "houk": 1 },
 				},
 				{
 					// Yahagi Kai Ni+, Mogami Kai Ni+
 					ids: [663, 668, 501, 506],
+					distinctGears: [26, 62, 79, 80, 81, 207, 208],
 					single: { "houg": 2 },
 				},
 				{
@@ -3839,6 +3856,7 @@ Equip.explicitStatsBonusGears = function(){
 				{
 					// Noshiro Kai Ni
 					ids: [662],
+					distinctGears: [237, 322, 323],
 					single: { "houg": 3, "houk": 1 },
 				},
 				{
@@ -3862,6 +3880,7 @@ Equip.explicitStatsBonusGears = function(){
 				{
 					// Noshiro Kai Ni
 					ids: [662],
+					distinctGears: [237, 322, 323],
 					single: { "houg": 3, "houk": 1 },
 				},
 				{
@@ -3885,6 +3904,7 @@ Equip.explicitStatsBonusGears = function(){
 				{
 					// Noshiro Kai Ni
 					ids: [662],
+					distinctGears: [237, 322, 323],
 					single: { "houg": 3, "houk": 1 },
 				},
 				{
@@ -4264,6 +4284,7 @@ Equip.explicitStatsBonusGears = function(){
 			byShip: {
 				// Mogami K2+
 				ids: [501, 506],
+				distinctGears: [165, 216],
 				single: { "tyku": 2, "houk": 2 },
 			},
 		},
@@ -4273,6 +4294,7 @@ Equip.explicitStatsBonusGears = function(){
 			byShip: {
 				// Mogami K2+
 				ids: [501, 506],
+				distinctGears: [165, 216],
 				single: { "tyku": 2, "houk": 2 },
 			},
 		},
@@ -4282,6 +4304,7 @@ Equip.explicitStatsBonusGears = function(){
 			byShip: {
 				// Mogami K2+
 				ids: [501, 506],
+				distinctGears: [238, 239],
 				single: { "raig": 1, "houk": 1 },
 			},
 		},
@@ -4291,7 +4314,38 @@ Equip.explicitStatsBonusGears = function(){
 			byShip: {
 				// Mogami K2+
 				ids: [501, 506],
+				distinctGears: [238, 239],
 				single: { "raig": 1, "houk": 1 },
+			},
+		},
+		// Loire 130M
+		"471": {
+			count: 0,
+			starsDist: [],
+			byNation: {
+				"France": [
+					{
+						multiple: { "houg": 2, "houk": 2, "houm": 2 },
+					},
+					{
+						minStars: 6,
+						multiple: { "houk": 1, "houm": 1 },
+					},
+					{
+						minStars: 8,
+						multiple: { "houg": 1, "houk": 1, "houm": 1 },
+					},
+					{
+						minStars: 10,
+						multiple: { "houg": 1, "houm": 1 },
+					},
+				],
+			},
+			byClass: {
+				// Richelieu Class
+				"79": {
+					multiple: { "houg": 2, "houm": 1 },
+				},
 			},
 		},
 		// Kyoufuu Kai
@@ -6385,6 +6439,7 @@ Equip.explicitStatsBonusGears = function(){
 			byClass: {
 				// Gato Class
 				"114": {
+					distinctGears: [440, 441],
 					single: { "raig": 2 },
 				},
 			},
@@ -6395,6 +6450,7 @@ Equip.explicitStatsBonusGears = function(){
 			byClass: {
 				// Gato Class
 				"114": {
+					distinctGears: [440, 441],
 					single: { "raig": 2 },
 				},
 			},
@@ -6405,6 +6461,7 @@ Equip.explicitStatsBonusGears = function(){
 			byClass: {
 				// Gato Class
 				"114": {
+					distinctGears: [442, 443],
 					single: { "raig": 2 },
 				},
 			},
@@ -6415,6 +6472,7 @@ Equip.explicitStatsBonusGears = function(){
 			byClass: {
 				// Gato Class
 				"114": {
+					distinctGears: [442, 443],
 					single: { "raig": 2 },
 				},
 			},
@@ -6425,16 +6483,42 @@ Equip.explicitStatsBonusGears = function(){
 			byClass: {
 				// I-400 Class
 				"44": {
+					distinctGears: [457, 461],
 					single: { "raig": 1, "houk": 4 },
 				},
 				// I-13, I-14
 				"71": {
+					distinctGears: [457, 461],
 					single: { "raig": 2, "houk": 2 },
 				},
 				// I-47 Class
 				"103": "71",
 				// I-201, I-203
 				"109": {
+					distinctGears: [457, 461],
+					single: { "raig": 3, "houk": 3 },
+				},
+			},
+		},
+		// Skilled Sonar Personnel + Late Model Bow Torpedo Mount (4 tubes)
+		"461": {
+			count: 0,
+			byClass: {
+				// I-400 Class
+				"44": {
+					distinctGears: [457, 461],
+					single: { "raig": 1, "houk": 4 },
+				},
+				// I-13, I-14
+				"71": {
+					distinctGears: [457, 461],
+					single: { "raig": 2, "houk": 2 },
+				},
+				// I-47 Class
+				"103": "71",
+				// I-201, I-203
+				"109": {
+					distinctGears: [457, 461],
 					single: { "raig": 3, "houk": 3 },
 				},
 			},
@@ -7488,19 +7572,19 @@ Equip.explicitStatsBonusGears = function(){
 				},
 				{
 					// Kagerou Class K2, Tan Yang, Shigure K2
-					ids: [ 566, 567, 568, 656, 670, 915, 651, 145],
+					ids: [566, 567, 568, 656, 670, 915, 651, 145],
 					minStars: 5,
 					multiple: { "houm": 1 },
 				},
 				{
 					// Kagerou Class K2, Tan Yang, Shigure K2
-					ids: [ 566, 567, 568, 656, 670, 915, 651, 145],
+					ids: [566, 567, 568, 656, 670, 915, 651, 145],
 					minStars: 8,
 					multiple: { "houg": 1 },
 				},
 				{
 					// Kagerou Class K2, Tan Yang, Shigure K2
-					ids: [ 566, 567, 568, 656, 670, 915, 651, 145],
+					ids: [566, 567, 568, 656, 670, 915, 651, 145],
 					minStars: 10,
 					multiple: { "houm": 1 },
 				},
@@ -8005,12 +8089,14 @@ Equip.explicitStatsBonusGears = function(){
 			byClass: {
 				// Akizuki Class
 				"54": {
+					distinctGears: [30, 410],
 					single: { "tyku": 3, "houk": 2, "saku": 2 },
 				},
 			},
 			byShip: {
 				// Mogami Kai+
 				ids: [73, 501, 506],
+				distinctGears: [30, 410],
 				single: { "tyku": 3, "houk": 2, "saku": 2 },
 			},
 		},
@@ -8019,15 +8105,29 @@ Equip.explicitStatsBonusGears = function(){
 			count: 0,
 			byClass: {
 				// Akizuki Class
-				"54": {
-					single: { "houg": 1, "souk": 1, "tyku": 5, "houk": 4, "saku": 2 },
+				"54": [
+					{
+						distinctGears: [30, 410],
+						single: { "tyku": 3, "houk": 2, "saku": 2 },
+					},
+					{
+						single: { "houg": 1, "souk": 1, "tyku": 2, "houk": 2 },
+					},
+				],
+			},
+			byShip: [
+				{
+					// Mogami Kai+
+					ids: [73, 501, 506],
+					distinctGears: [30, 410],
+					single: { "tyku": 3, "houk": 2, "saku": 2 },
 				},
-			},
-			byShip: {
-				// Mogami Kai+
-				ids: [73, 501, 506],
-				single: { "houg": 1, "souk": 1, "tyku": 5, "houk": 4, "saku": 2 },
-			},
+				{
+					// Mogami Kai+
+					ids: [73, 501, 506],
+					single: { "houg": 1, "souk": 1, "tyku": 2, "houk": 2 },
+				},
+			],
 		},
 		// Type 42 Air Radar Kai Ni
 		"411": {
@@ -8177,11 +8277,14 @@ Equip.explicitStatsBonusGears = function(){
 				{
 					// Yahagi K2+
 					ids: [663, 668],
+					// can't stack when equip both Kai and Late Model
+					distinctGears: [106, 450],
 					single: { "houg": 1, "tyku": 1, "houk": 1, "souk": 1 },
 				},
 				{
 					// Yahagi K2B
 					ids: [668],
+					distinctGears: [106, 450],
 					single: { "tyku": 1, "houk": 1 },
 				},
 			],
@@ -8221,18 +8324,14 @@ Equip.explicitStatsBonusGears = function(){
 					// Yahagi K2+
 					ids: [663, 668],
 					// can't stack when equip both Kai and Late Model
-					synergy: {
-						flags: [ "type13AirRadarKaiNonexist" ],
-						single: { "houg": 1, "tyku": 1, "houk": 1, "souk": 1 },
-					},
+					distinctGears: [106, 450],
+					single: { "houg": 1, "tyku": 1, "houk": 1, "souk": 1 },
 				},
 				{
 					// Yahagi K2B
 					ids: [668],
-					synergy: {
-						flags: [ "type13AirRadarKaiNonexist" ],
-						single: { "tyku": 1, "houk": 1 },
-					},
+					distinctGears: [106, 450],
+					single: { "tyku": 1, "houk": 1 },
 				},
 			],
 		},
@@ -8547,10 +8646,8 @@ Equip.explicitStatsBonusGears = function(){
 			byClass: {
 				// Katori Class
 				"56": {
-					synergy: {
-						flags: [ "domesticSonar" ],
-						distinct: { "houk": 3, "tais": 2 },
-					},
+					distinctGears: [46, 47, 132, 149, 438],
+					single: { "houk": 3, "tais": 2 },
 				},
 			},
 		},
@@ -8561,10 +8658,8 @@ Equip.explicitStatsBonusGears = function(){
 			byClass: {
 				// Katori Class
 				"56": {
-					synergy: {
-						flags: [ "domesticSonar" ],
-						distinct: { "houk": 3, "tais": 2 },
-					},
+					distinctGears: [46, 47, 132, 149, 438],
+					single: { "houk": 3, "tais": 2 },
 				},
 			},
 			byShip: [
@@ -8615,10 +8710,8 @@ Equip.explicitStatsBonusGears = function(){
 				"101": "1",
 				// Katori Class
 				"56": {
-					synergy: {
-						flags: [ "domesticSonar" ],
-						distinct: { "houk": 3, "tais": 2 },
-					},
+					distinctGears: [46, 47, 132, 149, 438],
+					single: { "houk": 3, "tais": 2 },
 				},
 			},
 			byShip: [
@@ -8676,15 +8769,51 @@ Equip.explicitStatsBonusGears = function(){
 		// Type 0 Passive Sonar
 		"132": {
 			count: 0,
+			starsDist: [],
 			byClass: {
 				// Katori Class
 				"56": {
-					synergy: {
-						flags: [ "domesticSonar" ],
-						distinct: { "houk": 3, "tais": 2 },
-					},
+					distinctGears: [46, 47, 132, 149, 438],
+					single: { "houk": 3, "tais": 2 },
 				},
 			},
+			byShip: [
+				{
+					// Yamato K2+, Musashi K2
+					ids: [911, 916, 546],
+					single: { "houk": 1 },
+				},
+				{
+					// Taihou Kai, Shoukaku K2+, Zuikaku K2+
+					ids: [156, 461, 466, 462, 467],
+					single: { "houk": 2 },
+				},
+				// Following no ship limited, any ship can equip applied
+				{
+					minStars: 3,
+					single: { "houk": 1 },
+				},
+				{
+					minStars: 5,
+					single: { "tais": 1 },
+				},
+				{
+					minStars: 7,
+					single: { "houk": 1 },
+				},
+				{
+					minStars: 8,
+					single: { "tais": 1 },
+				},
+				{
+					minStars: 9,
+					single: { "houm": 1 },
+				},
+				{
+					minStars: 10,
+					single: { "tais": 1 },
+				},
+			],
 		},
 		// Type 4 Passive Sonar
 		"149": {
@@ -8696,10 +8825,8 @@ Equip.explicitStatsBonusGears = function(){
 				},
 				// Katori Class
 				"56": {
-					synergy: {
-						flags: [ "domesticSonar" ],
-						distinct: { "houk": 3, "tais": 2 },
-					},
+					distinctGears: [46, 47, 132, 149, 438],
+					single: { "houk": 3, "tais": 2 },
 				},
 			},
 			byShip: [
@@ -8786,6 +8913,22 @@ Equip.explicitStatsBonusGears = function(){
 					// Noshiro K2
 					ids: [662],
 					multiple: { "tais": 4, "houk": 1 },
+				},
+			],
+		},
+		// Type 2 Depth Charge
+		"227": {
+			count: 0,
+			starsDist: [],
+			byShip: [
+				// For all ships can equip it
+				{
+					minStars: 8,
+					multiple: { "tais": 1 },
+				},
+				{
+					minStars: 10,
+					multiple: { "tais": 1 },
 				},
 			],
 		},
@@ -8878,6 +9021,30 @@ Equip.explicitStatsBonusGears = function(){
 					// All DD/CL/CT
 					stypes: [2, 3, 21],
 					single: { "houk": 1, "tais": 1 },
+				},
+			],
+		},
+		// Mk.32 ASW Torpedo (Mk.2 Thrower)
+		"472": {
+			count: 0,
+			byNation: {
+				"UnitedStates": {
+					multiple: { "tais": 3 },
+				},
+				"UnitedKingdom": {
+					multiple: { "tais": 1 },
+				},
+			},
+			byShip: [
+				{
+					// All DE
+					stypes: [1],
+					multiple: { "houk": 1 },
+				},
+				{
+					// Samuel B.Roberts Mk.II
+					ids: [920],
+					single: { "houk": 1, "tais": 1, "houm": 1 },
 				},
 			],
 		},
@@ -9446,7 +9613,7 @@ Equip.explicitStatsBonusGears = function(){
 						{
 							flags: [ "newModelBoiler" ],
 							byCount: {
-								gear: "enhancedBoiler",
+								gear: "newModelBoiler",
 								"1": { "soku": 5 },
 								"2": { "soku": 10 },
 								"3": { "soku": 10 },
@@ -9519,7 +9686,7 @@ Equip.explicitStatsBonusGears = function(){
 					stypes: [2],
 					// Except slow DDs(see Slow Group B special below) and DDs in other groups:
 					//   Samuel B.Roberts, Shimakaze, Tashkent, Amatsukaze
-					excludes: [561, 681, 50, 229, 516, 395, 181, 316],
+					excludes: [561, 681, 920, 50, 229, 516, 395, 181, 316],
 					synergy: [
 						{
 							flags: [ "enhancedBoiler" ],
@@ -9553,9 +9720,9 @@ Equip.explicitStatsBonusGears = function(){
 					],
 				},
 				{
-					// Fast Group C: Yuubari/Yuubari Kai, Kaga, fast AV: Chitose, Chiyoda, Nisshin
-					origins: [115, 84, 102, 103, 581],
-					excludes: [622, 623, 624, 108, 109, 291, 292, 296, 297],
+					// Fast Group C: Yuubari/Yuubari Kai, Kaga, fast AV: Chitose, Chiyoda, Nisshin, Samuel B.Roberts Mk.II
+					origins: [115, 84, 102, 103, 581, 561],
+					excludes: [622, 623, 624, 108, 109, 291, 292, 296, 297, 561, 681],
 					synergy: [
 						{
 							flags: [ "enhancedBoiler" ],
@@ -9732,10 +9899,6 @@ Equip.accumulateShipBonusGear = function(bonusGears, equip){
             synergyGears.twin203MediumGunMountNo2 += 1;
             synergyGears.twin203MediumGunMountNo2Nonexist = 0;
         }
-        if(synergyGears.type13AirRadarKaiIds.includes(equip.mid)) {
-            synergyGears.type13AirRadarKai += 1;
-            synergyGears.type13AirRadarKaiNonexist = 0;
-        }
 		if(synergyGears.twin51cmLargeGunMountIds.includes(equip.mid)) {
             synergyGears.twin51cmLargeGunMount += 1;
             synergyGears.twin51cmLargeGunMountNonexist = 0;
@@ -9753,7 +9916,6 @@ Equip.accumulateShipBonusGear = function(bonusGears, equip){
         if(synergyGears.type21AirRadarK2Ids.includes(equip.mid)) synergyGears.type21AirRadarK2 += 1;
         if(synergyGears.triple305mm46LargeGunMountIds.includes(equip.mid)) synergyGears.triple305mm46LargeGunMount += 1;
         if(synergyGears.triple320mm44LargeGunMountIds.includes(equip.mid)) synergyGears.triple320mm44LargeGunMount += 1;
-        if(synergyGears.domesticSonarIds.includes(equip.mid)) synergyGears.domesticSonar += 1;
 		if(synergyGears.rangefinderAirRadarIds.includes(equip.mid)) synergyGears.rangefinderAirRadar += 1;
 		if(synergyGears.rangefinderKaiAirRadarIds.includes(equip.mid)) synergyGears.rangefinderKaiAirRadar += 1;
 		if(synergyGears.usNavySurfaceRadarIds.includes(equip.mid)) synergyGears.usNavySurfaceRadar += 1;
@@ -9809,6 +9971,11 @@ Equip.equipmentTotalStatsOnShipBonus = function(bonusGears, ship, apiName){
         if(Array.isArray(bonusDef.excludeClasses) && bonusDef.excludeClasses.includes(shipClassId)) { return; }
         if(Array.isArray(bonusDef.stypes) && !bonusDef.stypes.includes(shipTypeId)) { return; }
         if(Array.isArray(bonusDef.excludeStypes) && bonusDef.excludeStypes.includes(shipTypeId)) { return; }
+		if(Array.isArray(bonusDef.distinctGears)) {
+			const flagsKey = "countOnceIds" + bonusDef.distinctGears.join("_");
+			synergyGears[flagsKey] = (synergyGears[flagsKey] || 0) + 1;
+			if(synergyGears[flagsKey] > 1) { return; }
+		}
         if(bonusDef.remodel || bonusDef.remodelCap) {
             if(ship.findRemodelLvl() < bonusDef.remodel) { return; }
             if(ship.findRemodelLvl() > bonusDef.remodelCap) { return; }

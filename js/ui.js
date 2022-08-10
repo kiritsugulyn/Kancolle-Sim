@@ -158,6 +158,9 @@ function showAdditionalStats(fleet) {
 		if (ships[i].equipmentBonusStats('raig') > 0){
 			td.append('<span>TP: '+Math.floor(ships[i].TP)+'</span><br>');
 		}
+		if (ships[i].equipmentBonusStats('tyku') > 0){
+			td.append('<span>AA: '+(Math.floor(ships[i].AA)+Math.floor(ships[i].AABonus))+'</span><br>');
+		}
 		if (ships[i].equipmentBonusStats('souk') > 0){
 			td.append('<span>AR: '+Math.floor(ships[i].AR)+'</span><br>');
 		}

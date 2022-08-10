@@ -5764,6 +5764,25 @@ var EQDATA = {
 		ASW: 3,
 		RNG: 1,
 	},
+	471: {
+		name: 'Loire 130M',
+		nameJP: 'Loire 130M',
+		added: '2022-07-28',
+		type: SEAPLANE, image: 50,
+		isnightscout: true,
+		ACC: 2,
+		ASW: 3,
+		LOS: 3,
+	},
+	472: {
+		name: 'Mk.32 ASW Torpedo (Mk.2 Thrower)',
+		nameJP: 'Mk.32 対潜魚雷(Mk.2落射機)',
+		added: '2022-08-04',
+		type: DEPTHCHARGE,
+		TP: 1,
+		ACC: 1,
+		ASW: 19,
+	},
 	501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',
@@ -7455,6 +7474,7 @@ var LBASDATA = {
 	459: { distance: 7, cost: 13 },
 	466: { distance: 6, cost: 9 },
 	469: { distance: 7, cost: 5 },
+	471: { distance: 3, cost: 9 },
 
 	// Custom Eq
 	5001: { distance: 9, cost: 13 },

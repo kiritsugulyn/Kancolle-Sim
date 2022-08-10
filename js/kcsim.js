@@ -283,6 +283,7 @@ function shell(ship,target,APIhou,attackSpecial) {
 	
 	var accflat = (ship.ACC)? ship.ACC : 0;
 	if (ship.improves.ACCshell) accflat += ship.improves.ACCshell;
+	if (target.isPT) accflat += ship.ptAccFlat || 0;
 	
 	var acc = hitRate(ship,(ship.fleet.baseaccshell||90),accflat,accMod); //use global hit acc
 	if (MECHANICS.fitGun && ship.ACCfit) acc += ship.ACCfit*.01;
@@ -483,7 +484,7 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 		cutin = attackSpecial;
 	}
 	
-	
+	if (target.isPT) accflat += ship.ptAccFlat || 0;
 	var acc = hitRate(ship,accBase,accFlat,accMod);
 	if (MECHANICS.fitGun && ship.ACCfitN) acc += ship.ACCfitN*.01;
 	if (searchlights[0]) acc += .07;
@@ -1509,10 +1510,10 @@ function compareAP(fleet1,fleet2,isjetphase,includeEscort,isLBAS,isSupport) {
 	if (C) console.log('AS: '+ap1+' '+ap2+' '+fleet1.AS + ' '+fleet2.AS);
 }
 
-function choiceWProtect(targets,searchlightRerolls,isNightPhase,friendFleetReroll) {
+function choiceWProtect(targets,searchlightRerolls,isNightPhase,isSupport,friendFleetReroll) {
 	DIDPROTECT = false; //disgusting hack, rework later?
 	var target = targets[Math.floor(Math.random()*targets.length)];
-	if (target.getFormation() == VANGUARD1) {
+	if (target.getFormation() == VANGUARD1 && !isSupport) {
 		target = targets[Math.floor(Math.random()*targets.length)];
 	}
 	if (friendFleetReroll && target.isflagship && !target.isescort) {
@@ -1830,7 +1831,7 @@ function AADefenceBombersAndAirstrike(carriers,targets,defenders,APIkouku,issupp
 				// Air Battle Target Selection:
 				// 1. Flagship protection equally shared by all the 11 escorts
 				// 2. Equal distribution of target chance
-				var target = choiceWProtect(targets);
+				var target = choiceWProtect(targets,false,false,issupport);
 				if (target._rocketTriggered) continue;
 				var dmg = airstrike(ship,target,slot,contactMod,issupport,isjetphase);
 				if (C) {
@@ -1931,7 +1932,7 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isBoss,isNight) {
 			var ship = shipsS[i];
 			var targets = alive2;
 			// Support Hougeki:
-			// 1. Team selection: Main 0.45 Escort 0.55
+			// 1. Team selection: Main 0.4 Escort 0.6
 			// 2. Only main can protect flagship
 			if (targets[0].fleet.combinedWith) {
 				var targetsM = [], targetsE = [];
@@ -1941,9 +1942,9 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isBoss,isNight) {
 				}
 				if (!targetsE.length) targets = targetsM;
 				else if (!targetsM.length) targets = targetsE;
-				else targets = (Math.random() < .45)? targetsM : targetsE;
+				else targets = (Math.random() < .4)? targetsM : targetsE;
 			}
-			var target = choiceWProtect(targets);
+			var target = choiceWProtect(targets,false,false,true);
 			var evFlat = 0;
 			if (target.fleet.formation.id == 6) evFlat += vanguardEvFlat(target);
 			var accCrit, torpDmg;
@@ -1961,6 +1962,7 @@ function supportPhase(shipsS,alive2,subsalive2,suptype,BAPI,isBoss,isNight) {
 				else baseacc = (SIMCONSTS.supportShellN != null)? SIMCONSTS.supportShellN : 64;
 				let accMod = ship.moraleMod();
 				if (checkFormMod) accMod *= FLEETS1[0].formation.shellacc;
+				if (FLEETS1[0].formation.id == 6 && target.type == 'DD') accMod *= 1.1;
 				accCrit = accuracyAndCrit(ship,target,hitRate(ship,baseacc,ship.ACC,accMod),target.getFormation().shellev,evFlat,1);
 			}
 			var res = rollHit(accCrit);
@@ -2088,7 +2090,7 @@ function supportASW(carriers,targets,defenders,APIkouku,combinedAll) {
 				// Air Battle Target Selection:
 				// 1. Flagship protection equally shared by all the 11 escorts
 				// 2. Equal distribution of target chance 
-				var target = choiceWProtect(targets);
+				var target = choiceWProtect(targets,false,false,true);
 				var dmg = airstrikeSupportASW(ship,target,slot);
 				
 				if (C) {
@@ -2177,7 +2179,7 @@ function LBASPhase(lbas,alive2,subsalive2,isjetphase,APIkouku) {
 		for (let eq of lbas.equips) {
 			if (eq.type == LANDSCOUT) {
 				if (eq.ACC >= 3) contactModLB = 1.15;
-				else if (eq.ACC <= 2 && contactModLB < 1.125) contactModLB = 1.125;
+				else if (eq.ACC <= 2 && contactModLB < 1.12) contactModLB = 1.12;
 			}
 		}
 		contactMod *= contactModLB;
@@ -3735,7 +3737,7 @@ function friendFleetPhase(fleet1,fleet2,alive2,subsalive2,BAPI) {
 					ASW(attacker,target,false,APIhou);
 					removeSunk(subsalive2);
 				} else if (alive2.length) {
-					let target = choiceWProtect(alive2,nightEquips[3][1],false,true);
+					let target = choiceWProtect(alive2,nightEquips[3][1],false,false,true);
 					NBattack(attacker,target,false,nightEquips,APIhou);
 					removeSunk(alive2);
 				}
