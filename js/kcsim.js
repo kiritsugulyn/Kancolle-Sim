@@ -70,7 +70,8 @@ var AACIDATA = {
 	23:{num:2,rate:.8,mod:1.05,equip:'G'},
 	24:{num:4,rate:.55,mod:1.25,equip:'HG'},
 	25:{num:8,rate:.6,mod:1.55,equip:'GRS'},
-	26:{num:9,rate:.6,mod:1.4,equip:'HR'},
+	26:{num:9,rate:.6,mod:1.4,equip:'BR'},
+	27:{num:6,rate:.6,mod:1.55,equip:'BGR'},
 	28:{num:5,rate:.55,mod:1.4,equip:'GR'},
 	29:{num:6,rate:.6,mod:1.55,equip:'HR'},
 	30:{num:4,rate:.4,mod:1.3,equip:'HHH'},
@@ -1288,7 +1289,7 @@ function airstrike(ship,target,slot,contactMod,issupport,isjetphase) {
 	if (!contactMod) contactMod = 1;
 	var acc = .95 + (target.fleet.airstrikeaccMod || 0) / 100;
 	if (issupport) acc = .85;
-	if (equip.skipBombing && !target.isInstall) acc += .2;
+	if (equip.skipBombing && !target.isInstall && !target.isPT) acc += .2;
 	var res = rollHit(accuracyAndCrit(ship,target,acc,1.0,0,.2,!issupport),(!issupport)? (ship.critdmgbonus || 1) : 1);  // No evMod for airstrike
 	var dmg = 0, realdmg = 0;
 	var planebase = (equip.isdivebomber)? (equip.DIVEBOMB || 0) : (target.isInstall)? 0 : (equip.TP || 0);
@@ -2312,7 +2313,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod,isjetphase) {
 			else if (target.type == 'CL') acc += .07;
 		}
 	}
-	if (equip.skipBombing && !target.isInstall) acc += .2;
+	if (equip.skipBombing && !target.isInstall && !target.isPT) acc += .2;
 	if (target.fleet.combinedWith) acc *= 1.1;
 	lbas.critratebonus = critratebonus; lbas.ACCplane = ACCplane;
 	var res = rollHit(accuracyAndCrit(lbas,target,acc,1.0,0,.2,true),critdmgbonus);  // No evMod for airstrike
@@ -3953,7 +3954,8 @@ function dmgSpecialTarget(dmg,ship,target,plane){
 		if (ship instanceof LandBase && target.mid <= 1658) dmg += 100;
 	}
 	if (target.isPT) {
-		if (plane) dmg *= Math.random() < 0.5? 0.5: 0.8;
+		if (ship instanceof LandBase) dmg *= Math.random() < 0.5? 0.4: 0.7;
+		else if (plane) dmg *= Math.random() < 0.5? 0.5: 0.8;
 		else dmg = 0.35 * dmg + 15;
 	}
 

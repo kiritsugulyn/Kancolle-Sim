@@ -712,7 +712,7 @@ Ship.prototype.weightedAntiAir = function() {
             if (this.equips.length) this._wAA = 2 * Math.floor(this._wAA / 2);
             else this._wAA = Math.floor(this._wAA);
         }
-		this._wAA += Math.floor(.5 * (this.AABonus || 0));
+		this._wAA += Math.floor(.75 * (this.AABonus || 0));
 	}
 	return this._wAA;
 }
@@ -773,6 +773,7 @@ Ship.prototype.getAACItype = function(atypes) {
         if (atypes[A_HAGUN] && atypes[A_AAFD] && atypes[A_AIRRADAR]) types.push(7);
         
         if ([546,911,916].indexOf(this.mid) != -1 && hasID[275] && atypes[A_AIRRADAR]) types.push(26); //Yamato Class Kai Ni
+		if (this.mid == 321 && hasID[274] && hasID[275] && atypes[A_AIRRADAR]) types.push(27); //Ooyodo Kai
         if ([82,88,553,554,148,546].indexOf(this.mid) != -1 && hasID[274] && atypes[A_AIRRADAR]) types.push(28); //Ise-class Kai (Ni) + Musashi Kai (Ni)
         if ((this.mid == 557 || this.mid == 558) && atypes[A_HAGUN] && atypes[A_AIRRADAR]) types.push(29); //Isokaze+Hamakaze B Kai
         
@@ -1911,7 +1912,7 @@ Equip.explicitStatsBonusGears = function(){
 		},
 		// getCountryName by ctype in main.js#SlotItemEffectParamModel.SHIP_COUNTRY
 		"countryCtypeMap": {
-			"UnitedStates": [65, 69, 83, 84, 87, 91, 93, 95, 99, 102, 105, 106, 107, 110, 114],
+			"UnitedStates": [65, 69, 83, 84, 87, 91, 93, 95, 99, 102, 105, 106, 107, 110, 114, 116],
 			"UnitedKingdom": [67, 78, 82, 88, 108, 112],
 			"Italia": [58, 61, 64, 68, 80, 92, 113],
 			"Netherlands": [98],
@@ -1925,7 +1926,7 @@ Equip.explicitStatsBonusGears = function(){
 				21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
 				41, 42, 43, 44, 45, 46, 49, 50, 51, 52, 53, 54, 56, 59, 60, 62, 66,
 				71, 72, 74, 75, 76, 77, 85, 86, 90, 94, 97, 100, 101, 103, 104, 109,
-				111, 115
+				111, 115, 117
 			],
 		},
 		// Ryuusei
@@ -3140,6 +3141,26 @@ Equip.explicitStatsBonusGears = function(){
 				multiple: { "houg": -2, "houk": -1, "souk": -2 },
 			},
 		},
+		// F4U-4
+		"474": {
+			count: 0,
+			byNation: {
+				"UnitedStates": {
+					multiple: { "houg": 2, "tyku": 1, "houk": 1 },
+				},
+				"UnitedKingdom": {
+					multiple: { "houg": 1, "tyku": 1, "houk": 1 },
+				},
+				"France": {
+					multiple: { "houg": 1, "tyku": 1 },
+				},
+			},
+			byShip: {
+				// Gambier Bay Mk.II, Langley Kai
+				ids: [707, 930],
+				multiple: { "houg": 1, "houk": 1 },
+			},
+		},
 		// Type 96 Fighter
 		"19": {
 			count: 0,
@@ -3376,6 +3397,8 @@ Equip.explicitStatsBonusGears = function(){
 				"84": "69",
 				// Yorktown Class
 				"105": "69",
+				// Independence Class
+				"116": "69",
 				// Kaga Class
 				"3": {
 					multiple: { "houg": 1, "tyku": 1, "tais": 1, "houk": 1 },
@@ -3439,6 +3462,18 @@ Equip.explicitStatsBonusGears = function(){
 			byNation: {
 				"UnitedStates": {
 					multiple: { "houg": 1, "tyku": 1, "houk": 2 },
+				},
+			},
+		},
+		// F4U-2 Night Corsair
+		"473": {
+			count: 0,
+			byNation: {
+				"UnitedStates": {
+					multiple: { "houg": 1, "tyku": 1, "houk": 1 },
+				},
+				"UnitedKingdom": {
+					multiple: { "houg": 1, "houk": 1 },
 				},
 			},
 		},
@@ -9202,6 +9237,54 @@ Equip.explicitStatsBonusGears = function(){
 					ids: [879],
 					single: { "souk": 1, "houk": 1 },
 			},
+		},
+		// Skilled Deck Personnel + Aviation Maintenance Hands
+		"478": {
+			count: 0,
+			starsDist: [],
+			byShip: [
+				// For any ship can equip it
+				{
+					minStars: 1,
+					single: { "houg": 1 },
+				},
+				{
+					minStars: 2,
+					single: { "houm": 1 },
+				},
+				{
+					minStars: 3,
+					single: { "houk": 1 },
+				},
+				{
+					minStars: 4,
+					single: { "baku": 1 },
+				},
+				{
+					minStars: 5,
+					single: { "raig": 1 },
+				},
+				{
+					minStars: 6,
+					single: { "tyku": 1 },
+				},
+				{
+					minStars: 7,
+					single: { "houg": 1 },
+				},
+				{
+					minStars: 8,
+					single: { "houm": 1 },
+				},
+				{
+					minStars: 9,
+					single: { "houk": 1 },
+				},
+				{
+					minStars: 10,
+					single: { "houg": 1 },
+				},
+			],
 		},
 		// Skilled Lookouts
 		"129": {
