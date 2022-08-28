@@ -5801,6 +5801,7 @@ var EQDATA = {
 		nameJP: 'F4U-4',
 		added: '2022-08-26',
 		type: DIVEBOMBER,
+		canShellInstall: true,
 		FP: 2,
 		DIVEBOMB: 6,
 		AA: 10,
