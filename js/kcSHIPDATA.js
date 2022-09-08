@@ -18621,7 +18621,7 @@ var SHIPDATA = {
 		LUK: 20,
 		RNG: 1,
 		SPD: 5,
-		TACC: 40,	// Source: http://jbbs.shitaraba.net/bbs/read_archive.cgi/netgame/12394/1394874004/
+		TACC: 45,	// Source: https://docs.google.com/spreadsheets/d/1QD-TRFa2-Nzke2lpeXsoKKjJ-Tm8vC8AsKREVaCi1Vc/edit#gid=0
 		SLOTS: [0, 0, 0],
 		EQUIPS: [515, 515, 513],
 		fuel: 0,
@@ -19161,7 +19161,7 @@ var SHIPDATA = {
 		LUK: 30,
 		RNG: 2,
 		SPD: 10,
-		TACC: 50,	//Source: https://jbbs.shitaraba.net/bbs/read_archive.cgi/netgame/12394/1383823982/
+		TACC: 40,	//Source: https://docs.google.com/spreadsheets/d/1QD-TRFa2-Nzke2lpeXsoKKjJ-Tm8vC8AsKREVaCi1Vc/edit#gid=0
 		SLOTS: [1, 1, 1],
 		EQUIPS: [506, 515, 515],
 		fuel: 0,
@@ -19381,7 +19381,6 @@ var SHIPDATA = {
 		LUK: 45,
 		RNG: 1,
 		SPD: 5,
-		// TACC: 80,	// Based on 14 summer api data
 		TACC: 60, 		// Based on yumemi reviews 2022/07
 		SLOTS: [0, 0, 0],
 		EQUIPS: [515, 515, 515],
@@ -19450,7 +19449,7 @@ var SHIPDATA = {
 		LUK: 30,
 		RNG: 1,
 		SPD: 10,
-		TACC: 45,
+		TACC: 50,  // source: https://docs.google.com/spreadsheets/d/1QD-TRFa2-Nzke2lpeXsoKKjJ-Tm8vC8AsKREVaCi1Vc/edit#gid=0
 		SLOTS: [0, 0, 0],
 		EQUIPS: [502, 545, 542],
 		fuel: 0,
@@ -19472,7 +19471,7 @@ var SHIPDATA = {
 		LUK: 36,
 		RNG: 1,
 		SPD: 10,
-		TACC: 55,
+		TACC: 60,  // source: https://docs.google.com/spreadsheets/d/1QD-TRFa2-Nzke2lpeXsoKKjJ-Tm8vC8AsKREVaCi1Vc/edit#gid=0
 		SLOTS: [0, 0, 0],
 		EQUIPS: [502, 545, 542],
 		fuel: 0,
@@ -19516,7 +19515,7 @@ var SHIPDATA = {
 		LUK: 48,
 		RNG: 1,
 		SPD: 10,
-		TACC: 75,
+		TACC: 70,  // source: https://docs.google.com/spreadsheets/d/1QD-TRFa2-Nzke2lpeXsoKKjJ-Tm8vC8AsKREVaCi1Vc/edit#gid=0
 		SLOTS: [0, 0, 0],
 		EQUIPS: [502, 515, 542],
 		fuel: 0,
@@ -19794,7 +19793,7 @@ var SHIPDATA = {
 		LUK: 55,
 		RNG: 2,
 		SPD: 10,
-		TACC: 50,
+		TACC: 70,  // source: https://docs.google.com/spreadsheets/d/1QD-TRFa2-Nzke2lpeXsoKKjJ-Tm8vC8AsKREVaCi1Vc/edit#gid=0
 		SLOTS: [0, 0, 3, 3],
 		EQUIPS: [550, 550, 545, 525],
 		fuel: 0,
@@ -19816,7 +19815,7 @@ var SHIPDATA = {
 		LUK: 66,
 		RNG: 2,
 		SPD: 10,
-		TACC: 60,
+		TACC: 90,  // source: https://docs.google.com/spreadsheets/d/1QD-TRFa2-Nzke2lpeXsoKKjJ-Tm8vC8AsKREVaCi1Vc/edit#gid=0
 		SLOTS: [0, 0, 3, 3],
 		EQUIPS: [550, 550, 545, 525],
 		fuel: 0,
@@ -19838,7 +19837,7 @@ var SHIPDATA = {
 		LUK: 60,
 		RNG: 2,
 		SPD: 10,
-		TACC: 60,
+		TACC: 70,  // source: https://docs.google.com/spreadsheets/d/1QD-TRFa2-Nzke2lpeXsoKKjJ-Tm8vC8AsKREVaCi1Vc/edit#gid=2026162412
 		SLOTS: [0, 0, 0, 4],
 		EQUIPS: [505,505,515,525],
 		fuel: 0,
@@ -19860,7 +19859,7 @@ var SHIPDATA = {
 		LUK: 70,
 		RNG: 2,
 		SPD: 10,
-		TACC: 70,
+		TACC: 90,  // source: https://docs.google.com/spreadsheets/d/1QD-TRFa2-Nzke2lpeXsoKKjJ-Tm8vC8AsKREVaCi1Vc/edit#gid=2026162412
 		SLOTS: [0, 0, 0, 4],
 		EQUIPS: [505,505,515,525],
 		fuel: 0,
@@ -23038,7 +23037,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 30,
 		LUK: 60,
-		TACC: 60,	// Adjust based on main version
+		TACC: 65,	// Adjust based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -23059,7 +23058,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 36,
 		LUK: 70,
-		TACC: 70,	// Adjust based on main version
+		TACC: 75,	// Adjust based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -23080,7 +23079,6 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 48,
 		LUK: 80,
-		// TACC: 80,	// Adjust 100 -> 80 based on historical data
 		TACC: 85, // Based on yumemi reviews 2022/07
 		unknownstats: true,
 		RNG: 1,
@@ -24141,7 +24139,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 20,
 		LUK: 50,
-		TACC: 50,	// Adjust based on main version
+		TACC: 55,	// Adjust based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -24468,7 +24466,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 20,
 		LUK: 50,
-		TACC: 50,	// Adjust based on main version
+		TACC: 55,	// Adjust based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -24489,7 +24487,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 30,
 		LUK: 60,
-		TACC: 60,	// Adjust based on main version
+		TACC: 65,	// Adjust based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -24510,7 +24508,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 36,
 		LUK: 70,
-		TACC: 70,	// Adjust based on main version
+		TACC: 75,	// Adjust based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -24531,7 +24529,7 @@ var SHIPDATA = {
 		ASW: 0,
 		LOS: 48,
 		LUK: 80,
-		TACC: 80,	// Adjust based on main version
+		TACC: 85,	// Adjust based on main version
 		unknownstats: true,
 		RNG: 1,
 		SPD: 5,
@@ -25641,7 +25639,7 @@ var SHIPDATA = {
 		unknownstats: true,
 		RNG: 2,
 		SPD: 10,
-		TACC: 60,
+		TACC: 95,  // update based on normal and elite class
 		SLOTS: [0, 0, 0, 3],
 		EQUIPS: [550, 550, 545, 525],
 	},
@@ -27576,7 +27574,7 @@ var SHIPDATA = {
 		unknownstats: true,
 		RNG: 2,
 		SPD: 10,
-		TACC: 80,
+		TACC: 90,
 		SLOTS: [0, 0, 0, 0],
 		EQUIPS: [600, 600, 593, 603],
 	},
@@ -27597,7 +27595,7 @@ var SHIPDATA = {
 		unknownstats: true,
 		RNG: 2,
 		SPD: 10,
-		TACC: 80,
+		TACC: 90,
 		SLOTS: [0, 0, 0, 0],
 		EQUIPS: [600, 600, 593, 603],
 	},
@@ -27618,7 +27616,7 @@ var SHIPDATA = {
 		unknownstats: true,
 		RNG: 2,
 		SPD: 10,
-		TACC: 80,
+		TACC: 100,
 		SLOTS: [0, 0, 0, 0],
 		EQUIPS: [600, 600, 541, 603],
 	},

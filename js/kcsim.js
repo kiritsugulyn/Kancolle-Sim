@@ -299,7 +299,8 @@ function shell(ship,target,APIhou,attackSpecial) {
 	
 	var evFlat = 0;
 	if (target.fleet.formation.id == 6) evFlat += vanguardEvFlat(target);
-	
+
+	postMod *= postModSpecialTarget(ship,target);
 	
 	if (da) {
 		var res1 = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,1.3,ship.CVshelltype));
@@ -503,7 +504,8 @@ function NBattack(ship,target,NBonly,NBequips,APIyasen,attackSpecial) {
 		preMod *= .5;
 	}
 	if (target.fleet.formation.id == 6) evFlat += vanguardEvFlat(target);
-	
+
+	postMod *= postModSpecialTarget(ship,target);
 	
 	if (da) {
 		var res1 = rollHit(accuracyAndCrit(ship,target,acc,evMod,evFlat,critrateMod));
@@ -2297,7 +2299,7 @@ function airstrikeLBAS(lbas,target,slot,contactMod,isjetphase) {
 			case 0: ACCplane = 0; break;
 		}
 		critdmgbonus += Math.floor(Math.sqrt(equip.exp)+critval)/100;
-		critratebonus = critval*.6;
+		critratebonus = critval*.8;
 	}
 	if (MECHANICS.LBASBuff) {
 		acc += .07*(equip.ACC || 0);
@@ -3965,14 +3967,17 @@ function dmgSpecialTarget(dmg,ship,target,plane){
 		else if (target.mid >= 1668 && target.mid <= 1672) dmg *= (Math.random() < .5? 1.5 : 2);   // Source: https://nga.178.com/read.php?tid=16936146
 		else if (target.mid >= 1679 && target.mid <= 1683) dmg *= 2;  // Source: https://nga.178.com/read.php?tid=16936146
 		else if ([1557,1586,1620,1690,1691,1692].indexOf(target.mid) !== -1) dmg *= (Math.random() < .5? 1.8 : 3.06);  // Source: https://twitter.com/myteaGuard/status/1467502506377097218
-	}else {
-		if (target.isAnchorage) dmg *= ship.anchoragePostMult || 1;
-		else if (target.isSummerBBHime) dmg *= ship.summerBBHimePostMult || 1;
-		else if (target.isSummerCAHime) dmg *= ship.summerCAHimePostMult || 1;
-		else if (target.isFrenchBBHime) dmg *= ship.FrenchBBHimePostMult || 1;
-		else if (target.isGermanCVEHime) dmg *= ship.GermanCVEHimePostMult || 1;
 	}
 	return Math.floor(dmg);
+}
+
+function postModSpecialTarget(ship,target) {  // post mod for shell and NB only
+	if (target.isAnchorage) return ship.anchoragePostMult || 1;
+	else if (target.isSummerBBHime) return ship.summerBBHimePostMult || 1;
+	else if (target.isSummerCAHime) return ship.summerCAHimePostMult || 1;
+	else if (target.isFrenchBBHime) return ship.FrenchBBHimePostMult || 1;
+	else if (target.isGermanCVEHime) return ship.GermanCVEHimePostMult || 1;
+	return 1;
 }
 
 function vanguardEvFlat(ship, isTorpedo) {

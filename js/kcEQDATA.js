@@ -5802,6 +5802,7 @@ var EQDATA = {
 		added: '2022-08-26',
 		type: DIVEBOMBER,
 		canShellInstall: true,
+		aaResistShip: .6,
 		FP: 2,
 		DIVEBOMB: 6,
 		AA: 10,
@@ -5836,6 +5837,20 @@ var EQDATA = {
 		ASW: 1,
 		LOS: 1,
 		RNG: 4,
+	},
+	479: {
+		name: 'Mosquito FB Mk.IV',
+		nameJP: 'Mosquito FB Mk.IV',
+		added: '2022-08-31',
+		type: LANDBOMBER,
+		aaResistShip: .6,
+		aaResistFleet: .7,
+		DIVEBOMB: 18,
+		TP: 5,
+		AA: 5,
+		ACC: 1,
+		ASW: 4,
+		LOS: 5,
 	},
 	501: {
 		name: '5inch Single Cannon',
@@ -7531,6 +7546,7 @@ var LBASDATA = {
 	471: { distance: 3, cost: 9 },
 	473: { distance: 6, cost: 9 },
 	474: { distance: 6, cost: 9 },
+	479: { distance: 7, cost: 14 },
 
 	// Custom Eq
 	5001: { distance: 9, cost: 13 },

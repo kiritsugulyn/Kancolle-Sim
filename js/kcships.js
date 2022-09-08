@@ -437,10 +437,12 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
     this.summerBBHimePostMult = 1;
     if (this.equiptypes[APSHELL]) this.summerBBHimePostMult *= 1.2;
     if (this.equiptypes[SEAPLANEBOMBER] || this.equiptypes[SEAPLANEFIGHTER]) this.summerBBHimePostMult *= 1.1;
+	if ([171,172,173,176,177,178,393,515,574,579,630].indexOf(this.mid) !== -1) this.summerBBHimePostMult *= 1.1;
 
     this.summerCAHimePostMult = 1;
     if (this.equiptypes[APSHELL]) this.summerCAHimePostMult *= 1.1;
     if (this.equiptypes[SEAPLANEBOMBER] || this.equiptypes[SEAPLANEFIGHTER]) this.summerCAHimePostMult *= 1.15;
+	if ([171,172,173,178].indexOf(this.mid) !== -1) this.summerBBHimePostMult *= 1.1;
 
     this.FrenchBBHimePostMult = 1;
     if (this.equiptypes[APSHELL]) this.FrenchBBHimePostMult *= 1.2;
@@ -449,7 +451,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
         this.FrenchBBHimePostMult *= 1.1;
         if (this.equiptypes[DIVEBOMBER] >= 2) this.FrenchBBHimePostMult *= 1.15;
     }
-    if ([392,492].indexOf(this.mid) !== -1)  this.FrenchBBHimePostMult *= 1.17;
+    if ([372,392,491,492].indexOf(this.mid) !== -1)  this.FrenchBBHimePostMult *= 1.17;
     if (this.equips.some((eq) => eq.mid == 194)) this.FrenchBBHimePostMult *= 1.2;
 
     this.GermanCVEHimePostMult = 1;
@@ -894,8 +896,8 @@ Ship.prototype.setProficiencyBonus = function(resetFlag) {
 				else if (eq.rank == 3) mod = 3;
 				else if (eq.rank == 2) mod = 2;
 				else if (eq.rank == 1) mod = 1;
-				this.critratebonus += mod*.6; //x.75????
-                this.critdmgbonus += Math.floor(Math.sqrt(eq.exp) + mod)/((i==0)? 100:200);
+				this.critratebonus += mod * (i == 0? 0.8 : 0.6); 
+                this.critdmgbonus += Math.floor(Math.sqrt(eq.exp) + mod) / ((i == 0)? 100 : 200);
                 planeexp += eq.exp;
             }
             planecount++;
@@ -968,7 +970,7 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
     var installFlat = 0;
     
     var softSkinMult = 1;
-    var pillboxMult = (this.type=='DD'||this.type=='CL')? 1.4 : 1;
+    var pillboxMult = (this.type == 'DD' || this.type == 'CL')? 1.4 : 1;
     var isoMult = 1;
     var harbourSummerMult = 1;
     var commonMult = 1;
@@ -979,7 +981,7 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
     var harbourSummerMultDayOnly = 1;
 
     var supplyPostMult = 1;
-    var anchoragePostMult = 1;
+    var anchoragePostMult = (this.sclass == 19 || this.sclass == 37)? 1.2 : 1;;
 
     if (installeqtypes.LC) {
         softSkinMult *= 1.4 * LCbonus;
@@ -987,7 +989,7 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
         isoMult *= 1.8 * LCbonus;
         harbourSummerMult *= 1.7 * LCbonus;
         supplyPostMult *= 1.7 * LCbonus;
-        anchoragePostMult *= 1.6 * LCbonus;
+        anchoragePostMult *= 1.4 * LCbonus;  // guess
     }
 
     if (installeqtypes.LT) {  // only one landing tank currently, put under eq type
@@ -997,7 +999,7 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
         isoMult *= [2.4, 3.24][i] * LTbonus;
         harbourSummerMult *= [2.8, 4.2][i] * LTbonus;
         supplyPostMult *= [1.7, 2.55][i] * LTbonus;
-        anchoragePostMult *= [2.4, 3.24][i] * LTbonus;   // guess
+        anchoragePostMult *= [2.4, 3.36][i] * LTbonus;  // 3.36 is guess
     }
 
     if (installeqtypes.AP) {
@@ -1009,7 +1011,7 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
         softSkinMult *= 2.5;
         isoMult *= 1.75;
         harbourSummerMult *= 1.75;
-        anchoragePostMult *= 1.5;    // guess
+        anchoragePostMult *= 1.45;
     }
 
     if (installeqtypes.SB) {
@@ -1033,6 +1035,7 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
         isoMult *= [1.2, 1.68][i];
         harbourSummerMult *= [1.6, 2.4][i];
         supplyPostMult *= [1.3, 2.08][i] * LCbonus;
+		anchoragePostMult *= [1.2, 1.68][i];  // guess
     }
 
     if (installeqids[193]) {
@@ -1089,7 +1092,7 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
         isoMult *= 1.8;
         harbourSummerMult *= 2;
         supplyPostMult *= 1.2;
-        anchoragePostMult *= 1.6;   // guess
+        anchoragePostMult *= 1.7;   // guess
     }
 
     if (installeqids[408] || installeqids[409]){
@@ -1100,6 +1103,7 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
         pillboxMultDayOnly *= [1, 1.3, 1.56][n];
         isoMultDayOnly *= [1, 1.3, 1.43][n];
         supplyPostMult *= [1, 1.5, 1.65][n];
+		anchoragePostMult *= 1.2;  // guess
 
         let a = Math.min((installeqids[68] || 0) + (installeqids[166] || 0) + (installeqids[193] || 0) + (installeqids[449] || 0), 2);
         let b = Math.min((installeqids[230] || 0) + (installeqids[167] || 0), 2);
@@ -1130,6 +1134,7 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
         isoMult *= [1.2, 1.68][i];
         harbourSummerMult *= [1.6, 2.4][i];
         supplyPostMult *= [1.3, 2.08][i] * LCbonus;
+		anchoragePostMult *= 1.4;  // guess
     }
 
     return [installFlat, 
