@@ -3130,6 +3130,7 @@ function simStats(numsims,foptions) {
 	for (var i=0; i<numsims; i++) {
 		for (var j=0; j<FLEETS2.length; j++) {
 			var options = foptions[j];
+			if (options.nodeskip) continue;
 			for (let ship of FLEETS1[0].ships) {
 				if (options.bonusA) ship.bonusSpecial = ship.bonusA || 1;
 				else if (options.bonusB) ship.bonusSpecial = ship.bonusB || 1;

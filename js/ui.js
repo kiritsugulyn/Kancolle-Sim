@@ -1072,6 +1072,10 @@ function genOptions(fleetnum) {
 	html.append('<td style="font-weight:bold">Node '+num+':</td>');
 	var td = $('<td style="border:1px solid black"></td>');
 	var div = $('<div></div>');
+	div.append('<span class="option2"><label>Node Skip: </label></span>');
+	div.append('<span class="option2"><input type="checkbox" id="nodeskip'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="nodeskip'+fleetnum+'">Skip the node</label></span>');
+	td.append(div);
+	div = $('<div></div>');
 	div.append('<span class="option2"><label>Before Node: </label></span>');
 	div.append('<span class="option2"><input type="checkbox" id="lbraid'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="lbraid'+fleetnum+'">LB raid (no defence)</label></span>');
 	div.append('<span class="option2 line"><input type="checkbox" id="maelstrom'+fleetnum+'" onclick="updateOptionsCookies('+fleetnum+');raiseFleetChange()"/><label for="maelstrom'+fleetnum+'">Maelstrom</label></span>');
@@ -1173,6 +1177,7 @@ function updateOptionsCookies(num) {
 
 function extractOptions(num) {
 	var options = {};
+	options.nodeskip = $('#nodeskip'+num).prop('checked');
 	options.NB = $('#NB'+num).prop('checked');
 	options.NBonly = $('#NBonly'+num).prop('checked');
 	options.aironly = $('#aironly'+num).prop('checked');
@@ -1223,6 +1228,7 @@ function extractOptions(num) {
 
 function loadOptions(num,options) {
 	// console.log(options);
+	$('#nodeskip'+num).prop('checked',options.nodeskip);
 	$('#NB'+num).prop('checked',options.NB);
 	$('#NBonly'+num).prop('checked',options.NBonly);
 	$('#aironly'+num).prop('checked',options.aironly);
@@ -2697,6 +2703,7 @@ function clickedWatchBattle() {
 	}
 	for (var j=0; j<FLEETS2.length; j++) {
 		var options = foptions[j];
+		if (options.nodeskip) continue;
 		var BAPI = {data:{},yasen:{},mvp:[],rating:''};
 		if (options.formation != '0') {
 			if (ADDEDCOMBINED) {

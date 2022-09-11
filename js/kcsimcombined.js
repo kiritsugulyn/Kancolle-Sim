@@ -597,6 +597,7 @@ function simStatsCombined(numsims,type,foptions) {
 	for (var i=0; i<numsims; i++) {
 		for (var j=0; j<FLEETS2.length; j++) {
 			var options = foptions[j];
+			if (options.nodeskip) continue;
 			for (let n=0; n<2; n++) {
 				for (let ship of FLEETS1[n].ships) {
 					if (options.bonusA) ship.bonusSpecial = ship.bonusA || 1;
