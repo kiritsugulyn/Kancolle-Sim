@@ -3948,14 +3948,6 @@ function getSpecialEquipBonus(ship,target,plane,isAcc){
 }
 
 function dmgSpecialTarget(dmg,ship,target,plane){
-	if (target.installtype == 3){
-		if (plane) {
-			if (plane.isdivebomber && target.mid <= 1658) dmg *= 2.1;
-		}else{
-			dmg *= (ship.supplyPostMult||1);
-		}
-		if (ship instanceof LandBase && target.mid <= 1658) dmg += 100;
-	}
 	if (target.isPT) {
 		if (ship instanceof LandBase) dmg *= Math.random() < 0.5? 0.4: 0.7;
 		else if (plane) dmg *= Math.random() < 0.5? 0.5: 0.8;
@@ -3973,7 +3965,8 @@ function dmgSpecialTarget(dmg,ship,target,plane){
 }
 
 function postModSpecialTarget(ship,target) {  // post mod for shell and NB only
-	if (target.isAnchorage) return ship.anchoragePostMult || 1;
+	if (target.installtype == 3) return ship.supplyPostMult || 1;
+	else if (target.isAnchorage) return ship.anchoragePostMult || 1;
 	else if (target.isSummerBBHime) return ship.summerBBHimePostMult || 1;
 	else if (target.isSummerCAHime) return ship.summerCAHimePostMult || 1;
 	else if (target.isFrenchBBHime) return ship.FrenchBBHimePostMult || 1;
