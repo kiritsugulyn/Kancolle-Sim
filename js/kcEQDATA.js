@@ -5901,6 +5901,14 @@ var EQDATA = {
 		ASW: 6,
 		LOS: 6,
 	},
+	482: {
+		name: 'Toku Daihatsu Landing Craft + Panzer III (North African Specification)',
+		nameJP: '特大発動艇+Ⅲ号戦車(北アフリカ仕様)',
+		added: '2022-09-11',
+		type: LANDINGCRAFT,
+		FP: 1,
+		ACC: 1,
+	},
 	501: {
 		name: '5inch Single Cannon',
 		nameJP: '5inch単装砲',

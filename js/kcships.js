@@ -311,7 +311,7 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
         if ([68,126,166,167,193,230,346,347,348,349,355,408,409,436,449].indexOf(eq.mid) !== -1) installeqids[eq.mid] = installeqids[eq.mid] + 1 || 1;
 		
         //special installation equips
-        if (eq.mid == 230) this.has11Tank = true;
+        if (eq.mid == 230 || eq.mid == 482) this.has11Tank = true;
         if (eq.mid == 355) this.hasM4A1 = true;
         if (eq.mid == 449) this.hasType1SPG = true;
 
@@ -430,7 +430,8 @@ Ship.prototype.loadEquips = function(equips,levels,profs,addstats) {
     this.harbourSummerMult, this.harbourSummerMultDayOnly, 
     this.commonMult, 
     this.supplyPostMult, 
-    this.anchoragePostMult] = this.installMod(installeqtypes, installeqids);
+    this.anchoragePostMult,
+	this.dockPostMult] = this.installMod(installeqtypes, installeqids);
     
     [this.ptDmgMod, this.ptAccMod] = this.ptMod();
 
@@ -981,6 +982,7 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
     var harbourSummerMultDayOnly = 1;
 
     var supplyPostMult = 1;
+	var dockPostMult = 1;
     var anchoragePostMult = (this.sclass == 19 || this.sclass == 37)? 1.2 : 1;;
 
     if (installeqtypes.LC) {
@@ -999,7 +1001,8 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
         isoMult *= [2.4, 3.24][i] * LTbonus;
         harbourSummerMult *= [2.8, 4.2][i] * LTbonus;
         supplyPostMult *= [1.7, 2.55][i] * LTbonus;
-        anchoragePostMult *= [2.4, 3.36][i] * LTbonus;  // 3.36 is guess
+        anchoragePostMult *= [2.4, 3.24][i] * LTbonus;  // guess
+		dockPostMult *= 1.25;
     }
 
     if (installeqtypes.AP) {
@@ -1012,6 +1015,7 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
         isoMult *= 1.75;
         harbourSummerMult *= 1.75;
         anchoragePostMult *= 1.45;
+		dockPostMult *= 1.3;
     }
 
     if (installeqtypes.SB) {
@@ -1057,7 +1061,6 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
         isoMult *= [1.2, 1.68][i];
         harbourSummerMult *= [1.1, 1.265][i];
         supplyPostMult *= [1.15, 1.38][i];
-        anchoragePostMult *= [1.15, 1.38][i];   // guess
     }
 
     if (installeqids[126] || installeqids[348] || installeqids[349]) {
@@ -1073,7 +1076,7 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
             isoMult *= [1.4, 2.1][i];
             harbourSummerMult *= [1.4, 1.68][i];
             supplyPostMult *= [1.25, 1.625][i];
-            anchoragePostMult *= [1.25, 1.625][i];  // guess
+            anchoragePostMult *= [1.2, 1.56][i];  // guess
         }
         if (r > 0){
             let i = Math.min(r, 2) - 1;
@@ -1082,7 +1085,7 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
             isoMult *= [1.3, 2.145][i];
             harbourSummerMult *= [1.25, 1.75][i];
             supplyPostMult *= [1.2, 1.68][i];
-            anchoragePostMult *= [1.2, 1.68][i];   // guess
+            anchoragePostMult *= [1.15, 1.61][i];   // guess
         }
     }
 
@@ -1106,7 +1109,7 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
 		anchoragePostMult *= 1.2;  // guess
 
         let a = Math.min((installeqids[68] || 0) + (installeqids[166] || 0) + (installeqids[193] || 0) + (installeqids[449] || 0), 2);
-        let b = Math.min((installeqids[230] || 0) + (installeqids[167] || 0), 2);
+        let b = Math.min((installeqids[230] || 0) + (installeqids[482] || 0) + (installeqids[167] || 0), 2);
         if (n1 == 1 || n2 == 1) {
             if (a + b >= 1) {
                 commonMult *= 1.2;
@@ -1134,7 +1137,7 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
         isoMult *= [1.2, 1.68][i];
         harbourSummerMult *= [1.6, 2.4][i];
         supplyPostMult *= [1.3, 2.08][i] * LCbonus;
-		anchoragePostMult *= 1.4;  // guess
+		anchoragePostMult *= 1.2;  // guess
     }
 
     return [installFlat, 
@@ -1144,7 +1147,8 @@ Ship.prototype.installMod = function(installeqtypes, installeqids) {
             harbourSummerMult, harbourSummerMultDayOnly, 
             commonMult, 
             supplyPostMult, 
-            anchoragePostMult];
+            anchoragePostMult,
+			dockPostMult];
 }
 
 Ship.prototype.ptMod = function() {

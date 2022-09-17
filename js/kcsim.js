@@ -3971,6 +3971,7 @@ function postModSpecialTarget(ship,target) {  // post mod for shell and NB only
 	else if (target.isSummerCAHime) return ship.summerCAHimePostMult || 1;
 	else if (target.isFrenchBBHime) return ship.FrenchBBHimePostMult || 1;
 	else if (target.isGermanCVEHime) return ship.GermanCVEHimePostMult || 1;
+	else if (target.isDock) return ship.dockPostMult || 1;
 	return 1;
 }
 
